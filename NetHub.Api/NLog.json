@@ -1,0 +1,86 @@
+{
+	"NLog": {
+		"autoReload": true,
+		"throwConfigExceptions": true,
+		"internalLogLevel": "Info",
+		"internalLogFile": "${basedir}/logs/nlog-internal.log",
+		"extensions": [
+			{ "assembly": "NLog.Web.AspNetCore" }
+		],
+		"targets": {
+			"async": true,
+			"logFile": {
+				"type": "File",
+				"fileName": "${basedir}/logs/${shortdate}.tsv",
+				"layout": {
+					"type": "CsvLayout",
+					"delimiter": "Tab",
+					"withHeader": false,
+					"quoting": "Nothing",
+					"columns": [
+						{ "layout": "${time}" },
+						{ "layout": "|${level:uppercase=true}| " },
+						{ "layout": "[${logger:shortName=true}] " },
+						{ "layout": "${message}", "quoting": "All" },
+						{ "layout": "${exception:format=ToString}", "quoting": "All" }
+					]
+				}
+			},
+			"logFileErrors": {
+				"type": "File",
+				"fileName": "${basedir}/logs/${shortdate}-errors.tsv",
+				"layout": {
+					"type": "CsvLayout",
+					"delimiter": "Tab",
+					"withHeader": false,
+					"quoting": "Nothing",
+					"columns": [
+						{ "layout": "${time}" },
+						{ "layout": "|${level:uppercase=true}| " },
+						{ "layout": "[${logger:shortName=true}] " },
+						{ "layout": "${message}", "quoting": "All" },
+						{ "layout": "${exception:format=ToString}", "quoting": "All" }
+					]
+				}
+			},
+			"logConsole": {
+				"type": "LimitingWrapper",
+				"interval": "00:00:01",
+				"messageLimit": 100,
+				"target": {
+					"type": "ColoredConsole",
+					"rowHighlightingRules": [
+						{ "condition": "level == LogLevel.Trace", "foregroundColor": "DarkGray" },
+						{ "condition": "level == LogLevel.Debug", "foregroundColor": "DarkGray" },
+						{ "condition": "level == LogLevel.Info", "foregroundColor": "Gray" },
+						{ "condition": "level == LogLevel.Warn", "foregroundColor": "Yellow" },
+						{ "condition": "level == LogLevel.Error", "foregroundColor": "Red" },
+						{ "condition": "level == LogLevel.Fatal", "foregroundColor": "DarkRed" }
+					],
+					"wordHighlightingRules": [
+						{ "regex": "true|false", "foregroundColor": "Blue" },
+						{ "condition": "level == LogLevel.Debug", "text": "[TEST]", "foregroundColor": "Blue" }
+					],
+					"layout": {
+						"type": "CsvLayout",
+						"delimiter": "Tab",
+						"withHeader": false,
+						"quoting": "Nothing",
+						"columns": [
+							{ "layout": "${time} |${level:uppercase=true}| " },
+							{ "layout": "[${logger}] " },
+							{ "layout": "${message}" },
+							{ "layout": "${exception:format=ToString}" }
+						]
+					}
+				}
+			}
+		},
+		"rules": [
+			{ "logger": "Microsoft.*", "minLevel": "Warn", "final": true },
+			{ "logger": "*", "minLevel": "Trace", "writeTo": "logConsole" },
+			{ "logger": "*", "minLevel": "Trace", "writeTo": "logFile" },
+			{ "logger": "*", "minLevel": "Warn", "writeTo": "logFileErrors" }
+		]
+	}
+}

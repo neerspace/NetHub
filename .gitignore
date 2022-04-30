@@ -1,0 +1,47 @@
+# Ignore secret configuration
+appsettings.Secrets.json
+
+
+# JetBrains Rider cache
+riderModule.iml
+/_ReSharper.Caches/
+.idea/
+
+# Visual Studio cahche
+.vs/
+
+# VS Code cahche
+.vscode/
+
+# Log files
+logs/
+*.log
+
+# .NET Build results
+[Bb]in/
+[Oo]bj/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Node.JS dependencies
+node_modules/
+
+# testing
+/coverage
+
+# production
+/build
+
+# Mac OS cahce
+.DS_Store
+
+# Local environments
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
