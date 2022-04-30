@@ -12,5 +12,4 @@ public class AppRole : IdentityRole<long>, IEntity
 
 
 	public virtual ICollection<AppUserRole>? Users { get; set; }
-	public virtual ICollection<AppRoleClaim>? Claims { get; set; }
 }

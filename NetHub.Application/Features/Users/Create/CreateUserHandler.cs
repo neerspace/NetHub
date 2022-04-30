@@ -23,7 +23,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, User>
 			throw new ValidationFailedException("User not created.", result.ToErrorDetails());
 
 		await _userManager.AddPasswordAsync(user, command.Password);
-		await _userManager.AddToRoleAsync(user, Roles.User);
+		await _userManager.AddToRoleAsync(user, Role.User.ToString());
 
 		return user.Adapt<User>();
 	}

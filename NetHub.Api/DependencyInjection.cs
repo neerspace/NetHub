@@ -27,7 +27,6 @@ public static class DependencyInjection
 		var serviceProvider = services.BuildServiceProvider();
 		var jwtOptions = serviceProvider.GetRequiredService<IOptions<JwtOptions>>().Value;
 		services.AddJwtAuthentication(jwtOptions);
-		services.AddPoliciesAuthorization();
 
 		if (configuration.GetSwaggerSettings().Enabled)
 		{

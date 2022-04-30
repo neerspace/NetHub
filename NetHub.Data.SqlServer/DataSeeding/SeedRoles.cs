@@ -9,7 +9,6 @@ public static partial class SeedExtensions
 	public static void SeedRoles(this ModelBuilder builder)
 	{
 		builder.Entity<AppRole>().HasData(Roles);
-		builder.Entity<AppRoleClaim>().HasData(RoleClaims);
 	}
 
 	private static readonly AppRole[] Roles =
@@ -25,17 +24,6 @@ public static partial class SeedExtensions
 			Id = 2,
 			Name = "admin",
 			NormalizedName = "ADMIN"
-		}
-	};
-
-	private static readonly AppRoleClaim[] RoleClaims =
-	{
-		new()
-		{
-			Id = 1,
-			RoleId = 2,
-			ClaimType = Claims.Permission,
-			ClaimValue = Permissions.Admin
 		}
 	};
 }

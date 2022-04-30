@@ -6,8 +6,7 @@ using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Data.SqlServer.Context;
 
-public class SqlServerDbContext : IdentityDbContext<AppUser, AppRole, long,
-	AppUserClaim, AppUserRole, AppUserLogin, AppRoleClaim, AppUserToken>, IDatabaseContext
+public class SqlServerDbContext : IdentityDbContext<AppUser, AppRole, long>, IDatabaseContext
 {
 	public SqlServerDbContext(DbContextOptions options) : base(options)
 	{

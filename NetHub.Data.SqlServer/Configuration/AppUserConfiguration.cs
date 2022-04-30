@@ -15,13 +15,7 @@ internal class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
 
 		builder.HasMany(e => e.Roles).WithOne(e => e.User)
 				.HasForeignKey(e => e.UserId).IsRequired().OnDelete(DeleteBehavior.Cascade);
-		builder.HasMany(e => e.Claims).WithOne(e => e.User)
-				.HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
-		builder.HasMany(e => e.Logins).WithOne(e => e.User)
-				.HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
 		builder.HasMany(e => e.RefreshTokens).WithOne(e => e.User)
-				.HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
-		builder.HasMany(e => e.Tokens).WithOne(e => e.User)
 				.HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
 
 		builder.ToTable("AppUsers");

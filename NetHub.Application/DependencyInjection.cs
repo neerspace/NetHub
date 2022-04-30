@@ -55,8 +55,7 @@ public static class DependencyInjection
 	public static void AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
 	{
 		services.AddIdentity<AppUser, AppRole>(configuration.GetRequiredSection("Identity").Bind)
-				.AddEntityFrameworkStores<SqlServerDbContext>()
-				.AddTokenProvider(TokenProviders.Default, typeof(EmailTokenProvider<AppUser>));
+			.AddEntityFrameworkStores<SqlServerDbContext>();
 
 		services.Configure<PasswordHasherOptions>(option => option.IterationCount = 7000);
 	}

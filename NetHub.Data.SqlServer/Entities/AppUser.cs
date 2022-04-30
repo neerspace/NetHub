@@ -25,8 +25,5 @@ public class AppUser : IdentityUser<long>, IEntity
 
 
 	public virtual ICollection<AppUserRole>? Roles { get; set; }
-	public virtual ICollection<AppUserClaim>? Claims { get; set; }
-	public virtual ICollection<AppUserLogin>? Logins { get; set; }
 	public virtual ICollection<AppRefreshToken>? RefreshTokens { get; set; }
-	public virtual ICollection<AppUserToken>? Tokens { get; set; }
 }

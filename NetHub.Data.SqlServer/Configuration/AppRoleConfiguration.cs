@@ -13,9 +13,6 @@ internal class AppRoleConfiguration : IEntityTypeConfiguration<AppRole>
 		builder.Property(e => e.NormalizedName).HasMaxLength(64);
 		builder.Property(e => e.ConcurrencyStamp).HasMaxLength(64);
 
-		builder.HasMany(e => e.Claims).WithOne(e => e.Role)
-				.HasForeignKey(e => e.RoleId).IsRequired().OnDelete(DeleteBehavior.Cascade);
-
 		builder.ToTable("AppRoles");
 	}
 }

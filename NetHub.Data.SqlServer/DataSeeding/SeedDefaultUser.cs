@@ -10,7 +10,6 @@ public static partial class SeedExtensions
 	public static void SeedDefaultUser(this ModelBuilder builder)
 	{
 		builder.Entity<AppUser>().HasData(Users);
-		builder.Entity<AppUserClaim>().HasData(UserClaims);
 	}
 
 	private static readonly PasswordHasher<AppUser?> hasher = new();
@@ -28,17 +27,5 @@ public static partial class SeedExtensions
 			PasswordHash = hasher.HashPassword(null, "aspX1234"),
 			SecurityStamp = Guid.NewGuid().ToString()
 		},
-	};
-
-
-	private static readonly AppUserClaim[] UserClaims =
-	{
-		new()
-		{
-			Id = 1,
-			UserId = 1,
-			ClaimType = Claims.Permission,
-			ClaimValue = Permissions.Master
-		}
 	};
 }

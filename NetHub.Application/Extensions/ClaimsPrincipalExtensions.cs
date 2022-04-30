@@ -18,17 +18,6 @@ public static class ClaimsPrincipalExtensions
 		return string.Equals(user.GetClaim(type).Value, value, StringComparison.OrdinalIgnoreCase);
 	}
 
-	/// <summary>
-	/// Checks if the user's token contains this permission.
-	/// </summary>
-	/// <param name="user">Current user principal</param>
-	/// <param name="permission">Permission string name</param>
-	/// <returns>Boolean result of check</returns>
-	public static bool HasPermission(this ClaimsPrincipal user, string permission)
-	{
-		return user.HasClaim(Claims.Permission, permission);
-	}
-
 
 	/// <summary>
 	/// Gets value from the claim with the given type.
@@ -103,18 +92,6 @@ public static class ClaimsPrincipalExtensions
 	public static IEnumerable<string> GetUserRoles(this ClaimsPrincipal user)
 	{
 		return user.ListClaims(Claims.Role).Select(c => c.Value);
-	}
-
-	/// <summary>
-	/// Gets list of user permissions from claims.
-	/// </summary>
-	/// <param name="user">Current user principal</param>
-	/// <returns>User permissions or throws exception if something goes wrong</returns>
-	/// <exception cref="UnauthorizedException">Throws when the user is not authenticated</exception>
-	/// <exception cref="ForbidException">Throws when the user is doesn't have a claim with given type</exception>
-	public static IEnumerable<string> GetUserPermissions(this ClaimsPrincipal user)
-	{
-		return user.ListClaims(Claims.Permission).Select(c => c.Value);
 	}
 
 
