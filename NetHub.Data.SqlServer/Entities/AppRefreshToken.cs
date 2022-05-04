@@ -22,5 +22,5 @@ public class AppRefreshToken : IEntity
 	public DateTime Created { get; set; } = DateTime.UtcNow;
 
 
-	public virtual AppUser? User { get; set; }
+	public virtual UserProfile? User { get; set; }
 }

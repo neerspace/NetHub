@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "CleanTemplate.Web.API": {
+    "NetHub.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,

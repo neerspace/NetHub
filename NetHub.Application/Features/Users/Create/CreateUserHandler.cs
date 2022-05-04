@@ -10,13 +10,13 @@ namespace NetHub.Application.Features.Users.Create;
 
 public class CreateUserHandler : IRequestHandler<CreateUserCommand, User>
 {
-	private readonly UserManager<AppUser> _userManager;
-	public CreateUserHandler(UserManager<AppUser> userManager) => _userManager = userManager;
+	private readonly UserManager<UserProfile> _userManager;
+	public CreateUserHandler(UserManager<UserProfile> userManager) => _userManager = userManager;
 
 
 	public async Task<User> Handle(CreateUserCommand command, CancellationToken cancel)
 	{
-		var user = new AppUser { UserName = command.Username, Email = command.Email };
+		var user = new UserProfile { UserName = command.Username, Email = command.Email };
 
 		IdentityResult? result = await _userManager.CreateAsync(user);
 		if (!result.Succeeded)

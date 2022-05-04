@@ -11,47 +11,50 @@ namespace NetHub.Core.Tools;
 /// </summary>
 public static class AssemblyProvider
 {
-	private static readonly string ProjectRootName = Assembly.GetExecutingAssembly().GetName().FullName.Split('.')[0];
+    private static readonly string ProjectRootName = Assembly.GetExecutingAssembly().GetName().FullName.Split('.')[0];
 
-	private static IEnumerable<Assembly>? _applicationAssemblies;
-	public static IEnumerable<Assembly> ApplicationAssemblies => _applicationAssemblies ??= LoadAssemblies().Where(IsApplicationAssembly);
+    private static IEnumerable<Assembly>? applicationAssemblies;
 
-	public static readonly Func<Assembly, bool> IsApplicationAssembly = asm =>
-			asm.FullName != null && asm.FullName.StartsWith(ProjectRootName, StringComparison.OrdinalIgnoreCase);
+    public static IEnumerable<Assembly> ApplicationAssemblies =>
+        applicationAssemblies ??= LoadAssemblies().Where(IsApplicationAssembly);
 
-	public static IEnumerable<Type> GetTypes(string assemblyName) => LoadAssemblies()
-			.Where(IsApplicationAssembly)
-			.Where(a => a.FullName!.StartsWith(assemblyName, StringComparison.OrdinalIgnoreCase))
-			.SelectMany(a => a.GetTypes())
-			.ToList();
+    public static readonly Func<Assembly, bool> IsApplicationAssembly = asm =>
+        asm.FullName != null && asm.FullName.StartsWith(ProjectRootName, StringComparison.OrdinalIgnoreCase);
 
-	public static IEnumerable<Type> GetImplementations<TBase>()
-	{
-		Type baseType = typeof(TBase);
+    public static IEnumerable<Type> GetImplementations<TBase>()
+    {
+        Type baseType = typeof(TBase);
 
-		return ApplicationAssemblies.SelectMany(a => a.GetTypes())
-				.Where(t => t != baseType && baseType.IsAssignableFrom(t))
-				.ToList();
-	}
+        return ApplicationAssemblies.SelectMany(a => a.GetTypes())
+            .Where(t => t != baseType && baseType.IsAssignableFrom(t))
+            .ToList();
+    }
 
-	public static IEnumerable<Assembly> LoadAssemblies()
-	{
-		var list = new List<string>();
-		var stack = new Stack<Assembly>();
+    public static IEnumerable<Assembly> LoadAssemblies()
+    {
+        var list = new List<string>();
+        var stack = new Stack<Assembly>();
 
-		stack.Push(Assembly.GetEntryAssembly()!);
+        stack.Push(Assembly.GetEntryAssembly()!);
 
-		do
-		{
-			Assembly asm = stack.Pop();
-			yield return asm;
+        do
+        {
+            Assembly asm = stack.Pop();
+            yield return asm;
 
-			var referenceAssemblies = asm.GetReferencedAssemblies().Where(a => !list.Contains(a.FullName));
-			foreach (AssemblyName reference in referenceAssemblies)
-			{
-				stack.Push(Assembly.Load(reference));
-				list.Add(reference.FullName);
-			}
-		} while (stack.Count > 0);
-	}
+            var referenceAssemblies = asm.GetReferencedAssemblies().Where(a => !list.Contains(a.FullName));
+            foreach (AssemblyName reference in referenceAssemblies)
+            {
+                try
+                {
+                    stack.Push(Assembly.Load(reference));
+                    list.Add(reference.FullName);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Assembly Provider error occurred: {e.Message}");
+                }
+            }
+        } while (stack.Count > 0);
+    }
 }

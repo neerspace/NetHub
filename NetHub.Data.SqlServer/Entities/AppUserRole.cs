@@ -9,6 +9,6 @@ public class AppUserRole : IdentityUserRole<long>, IEntity
 	public override long RoleId { get; set; }
 
 
-	public virtual AppUser? User { get; set; }
+	public virtual UserProfile? User { get; set; }
 	public virtual AppRole? Role { get; set; }
 }

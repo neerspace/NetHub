@@ -24,8 +24,6 @@ public static class DependencyInjection
 	{
 		services.AddHashids(configuration.GetSection("Hashids").Bind);
 
-		services.RegisterServicesFromAssembly("CleanTemplate.Application");
-
 		services.BindConfigurationOptions(configuration);
 		services.RegisterMappings();
 
@@ -54,7 +52,7 @@ public static class DependencyInjection
 
 	public static void AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
 	{
-		services.AddIdentity<AppUser, AppRole>(configuration.GetRequiredSection("Identity").Bind)
+		services.AddIdentity<UserProfile, AppRole>(configuration.GetRequiredSection("Identity").Bind)
 			.AddEntityFrameworkStores<SqlServerDbContext>();
 
 		services.Configure<PasswordHasherOptions>(option => option.IterationCount = 7000);

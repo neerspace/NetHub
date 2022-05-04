@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NetHub.Api.Abstractions;
+using NetHub.Api.Attributes;
 using NetHub.Application.Extensions;
 using NetHub.Application.Features.Users;
 using NetHub.Application.Features.Users.Create;

@@ -14,7 +14,7 @@ internal class GetUserByUsernameHandler : IRequestHandler<GetUserByUsernameQuery
 
 	public async Task<User> Handle(GetUserByUsernameQuery query, CancellationToken cancel)
 	{
-		var user = await _database.Set<AppUser>().Where(u => u.UserName == query.Username).FirstOr404Async(cancel);
+		var user = await _database.Set<UserProfile>().Where(u => u.UserName == query.Username).FirstOr404Async(cancel);
 		return user.Adapt<User>();
 	}
 }

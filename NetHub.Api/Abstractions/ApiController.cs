@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NetHub.Api.Attributes;
-using NetHub.Core.Constants;
 using NLog;
 using ILogger = NLog.ILogger;
 
@@ -16,7 +14,6 @@ namespace NetHub.Api.Abstractions;
 [ApiVersion(Versions.V1)]
 [Route("/v{version:apiVersion}/[controller]")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[AuthorizeRoles(Role.Admin, Role.User)]
 public abstract class ApiController : ControllerBase
 {
 	private IMediator? _mediator;
