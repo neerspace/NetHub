@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using NetHub.Api.Configuration;
 using NetHub.Api.Configuration.Swagger;
 using NetHub.Application.Options;
+using NetHub.Core.DependencyInjection;
 
 namespace NetHub.Api;
 
@@ -23,6 +24,7 @@ public static class DependencyInjection
 
 		services.ConfigureApiBehaviorOptions();
 		services.AddCustomApiVersioning();
+		services.RegisterServicesFromAssembly("NetHub.Api");
 
 		var serviceProvider = services.BuildServiceProvider();
 		var jwtOptions = serviceProvider.GetRequiredService<IOptions<JwtOptions>>().Value;

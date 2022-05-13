@@ -45,7 +45,6 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
 	builder.Logging.AddNLogWeb(LogManager.Configuration);
 
 	builder.Services.AddSqlServerDatabase(builder.Configuration);
-	builder.Services.AddIdentityServices(builder.Configuration);
 	builder.Services.AddApplication(builder.Configuration);
 	builder.Services.AddInfrastructure();
 	builder.Services.AddWebApi(builder.Configuration);
@@ -71,8 +70,8 @@ static void ConfigureWebApp(WebApplication app)
 
 	app.UseCustomExceptionHandler();
 
-	app.UseAuthorization();
 	app.UseAuthentication();
+	app.UseAuthorization();
 
 	app.MapControllers();
 }

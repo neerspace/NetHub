@@ -5,17 +5,25 @@ namespace NetHub.Api.Configuration;
 
 public static class AuthenticationExtensions
 {
-	public static void AddJwtAuthentication(this IServiceCollection services, JwtOptions jwtOptions)
-	{
-		var identityAuthorityUrl = "https://localhost:5001";
-		
-		services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-			.AddIdentityServerAuthentication(options =>
-			{
-				// base-address of your identityserver
-				options.Authority = identityAuthorityUrl;
-				// name of the API resource
-				options.ApiName = "NetHub";
-			});
-	}
+    public static void AddJwtAuthentication(this IServiceCollection services, JwtOptions jwtOptions)
+    {
+        var identityAuthorityUrl = "https://localhost:7501";
+
+        services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, 
+                options =>
+            {
+                options.JwtValidationClockSkew = TimeSpan.FromMinutes(60);
+                options.ApiName = "nethub";
+                options.Authority = identityAuthorityUrl;
+                options.RequireHttpsMetadata = false;
+            });
+        
+        services.AddAuthorization();
+    }
 }

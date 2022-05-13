@@ -8,8 +8,54 @@ public static class DependencyInjection
 {
     public static void AddCustomSwagger(this IServiceCollection services)
     {
-        services.ConfigureOptions<SwaggerConfiguration>();
-        services.AddSwaggerGen();
+        services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Description = "Nethub Api Swagger",
+                Title = "Nethub Api Swagger",
+                Version = "1",
+            });
+            options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.OAuth2,
+                Flows = new OpenApiOAuthFlows
+                {
+                    AuthorizationCode = new OpenApiOAuthFlow
+                    {
+                        AuthorizationUrl = new Uri("https://localhost:7501/account/login"),
+                        TokenUrl = new Uri("https://localhost:7501/connect/token"),
+                        Scopes = new Dictionary<string, string>
+                        {
+                            {"nb.user", "User"},
+                            {"nb.admin", "Admin"},
+                            {"nb.master", "Master"}
+                        }
+                    }
+                },
+                // In = ParameterLocation.Cookie,
+                Description = "OAuth 2.0 Authorization"
+            });
+
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "oauth2"
+                        },
+                        Scheme = "oauth2",
+                        Name = JwtBearerDefaults.AuthenticationScheme,
+                        In = ParameterLocation.Cookie
+                    },
+                    new List<string>()
+                }
+            });
+        });
     }
 
     public static void UseCustomSwagger(this IApplicationBuilder app)
@@ -30,6 +76,8 @@ public static class DependencyInjection
             options.DocumentTitle = "Swagger - " + swaggerSettings.Title;
             options.InjectStylesheet("/swagger/custom.css");
             options.InjectJavascript("/swagger/custom.js");
+            options.OAuthClientId("nethub-api");
+            options.OAuthClientSecret("199bd7e0c43s694ea6lb816d122fp7x0");
         });
     }
 

@@ -17,14 +17,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Folder Include="Features" />
       <Folder Include="Hubs" />
       <Folder Include="Jobs" />
       <Folder Include="Services" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AspNetCore.Hashids" Version="2.0.0" />
-        <PackageReference Include="AspNetCore.Hashids.Int64" Version="2.0.2" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.4.0" />
         <PackageReference Include="Mapster" Version="7.3.0" />
