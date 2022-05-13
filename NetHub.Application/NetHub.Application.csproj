@@ -17,10 +17,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Features" />
-      <Folder Include="Hubs" />
-      <Folder Include="Jobs" />
-      <Folder Include="Services" />
+      <Folder Include="Features\Protected" />
     </ItemGroup>
 
     <ItemGroup>

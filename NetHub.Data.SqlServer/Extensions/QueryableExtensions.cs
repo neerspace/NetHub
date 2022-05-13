@@ -1,4 +1,5 @@
 ﻿using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using NetHub.Core.Abstractions.Entities;
 using NetHub.Core.Exceptions;
@@ -9,6 +10,15 @@ namespace NetHub.Data.SqlServer.Extensions;
 public static class QueryableExtensions
 {
     public static async Task<TEntity> FirstOr404Async<TEntity>(this IQueryable<TEntity> queryable,
+        CancellationToken cancel = default)
+        where TEntity : class, IEntity
+    {
+        return await queryable.FirstOrDefaultAsync(cancel)
+               ?? throw new NotFoundException(typeof(TEntity).Name.CamelCaseToWords() + " not found.");
+    }
+
+    public static async Task<TEntity> FirstOr404Async<TEntity>(this IQueryable<TEntity> queryable,
+        Expression<Func<TEntity, bool>> predicate,
         CancellationToken cancel = default)
         where TEntity : class, IEntity
     {
