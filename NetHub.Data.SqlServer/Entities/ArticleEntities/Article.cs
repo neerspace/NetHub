@@ -6,7 +6,7 @@ namespace NetHub.Data.SqlServer.Entities.ArticleEntities;
 public class Article : IEntity
 {
     public long Id { get; set; }
-    public string? OriginalAuthor { get; set; }
+    public string AuthorName { get; set; } = default!;
     public ContentStatus Status { get; set; }
 
     #region Author

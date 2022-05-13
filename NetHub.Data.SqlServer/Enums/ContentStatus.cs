@@ -3,6 +3,7 @@
 public enum ContentStatus : byte
 {
     Draft,
+    Pending,
     Published,
     Banned
 }

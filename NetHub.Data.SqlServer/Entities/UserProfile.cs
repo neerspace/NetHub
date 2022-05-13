@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using NetHub.Core.Abstractions.Entities;
+﻿using NetHub.Core.Abstractions.Entities;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
 
 namespace NetHub.Data.SqlServer.Entities;
