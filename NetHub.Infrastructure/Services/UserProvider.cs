@@ -15,6 +15,8 @@ namespace NetHub.Infrastructure.Services
         private readonly IHttpContextAccessor _accessor;
         private readonly UserManager<UserProfile> _userManager;
 
+        private UserProfile? _userProfile;
+
         public UserProvider(IHttpContextAccessor accessor, UserManager<UserProfile> userManager)
         {
             _accessor = accessor;
@@ -25,10 +27,12 @@ namespace NetHub.Infrastructure.Services
 
         public async Task<long> GetUserId()
         {
-            var userId = GetContextUser.GetUserId();
-            if (await _userManager.FindByIdAsync(userId.ToString()) is null)
+            if (await GetUser() is null)
                 throw new NotFoundException("User not found");
-            return userId;
+            return GetContextUser.GetUserId();
         }
+
+        public async Task<UserProfile?> GetUser() =>
+            _userProfile ??= await _userManager.FindByIdAsync(GetContextUser.GetUserId());
     }
 }

@@ -15,10 +15,10 @@ public class ArticlesController : ApiController
         => await Mediator.Send(new GetArticleRequest(id));
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateArticleRequest request)
+    public async Task<IActionResult> Create()
     {
-        var result = await Mediator.Send(request);
-        return Created($"/v1/articles/{result.Id}", result);
+        var result = await Mediator.Send(new CreateArticleRequest());
+        return CreatedAtAction(nameof(GetOne), new {id = result.Id}, result);
     }
 
     [HttpPut("{id:long}")]

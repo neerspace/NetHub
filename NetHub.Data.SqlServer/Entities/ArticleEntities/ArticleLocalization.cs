@@ -1,8 +1,10 @@
-﻿using NetHub.Core.Abstractions.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using NetHub.Core.Abstractions.Entities;
 using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Data.SqlServer.Entities.ArticleEntities;
 
+[Table($"{nameof(ArticleLocalization)}s")]
 public class ArticleLocalization : IEntity
 {
     #region Article
@@ -19,18 +21,12 @@ public class ArticleLocalization : IEntity
 
     #endregion
 
-    #region Author
-
-    public long? AuthorId { get; set; }
-    public virtual UserProfile? Author { get; set; }
-
-    #endregion
-
-    public string? OriginalAuthor { get; set; }
-    public string? Title { get; set; }
-    public string? Description { get; set; }
-    public string? Html { get; set; }
+    public string MainAuthorName { get; set; } = default!;
+    public string Title { get; set; } = default!;
+    public string Description { get; set; } = default!;
+    public string Html { get; set; } = default!;
+    public string? TranslatedArticleLink { get; set; }
     public ContentStatus Status { get; set; }
     
-    public virtual ICollection<ArticleResource>? Images { get; set; }
+    public virtual ICollection<ArticleAuthor> Authors { get; set; } = default!;
 }

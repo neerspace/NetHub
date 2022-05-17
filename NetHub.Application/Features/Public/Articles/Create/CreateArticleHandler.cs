@@ -20,7 +20,7 @@ public class CreateArticleHandler : AuthorizedHandler<CreateArticleRequest, Arti
         var articleEntity = new Article
         {
             AuthorId = userId,
-            AuthorName = request.OriginalAuthor ?? user.UserName,
+            AuthorName = user.UserName,
             Status = ContentStatus.Draft
         };
 

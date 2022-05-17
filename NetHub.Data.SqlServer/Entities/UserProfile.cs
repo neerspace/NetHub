@@ -19,5 +19,4 @@ public class UserProfile : IEntity
 
 
     public virtual ICollection<Article>? Articles { get; set; }
-    public virtual ICollection<ArticleLocalization>? Localizations { get; set; }
 }

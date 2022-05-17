@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetHub.Data.SqlServer.Context;
 
@@ -11,9 +12,10 @@ using NetHub.Data.SqlServer.Context;
 namespace NetHub.Data.SqlServer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
-    partial class SqlServerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220517222245_ArticleLocalizationProfileUpdate")]
+    partial class ArticleLocalizationProfileUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,7 +48,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Articles");
+                    b.ToTable("Articles", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleAuthor", b =>
@@ -117,7 +119,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("LanguageCode");
 
-                    b.ToTable("ArticleLocalizations");
+                    b.ToTable("ArticleLocalizations", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleResource", b =>
@@ -125,14 +127,17 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.Property<Guid>("ResourceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("ArticleId")
+                    b.Property<long?>("ArticleLocalizationArticleId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("ArticleLocalizationLanguageCode")
+                        .HasColumnType("nvarchar(2)");
 
                     b.HasKey("ResourceId");
 
-                    b.HasIndex("ArticleId");
+                    b.HasIndex("ArticleLocalizationArticleId", "ArticleLocalizationLanguageCode");
 
-                    b.ToTable("ArticleResources");
+                    b.ToTable("ArticleResources", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Language", b =>
@@ -271,17 +276,15 @@ namespace NetHub.Data.SqlServer.Migrations
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleResource", b =>
                 {
-                    b.HasOne("NetHub.Data.SqlServer.Entities.ArticleEntities.Article", "ArticleLocalization")
-                        .WithMany("Images")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("NetHub.Data.SqlServer.Entities.Resource", "Resource")
                         .WithMany()
                         .HasForeignKey("ResourceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleLocalization", "ArticleLocalization")
+                        .WithMany("Images")
+                        .HasForeignKey("ArticleLocalizationArticleId", "ArticleLocalizationLanguageCode");
 
                     b.Navigation("ArticleLocalization");
 
@@ -290,14 +293,14 @@ namespace NetHub.Data.SqlServer.Migrations
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.Article", b =>
                 {
-                    b.Navigation("Images");
-
                     b.Navigation("Localizations");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleLocalization", b =>
                 {
                     b.Navigation("Authors");
+
+                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.UserProfile", b =>

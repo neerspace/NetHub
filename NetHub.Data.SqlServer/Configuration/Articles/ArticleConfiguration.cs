@@ -23,7 +23,5 @@ public class ArticleConfiguration : IEntityTypeConfiguration<Article>
             .HasConversion(s => s.ToString(),
                 value => Enum.Parse<ContentStatus>(value));
         builder.Property(a => a.AuthorName).HasMaxLength(32);
-
-        builder.ToTable("Articles");
     }
 }

@@ -18,9 +18,11 @@
 
     <ItemGroup>
       <Folder Include="Features\Protected" />
+      <Folder Include="Features\Public\Articles\Resources" />
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Elasticsearch.Net" Version="7.17.1" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.4.0" />
         <PackageReference Include="Mapster" Version="7.3.0" />

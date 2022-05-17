@@ -11,12 +11,10 @@ public class ArticleResourceConfiguration : IEntityTypeConfiguration<ArticleReso
         builder.HasKey(ar =>  ar.ResourceId);
 
         builder.HasOne(ar => ar.ArticleLocalization)
-            .WithMany(al => al.Images);
+            .WithMany(a => a.Images);
 
         builder.HasOne(ar => ar.Resource)
             .WithMany()
             .HasForeignKey(ar => ar.ResourceId);
-
-        builder.ToTable("ArticleResources");
     }
 }

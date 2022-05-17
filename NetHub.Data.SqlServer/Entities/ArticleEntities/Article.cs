@@ -1,8 +1,10 @@
-﻿using NetHub.Core.Abstractions.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using NetHub.Core.Abstractions.Entities;
 using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Data.SqlServer.Entities.ArticleEntities;
 
+[Table($"{nameof(Article)}s")]
 public class Article : IEntity
 {
     public long Id { get; set; }
@@ -17,4 +19,6 @@ public class Article : IEntity
     #endregion
     
     public virtual ICollection<ArticleLocalization>? Localizations { get; set; }
+    public virtual ICollection<ArticleResource>? Images { get; set; }
+
 }
