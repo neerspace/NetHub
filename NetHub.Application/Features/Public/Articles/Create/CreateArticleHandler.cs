@@ -14,12 +14,11 @@ public class CreateArticleHandler : AuthorizedHandler<CreateArticleRequest, Arti
 
     protected override async Task<ArticleModel> Handle(CreateArticleRequest request)
     {
-        var userId = await UserProvider.GetUserId();
-        var user = await UserManager.FindByIdAsync(userId);
+        var user = UserProvider.GetUser();
 
         var articleEntity = new Article
         {
-            AuthorId = userId,
+            AuthorId = user.Id,
             AuthorName = user.UserName,
             Status = ContentStatus.Draft
         };

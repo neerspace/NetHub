@@ -15,7 +15,7 @@ public class DeleteArticleLocalizationHandler : AuthorizedHandler<DeleteArticleL
 
     protected override async Task<Unit> Handle(DeleteArticleLocalizationRequest request)
     {
-        var userId = await UserProvider.GetUserId();
+        var userId = UserProvider.GetUserId();
 
         var localization = await Database.Set<ArticleLocalization>()
             .Include(al => al.Authors)

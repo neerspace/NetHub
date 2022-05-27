@@ -24,8 +24,8 @@ public static class DependencyInjection
                 {
                     AuthorizationCode = new OpenApiOAuthFlow
                     {
-                        AuthorizationUrl = new Uri("https://localhost:7501/account/login"),
-                        TokenUrl = new Uri("https://localhost:7501/connect/token"),
+                        AuthorizationUrl = new Uri("https://identity.tacles.net/connect/authorize"),
+                        TokenUrl = new Uri("https://identity.tacles.net/connect/token"),
                         Scopes = new Dictionary<string, string>
                         {
                             {"nb.user", "User"},
@@ -34,27 +34,10 @@ public static class DependencyInjection
                         }
                     }
                 },
-                // In = ParameterLocation.Cookie,
                 Description = "OAuth 2.0 Authorization"
             });
-
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "oauth2"
-                        },
-                        Scheme = "oauth2",
-                        Name = JwtBearerDefaults.AuthenticationScheme,
-                        In = ParameterLocation.Cookie
-                    },
-                    new List<string>()
-                }
-            });
+            
+            options.OperationFilter<AuthorizeCheckOperationFilter>();
         });
     }
 
@@ -77,6 +60,7 @@ public static class DependencyInjection
             options.InjectStylesheet("/swagger/custom.css");
             options.InjectJavascript("/swagger/custom.js");
             options.OAuthClientId("nethub-api");
+            options.OAuthUsePkce();
             options.OAuthClientSecret("199bd7e0c43s694ea6lb816d122fp7x0");
         });
     }

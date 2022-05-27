@@ -37,6 +37,23 @@ public static class ClaimsPrincipalExtensions
 	}
 
 	/// <summary>
+	/// Gets value from the claim with the given type.
+	/// </summary>
+	/// <param name="user">Current user principal</param>
+	/// <param name="type">Claim type</param>
+	/// <returns>Found claim or throws exception if something goes wrong</returns>
+	/// <exception cref="UnauthorizedException">Throws when the user is not authenticated</exception>
+	/// <exception cref="ForbidException">Throws when the user is doesn't have a claim with given type</exception>
+	public static bool TryGetClaim(this ClaimsPrincipal user, string type, out Claim? claim)
+	{
+		if (!user.Identity!.IsAuthenticated)
+			throw new UnauthorizedException("Claims principal is not authenticated.");
+
+		claim = user.Claims.SingleOrDefault(c => string.Equals(c.Type, type, StringComparison.OrdinalIgnoreCase));
+		return claim is not null;
+	}
+
+	/// <summary>
 	/// Gets list of all values from the claim with the given type.
 	/// </summary>
 	/// <param name="user">Current user principal</param>
@@ -69,6 +86,19 @@ public static class ClaimsPrincipalExtensions
 		return long.TryParse(claim.Value, out long userId) ? userId : throw InvalidClaimValueException(Claims.Id);
 	}
 
+	// <summary>
+	/// Gets user id from claims.
+	/// </summary>
+	/// <param name="user">Current user principal</param>
+	/// <returns>User id or throws exception if something goes wrong</returns>
+	/// <exception cref="UnauthorizedException">Throws when the user is not authenticated</exception>
+	/// <exception cref="ForbidException">Throws when the user is doesn't have a claim with given type</exception>
+	public static long GetGlobalUserId(this ClaimsPrincipal user)
+	{
+		Claim claim = user.GetClaim(Claims.UserId);
+		return long.TryParse(claim.Value, out long userId) ? userId : throw InvalidClaimValueException(Claims.UserId);
+	}
+
 	/// <summary>
 	/// Gets username from claims.
 	/// </summary>
@@ -76,10 +106,49 @@ public static class ClaimsPrincipalExtensions
 	/// <returns>Username or throws exception if something goes wrong</returns>
 	/// <exception cref="UnauthorizedException">Throws when the user is not authenticated</exception>
 	/// <exception cref="ForbidException">Throws when the user is doesn't have a claim with given type</exception>
-	public static string GetUserName(this ClaimsPrincipal user)
+	public static string GetUsername(this ClaimsPrincipal user)
 	{
-		Claim claim = user.GetClaim(Claims.UserName);
-		return claim.Value ?? throw InvalidClaimValueException(Claims.UserName);
+		Claim claim = user.GetClaim(Claims.Username);
+		return claim.Value ?? throw InvalidClaimValueException(Claims.Username);
+	}
+
+	/// <summary>
+	/// Gets email from claims.
+	/// </summary>
+	/// <param name="user">Current user principal</param>
+	/// <returns>Username or throws exception if something goes wrong</returns>
+	/// <exception cref="UnauthorizedException">Throws when the user is not authenticated</exception>
+	/// <exception cref="ForbidException">Throws when the user is doesn't have a claim with given type</exception>
+	public static string GetEmail(this ClaimsPrincipal user)
+	{
+		Claim claim = user.GetClaim(Claims.Email);
+		return claim.Value ?? throw InvalidClaimValueException(Claims.Email);
+	}
+
+	/// <summary>
+	/// Gets email from claims.
+	/// </summary>
+	/// <param name="user">Current user principal</param>
+	/// <returns>Username or throws exception if something goes wrong</returns>
+	/// <exception cref="UnauthorizedException">Throws when the user is not authenticated</exception>
+	/// <exception cref="ForbidException">Throws when the user is doesn't have a claim with given type</exception>
+	public static string GetRegistered(this ClaimsPrincipal user)
+	{
+		Claim claim = user.GetClaim(Claims.Registered);
+		return claim.Value ?? throw InvalidClaimValueException(Claims.Registered);
+	}
+
+	/// <summary>
+	/// Gets email from claims.
+	/// </summary>
+	/// <param name="user">Current user principal</param>
+	/// <returns>Username or throws exception if something goes wrong</returns>
+	/// <exception cref="UnauthorizedException">Throws when the user is not authenticated</exception>
+	/// <exception cref="ForbidException">Throws when the user is doesn't have a claim with given type</exception>
+	public static string? GetPhoneNumber(this ClaimsPrincipal user)
+	{
+		user.TryGetClaim(Claims.PhoneNumber, out var claim);
+		return claim?.Value;
 	}
 
 	/// <summary>

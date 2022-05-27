@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using NetHub.Api;
 using NetHub.Api.Configuration;
 using NetHub.Api.Configuration.Swagger;
+using NetHub.Api.Middleware;
 using NetHub.Application;
 using NetHub.Data.SqlServer;
 using NetHub.Infrastructure;
@@ -72,7 +73,9 @@ static void ConfigureWebApp(WebApplication app)
 
 	app.UseAuthentication();
 	app.UseAuthorization();
-
+	
+	app.UseMiddleware<ProfilesMiddleware>();
+	
 	app.MapControllers();
 }
 

@@ -17,10 +17,12 @@ public static class DependencyInjection
 	{
 		services.AddFactoryMiddleware();
 
+		services.AddConfigurations(configuration);
+		
 		services.AddCorsPolicies();
 		services.AddControllers()
-				.AddMvcOptions(ConfigureMvcOptions)
-				.AddJsonOptions(ConfigureJsonOptions);
+			.AddMvcOptions(ConfigureMvcOptions)
+			.AddJsonOptions(ConfigureJsonOptions);
 
 		services.ConfigureApiBehaviorOptions();
 		services.AddCustomApiVersioning();
@@ -34,6 +36,11 @@ public static class DependencyInjection
 		{
 			services.AddCustomSwagger();
 		}
+	}
+
+	public static void AddConfigurations(this IServiceCollection services, IConfiguration configuration)
+	{
+		services.Configure<MezhaOptions>(configuration.GetSection("Mezha"));
 	}
 
 

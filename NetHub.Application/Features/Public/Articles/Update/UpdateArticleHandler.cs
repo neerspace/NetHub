@@ -14,7 +14,7 @@ public class UpdateArticleHandler : AuthorizedHandler<UpdateArticleRequest>
 
     protected override async Task<Unit> Handle(UpdateArticleRequest request)
     {
-        var userId = await UserProvider.GetUserId();
+        var userId = UserProvider.GetUserId();
 
         var article = await Database.Set<Article>().FirstOr404Async(a => a.Id == request.Id);
 

@@ -16,7 +16,7 @@ public class ArticleLocalizationsController : ApiController
     public async Task<ArticleLocalizationModel> GetOne([FromRoute] long articleId, [FromRoute] string languageCode)
         => await Mediator.Send(new GetArticleLocalizationRequest(articleId, languageCode));
 
-    [HttpGet]
+    [HttpGet("filter")]
     public async Task<ArticleLocalizationModel[]> Filter(string filter, string sorts, int page = 1, int pageSize = 10)
         => await Mediator.Send(new FilterArticleLocalizationsRequest());
     

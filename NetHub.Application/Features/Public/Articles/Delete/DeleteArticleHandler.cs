@@ -14,7 +14,7 @@ public class DeleteArticleHandler : AuthorizedHandler<DeleteArticleRequest>
 
     protected override async Task<Unit> Handle(DeleteArticleRequest request)
     {
-        var userId = await UserProvider.GetUserId();
+        var userId = UserProvider.GetUserId();
         var article = await Database.Set<Article>().FirstOr404Async(a => a.Id == request.Id);
 
         if (article.AuthorId != userId)

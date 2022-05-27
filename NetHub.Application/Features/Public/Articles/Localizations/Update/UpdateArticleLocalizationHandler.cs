@@ -20,7 +20,7 @@ public class UpdateArticleLocalizationHandler : AuthorizedHandler<UpdateArticleL
 
     protected override async Task<Unit> Handle(UpdateArticleLocalizationRequest request)
     {
-        var userId = await UserProvider.GetUserId();
+        var userId = UserProvider.GetUserId();
         var localization = await Database.Set<ArticleLocalization>()
             .Include(al => al.Authors)
             .SingleOrDefaultAsync(al =>

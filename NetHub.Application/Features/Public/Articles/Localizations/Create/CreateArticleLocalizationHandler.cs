@@ -20,7 +20,7 @@ public class CreateArticleLocalizationHandler :
 
     protected override async Task<ArticleLocalizationModel> Handle(CreateArticleLocalizationRequest request)
     {
-        var userId = await UserProvider.GetUserId();
+        var userId = UserProvider.GetUserId();
         var article = await Database.Set<Article>()
             .Include(a => a.Localizations)
             .FirstOr404Async(a => a.Id == request.ArticleId);
@@ -38,7 +38,7 @@ public class CreateArticleLocalizationHandler :
         var localization = request.Adapt<ArticleLocalization>();
         localization.Authors = SetAuthors(request.Authors, userId).ToArray();
         localization.Status = ContentStatus.Draft;
-        localization.MainAuthorName = (await UserProvider.GetUser())!.UserName;
+        localization.MainAuthorName = (UserProvider.GetUser())!.UserName;
 
         var createdEntity = await Database.Set<ArticleLocalization>().AddAsync(localization);
 

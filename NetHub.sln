@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Infrastructure", "Ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Data.SqlServer", "NetHub.Data.SqlServer\NetHub.Data.SqlServer.csproj", "{927A610F-4848-4466-92BA-56A6F7367E0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Recommendations", "NetHub.Recommendations\NetHub.Recommendations.csproj", "{28A85F2B-B179-4E84-871A-F23919750259}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,7 @@ Global
 		{D869AAAD-11F5-4C95-8B3A-7767D366CC0A} = {D6A6349D-3155-44DB-9A2D-FD26A580BBCA}
 		{C794452C-1AC4-4E25-8E1B-7F530B8447B6} = {D6A6349D-3155-44DB-9A2D-FD26A580BBCA}
 		{927A610F-4848-4466-92BA-56A6F7367E0E} = {D6A6349D-3155-44DB-9A2D-FD26A580BBCA}
+		{28A85F2B-B179-4E84-871A-F23919750259} = {D6A6349D-3155-44DB-9A2D-FD26A580BBCA}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{1C80F12B-696C-4E0D-95DD-0C7D3E4CB2C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -47,5 +50,9 @@ Global
 		{927A610F-4848-4466-92BA-56A6F7367E0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{927A610F-4848-4466-92BA-56A6F7367E0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{927A610F-4848-4466-92BA-56A6F7367E0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28A85F2B-B179-4E84-871A-F23919750259}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28A85F2B-B179-4E84-871A-F23919750259}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28A85F2B-B179-4E84-871A-F23919750259}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28A85F2B-B179-4E84-871A-F23919750259}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

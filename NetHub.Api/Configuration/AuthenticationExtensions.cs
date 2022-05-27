@@ -7,23 +7,15 @@ public static class AuthenticationExtensions
 {
     public static void AddJwtAuthentication(this IServiceCollection services, JwtOptions jwtOptions)
     {
-        var identityAuthorityUrl = "https://localhost:7501";
+        var identityAuthorityUrl = "https://identity.tacles.net/";
 
-        services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
-            })
+        services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
             .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, 
                 options =>
             {
-                options.JwtValidationClockSkew = TimeSpan.FromMinutes(60);
+                // options.JwtValidationClockSkew = TimeSpan.FromMinutes(60);
                 options.ApiName = "nethub";
                 options.Authority = identityAuthorityUrl;
-                options.RequireHttpsMetadata = false;
             });
-        
-        services.AddAuthorization();
     }
 }
