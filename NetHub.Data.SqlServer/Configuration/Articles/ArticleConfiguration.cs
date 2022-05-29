@@ -18,10 +18,5 @@ public class ArticleConfiguration : IEntityTypeConfiguration<Article>
         builder.HasMany(a => a.Localizations)
             .WithOne(l => l.Article)
             .HasForeignKey(l => l.ArticleId);
-
-        builder.Property(a => a.Status)
-            .HasConversion(s => s.ToString(),
-                value => Enum.Parse<ContentStatus>(value));
-        builder.Property(a => a.AuthorName).HasMaxLength(32);
     }
 }

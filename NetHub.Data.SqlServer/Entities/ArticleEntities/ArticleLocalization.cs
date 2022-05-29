@@ -7,26 +7,25 @@ namespace NetHub.Data.SqlServer.Entities.ArticleEntities;
 [Table($"{nameof(ArticleLocalization)}s")]
 public class ArticleLocalization : IEntity
 {
-    #region Article
+	#region Article
 
-    public long ArticleId { get; set; }
-    public virtual Article? Article { get; set; } = default!;
+	public long ArticleId { get; set; }
+	public virtual Article? Article { get; set; } = default!;
 
-    #endregion
+	#endregion
 
-    #region Language
+	#region Language
 
-    public string LanguageCode { get; set; } = default!;
-    public virtual Language? Language { get; set; } = default!;
+	public string LanguageCode { get; set; } = default!;
+	public virtual Language? Language { get; set; } = default!;
 
-    #endregion
+	#endregion
 
-    public string MainAuthorName { get; set; } = default!;
-    public string Title { get; set; } = default!;
-    public string Description { get; set; } = default!;
-    public string Html { get; set; } = default!;
-    public string? TranslatedArticleLink { get; set; }
-    public ContentStatus Status { get; set; }
-    
-    public virtual ICollection<ArticleAuthor> Authors { get; set; } = default!;
+	public string Title { get; set; } = default!;
+	public string Description { get; set; } = default!;
+	public string Html { get; set; } = default!;
+	public string? TranslatedArticleLink { get; set; }
+	public ContentStatus Status { get; set; }
+
+	public virtual ICollection<ArticleAuthor> Authors { get; set; } = default!;
 }

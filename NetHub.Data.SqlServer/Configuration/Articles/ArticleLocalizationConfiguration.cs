@@ -14,7 +14,6 @@ public class ArticleLocalizationConfiguration : IEntityTypeConfiguration<Article
         builder.Property(al => al.Status)
             .HasConversion(s => s.ToString(),
                 value => Enum.Parse<ContentStatus>(value));
-        builder.Property(al => al.MainAuthorName).HasMaxLength(32);
         builder.Property(al => al.Title).HasMaxLength(128);
         builder.Property(al => al.Description).HasMaxLength(512);
     }

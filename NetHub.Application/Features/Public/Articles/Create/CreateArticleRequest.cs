@@ -2,4 +2,4 @@
 
 namespace NetHub.Application.Features.Public.Articles.Create;
 
-public record CreateArticleRequest : IRequest<ArticleModel>;
+public record CreateArticleRequest(string Name) : IRequest<ArticleModel>;

@@ -38,7 +38,6 @@ public class CreateArticleLocalizationHandler :
         var localization = request.Adapt<ArticleLocalization>();
         localization.Authors = SetAuthors(request.Authors, userId).ToArray();
         localization.Status = ContentStatus.Draft;
-        localization.MainAuthorName = (UserProvider.GetUser())!.UserName;
 
         var createdEntity = await Database.Set<ArticleLocalization>().AddAsync(localization);
 

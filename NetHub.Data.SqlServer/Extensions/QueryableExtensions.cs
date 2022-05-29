@@ -22,7 +22,7 @@ public static class QueryableExtensions
         CancellationToken cancel = default)
         where TEntity : class, IEntity
     {
-        return await queryable.FirstOrDefaultAsync(cancel)
+        return await queryable.FirstOrDefaultAsync(predicate, cancel)
                ?? throw new NotFoundException(typeof(TEntity).Name.CamelCaseToWords() + " not found.");
     }
 

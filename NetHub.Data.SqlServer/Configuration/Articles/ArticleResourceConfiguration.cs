@@ -10,7 +10,7 @@ public class ArticleResourceConfiguration : IEntityTypeConfiguration<ArticleReso
     {
         builder.HasKey(ar =>  ar.ResourceId);
 
-        builder.HasOne(ar => ar.ArticleLocalization)
+        builder.HasOne(ar => ar.Article)
             .WithMany(a => a.Images);
 
         builder.HasOne(ar => ar.Resource)
