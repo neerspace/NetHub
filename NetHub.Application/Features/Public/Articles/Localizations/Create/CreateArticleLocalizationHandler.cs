@@ -10,55 +10,70 @@ using NetHub.Data.SqlServer.Extensions;
 namespace NetHub.Application.Features.Public.Articles.Localizations.Create;
 
 public class CreateArticleLocalizationHandler :
-    AuthorizedHandler<CreateArticleLocalizationRequest, ArticleLocalizationModel>
+	AuthorizedHandler<CreateArticleLocalizationRequest, ArticleLocalizationModel>
 {
-    private const string UA = nameof(UA);
+	private const string UA = "ua";
 
-    public CreateArticleLocalizationHandler(IServiceProvider serviceProvider) : base(serviceProvider)
-    {
-    }
+	public CreateArticleLocalizationHandler(IServiceProvider serviceProvider) : base(serviceProvider)
+	{
+	}
 
-    protected override async Task<ArticleLocalizationModel> Handle(CreateArticleLocalizationRequest request)
-    {
-        var userId = UserProvider.GetUserId();
-        var article = await Database.Set<Article>()
-            .Include(a => a.Localizations)
-            .FirstOr404Async(a => a.Id == request.ArticleId);
+	protected override async Task<ArticleLocalizationModel> Handle(CreateArticleLocalizationRequest request)
+	{
+		var userId = UserProvider.GetUserId();
+		var article = await Database.Set<Article>()
+			.Include(a => a.Localizations)
+			.FirstOr404Async(a => a.Id == request.ArticleId);
 
-        if (article.Localizations?.FirstOrDefault(l => l.LanguageCode == UA) is null && request.LanguageCode != UA)
-            throw new ApiException("First article must be ukrainian");
+		if (article.Localizations?.FirstOrDefault(l => l.LanguageCode == UA) is null && request.LanguageCode != UA)
+			throw new ApiException("First article must be ukrainian");
 
-        if (article.Localizations?.FirstOrDefault(l => l.LanguageCode == request.LanguageCode) is not null)
-            throw new ValidationFailedException("LanguageCode",
-                "Article Localization with such language already exists");
+		if (article.Localizations?.FirstOrDefault(l => l.LanguageCode == request.LanguageCode) is not null)
+			throw new ValidationFailedException("LanguageCode",
+				"Article Localization with such language already exists");
 
-        if (await Database.Set<Language>().FirstOrDefaultAsync(l => l.Code == request.LanguageCode) is null)
-            throw new ValidationFailedException("LanguageCode", "No such language registered");
+		if (await Database.Set<Language>().FirstOrDefaultAsync(l => l.Code == request.LanguageCode) is null)
+			throw new ValidationFailedException("LanguageCode", "No such language registered");
 
-        var localization = request.Adapt<ArticleLocalization>();
-        localization.Authors = SetAuthors(request.Authors, userId).ToArray();
-        localization.Status = ContentStatus.Draft;
+		var localization = request.Adapt<ArticleLocalization>();
+		localization.Contributors = (await SetContributors(request.Contributors, userId)).ToArray();
+		localization.Status = ContentStatus.Draft;
 
-        var createdEntity = await Database.Set<ArticleLocalization>().AddAsync(localization);
+		var createdEntity = await Database.Set<ArticleLocalization>().AddAsync(localization);
 
-        await Database.SaveChangesAsync();
+		await Database.SaveChangesAsync();
 
-        return createdEntity.Entity.Adapt<ArticleLocalizationModel>();
-    }
+		return createdEntity.Entity.Adapt<ArticleLocalizationModel>();
+	}
 
-    private static IEnumerable<ArticleAuthor> SetAuthors(ArticleAuthorModel[]? authors, long mainAuthorId)
-    {
-        var returnAuthors = new List<ArticleAuthor>
-        {
-            new()
-            {
-                AuthorId = mainAuthorId,
-                Role = ArticleAuthorRole.Author
-            }
-        };
-        if (authors is not null && authors.Length > 0)
-            returnAuthors.AddRange(authors.Select(a => a.Adapt<ArticleAuthor>()));
+	private async Task<IEnumerable<ArticleContributor>> SetContributors(ArticleContributorModel[]? contributors, long mainAuthorId)
+	{
+		var returnContributors = new List<ArticleContributor>
+		{
+			new()
+			{
+				UserId = mainAuthorId,
+				Role = ArticleContributorRole.Author
+			}
+		};
+		if (contributors is not {Length: > 0}) return returnContributors;
 
-        return returnAuthors;
-    }
+		if (contributors.FirstOrDefault(a => a.Role == ArticleContributorRole.Author) is not null)
+			throw new ApiException("You can not set authors");
+
+		foreach (var author in contributors)
+		{
+			var count = contributors.Count(a => a.UserId == author.UserId && a.Role == author.Role);
+			if (count > 1)
+				throw new ApiException("One user must contribute one role");
+
+			var contributor = await Database.Set<UserProfile>().FirstOrDefaultAsync(p => p.Id == author.UserId);
+			if (contributor is null)
+				throw new ApiException($"No user with id: {author.UserId}");
+				
+			returnContributors.Add(author.Adapt<ArticleContributor>());
+		}
+
+		return returnContributors;
+	}
 }

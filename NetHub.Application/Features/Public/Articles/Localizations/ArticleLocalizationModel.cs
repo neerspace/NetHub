@@ -7,10 +7,11 @@ public record ArticleLocalizationModel
 {
     public long ArticleId { get; set; }
     public string LanguageCode { get; set; } = default!;
-    public long? AuthorId { get; set; }
+    public ArticleContributorModel[] Contributors { get; set; } = default!;
     public string Title { get; set; } = default!;
     public string Description { get; set; } = default!;
     public string Html { get; set; } = default!;
+    public string? TranslatedArticleLink { get; set; }
     public ContentStatus Status { get; set; }
     public ArticleResource[]? Images { get; set; }
 }

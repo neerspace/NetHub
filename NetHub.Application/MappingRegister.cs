@@ -19,7 +19,7 @@ internal class MappingRegister : IRegister
         
         config.NewConfig<UpdateArticleLocalizationRequest, ArticleLocalization>()
             //TODO: Test this
-            .Ignore(ua => ua.Authors)
+            .Ignore(ua => ua.Contributors)
             .IgnoreNullValues(true);
     }
 }

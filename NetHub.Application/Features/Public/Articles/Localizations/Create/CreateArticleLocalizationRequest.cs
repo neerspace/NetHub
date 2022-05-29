@@ -13,5 +13,5 @@ public record CreateArticleLocalizationRequest : IRequest<ArticleLocalizationMod
     public string Description { get; set; } = default!;
     public string Html { get; set; } = default!;
     public string? TranslatedArticleLink { get; set; }
-    public ArticleAuthorModel[]? Authors { get; set; }
+    public ArticleContributorModel[]? Contributors { get; set; }
 }

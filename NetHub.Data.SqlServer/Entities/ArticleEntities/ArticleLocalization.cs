@@ -27,5 +27,5 @@ public class ArticleLocalization : IEntity
 	public string? TranslatedArticleLink { get; set; }
 	public ContentStatus Status { get; set; }
 
-	public virtual ICollection<ArticleAuthor> Authors { get; set; } = default!;
+	public virtual ICollection<ArticleContributor> Contributors { get; set; } = default!;
 }

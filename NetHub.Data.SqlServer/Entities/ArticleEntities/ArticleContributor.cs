@@ -3,17 +3,17 @@ using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Data.SqlServer.Entities.ArticleEntities;
 
-[Table($"{nameof(ArticleAuthor)}s")]
-public class ArticleAuthor
+[Table($"{nameof(ArticleContributor)}s")]
+public class ArticleContributor
 {
     public long Id { get; set; }
     
-    public ArticleAuthorRole Role { get; set; }
+    public ArticleContributorRole Role { get; set; }
 
-    #region Author
+    #region Contributor
 
-    public long AuthorId { get; set; }
-    public virtual UserProfile? Author { get; set; }
+    public long UserId { get; set; }
+    public virtual UserProfile? User { get; set; }
 
     #endregion
 

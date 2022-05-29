@@ -22,13 +22,13 @@ public class UpdateArticleLocalizationHandler : AuthorizedHandler<UpdateArticleL
     {
         var userId = UserProvider.GetUserId();
         var localization = await Database.Set<ArticleLocalization>()
-            .Include(al => al.Authors)
+            .Include(al => al.Contributors)
             .SingleOrDefaultAsync(al =>
                 al.ArticleId == request.ArticleId && al.LanguageCode == request.OldLanguageCode);
         if (localization is null)
             throw new NotFoundException("No such article localization");
 
-        if (localization.Authors.First(a => a.Role == ArticleAuthorRole.Author).AuthorId != userId)
+        if (localization.Contributors.First(a => a.Role == ArticleContributorRole.Author).UserId != userId)
             throw new PermissionsException();
 
         var article = await Database.Set<Article>().Include(a => a.Localizations)
@@ -42,7 +42,7 @@ public class UpdateArticleLocalizationHandler : AuthorizedHandler<UpdateArticleL
 
         request.Adapt(localization);
         if (request.Authors is not null && request.Authors.Length > 0)
-            localization.Authors = SetAuthors(localization.Authors, request.Authors).ToArray();
+            localization.Contributors = SetAuthors(localization.Contributors, request.Authors).ToArray();
         if (request.NewLanguageCode is not null) localization.LanguageCode = request.NewLanguageCode;
 
         await Database.SaveChangesAsync();
@@ -50,11 +50,11 @@ public class UpdateArticleLocalizationHandler : AuthorizedHandler<UpdateArticleL
         return Unit.Value;
     }
 
-    private static IEnumerable<ArticleAuthor> SetAuthors(IEnumerable<ArticleAuthor> originalAuthors,
-        IEnumerable<ArticleAuthorModel> requestAuthors)
+    private static IEnumerable<ArticleContributor> SetAuthors(IEnumerable<ArticleContributor> originalAuthors,
+        IEnumerable<ArticleContributorModel> requestAuthors)
     {
-        var authors = originalAuthors.Where(oa => oa.Role == ArticleAuthorRole.Author).ToList();
-        authors.AddRange(requestAuthors.Select(ra => ra.Adapt<ArticleAuthor>()));
+        var authors = originalAuthors.Where(oa => oa.Role == ArticleContributorRole.Author).ToList();
+        authors.AddRange(requestAuthors.Select(ra => ra.Adapt<ArticleContributor>()));
 
         return authors;
     }

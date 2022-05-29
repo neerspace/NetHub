@@ -18,13 +18,13 @@ public class DeleteArticleLocalizationHandler : AuthorizedHandler<DeleteArticleL
         var userId = UserProvider.GetUserId();
 
         var localization = await Database.Set<ArticleLocalization>()
-            .Include(al => al.Authors)
+            .Include(al => al.Contributors)
             .SingleOrDefaultAsync(al => al.ArticleId == request.ArticleId && al.LanguageCode == request.LanguageCode);
 
         if (localization is null)
             throw new NotFoundException("No such article localization");
 
-        if (localization.Authors.First(a => a.Role == ArticleAuthorRole.Author).AuthorId != userId)
+        if (localization.Contributors.First(a => a.Role == ArticleContributorRole.Author).UserId != userId)
             throw new PermissionsException();
 
         Database.Set<ArticleLocalization>().Remove(localization);
