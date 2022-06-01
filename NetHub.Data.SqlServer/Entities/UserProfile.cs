@@ -6,7 +6,7 @@ namespace NetHub.Data.SqlServer.Entities;
 public class UserProfile : IEntity
 {
 	public long Id { get; set; }
-	public long UserId { get; set; }
+	public long UserId { get; set; } //Global userId
 	public string UserName { get; set; } = default!;
 	public string NormalizedUserName { get; set; } = default!;
 	public string Email { get; set; } = default!;

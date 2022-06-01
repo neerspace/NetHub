@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetHub.Data.SqlServer.Context;
 
@@ -11,9 +12,10 @@ using NetHub.Data.SqlServer.Context;
 namespace NetHub.Data.SqlServer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
-    partial class SqlServerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220601195203_LocalizationDefaultId")]
+    partial class LocalizationDefaultId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +60,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<long>("LocalizationId")
+                    b.Property<long?>("LocalizationId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Role")
@@ -241,8 +243,7 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.HasOne("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleLocalization", "Localization")
                         .WithMany("Contributors")
                         .HasForeignKey("LocalizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("NetHub.Data.SqlServer.Entities.UserProfile", "User")
                         .WithMany()

@@ -4,23 +4,24 @@ using NetHub.Data.SqlServer.Enums;
 namespace NetHub.Data.SqlServer.Entities.ArticleEntities;
 
 [Table($"{nameof(ArticleContributor)}s")]
-public class ArticleContributor
+public record ArticleContributor
 {
-    public long Id { get; set; }
-    
-    public ArticleContributorRole Role { get; set; }
+	public long Id { get; set; }
 
-    #region Contributor
+	public ArticleContributorRole Role { get; set; }
 
-    public long UserId { get; set; }
-    public virtual UserProfile? User { get; set; }
+	#region Contributor
 
-    #endregion
+	public long UserId { get; set; }
+	public virtual UserProfile? User { get; set; }
 
-    #region Localization
+	#endregion
 
-    // LocalizationId => new {l.ArticleId, l.LanguageCode}
-    public virtual ArticleLocalization? Localization { get; set; }
+	#region Localization
 
-    #endregion
+	// LocalizationId => new {l.ArticleId, l.LanguageCode}
+	public long LocalizationId { get; set; }
+	public virtual ArticleLocalization? Localization { get; set; }
+
+	#endregion
 }

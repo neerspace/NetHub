@@ -5,8 +5,10 @@ using NetHub.Data.SqlServer.Enums;
 namespace NetHub.Data.SqlServer.Entities.ArticleEntities;
 
 [Table($"{nameof(ArticleLocalization)}s")]
-public class ArticleLocalization : IEntity
+public record ArticleLocalization : IEntity
 {
+	public long Id { get; set; }
+
 	#region Article
 
 	public long ArticleId { get; set; }

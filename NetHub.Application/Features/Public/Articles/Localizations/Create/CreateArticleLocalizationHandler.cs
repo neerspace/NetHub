@@ -46,7 +46,8 @@ public class CreateArticleLocalizationHandler :
 		return createdEntity.Entity.Adapt<ArticleLocalizationModel>();
 	}
 
-	private async Task<IEnumerable<ArticleContributor>> SetContributors(ArticleContributorModel[]? contributors, long mainAuthorId)
+	private async Task<IEnumerable<ArticleContributor>> SetContributors(ArticleContributorModel[]? contributors,
+		long mainAuthorId)
 	{
 		var returnContributors = new List<ArticleContributor>
 		{
@@ -57,21 +58,21 @@ public class CreateArticleLocalizationHandler :
 			}
 		};
 		if (contributors is not {Length: > 0}) return returnContributors;
-
+		
 		if (contributors.FirstOrDefault(a => a.Role == ArticleContributorRole.Author) is not null)
 			throw new ApiException("You can not set authors");
 
-		foreach (var author in contributors)
+		foreach (var contributor in contributors)
 		{
-			var count = contributors.Count(a => a.UserId == author.UserId && a.Role == author.Role);
+			var count = contributors.Count(a => a.UserId == contributor.UserId && a.Role == contributor.Role);
 			if (count > 1)
-				throw new ApiException("One user must contribute one role");
+				throw new ApiException("One user can not contribute the same role several times");
 
-			var contributor = await Database.Set<UserProfile>().FirstOrDefaultAsync(p => p.Id == author.UserId);
-			if (contributor is null)
-				throw new ApiException($"No user with id: {author.UserId}");
-				
-			returnContributors.Add(author.Adapt<ArticleContributor>());
+			var dbContributor = await Database.Set<UserProfile>().FirstOrDefaultAsync(p => p.Id == contributor.UserId);
+			if (dbContributor is null)
+				throw new ApiException($"No user with id: {contributor.UserId}");
+
+			returnContributors.Add(contributor.Adapt<ArticleContributor>());
 		}
 
 		return returnContributors;
