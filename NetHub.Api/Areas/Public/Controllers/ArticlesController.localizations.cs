@@ -3,7 +3,6 @@ using NetHub.Api.Abstractions;
 using NetHub.Application.Features.Public.Articles.Localizations;
 using NetHub.Application.Features.Public.Articles.Localizations.Create;
 using NetHub.Application.Features.Public.Articles.Localizations.Delete;
-using NetHub.Application.Features.Public.Articles.Localizations.Filter;
 using NetHub.Application.Features.Public.Articles.Localizations.One;
 using NetHub.Application.Features.Public.Articles.Localizations.Update;
 
@@ -16,10 +15,6 @@ public class ArticleLocalizationsController : ApiController
 	[HttpGet]
 	public async Task<ArticleLocalizationModel> GetOne([FromRoute] long articleId, [FromRoute] string languageCode)
 		=> await Mediator.Send(new GetArticleLocalizationRequest(articleId, languageCode));
-
-	[HttpGet("filter")]
-	public async Task<ArticleLocalizationModel[]> Filter(string filter, string sorts, int page = 1, int pageSize = 10)
-		=> await Mediator.Send(new FilterArticleLocalizationsRequest());
 
 	[HttpPost]
 	public async Task<IActionResult> Create([FromRoute] long articleId, [FromRoute] string languageCode,
