@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using Mapster;
+﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
 using NetHub.Application.Tools;
+using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
 
 namespace NetHub.Application.Features.Public.Articles.Create;
@@ -22,14 +22,27 @@ public class CreateArticleHandler : AuthorizedHandler<CreateArticleRequest, Arti
 
 		await Database.SaveChangesAsync();
 
-		return createdEntity.Entity.Adapt<ArticleModel>();
-	}
-}
+		foreach (var tag in request.Tags)
+		{
+			var existedTag = await Database.Set<Tag>().FirstOrDefaultAsync(t => t.Name == tag);
+			var tagId = existedTag?.Id;
 
-public class CreateArticleRequestValidator : AbstractValidator<CreateArticleRequest>
-{
-	public CreateArticleRequestValidator()
-	{
-		RuleFor(r => r.Name).NotNull().NotEmpty();
+			if (existedTag is null)
+			{
+				var dbTag = Database.Set<Tag>().Add(new Tag {Name = tag.ToLower()});
+				await Database.SaveChangesAsync();
+				tagId = dbTag.Entity.Id;
+			}
+
+			Database.Set<ArticleTag>().Add(new ArticleTag
+			{
+				TagId = tagId!.Value,
+				ArticleId = createdEntity.Entity.Id
+			});
+		}
+
+		await Database.SaveChangesAsync();
+
+		return createdEntity.Entity.Adapt<ArticleModel>();
 	}
 }

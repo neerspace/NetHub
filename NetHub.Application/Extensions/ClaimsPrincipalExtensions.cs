@@ -86,19 +86,6 @@ public static class ClaimsPrincipalExtensions
 		return long.TryParse(claim.Value, out long userId) ? userId : throw InvalidClaimValueException(Claims.Id);
 	}
 
-	// <summary>
-	/// Gets user id from claims.
-	/// </summary>
-	/// <param name="user">Current user principal</param>
-	/// <returns>User id or throws exception if something goes wrong</returns>
-	/// <exception cref="UnauthorizedException">Throws when the user is not authenticated</exception>
-	/// <exception cref="ForbidException">Throws when the user is doesn't have a claim with given type</exception>
-	public static long GetGlobalUserId(this ClaimsPrincipal user)
-	{
-		Claim claim = user.GetClaim(Claims.UserId);
-		return long.TryParse(claim.Value, out long userId) ? userId : throw InvalidClaimValueException(Claims.UserId);
-	}
-
 	/// <summary>
 	/// Gets username from claims.
 	/// </summary>

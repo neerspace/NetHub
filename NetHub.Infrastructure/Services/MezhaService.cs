@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace NetHub.Infrastructure.Services;
 
 [Inject]
-public class MezhaService : IMezhaService
+internal class MezhaService : IMezhaService
 {
 	private readonly HttpClient _client;
 	private readonly MezhaOptions _mezhaOptions;

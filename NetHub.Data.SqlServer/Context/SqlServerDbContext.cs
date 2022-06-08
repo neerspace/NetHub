@@ -1,9 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NetHub.Core.Abstractions.Context;
+using NetHub.Data.SqlServer.DataSeeding;
+using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Data.SqlServer.Context;
 
-public class SqlServerDbContext : DbContext, IDatabaseContext
+public class SqlServerDbContext : IdentityDbContext<UserProfile, AppRole, long,
+    IdentityUserClaim<long>, IdentityUserRole<long>, IdentityUserLogin<long>, IdentityRoleClaim<long>, RefreshToken>, IDatabaseContext
+
 {
     public SqlServerDbContext(DbContextOptions options) : base(options)
     {
@@ -17,5 +23,13 @@ public class SqlServerDbContext : DbContext, IDatabaseContext
         base.OnModelCreating(builder);
         var entitiesAssembly = GetType().Assembly;
         builder.ApplyConfigurationsFromAssembly(entitiesAssembly);
+        
+        builder.SeedDefaultUser();
+        builder.SeedRoles();
+
+        // builder.Entity<UserRole>().HasData(new List<UserProfile>()
+        // {
+
+        // })
     }
 }

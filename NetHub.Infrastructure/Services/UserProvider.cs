@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using NetHub.Application.Extensions;
 using NetHub.Application.Services;
 using NetHub.Core.DependencyInjection;
@@ -9,9 +11,13 @@ using NetHub.Data.SqlServer.Entities;
 namespace NetHub.Infrastructure.Services;
 
 [Inject]
-public class UserProvider : IUserProvider
+internal class UserProvider : IUserProvider
 {
 	private readonly IHttpContextAccessor _accessor;
+
+	private UserManager<UserProfile> UserManager =>
+		_accessor.HttpContext!.RequestServices.GetRequiredService<UserManager<UserProfile>>();
+
 
 	private UserProfile? _userProfile;
 
@@ -24,8 +30,12 @@ public class UserProvider : IUserProvider
 
 	public long GetUserId() => User.GetUserId();
 
-	public UserProfile GetUser() =>
-		_userProfile ??= _accessor.HttpContext!.Items.TryGetValue("User", out var up)
-			? (UserProfile) up!
-			: throw new InternalServerException("Attempt to get user from not authorized route");
+	public async Task<UserProfile> GetUser()
+	{
+		var user = await UserManager.FindByIdAsync(GetUserId().ToString());
+		if (user is null)
+			throw new InternalServerException("Internal Server Error");
+
+		return _userProfile ??= user;
+	}
 }

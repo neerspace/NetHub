@@ -74,7 +74,7 @@ static void ConfigureWebApp(WebApplication app)
 	app.UseAuthentication();
 	app.UseAuthorization();
 	
-	app.UseMiddleware<ProfilesMiddleware>();
+	// app.UseMiddleware<ProfilesMiddleware>();
 	
 	app.MapControllers();
 }

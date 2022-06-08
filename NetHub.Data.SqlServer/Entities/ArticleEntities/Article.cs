@@ -7,7 +7,9 @@ namespace NetHub.Data.SqlServer.Entities.ArticleEntities;
 public class Article : IEntity
 {
 	public long Id { get; set; }
+
 	public string Name { get; set; } = default!;
+	public long Views { get; set; }
 	public DateTime Created { get; set; } = DateTime.UtcNow;
 	public DateTime? Updated { get; set; }
 
@@ -20,4 +22,5 @@ public class Article : IEntity
 
 	public virtual ICollection<ArticleLocalization>? Localizations { get; set; }
 	public virtual ICollection<ArticleResource>? Images { get; set; }
+	public virtual ICollection<ArticleTag>? Tags { get; set; }
 }

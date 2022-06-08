@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 
-namespace NetHub.Recommendations.Abstractions;
+namespace NetHub.Recommendations.Abstractions.Mongo;
 
 public interface IMongoDbContext
 {

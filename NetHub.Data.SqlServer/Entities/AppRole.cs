@@ -11,5 +11,5 @@ public class AppRole : IdentityRole<long>, IEntity
 	public override string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
 
 
-	public virtual ICollection<AppUserRole>? Users { get; set; }
+	public virtual ICollection<IdentityUserRole<long>>? Users { get; set; }
 }

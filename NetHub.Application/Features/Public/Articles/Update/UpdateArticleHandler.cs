@@ -32,7 +32,7 @@ public class UpdateArticleHandler : AuthorizedHandler<UpdateArticleRequest>
 			article.Name = request.Name;
 
 		article.Updated = DateTime.UtcNow;
-		
+
 		await Database.SaveChangesAsync();
 
 		return Unit.Value;

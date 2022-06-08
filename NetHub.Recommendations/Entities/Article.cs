@@ -7,5 +7,6 @@ namespace NetHub.Recommendations.Entities;
 [MongoCollection($"R_{nameof(Article)}s")]
 public class Article
 {
-	[BsonId] public ObjectId Id { get; set; }
+	[BsonId] public long Id { get; set; }
+	public Tag[] Tags { get; set; }
 }

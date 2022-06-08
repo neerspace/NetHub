@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using NetHub.Core.Extensions;
 using NetHub.Recommendations.Abstractions;
+using NetHub.Recommendations.Abstractions.Mongo;
 using NetHub.Recommendations.Attributes;
 using NetHub.Recommendations.Options;
 

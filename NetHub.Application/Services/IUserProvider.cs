@@ -7,5 +7,5 @@ public interface IUserProvider
 {
     ClaimsPrincipal User { get; }
     long GetUserId();
-    UserProfile GetUser();
+    Task<UserProfile> GetUser();
 }

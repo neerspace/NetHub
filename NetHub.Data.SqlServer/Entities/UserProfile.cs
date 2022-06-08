@@ -1,18 +1,21 @@
-﻿using NetHub.Core.Abstractions.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+using NetHub.Core.Abstractions.Entities;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
 
 namespace NetHub.Data.SqlServer.Entities;
 
-public class UserProfile : IEntity
+public class UserProfile : IdentityUser<long>, IEntity
 {
-	public long Id { get; set; }
-	public long UserId { get; set; } //Global userId
-	public string UserName { get; set; } = default!;
-	public string NormalizedUserName { get; set; } = default!;
-	public string Email { get; set; } = default!;
-	public string NormalizedEmail { get; set; } = default!;
+	public override long Id { get; set; }
+	public override string UserName { get; set; } = default!;
+	public string FirstName { get; set; } = default!;
+	public string LastName { get; set; } = default!;
+	public string MiddleName { get; set; } = default!;
+	public override string NormalizedUserName { get; set; } = default!;
+	public override string Email { get; set; } = default!;
+	public override string NormalizedEmail { get; set; } = default!;
 	public string? Description { get; set; }
-	public string? PhoneNumber { get; set; }
+	public override string? PhoneNumber { get; set; }
 
 	public DateTime Registered { get; set; } = DateTime.UtcNow;
 
