@@ -31,7 +31,7 @@ public static class DependencyInjection
 		services.ConfigureApiBehaviorOptions();
 		services.AddCustomApiVersioning();
 		services.RegisterServicesFromAssembly("NetHub.Api");
-		
+
 		var serviceProvider = services.BuildServiceProvider();
 		var jwtOptions = serviceProvider.GetRequiredService<IOptions<JwtOptions>>().Value;
 		services.AddJwtAuthentication(jwtOptions);

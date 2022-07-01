@@ -4,9 +4,9 @@ using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Data.SqlServer.Configuration;
 
-internal class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
+internal class UserProfileConfiguration : IEntityTypeConfiguration<User>
 {
-	public void Configure(EntityTypeBuilder<UserProfile> builder)
+	public void Configure(EntityTypeBuilder<User> builder)
 	{
 		builder.Property(e => e.Description).HasMaxLength(256);
 		builder.Property(e => e.PhoneNumber).HasMaxLength(32);

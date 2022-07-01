@@ -5,13 +5,13 @@ namespace NetHub.Application.Features.Public.Articles.Localizations;
 
 public record ArticleLocalizationModel
 {
-    public long ArticleId { get; set; }
-    public string LanguageCode { get; set; } = default!;
-    public ArticleContributorModel[] Contributors { get; set; } = default!;
-    public string Title { get; set; } = default!;
-    public string Description { get; set; } = default!;
-    public string Html { get; set; } = default!;
-    public string? TranslatedArticleLink { get; set; }
-    public ContentStatus Status { get; set; }
-    public ArticleResource[]? Images { get; set; }
+	public long ArticleId { get; set; }
+	public string LanguageCode { get; set; } = default!;
+	public ArticleContributorModel[] Contributors { get; set; } = default!;
+	public string Title { get; set; } = default!;
+	public string Description { get; set; } = default!;
+	public string Html { get; set; } = default!;
+	public ContentStatus Status { get; set; }
+	public int Rate { get; set; }
+	public ArticleResource[]? Images { get; set; }
 }

@@ -164,14 +164,14 @@ namespace NetHub.Data.SqlServer.Migrations
                         new
                         {
                             Id = 1L,
-                            ConcurrencyStamp = "0ef99888-cf9d-490d-8add-91176eefa517",
+                            ConcurrencyStamp = "bbd7f8cd-804d-48d9-8835-82558c2e2e84",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = 2L,
-                            ConcurrencyStamp = "07f91fb5-7b14-4cf1-a2c9-ad6444aa66dd",
+                            ConcurrencyStamp = "8f91ff41-21db-4da4-8ede-f69c3cf15f18",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -193,6 +193,12 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("TranslatedArticleLink")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Updated")
@@ -259,6 +265,9 @@ namespace NetHub.Data.SqlServer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(2)");
 
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -268,9 +277,6 @@ namespace NetHub.Data.SqlServer.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<string>("TranslatedArticleLink")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ArticleId");
@@ -278,6 +284,25 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.HasIndex("LanguageCode");
 
                     b.ToTable("ArticleLocalizations");
+                });
+
+            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleRating", b =>
+                {
+                    b.Property<long>("LocalizationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Rating")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LocalizationId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ArticleRatings");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleResource", b =>
@@ -410,7 +435,7 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.UserProfile", b =>
+            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -475,6 +500,12 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("PhotoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProfilePhotoLink")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("Registered")
                         .HasColumnType("datetime2");
 
@@ -498,6 +529,8 @@ namespace NetHub.Data.SqlServer.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
+                    b.HasIndex("PhotoId");
+
                     b.ToTable("UserProfiles", (string)null);
 
                     b.HasData(
@@ -505,7 +538,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         {
                             Id = 19L,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a3dc54c8-87f9-4471-9365-d8e853dc5f81",
+                            ConcurrencyStamp = "7b4cc2eb-06d2-418e-a3d6-9ed75318c7b8",
                             Email = "aspadmin@asp.net",
                             EmailConfirmed = true,
                             FirstName = "vlad",
@@ -514,10 +547,10 @@ namespace NetHub.Data.SqlServer.Migrations
                             MiddleName = "tarasovich",
                             NormalizedEmail = "ASPADMIN@ASP.NET",
                             NormalizedUserName = "ASPADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAECPOGdb5ud0utSwYWoRfY0rnc8EUHwhFjJBBK9mGoCepHjeNnVlfBYzPevWrW/TmDg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJTItDSlLwFA2RtsaLB7FRlpINA8vEDMx32KIcrtQ/9yC/pviPcHsUti7QO8Ns7I/A==",
                             PhoneNumberConfirmed = false,
-                            Registered = new DateTime(2022, 6, 8, 18, 52, 27, 857, DateTimeKind.Utc).AddTicks(3838),
-                            SecurityStamp = "6d694244-a09d-4089-b736-5e9c162d8d0b",
+                            Registered = new DateTime(2022, 6, 29, 17, 37, 10, 290, DateTimeKind.Utc).AddTicks(5806),
+                            SecurityStamp = "9c2e6069-ce0e-4c2a-a731-a9f79f89c4e3",
                             TwoFactorEnabled = false,
                             UserName = "aspadmin"
                         });
@@ -534,7 +567,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<long>", b =>
                 {
-                    b.HasOne("NetHub.Data.SqlServer.Entities.UserProfile", null)
+                    b.HasOne("NetHub.Data.SqlServer.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -543,7 +576,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<long>", b =>
                 {
-                    b.HasOne("NetHub.Data.SqlServer.Entities.UserProfile", null)
+                    b.HasOne("NetHub.Data.SqlServer.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -562,7 +595,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NetHub.Data.SqlServer.Entities.UserProfile", null)
+                    b.HasOne("NetHub.Data.SqlServer.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -571,7 +604,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.Article", b =>
                 {
-                    b.HasOne("NetHub.Data.SqlServer.Entities.UserProfile", "Author")
+                    b.HasOne("NetHub.Data.SqlServer.Entities.User", "Author")
                         .WithMany("Articles")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -588,7 +621,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NetHub.Data.SqlServer.Entities.UserProfile", "User")
+                    b.HasOne("NetHub.Data.SqlServer.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -616,6 +649,25 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.Navigation("Article");
 
                     b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleRating", b =>
+                {
+                    b.HasOne("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleLocalization", "Localization")
+                        .WithMany()
+                        .HasForeignKey("LocalizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NetHub.Data.SqlServer.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Localization");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleResource", b =>
@@ -658,17 +710,26 @@ namespace NetHub.Data.SqlServer.Migrations
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("NetHub.Data.SqlServer.Entities.UserProfile", null)
+                    b.HasOne("NetHub.Data.SqlServer.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NetHub.Data.SqlServer.Entities.UserProfile", "User")
+                    b.HasOne("NetHub.Data.SqlServer.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId1");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.User", b =>
+                {
+                    b.HasOne("NetHub.Data.SqlServer.Entities.Resource", "Photo")
+                        .WithMany()
+                        .HasForeignKey("PhotoId");
+
+                    b.Navigation("Photo");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.AppRole", b =>
@@ -690,7 +751,7 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.Navigation("Contributors");
                 });
 
-            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.UserProfile", b =>
+            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.User", b =>
                 {
                     b.Navigation("Articles");
                 });

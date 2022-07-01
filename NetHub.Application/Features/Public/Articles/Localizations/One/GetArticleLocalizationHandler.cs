@@ -23,15 +23,8 @@ public class GetArticleLocalizationHandler : DbHandler<GetArticleLocalizationReq
 		if (localization is null)
 			throw new NotFoundException("No such article localization");
 
-		await IncrementView(localization);
+		localization.Views++;
 
 		return localization.Adapt<ArticleLocalizationModel>();
-	}
-
-	private async Task IncrementView(ArticleLocalization localization)
-	{
-		var article = await Database.Set<Article>().FirstAsync(l => l.Id == localization.ArticleId);
-		article.Views++;
-		await Database.SaveChangesAsync();
 	}
 }

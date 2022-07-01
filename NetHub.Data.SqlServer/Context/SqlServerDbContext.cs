@@ -7,7 +7,7 @@ using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Data.SqlServer.Context;
 
-public class SqlServerDbContext : IdentityDbContext<UserProfile, AppRole, long,
+public class SqlServerDbContext : IdentityDbContext<User, AppRole, long,
     IdentityUserClaim<long>, IdentityUserRole<long>, IdentityUserLogin<long>, IdentityRoleClaim<long>, RefreshToken>, IDatabaseContext
 
 {

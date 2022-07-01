@@ -21,15 +21,15 @@ public static class DependencyInjection
 		var contextFactory = new SqlServerDbContextFactory();
 		services.AddDbContext<SqlServerDbContext>(cob => contextFactory.ConfigureContextOptions(cob));
 		
-		services.AddIdentityCore<UserProfile>(o =>
+		services.AddIdentityCore<User>(o =>
 			{
 				o.Password.RequireUppercase = false;
 				o.Password.RequireNonAlphanumeric = false;
 			})
 			.AddEntityFrameworkStores<SqlServerDbContext>();
 
-		services.AddTransient<UserManager<UserProfile>>();
-		services.AddTransient<SignInManager<UserProfile>>();
+		services.AddTransient<UserManager<User>>();
+		services.AddTransient<SignInManager<User>>();
 
 		services.AddScoped<IDatabaseContext, SqlServerDbContext>();
 	}

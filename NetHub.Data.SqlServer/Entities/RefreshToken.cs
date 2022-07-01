@@ -11,10 +11,6 @@ public class RefreshToken : IdentityUserToken<long>, IEntity
 	public string Value { get; set; } = default!;
 	public DateTime Created { get; set; } = DateTime.UtcNow;
 
-	#region User
 
-	public long UserId { get; set; }
-	public virtual UserProfile? User { get; set; }
-
-	#endregion
+	public User? User { get; set; }
 }

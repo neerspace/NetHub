@@ -18,7 +18,7 @@
 
     <ItemGroup>
       <Folder Include="Features\Protected" />
-      <Folder Include="Features\Public\Articles\Resources" />
+      <Folder Include="Features\Public\Articles\Localizations\Unpablish" />
     </ItemGroup>
 
     <ItemGroup>

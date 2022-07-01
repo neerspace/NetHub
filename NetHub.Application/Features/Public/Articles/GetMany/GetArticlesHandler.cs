@@ -28,7 +28,6 @@ public class GetArticlesHandler : DbHandler<GetArticlesRequest, ArticleModel[]>
 			{
 				Id = a.Id,
 				Name = a.Name,
-				Views = a.Views,
 				Created = a.Created,
 				Updated = a.Updated,
 				Localizations = a.Localizations!.Where(l => l.LanguageCode == request.Code).ToList()

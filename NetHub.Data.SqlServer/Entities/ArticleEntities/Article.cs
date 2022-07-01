@@ -9,14 +9,16 @@ public class Article : IEntity
 	public long Id { get; set; }
 
 	public string Name { get; set; } = default!;
-	public long Views { get; set; }
+
+	public string? TranslatedArticleLink { get; set; }
+	
 	public DateTime Created { get; set; } = DateTime.UtcNow;
 	public DateTime? Updated { get; set; }
 
 	#region Author
 
 	public long AuthorId { get; set; }
-	public virtual UserProfile? Author { get; set; }
+	public virtual User? Author { get; set; }
 
 	#endregion
 

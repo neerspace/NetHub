@@ -9,13 +9,13 @@ public static partial class SeedExtensions
 {
 	public static void SeedDefaultUser(this ModelBuilder builder)
 	{
-		builder.Entity<UserProfile>().HasData(Users);
+		builder.Entity<User>().HasData(Users);
 		builder.Entity<IdentityUserClaim<long>>().HasData(UserClaims);
 	}
 
-	private static readonly PasswordHasher<UserProfile?> Hasher = new();
+	private static readonly PasswordHasher<User?> Hasher = new();
 
-	private static readonly UserProfile[] Users =
+	private static readonly User[] Users =
 	{
 		new()
 		{

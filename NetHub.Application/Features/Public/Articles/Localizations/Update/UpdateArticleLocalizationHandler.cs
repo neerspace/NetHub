@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NetHub.Application.Extensions;
 using NetHub.Application.Tools;
+using NetHub.Core.Constants;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
@@ -12,7 +13,6 @@ namespace NetHub.Application.Features.Public.Articles.Localizations.Update;
 
 public class UpdateArticleLocalizationHandler : AuthorizedHandler<UpdateArticleLocalizationRequest>
 {
-	private const string UA = "ua";
 	private readonly DbSet<ArticleLocalization> _localizations;
 
 	public UpdateArticleLocalizationHandler(IServiceProvider serviceProvider) : base(serviceProvider)
@@ -30,10 +30,19 @@ public class UpdateArticleLocalizationHandler : AuthorizedHandler<UpdateArticleL
 		if (localization is null)
 			throw new NotFoundException("No such article localization");
 
-		if (localization.GetAuthor().Id != userId)
+		if (localization.GetAuthorId() != userId)
 			throw new PermissionsException();
 
+		if (localization.Status == ContentStatus.Published)
+			throw new ApiException("You can not edit published article");
+
 		SetNewFields(request, localization);
+
+		if (request.Html is not null)
+		{
+			localization.Html = request.Html;
+			await HtmlTools.CheckLinks(Database, request.ArticleId, request.Html);
+		}
 
 		if (request.Contributors is not null)
 			await SetContributors(localization, request.Contributors);
@@ -54,7 +63,7 @@ public class UpdateArticleLocalizationHandler : AuthorizedHandler<UpdateArticleL
 			throw new ValidationFailedException("NewLanguageCode",
 				"Article Localization with such language already exists");
 
-		if (request.OldLanguageCode == UA)
+		if (request.OldLanguageCode == ProjectConstants.UA)
 			throw new ValidationFailedException("NewLanguageCode", "There are must be one localization in ukrainian");
 
 		if (await Database.Set<Language>().FirstOrDefaultAsync(l => l.Code == request.NewLanguageCode) is null)
@@ -82,7 +91,8 @@ public class UpdateArticleLocalizationHandler : AuthorizedHandler<UpdateArticleL
 			if (count > 1)
 				throw new ApiException("One user can not contribute the same role several times");
 
-			var dbContributor = await Database.Set<UserProfile>().FirstOrDefaultAsync(p => p.Id == contributor.UserId);
+			var dbContributor = await Database.Set<Data.SqlServer.Entities.User>()
+				.FirstOrDefaultAsync(p => p.Id == contributor.UserId);
 			if (dbContributor is null)
 				throw new ApiException($"No user with id: {contributor.UserId}");
 
@@ -100,11 +110,5 @@ public class UpdateArticleLocalizationHandler : AuthorizedHandler<UpdateArticleL
 
 		if (request.Description is not null)
 			localization.Description = request.Description;
-
-		if (request.Html is not null)
-			localization.Html = request.Html;
-
-		if (request.TranslatedArticleLink is not null)
-			localization.TranslatedArticleLink = request.TranslatedArticleLink;
 	}
 }

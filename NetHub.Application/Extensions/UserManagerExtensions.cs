@@ -5,6 +5,6 @@ namespace NetHub.Application.Extensions;
 
 public static class UserManagerExtensions
 {
-    public static async Task<UserProfile> FindByIdAsync(this UserManager<UserProfile> userManager, long id) =>
+    public static async Task<User> FindByIdAsync(this UserManager<User> userManager, long id) =>
         await userManager.FindByIdAsync(id.ToString());
 }

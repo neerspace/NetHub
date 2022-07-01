@@ -1,6 +1,11 @@
-﻿using Mapster;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq.Dynamic.Core;
+using System.Text;
+using System.Text.RegularExpressions;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using NetHub.Application.Tools;
+using NetHub.Core.Constants;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
@@ -12,8 +17,6 @@ namespace NetHub.Application.Features.Public.Articles.Localizations.Create;
 public class CreateArticleLocalizationHandler :
 	AuthorizedHandler<CreateArticleLocalizationRequest, ArticleLocalizationModel>
 {
-	private const string UA = "ua";
-
 	public CreateArticleLocalizationHandler(IServiceProvider serviceProvider) : base(serviceProvider)
 	{
 	}
@@ -25,7 +28,8 @@ public class CreateArticleLocalizationHandler :
 			.Include(a => a.Localizations)
 			.FirstOr404Async(a => a.Id == request.ArticleId);
 
-		if (article.Localizations?.FirstOrDefault(l => l.LanguageCode == UA) is null && request.LanguageCode != UA)
+		if (article.Localizations?.FirstOrDefault(l => l.LanguageCode == ProjectConstants.UA) is null &&
+		    request.LanguageCode != ProjectConstants.UA)
 			throw new ApiException("First article must be ukrainian");
 
 		if (article.Localizations?.FirstOrDefault(l => l.LanguageCode == request.LanguageCode) is not null)
@@ -36,15 +40,31 @@ public class CreateArticleLocalizationHandler :
 			throw new ValidationFailedException("LanguageCode", "No such language registered");
 
 		var localization = request.Adapt<ArticleLocalization>();
+
+		CheckFields(request);
+
 		localization.Contributors = (await SetContributors(request.Contributors, userId)).ToArray();
 		localization.Status = ContentStatus.Draft;
 
 		var createdEntity = await Database.Set<ArticleLocalization>().AddAsync(localization);
 
+		// await HtmlTools.CheckLinks(Database, request.ArticleId, request.Html);
+
 		await Database.SaveChangesAsync();
 
 		return createdEntity.Entity.Adapt<ArticleLocalizationModel>();
 	}
+
+	private void CheckFields(CreateArticleLocalizationRequest localization)
+	{
+		if (string.IsNullOrEmpty(localization.Title))
+			throw new ValidationFailedException("Title", "Title not provided");
+		if (string.IsNullOrEmpty(localization.Description))
+			throw new ValidationFailedException("Description", "Description not provided");
+		if (string.IsNullOrEmpty(localization.Html))
+			throw new ValidationFailedException("Html", "Article text not provided");
+	}
+
 
 	private async Task<IEnumerable<ArticleContributor>> SetContributors(ArticleContributorModel[]? contributors,
 		long mainAuthorId)
@@ -58,7 +78,7 @@ public class CreateArticleLocalizationHandler :
 			}
 		};
 		if (contributors is not {Length: > 0}) return returnContributors;
-		
+
 		if (contributors.FirstOrDefault(a => a.Role == ArticleContributorRole.Author) is not null)
 			throw new ApiException("You can not set authors");
 
@@ -68,9 +88,10 @@ public class CreateArticleLocalizationHandler :
 			if (count > 1)
 				throw new ApiException("One user can not contribute the same role several times");
 
-			var dbContributor = await Database.Set<UserProfile>().FirstOrDefaultAsync(p => p.Id == contributor.UserId);
+			var dbContributor = await Database.Set<Data.SqlServer.Entities.User>()
+				.FirstOrDefaultAsync(p => p.Id == contributor.UserId);
 			if (dbContributor is null)
-				throw new ApiException($"No user with id: {contributor.UserId}");
+				throw new NotFoundException($"No user with id: {contributor.UserId}");
 
 			returnContributors.Add(contributor.Adapt<ArticleContributor>());
 		}

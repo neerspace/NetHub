@@ -6,6 +6,9 @@ namespace NetHub.Application.Extensions;
 
 public static class ArticleLocalizationExtensions
 {
-	public static UserProfile GetAuthor(this ArticleLocalization localization) =>
+	public static User GetAuthor(this ArticleLocalization localization) =>
 		localization.Contributors.First(c => c.Role == ArticleContributorRole.Author).User!;
+	
+	public static long GetAuthorId(this ArticleLocalization localization) =>
+		localization.Contributors.First(c => c.Role == ArticleContributorRole.Author).UserId;
 }

@@ -15,11 +15,11 @@ internal class UserProvider : IUserProvider
 {
 	private readonly IHttpContextAccessor _accessor;
 
-	private UserManager<UserProfile> UserManager =>
-		_accessor.HttpContext!.RequestServices.GetRequiredService<UserManager<UserProfile>>();
+	private UserManager<User> UserManager =>
+		_accessor.HttpContext!.RequestServices.GetRequiredService<UserManager<User>>();
 
 
-	private UserProfile? _userProfile;
+	private User? _userProfile;
 
 	public UserProvider(IHttpContextAccessor accessor)
 	{
@@ -30,7 +30,7 @@ internal class UserProvider : IUserProvider
 
 	public long GetUserId() => User.GetUserId();
 
-	public async Task<UserProfile> GetUser()
+	public async Task<User> GetUser()
 	{
 		var user = await UserManager.FindByIdAsync(GetUserId().ToString());
 		if (user is null)

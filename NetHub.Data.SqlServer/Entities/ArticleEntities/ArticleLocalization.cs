@@ -26,8 +26,13 @@ public record ArticleLocalization : IEntity
 	public string Title { get; set; } = default!;
 	public string Description { get; set; } = default!;
 	public string Html { get; set; } = default!;
-	public string? TranslatedArticleLink { get; set; }
+
+	public int Views { get; set; } = 0;
+	public int Rate { get; set; } = 0;
 	public ContentStatus Status { get; set; }
+
+	public DateTime Created { get; set; } = DateTime.UtcNow;
+	public DateTime? Updated { get; set; }
 
 	public virtual ICollection<ArticleContributor> Contributors { get; set; } = default!;
 }

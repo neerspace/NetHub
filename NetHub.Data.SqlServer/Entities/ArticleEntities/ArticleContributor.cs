@@ -13,7 +13,7 @@ public record ArticleContributor
 	#region Contributor
 
 	public long UserId { get; set; }
-	public virtual UserProfile? User { get; set; }
+	public virtual User? User { get; set; }
 
 	#endregion
 

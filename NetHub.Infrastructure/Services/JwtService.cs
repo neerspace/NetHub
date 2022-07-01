@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NetHub.Application.Features.Users.Dto;
+using NetHub.Application.Features.Public.Users.Dto;
 using NetHub.Application.Services;
 using NetHub.Core.Abstractions.Context;
 using NetHub.Core.DependencyInjection;
@@ -26,7 +26,7 @@ public class JwtService : IJwtService
 		_accessTokenGenerator = accessTokenGenerator;
 	}
 
-	public async Task<AuthResult> GenerateAsync(UserProfile user, CancellationToken cancel)
+	public async Task<AuthResult> GenerateAsync(User user, CancellationToken cancel)
 	{
 		(string? accessToken, DateTime accessTokenExpires) = await _accessTokenGenerator.GenerateAsync(user, cancel);
 		(string? refreshToken, DateTime refreshTokenExpires) = await _refreshTokenGenerator.GenerateAsync(user, cancel);

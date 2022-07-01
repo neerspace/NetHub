@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using NetHub.Application.Tools;
 using NetHub.Core.Exceptions;
-using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
+using NetHub.Data.SqlServer.Enums;
 using NetHub.Data.SqlServer.Extensions;
 
 namespace NetHub.Application.Features.Public.Articles.Update;
@@ -24,14 +24,16 @@ public class UpdateArticleHandler : AuthorizedHandler<UpdateArticleRequest>
 			throw new PermissionsException();
 
 		if (request.AuthorId is not null)
-			article.AuthorId = await Database.Set<UserProfile>().FirstOrDefaultAsync(p => p.Id == request.AuthorId) is null
-				? throw new NotFoundException("No user with such Id")
-				: request.AuthorId.Value;
+			article.AuthorId =
+				await Database.Set<Data.SqlServer.Entities.User>().FirstOrDefaultAsync(p => p.Id == request.AuthorId) is null
+					? throw new NotFoundException("No user with such Id")
+					: request.AuthorId.Value;
 
 		if (request.Name is not null)
 			article.Name = request.Name;
 
 		article.Updated = DateTime.UtcNow;
+		article.TranslatedArticleLink = request.TranslatedArticleLink;
 
 		await Database.SaveChangesAsync();
 

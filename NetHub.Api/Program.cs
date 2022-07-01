@@ -29,11 +29,11 @@ using ILogger = NLog.ILogger;
 	}
 	catch (Exception e)
 	{
-		logger.Fatal(e);
+		// logger.Fatal(e);
 	}
 	finally
 	{
-		logger.Info("Application is now stopping");
+		// logger.Info("Application is now stopping");
 		LogManager.Shutdown();
 	}
 }
