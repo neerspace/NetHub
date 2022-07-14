@@ -1,7 +1,7 @@
 ﻿using NetHub.Application.Features.Public.Users.Dto;
 using NetHub.Data.SqlServer.Entities;
 
-namespace NetHub.Application.Services;
+namespace NetHub.Application.Interfaces;
 
 public interface IJwtService
 {

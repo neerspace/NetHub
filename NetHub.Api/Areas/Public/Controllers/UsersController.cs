@@ -7,6 +7,7 @@ using NetHub.Application.Features.Public.Users.Login;
 using NetHub.Application.Features.Public.Users.Me;
 using NetHub.Application.Features.Public.Users.RefreshTokens;
 using NetHub.Application.Features.Public.Users.Register;
+using NetHub.Application.Features.Public.Users.Sso;
 
 namespace NetHub.Api.Areas.Public.Controllers;
 
@@ -31,18 +32,18 @@ public class UserController : ApiController
 
 		return tokenDto;
 	}
-	//
-	// [HttpPost("sso")]
-	// [AllowAnonymous]
-	// public async Task<IActionResult> SsoAuthorization(SsoEnterRequest request)
-	// {
-	// 	var (tokenDto, refreshToken) = await Mediator.Send(request);
-	//
-	// 	Response.Cookies.Append("NetHub-Refresh-Token", refreshToken,
-	// 		new CookieOptions {HttpOnly = true, SameSite = SameSiteMode.Strict});
-	//
-	// 	return Ok(tokenDto);
-	// }
+
+	[HttpPost("sso")]
+	[AllowAnonymous]
+	public async Task<IActionResult> SsoAuthorization([FromBody] SsoEnterRequest request)
+	{
+		var (tokenDto, refreshToken) = await Mediator.Send(request);
+
+		Response.Cookies.Append("NetHub-Refresh-Token", refreshToken,
+			new CookieOptions {HttpOnly = true, SameSite = SameSiteMode.Strict});
+
+		return Ok(tokenDto);
+	}
 
 	[HttpPost("refresh-tokens")]
 	[AllowAnonymous]

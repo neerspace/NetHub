@@ -1,6 +1,6 @@
 ﻿using NetHub.Application.Models.Mezha;
 
-namespace NetHub.Application.Services;
+namespace NetHub.Application.Interfaces;
 
 public interface IMezhaService
 {

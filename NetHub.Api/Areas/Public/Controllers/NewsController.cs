@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NetHub.Api.Abstractions;
+using NetHub.Application.Interfaces;
 using NetHub.Application.Models.Mezha;
-using NetHub.Application.Services;
 
 namespace NetHub.Api.Areas.Public.Controllers;
 

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using NetHub.Application.Extensions;
-using NetHub.Application.Services;
+using NetHub.Application.Interfaces;
 using NetHub.Core.DependencyInjection;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities;

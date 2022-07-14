@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using NetHub.Application.Constants;
 using NetHub.Application.Extensions;
+using NetHub.Application.Interfaces;
 using NetHub.Application.Models.Mezha;
 using NetHub.Application.Options;
-using NetHub.Application.Services;
 using NetHub.Core.DependencyInjection;
 using Newtonsoft.Json;
 

@@ -1,7 +1,7 @@
 ﻿using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 using NetHub.Application.Features.Public.Users.Dto;
-using NetHub.Application.Services;
+using NetHub.Application.Interfaces;
 using NetHub.Application.Tools;
 
 namespace NetHub.Application.Features.Public.Users.RefreshTokens;

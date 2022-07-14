@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using NetHub.Data.SqlServer.Entities;
 
-namespace NetHub.Application.Services;
+namespace NetHub.Application.Interfaces;
 
 public interface IUserProvider
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using NetHub.Application.Extensions;
-using NetHub.Application.Services;
+using NetHub.Application.Interfaces;
 using NetHub.Core.Abstractions.Context;
 using NetHub.Core.DependencyInjection;
 using NetHub.Core.Exceptions;

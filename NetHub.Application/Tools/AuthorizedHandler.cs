@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using NetHub.Application.Services;
+using NetHub.Application.Interfaces;
 using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Application.Tools;

@@ -1,4 +1,4 @@
-﻿using NetHub.Application.Services;
+﻿using NetHub.Application.Interfaces;
 using NetHub.Application.Tools;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;

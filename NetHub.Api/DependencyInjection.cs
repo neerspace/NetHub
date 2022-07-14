@@ -28,6 +28,8 @@ public static class DependencyInjection
 			.AddMvcOptions(ConfigureMvcOptions)
 			.AddJsonOptions(ConfigureJsonOptions);
 
+		services.AddAuthProviders(configuration);
+
 		services.ConfigureApiBehaviorOptions();
 		services.AddCustomApiVersioning();
 		services.RegisterServicesFromAssembly("NetHub.Api");
@@ -51,6 +53,8 @@ public static class DependencyInjection
 		});
 
 		services.Configure<MezhaOptions>(configuration.GetSection("Mezha"));
+		services.Configure<TelegramOptions>(configuration.GetSection("Telegram"));
+		services.Configure<TelegramOptions>(configuration.GetSection("Google"));
 	}
 
 

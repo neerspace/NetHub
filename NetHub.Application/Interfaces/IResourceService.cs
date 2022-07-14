@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace NetHub.Application.Services;
+namespace NetHub.Application.Interfaces;
 
 public interface IResourceService
 {

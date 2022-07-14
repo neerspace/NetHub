@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NetHub.Application.Features.Public.Users.Dto;
-using NetHub.Application.Services;
+using NetHub.Application.Interfaces;
 using NetHub.Core.Abstractions.Context;
 using NetHub.Core.DependencyInjection;
 using NetHub.Core.Exceptions;

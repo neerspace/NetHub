@@ -4,6 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -17,6 +18,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Google.Apis.Auth" Version="1.57.0" />
         <PackageReference Include="IdentityModel" Version="4.6.0" />
         <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
@@ -38,6 +40,12 @@
 
     <ItemGroup>
       <Folder Include="Areas\Public" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="AuthProvidersInjection.cs">
+        <DependentUpon>DependencyInjection.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>
