@@ -1,5 +1,5 @@
 # Ignore secret configuration
-appsettings.Secrets.json
+#appsettings.Secrets.json
 
 
 # JetBrains Rider cache
