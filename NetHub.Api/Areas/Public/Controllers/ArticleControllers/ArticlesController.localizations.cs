@@ -3,6 +3,7 @@ using NetHub.Api.Abstractions;
 using NetHub.Application.Features.Public.Articles.Localizations;
 using NetHub.Application.Features.Public.Articles.Localizations.Create;
 using NetHub.Application.Features.Public.Articles.Localizations.Delete;
+using NetHub.Application.Features.Public.Articles.Localizations.Html;
 using NetHub.Application.Features.Public.Articles.Localizations.One;
 using NetHub.Application.Features.Public.Articles.Localizations.Ratings.Get;
 using NetHub.Application.Features.Public.Articles.Localizations.Ratings.Rate;
@@ -24,6 +25,14 @@ public class ArticleLocalizationsController : ApiController
 	{
 		var result = await Mediator.Send(request with {ArticleId = articleId, LanguageCode = languageCode});
 		return Created($"/v1/articles/{result.ArticleId}/{result.LanguageCode}", result);
+	}
+
+	[HttpPost("add-html")]
+	public async Task<IActionResult> AddHtml([FromRoute] long articleId, [FromRoute] string languageCode,
+		AddLocalizationHtmlRequest request)
+	{
+		await Mediator.Send(request with {ArticleId = articleId, LanguageCode = languageCode});
+		return Ok();
 	}
 
 	[HttpPut]

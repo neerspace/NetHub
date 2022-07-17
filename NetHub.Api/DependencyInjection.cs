@@ -1,7 +1,10 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -9,6 +12,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NetHub.Api.Configuration;
 using NetHub.Api.Configuration.Swagger;
+using NetHub.Api.Middleware;
 using NetHub.Application.Options;
 using NetHub.Core.DependencyInjection;
 
@@ -68,6 +72,12 @@ public static class DependencyInjection
 	{
 		// To serialize enum members as strings in json
 		options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+	}
+
+	private static void AddFluentValidation(this IServiceCollection services)
+	{
+		services.AddValidatorsFromAssemblies(new[] {typeof(Application.DependencyInjection).Assembly});
+		services.AddTransient(typeof(IPipelineBehavior<,>), typeof(FluentValidationBehavior<,>));
 	}
 
 	private static void AddJwtAuthentication(this IServiceCollection services, JwtOptions jwt)

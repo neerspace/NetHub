@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using FluentValidation;
 using MediatR;
 
 namespace NetHub.Application.Features.Public.Articles.Localizations.Update;

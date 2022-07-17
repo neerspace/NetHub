@@ -2,7 +2,6 @@
 
 public enum ContentStatus : byte
 {
-    Created,
     Draft,
     Pending,
     Published,

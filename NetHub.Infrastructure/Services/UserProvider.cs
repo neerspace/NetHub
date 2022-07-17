@@ -34,7 +34,7 @@ internal class UserProvider : IUserProvider
 	{
 		var user = await UserManager.FindByIdAsync(GetUserId().ToString());
 		if (user is null)
-			throw new InternalServerException("Internal Server Error");
+			throw new InternalServerException();
 
 		return _userProfile ??= user;
 	}

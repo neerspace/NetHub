@@ -25,11 +25,12 @@ public record ArticleLocalization : IEntity
 
 	public string Title { get; set; } = default!;
 	public string Description { get; set; } = default!;
-	public string Html { get; set; } = default!;
+	public string? Html { get; set; } = default!;
 
 	public int Views { get; set; } = 0;
 	public int Rate { get; set; } = 0;
 	public ContentStatus Status { get; set; }
+	public InternalStatus InternalStatus { get; set; }
 
 	public DateTime Created { get; set; } = DateTime.UtcNow;
 	public DateTime? Updated { get; set; }

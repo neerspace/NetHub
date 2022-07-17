@@ -50,6 +50,8 @@ public class UpdateArticleLocalizationHandler : AuthorizedHandler<UpdateArticleL
 		if (request.NewLanguageCode is not null)
 			await SetNewLanguage(request, localization);
 
+		localization.Updated = DateTime.UtcNow;
+
 		await Database.SaveChangesAsync();
 
 		return Unit.Value;

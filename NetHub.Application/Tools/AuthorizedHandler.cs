@@ -11,7 +11,7 @@ public class AuthorizedHandler<TRequest, TResult> : DbHandler<TRequest, TResult>
 {
     private readonly IServiceProvider _serviceProvider;
 
-    protected IUserProvider UserProvider;
+    protected readonly IUserProvider UserProvider;
     protected UserManager<User> UserManager => _serviceProvider.GetRequiredService<UserManager<User>>();
 
     public AuthorizedHandler(IServiceProvider serviceProvider) : base(serviceProvider)

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetHub.Data.SqlServer.Context;
 
@@ -11,9 +12,10 @@ using NetHub.Data.SqlServer.Context;
 namespace NetHub.Data.SqlServer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
-    partial class SqlServerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220717191846_InternalStatusAdd")]
+    partial class InternalStatusAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,14 +166,14 @@ namespace NetHub.Data.SqlServer.Migrations
                         new
                         {
                             Id = 1L,
-                            ConcurrencyStamp = "86c12cb2-4c33-452d-acc6-0d0e49828d1b",
+                            ConcurrencyStamp = "7b0905b2-89c8-4ae1-b3f3-b8202704b1d9",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = 2L,
-                            ConcurrencyStamp = "5e3b6b55-ecc4-4a0f-be82-42b794337ff1",
+                            ConcurrencyStamp = "baff9a9e-c4d3-4953-b5d6-c852bcb0327f",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -255,6 +257,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<string>("Html")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte>("InternalStatus")
@@ -541,7 +544,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         {
                             Id = 19L,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9b2d3e39-30ca-4e90-ad3f-bc3caf383f8d",
+                            ConcurrencyStamp = "3428b4e5-b22e-4111-970e-1460ce577c2b",
                             Email = "aspadmin@asp.net",
                             EmailConfirmed = true,
                             FirstName = "vlad",
@@ -550,10 +553,10 @@ namespace NetHub.Data.SqlServer.Migrations
                             MiddleName = "tarasovich",
                             NormalizedEmail = "ASPADMIN@ASP.NET",
                             NormalizedUserName = "ASPADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAP0oQkr4ZuVSxHxvhOqOCPMXnrq9mdxIdRnQSmefJtN0Sd7fmlP5EFRdStxwUeGCg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAudeuWW1egxKEGFrbCDFyLeafdS0xwtVwmsEJ9QKi9KWhg7DXX2h2IrwmjrC3yUCg==",
                             PhoneNumberConfirmed = false,
-                            Registered = new DateTime(2022, 7, 17, 19, 21, 46, 457, DateTimeKind.Utc).AddTicks(4269),
-                            SecurityStamp = "0b4df101-8163-4d3b-b05d-d1db82f4a8be",
+                            Registered = new DateTime(2022, 7, 17, 19, 18, 45, 672, DateTimeKind.Utc).AddTicks(8825),
+                            SecurityStamp = "55d76048-d337-4952-9b6f-b4f6e383bb8d",
                             TwoFactorEnabled = false,
                             UserName = "aspadmin"
                         });

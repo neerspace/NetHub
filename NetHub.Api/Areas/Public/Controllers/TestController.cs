@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NetHub.Api.Abstractions;
 using NetHub.Application.Extensions;
-using NetHub.Application.Tools;
 using NetHub.Core.Abstractions.Context;
 
 namespace NetHub.Api.Areas.Public.Controllers;
@@ -35,12 +33,20 @@ public class TestController : ApiController
 		return File(file, "image/png");
 	}
 
+	// [HttpPost("test-validator")]
+	// public async Task<IActionResult> TestValidator(TestRequest req)
+	// {
+	// 	await Mediator.Send(req);
+	// 	return Ok();
+	// }
+
+
 	// [HttpGet("html-links-check")]
 	// public async Task<List<string>> LinkCheckTest()
 	// {
-		// var links = await HtmlTools.CheckLinks2(_database, 48,
-			// "<img src=\"https://aoa.com.ua/\"/>");
+	// var links = await HtmlTools.CheckLinks2(_database, 48,
+	// "<img src=\"https://aoa.com.ua/\"/>");
 
-		// return links;
+	// return links;
 	// }
 }

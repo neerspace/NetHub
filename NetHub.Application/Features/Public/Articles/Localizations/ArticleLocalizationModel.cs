@@ -13,5 +13,4 @@ public record ArticleLocalizationModel
 	public string Html { get; set; } = default!;
 	public ContentStatus Status { get; set; }
 	public int Rate { get; set; }
-	public ArticleResource[]? Images { get; set; }
 }

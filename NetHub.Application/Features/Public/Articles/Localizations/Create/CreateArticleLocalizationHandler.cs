@@ -41,10 +41,9 @@ public class CreateArticleLocalizationHandler :
 
 		var localization = request.Adapt<ArticleLocalization>();
 
-		CheckFields(request);
-
 		localization.Contributors = (await SetContributors(request.Contributors, userId)).ToArray();
 		localization.Status = ContentStatus.Draft;
+		localization.InternalStatus = InternalStatus.Created;
 
 		var createdEntity = await Database.Set<ArticleLocalization>().AddAsync(localization);
 
@@ -54,17 +53,6 @@ public class CreateArticleLocalizationHandler :
 
 		return createdEntity.Entity.Adapt<ArticleLocalizationModel>();
 	}
-
-	private void CheckFields(CreateArticleLocalizationRequest localization)
-	{
-		if (string.IsNullOrEmpty(localization.Title))
-			throw new ValidationFailedException("Title", "Title not provided");
-		if (string.IsNullOrEmpty(localization.Description))
-			throw new ValidationFailedException("Description", "Description not provided");
-		if (string.IsNullOrEmpty(localization.Html))
-			throw new ValidationFailedException("Html", "Article text not provided");
-	}
-
 
 	private async Task<IEnumerable<ArticleContributor>> SetContributors(ArticleContributorModel[]? contributors,
 		long mainAuthorId)

@@ -1,4 +1,5 @@
-﻿using NetHub.Data.SqlServer.Entities;
+﻿using NetHub.Core.Exceptions;
+using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
 using NetHub.Data.SqlServer.Enums;
 
@@ -8,7 +9,12 @@ public static class ArticleLocalizationExtensions
 {
 	public static User GetAuthor(this ArticleLocalization localization) =>
 		localization.Contributors.First(c => c.Role == ArticleContributorRole.Author).User!;
-	
-	public static long GetAuthorId(this ArticleLocalization localization) =>
-		localization.Contributors.First(c => c.Role == ArticleContributorRole.Author).UserId;
+
+	public static long GetAuthorId(this ArticleLocalization localization)
+	{
+		if (localization.Contributors is not {Count: > 0})
+			throw new InternalServerException();
+		
+		return localization.Contributors.First(c => c.Role == ArticleContributorRole.Author).UserId;
+	}
 }

@@ -11,5 +11,5 @@ public class InternalServerException : HttpException
 	public override string ErrorType => "InternalServerError";
 
 
-	public InternalServerException(string message) : base(message) { }
+	public InternalServerException() : base("Internal Server Error") { }
 }
