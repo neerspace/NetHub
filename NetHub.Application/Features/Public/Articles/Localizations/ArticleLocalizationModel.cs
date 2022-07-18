@@ -1,5 +1,4 @@
-﻿using NetHub.Data.SqlServer.Entities.ArticleEntities;
-using NetHub.Data.SqlServer.Enums;
+﻿using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Application.Features.Public.Articles.Localizations;
 

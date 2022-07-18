@@ -8,6 +8,7 @@ using NetHub.Application.Features.Public.Users.Me;
 using NetHub.Application.Features.Public.Users.RefreshTokens;
 using NetHub.Application.Features.Public.Users.Register;
 using NetHub.Application.Features.Public.Users.Sso;
+using NetHub.Core.Exceptions;
 
 namespace NetHub.Api.Areas.Public.Controllers;
 
@@ -42,6 +43,8 @@ public class UserController : ApiController
 		Response.Cookies.Append("NetHub-Refresh-Token", refreshToken,
 			new CookieOptions {HttpOnly = true, SameSite = SameSiteMode.Strict});
 
+		// Request.Cookies.TryGetValue("NetHub-Refresh-Token", out var refreshTokenTest);	
+
 		return Ok(tokenDto);
 	}
 
@@ -49,9 +52,13 @@ public class UserController : ApiController
 	[AllowAnonymous]
 	public async Task<AuthModel> RefreshTokens([FromBody] RefreshTokensRequest request)
 	{
-		var (tokenDto, refreshToken) = await Mediator.Send(request);
+		Request.Cookies.TryGetValue("NetHub-Refresh-Token", out var refreshTokenTest);
+		if (refreshTokenTest is null)
+			throw new ValidationFailedException("No refresh token in cookies");
 
-		Response.Cookies.Append("NetHub-Refresh-Token", refreshToken,
+		var (tokenDto, newRefreshToken) = await Mediator.Send(request with {RefreshToken = refreshTokenTest});
+
+		Response.Cookies.Append("NetHub-Refresh-Token", newRefreshToken,
 			new CookieOptions {HttpOnly = true, SameSite = SameSiteMode.Strict});
 
 		return tokenDto;

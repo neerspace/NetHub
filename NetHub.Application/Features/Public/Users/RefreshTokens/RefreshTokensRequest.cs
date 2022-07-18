@@ -1,10 +1,10 @@
-﻿using MediatR;
-using NetHub.Application.Features.Public.Users.Dto;
+﻿using System.Text.Json.Serialization;
+using MediatR;
 
 namespace NetHub.Application.Features.Public.Users.RefreshTokens;
 
-public class RefreshTokensRequest : IRequest<(AuthModel,string)>
+public record RefreshTokensRequest : IRequest<(AuthModel, string)>
 {
 	public string AccessToken { get; set; } = default!;
-	public string RefreshToken { get; set; } = default!;
+	[JsonIgnore] public string RefreshToken { get; set; } = default!;
 }
