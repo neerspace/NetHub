@@ -25,7 +25,7 @@ public record ArticleLocalization : IEntity
 
 	public string Title { get; set; } = default!;
 	public string Description { get; set; } = default!;
-	public string? Html { get; set; } = default!;
+	public string Html { get; set; } = default!;
 
 	public int Views { get; set; } = 0;
 	public int Rate { get; set; } = 0;

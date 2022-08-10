@@ -7,7 +7,7 @@ public class AuthModel
 
 	/// <example>[JWT]</example>
 	public string Token { get; init; } = default!;
-
+	
 	public DateTime TokenExpires { get; init; }
 
 	public DateTime RefreshTokenExpires { get; init; }

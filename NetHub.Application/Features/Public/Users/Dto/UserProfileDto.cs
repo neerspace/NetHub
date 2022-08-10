@@ -9,6 +9,5 @@ public class UserProfileDto
 	public string MiddleName { get; set; } = default!;
 	public string Email { get; set; } = default!;
 	public string? Description { get; set; }
-	public string? PhoneNumber { get; set; }
 	public DateTime Registered { get; set; }
 }

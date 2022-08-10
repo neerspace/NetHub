@@ -164,14 +164,14 @@ namespace NetHub.Data.SqlServer.Migrations
                         new
                         {
                             Id = 1L,
-                            ConcurrencyStamp = "86c12cb2-4c33-452d-acc6-0d0e49828d1b",
+                            ConcurrencyStamp = "ebdc302d-729f-416d-850d-1f595536307d",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = 2L,
-                            ConcurrencyStamp = "5e3b6b55-ecc4-4a0f-be82-42b794337ff1",
+                            ConcurrencyStamp = "0a8f6d3e-56c5-4cab-a1d1-097b2ee61aa0",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -255,6 +255,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<string>("Html")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte>("InternalStatus")
@@ -376,9 +377,6 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("UserId1")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -386,8 +384,6 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
@@ -541,7 +537,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         {
                             Id = 19L,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9b2d3e39-30ca-4e90-ad3f-bc3caf383f8d",
+                            ConcurrencyStamp = "c0d0564f-8d86-43df-a9d5-6ec408b61db4",
                             Email = "aspadmin@asp.net",
                             EmailConfirmed = true,
                             FirstName = "vlad",
@@ -550,10 +546,10 @@ namespace NetHub.Data.SqlServer.Migrations
                             MiddleName = "tarasovich",
                             NormalizedEmail = "ASPADMIN@ASP.NET",
                             NormalizedUserName = "ASPADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAP0oQkr4ZuVSxHxvhOqOCPMXnrq9mdxIdRnQSmefJtN0Sd7fmlP5EFRdStxwUeGCg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECIr/NR7j+tSnhmRlE5bdubeplwmOuo2SUndtUkPcikEBNAwnvn3fZHDjatsuaZXfg==",
                             PhoneNumberConfirmed = false,
-                            Registered = new DateTime(2022, 7, 17, 19, 21, 46, 457, DateTimeKind.Utc).AddTicks(4269),
-                            SecurityStamp = "0b4df101-8163-4d3b-b05d-d1db82f4a8be",
+                            Registered = new DateTime(2022, 8, 6, 14, 50, 58, 325, DateTimeKind.Utc).AddTicks(8858),
+                            SecurityStamp = "fbfe86b5-cacd-4b2f-814f-92265d37d71a",
                             TwoFactorEnabled = false,
                             UserName = "aspadmin"
                         });
@@ -713,15 +709,11 @@ namespace NetHub.Data.SqlServer.Migrations
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("NetHub.Data.SqlServer.Entities.User", null)
+                    b.HasOne("NetHub.Data.SqlServer.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("NetHub.Data.SqlServer.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });

@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Identity;
+using NetHub.Application.Features.Public.Users.Dto;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Tools;
 using NetHub.Core.Exceptions;
@@ -8,7 +9,7 @@ using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Application.Features.Public.Users.Sso;
 
-public class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthModel, string)>
+public class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthResult, string)>
 {
 	private readonly UserManager<User> _userManager;
 	private readonly IAuthValidator _validator;
@@ -22,7 +23,8 @@ public class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthModel, string)>
 		_jwtService = jwtService;
 	}
 
-	protected override async Task<(AuthModel, string)> Handle(SsoEnterRequest request)
+	// protected override async Task<(AuthModel, string)> Handle(SsoEnterRequest request)
+	protected override async Task<(AuthResult, string)> Handle(SsoEnterRequest request)
 	{
 		var user = await _userManager.FindByEmailAsync(request.Email);
 
@@ -38,7 +40,8 @@ public class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthModel, string)>
 
 		var dto = await _jwtService.GenerateAsync(loggedUser);
 
-		return (dto.Adapt<AuthModel>(), dto.RefreshToken);
+		// return (dto.Adapt<AuthModel>(), dto.RefreshToken);
+		return (dto, dto.RefreshToken);
 	}
 
 	private async Task<User> LoginUser(SsoEnterRequest request, User? user, bool validated)

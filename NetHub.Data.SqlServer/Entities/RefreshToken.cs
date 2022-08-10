@@ -1,10 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using NetHub.Core.Abstractions.Entities;
 
 namespace NetHub.Data.SqlServer.Entities;
 
-[Table($"{nameof(RefreshToken)}s")]
 public class RefreshToken : IdentityUserToken<long>, IEntity
 {
 	public long Id { get; set; }
