@@ -20,7 +20,7 @@ public class CreateArticleHandler : AuthorizedHandler<CreateArticleRequest, Arti
 		var articleEntity = new Article
 		{
 			AuthorId = user.Id, Name = request.Name, Created = DateTime.UtcNow,
-			TranslatedArticleLink = request.TranslatedArticleLink,
+			OriginalArticleLink = request.OriginalArticleLink,
 		};
 
 		var createdEntity = await Database.Set<Article>().AddAsync(articleEntity);

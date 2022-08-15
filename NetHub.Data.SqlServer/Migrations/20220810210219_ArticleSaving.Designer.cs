@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetHub.Data.SqlServer.Context;
 
@@ -11,13 +12,14 @@ using NetHub.Data.SqlServer.Context;
 namespace NetHub.Data.SqlServer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
-    partial class SqlServerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220810210219_ArticleSaving")]
+    partial class ArticleSaving
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -164,14 +166,14 @@ namespace NetHub.Data.SqlServer.Migrations
                         new
                         {
                             Id = 1L,
-                            ConcurrencyStamp = "70be81eb-ff90-47ea-8910-6e7e05bc8223",
+                            ConcurrencyStamp = "03de3df4-5476-4ee5-889f-993a30165a7f",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = 2L,
-                            ConcurrencyStamp = "a1451e9c-2dbd-4f7d-9026-b5fe3e070f80",
+                            ConcurrencyStamp = "aa4a2682-034c-4005-9575-5efe47408256",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -417,24 +419,6 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.ToTable("Resources", (string)null);
                 });
 
-            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.SavedArticle", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("LocalizationId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("SavedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("UserId", "LocalizationId");
-
-                    b.HasIndex("LocalizationId");
-
-                    b.ToTable("SavedArticles");
-                });
-
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Tag", b =>
                 {
                     b.Property<long>("Id")
@@ -555,7 +539,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         {
                             Id = 19L,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9e979ff3-12cb-428c-a2d9-3061f8e48e81",
+                            ConcurrencyStamp = "02cbfc1b-074c-4249-8839-f2c93b1ac0d7",
                             Email = "aspadmin@asp.net",
                             EmailConfirmed = true,
                             FirstName = "vlad",
@@ -564,10 +548,10 @@ namespace NetHub.Data.SqlServer.Migrations
                             MiddleName = "tarasovich",
                             NormalizedEmail = "ASPADMIN@ASP.NET",
                             NormalizedUserName = "ASPADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEA87vFZdcTxY30WE38XWDh7A9nBQeUFNIj4x0jjJRPnlJKVmT7sRrUQoTcTrj1M51A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEObSGrAXwG6VfZTs9YBohnI15nvToTgiITwG0u8auRWv6ARqjMQgArqt3lCQK+LIaQ==",
                             PhoneNumberConfirmed = false,
-                            Registered = new DateTime(2022, 8, 13, 18, 10, 12, 106, DateTimeKind.Utc).AddTicks(5232),
-                            SecurityStamp = "40fbeaf0-9e1c-4760-949c-5bdc19e2e27e",
+                            Registered = new DateTime(2022, 8, 10, 21, 2, 18, 243, DateTimeKind.Utc).AddTicks(6859),
+                            SecurityStamp = "a3273497-0a3d-49d5-afc8-2bea681ddabd",
                             TwoFactorEnabled = false,
                             UserName = "aspadmin"
                         });
@@ -736,25 +720,6 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.SavedArticle", b =>
-                {
-                    b.HasOne("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleLocalization", "Localization")
-                        .WithMany()
-                        .HasForeignKey("LocalizationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("NetHub.Data.SqlServer.Entities.User", "User")
-                        .WithMany("SavedArticles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Localization");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.User", b =>
                 {
                     b.HasOne("NetHub.Data.SqlServer.Entities.Resource", "Photo")
@@ -786,8 +751,6 @@ namespace NetHub.Data.SqlServer.Migrations
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.User", b =>
                 {
                     b.Navigation("Articles");
-
-                    b.Navigation("SavedArticles");
                 });
 #pragma warning restore 612, 618
         }

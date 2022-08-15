@@ -4,8 +4,7 @@ using NetHub.Application.Features.Public.Articles.Localizations;
 using NetHub.Application.Features.Public.Articles.Localizations.Create;
 using NetHub.Application.Features.Public.Articles.Localizations.Delete;
 using NetHub.Application.Features.Public.Articles.Localizations.One;
-using NetHub.Application.Features.Public.Articles.Localizations.Ratings.Get;
-using NetHub.Application.Features.Public.Articles.Localizations.Ratings.Rate;
+using NetHub.Application.Features.Public.Articles.Localizations.ToggleSaving;
 using NetHub.Application.Features.Public.Articles.Localizations.Update;
 
 namespace NetHub.Api.Areas.Public.Controllers.ArticleControllers;
@@ -41,6 +40,14 @@ public class ArticleLocalizationsController : ApiController
 		return NoContent();
 	}
 
+	[HttpPost("toggle-saving")]
+	public async Task<IActionResult> ToggleSaving([FromRoute] long articleId, [FromRoute] string languageCode,
+		ToggleArticleSaveRequest request)
+	{
+		await Mediator.Send(request with {ArticleId = articleId, LanguageCode = languageCode});
+		return NoContent();
+	}
+	
 	// [HttpGet("status")]
 	// [Authorize(Policies.HasMasterPermission)]
 	// public async Task<IActionResult> SetArticleStatus([FromRoute] long articleId, [FromRoute] string languageCode,
@@ -49,19 +56,4 @@ public class ArticleLocalizationsController : ApiController
 	// 	await Mediator.Send(new SetArticleStatusRequest(articleId, languageCode, status));
 	// 	return NoContent();
 	// }
-
-	[HttpGet("rate")]
-	public async Task<IActionResult> Rate([FromRoute] long articleId, [FromRoute] string languageCode,
-		[FromQuery] RateModel rating)
-	{
-		await Mediator.Send(new RateLocalizationRequest(articleId, languageCode, rating));
-		return Ok();
-	}
-
-	[HttpGet("get-rate")]
-	public async Task<RatingModel> GetRate([FromRoute] long articleId, [FromRoute] string languageCode)
-	{
-		var result = await Mediator.Send(new GetLocalizationRateRequest(articleId, languageCode));
-		return result;
-	}
 }

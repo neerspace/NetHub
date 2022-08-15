@@ -20,7 +20,7 @@ public class AddArticleImageHandler : AuthorizedHandler<AddArticleImageRequest, 
 	{
 		var userId = UserProvider.GetUserId();
 
-		var article = await Database.Set<Article>().FirstOr404Async();
+		var article = await Database.Set<Article>().FirstOr404Async(a => a.Id == request.ArticleId);
 
 		if (article.AuthorId != userId)
 			throw new PermissionsException();

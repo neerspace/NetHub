@@ -1,5 +1,4 @@
 ﻿using NetHub.Application.Features.Public.Articles.Localizations;
-using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Application.Features.Public.Articles;
 
@@ -10,6 +9,8 @@ public class ArticleModel
 	public long AuthorId { get; set; }
 	public DateTime Created { get; set; }
 	public DateTime? Updated { get; set; }
-	public string? TranslatedArticleLink { get; set; }
+	public string? OriginalArticleLink { get; set; }
 	public ArticleLocalizationModel[]? Localizations { get; set; }
+	public string[]? ImagesLinks { get; set; }
+	public string[] Tags { get; set; } = default!;
 }

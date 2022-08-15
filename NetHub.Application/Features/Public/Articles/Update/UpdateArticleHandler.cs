@@ -33,7 +33,7 @@ public class UpdateArticleHandler : AuthorizedHandler<UpdateArticleRequest>
 			article.Name = request.Name;
 
 		article.Updated = DateTime.UtcNow;
-		article.TranslatedArticleLink = request.TranslatedArticleLink;
+		article.OriginalArticleLink = request.OriginalArticleLink;
 
 		await Database.SaveChangesAsync();
 

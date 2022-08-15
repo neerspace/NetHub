@@ -2,4 +2,4 @@
 
 namespace NetHub.Application.Features.Public.Articles.One;
 
-public record GetArticleRequest(long Id) : IRequest<ArticleModel>;
+public record GetArticleRequest(long Id) : IRequest<(ArticleModel, Guid[]?)>;

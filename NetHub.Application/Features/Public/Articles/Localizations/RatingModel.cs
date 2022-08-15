@@ -1,4 +1,4 @@
-﻿using NetHub.Application.Features.Public.Articles.Localizations.Ratings.Rate;
+﻿using NetHub.Application.Features.Public.Articles.Ratings.Rate;
 
 namespace NetHub.Application.Features.Public.Articles.Localizations;
 

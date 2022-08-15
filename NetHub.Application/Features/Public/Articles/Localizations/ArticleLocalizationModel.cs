@@ -11,5 +11,6 @@ public record ArticleLocalizationModel
 	public string Description { get; set; } = default!;
 	public string Html { get; set; } = default!;
 	public ContentStatus Status { get; set; }
+	public int Views { get; set; }
 	public int Rate { get; set; }
 }

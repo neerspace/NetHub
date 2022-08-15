@@ -24,6 +24,7 @@ public class GetArticleLocalizationHandler : DbHandler<GetArticleLocalizationReq
 			throw new NotFoundException("No such article localization");
 
 		localization.Views++;
+		await Database.SaveChangesAsync();
 
 		return localization.Adapt<ArticleLocalizationModel>();
 	}

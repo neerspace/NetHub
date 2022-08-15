@@ -8,8 +8,8 @@ public record ArticleRating
 {
 	#region Localization
 
-	public long LocalizationId { get; set; }
-	public virtual ArticleLocalization? Localization { get; set; }
+	public long ArticleId { get; set; }
+	public virtual Article? Article { get; set; }
 
 	#endregion
 

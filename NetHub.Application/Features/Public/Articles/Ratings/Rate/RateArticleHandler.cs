@@ -6,39 +6,38 @@ using NetHub.Data.SqlServer.Entities.ArticleEntities;
 using NetHub.Data.SqlServer.Enums;
 using NetHub.Data.SqlServer.Extensions;
 
-namespace NetHub.Application.Features.Public.Articles.Localizations.Ratings.Rate;
+namespace NetHub.Application.Features.Public.Articles.Ratings.Rate;
 
-public class RateLocalizationHandler : AuthorizedHandler<RateLocalizationRequest>
+public class RateArticleHandler : AuthorizedHandler<RateArticleRequest>
 {
-	public RateLocalizationHandler(IServiceProvider serviceProvider) : base(serviceProvider)
+	public RateArticleHandler(IServiceProvider serviceProvider) : base(serviceProvider)
 	{
 	}
 
-	protected override async Task<Unit> Handle(RateLocalizationRequest request)
+	protected override async Task<Unit> Handle(RateArticleRequest request)
 	{
 		var userId = UserProvider.GetUserId();
 
 		var rating = await Database.Set<ArticleRating>()
-			.Include(r => r.Localization)
-			.Where(r => r.Localization != null &&
-			            r.Localization.ArticleId == request.ArticleId &&
-			            r.Localization.LanguageCode == request.LanguageCode)
+			.Include(ar => ar.Article)
+			.Where(ar =>
+				ar.ArticleId == request.ArticleId)
 			.FirstOrDefaultAsync();
 
-		var localization = await Database.Set<ArticleLocalization>()
-			.FirstOr404Async(al => al.ArticleId == request.ArticleId && al.LanguageCode == request.LanguageCode);
+		var article = await Database.Set<Article>()
+			.FirstOr404Async(a => a.Id == request.ArticleId);
 
 		switch (request.Rating)
 		{
 			case RateModel.None when rating is not null:
 				Database.Set<ArticleRating>().Remove(rating);
-				localization.Rate += rating.Rating == Rating.Up ? -1 : 1;
+				article.Rate += rating.Rating == Rating.Up ? -1 : 1;
 				break;
 			case RateModel.Up or RateModel.Down:
 			{
 				var ratingEntity = new ArticleRating
 				{
-					LocalizationId = localization.Id,
+					ArticleId = article.Id,
 					UserId = userId,
 					Rating = request.Rating.Adapt<Rating>()
 				};
@@ -46,17 +45,17 @@ public class RateLocalizationHandler : AuthorizedHandler<RateLocalizationRequest
 				if (rating is null)
 				{
 					Database.Set<ArticleRating>().Add(ratingEntity);
-					localization.Rate += request.Rating == RateModel.Up ? 1 : -1;
+					article.Rate += request.Rating == RateModel.Up ? 1 : -1;
 				}
 				else
 				{
 					switch (rating.Rating)
 					{
 						case Rating.Up when request.Rating is RateModel.Down:
-							localization.Rate -= 2;
+							article.Rate -= 2;
 							break;
 						case Rating.Down when request.Rating is RateModel.Up:
-							localization.Rate += 2;
+							article.Rate += 2;
 							break;
 					}
 

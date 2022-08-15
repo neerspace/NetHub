@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NetHub.Api.Abstractions;
+using NetHub.Application.Extensions;
 using NetHub.Application.Features.Public.Articles;
 using NetHub.Application.Features.Public.Articles.Create;
 using NetHub.Application.Features.Public.Articles.Delete;
 using NetHub.Application.Features.Public.Articles.GetMany;
+using NetHub.Application.Features.Public.Articles.Localizations;
 using NetHub.Application.Features.Public.Articles.One;
+using NetHub.Application.Features.Public.Articles.Ratings.Get;
+using NetHub.Application.Features.Public.Articles.Ratings.Rate;
 using NetHub.Application.Features.Public.Articles.Update;
 using NetHub.Application.Features.Public.Articles.User;
 
@@ -15,7 +19,14 @@ public class ArticlesController : ApiController
 {
 	[HttpGet("{id:long}")]
 	public async Task<ArticleModel> GetOne([FromRoute] long id)
-		=> await Mediator.Send(new GetArticleRequest(id));
+	{
+		var (model, guids) = await Mediator.Send(new GetArticleRequest(id));
+
+		if (guids != null && guids.Any())
+			model.ImagesLinks = guids.Select(guid => Request.GetResourceUrl(guid)).ToArray();
+
+		return model;
+	}
 
 	[HttpGet]
 	[AllowAnonymous]
@@ -45,5 +56,20 @@ public class ArticlesController : ApiController
 	{
 		await Mediator.Send(new DeleteArticleRequest(id));
 		return NoContent();
+	}
+
+	[HttpGet("{id:long}/rate")]
+	public async Task<IActionResult> Rate([FromRoute] long id,
+		[FromQuery] RateModel rating)
+	{
+		await Mediator.Send(new RateArticleRequest(id, rating));
+		return Ok();
+	}
+
+	[HttpGet("{id:long}/get-rate")]
+	public async Task<RatingModel> GetRate([FromRoute] long id)
+	{
+		var result = await Mediator.Send(new GetArticleRateRequest(id));
+		return result;
 	}
 }

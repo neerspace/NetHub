@@ -12,7 +12,7 @@ using NetHub.Application.Features.Public.Users.RefreshTokens;
 using NetHub.Application.Features.Public.Users.Register;
 using NetHub.Application.Features.Public.Users.Sso;
 
-namespace NetHub.Api.Areas.Public.Controllers.UserControllers;
+namespace NetHub.Api.Areas.Public.Controllers;
 
 [AllowAnonymous]
 public class UserController : ApiController

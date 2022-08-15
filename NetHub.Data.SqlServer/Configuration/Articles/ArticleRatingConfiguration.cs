@@ -9,7 +9,7 @@ public class ArticleRatingConfiguration : IEntityTypeConfiguration<ArticleRating
 {
 	public void Configure(EntityTypeBuilder<ArticleRating> builder)
 	{
-		builder.HasKey(ar => new {ar.LocalizationId, ar.UserId});
+		builder.HasKey(ar => new {LocalizationId = ar.ArticleId, ar.UserId});
 
 		builder.HasOne(ar => ar.User)
 			.WithMany()

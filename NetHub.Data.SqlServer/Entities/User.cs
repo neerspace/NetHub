@@ -21,6 +21,7 @@ public class User : IdentityUser<long>, IEntity
 
 
 	public virtual ICollection<Article>? Articles { get; set; }
+	public virtual ICollection<SavedArticle>? SavedArticles { get; set; }
 
 	#region Photo
 

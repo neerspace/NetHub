@@ -10,8 +10,9 @@ public class Article : IEntity
 
 	public string Name { get; set; } = default!;
 
-	public string? TranslatedArticleLink { get; set; }
-	
+	public string? OriginalArticleLink { get; set; }
+	public int Rate { get; set; } = 0;
+
 	public DateTime Created { get; set; } = DateTime.UtcNow;
 	public DateTime? Updated { get; set; }
 
