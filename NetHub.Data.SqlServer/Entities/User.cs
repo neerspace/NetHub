@@ -14,6 +14,7 @@ public class User : IdentityUser<long>, IEntity
 	public override string NormalizedUserName { get; set; } = default!;
 	public override string Email { get; set; } = default!;
 	public override string NormalizedEmail { get; set; } = default!;
+	public override bool EmailConfirmed { get; set; }
 	public string? Description { get; set; }
 	public string? ProfilePhotoLink { get; set; }
 

@@ -50,16 +50,7 @@ public static class DependencyInjection
 
 	private static void BindConfigurationOptions(this IServiceCollection services, IConfiguration configuration)
 	{
-		services.Configure<JwtOptions>(options =>
-		{
-			options.Secret = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Jwt:Secret"]));
-			options.AccessTokenLifetime = TimeSpan.Parse(configuration["Jwt:AccessTokenLifetime"]);
-			options.RefreshTokenLifetime = TimeSpan.Parse(configuration["Jwt:RefreshTokenLifetime"]);
-		});
-
-		services.Configure<MezhaOptions>(configuration.GetSection("Mezha"));
-		services.Configure<TelegramOptions>(configuration.GetSection("Telegram"));
-		services.Configure<TelegramOptions>(configuration.GetSection("Google"));
+		// services.Configure<TelegramOptions>(configuration.GetSection("Google"));
 	}
 
 

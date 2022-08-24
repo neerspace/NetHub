@@ -9,13 +9,14 @@ public static class ApiExtensions
 		services.AddCors(o => o.AddPolicy("Cors", builder =>
 		{
 			// TODO: add normal CORS :)
-			// builder.WithOrigins("http://localhost:3000")
 			// 	.WithMethods("POST", "GET", "PUT", "DELETE", "OPTIONS")
 			// 	.WithHeaders("Content-Type", "Authorization", "Set-Cookie")
 			// 	.AllowCredentials();
-			builder.AllowAnyOrigin()
+			// builder.AllowAnyOrigin()
+			builder.WithOrigins("https://testttt-mu.vercel.app")
 				.AllowAnyMethod()
-				.AllowAnyHeader();
+				.AllowAnyHeader()
+				.AllowCredentials();
 		}));
 	}
 

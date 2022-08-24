@@ -22,7 +22,6 @@ public record ArticleLocalization : IEntity
 	public virtual Language? Language { get; set; } = default!;
 
 	#endregion
-
 	public string Title { get; set; } = default!;
 	public string Description { get; set; } = default!;
 	public string Html { get; set; } = default!;

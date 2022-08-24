@@ -8,6 +8,7 @@ public class UserProfileDto
 	public string LastName { get; set; } = default!;
 	public string MiddleName { get; set; } = default!;
 	public string Email { get; set; } = default!;
+	public bool EmailConfirmed { get; set; }
 	public string? Description { get; set; }
 	public DateTime Registered { get; set; }
 }

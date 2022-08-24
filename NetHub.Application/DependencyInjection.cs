@@ -5,6 +5,7 @@ using MediatR;
 using MediatR.Extensions.FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetHub.Application.Options;
 
 namespace NetHub.Application;
 
@@ -14,6 +15,7 @@ public static class DependencyInjection
 	{
 		services.RegisterMappings();
 		services.AddCustomMediatR();
+		services.ConfigureOptions(configuration);
 	}
 
 
@@ -22,6 +24,13 @@ public static class DependencyInjection
 		options.DisableDataAnnotationsValidation = true;
 		options.ImplicitlyValidateChildProperties = true;
 		options.ImplicitlyValidateRootCollectionElements = true;
+	}
+
+	private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
+	{
+		services.Configure<MezhaOptions>(configuration.GetSection("Mezha"));
+		services.Configure<TelegramOptions>(configuration.GetSection("Telegram"));
+		services.ConfigureOptions<JwtOptions.Configurator>();
 	}
 
 	private static void RegisterMappings(this IServiceCollection services)
@@ -33,7 +42,7 @@ public static class DependencyInjection
 
 	private static void AddCustomMediatR(this IServiceCollection services)
 	{
-		var assemblies = new[] { Assembly.GetExecutingAssembly() };
+		var assemblies = new[] {Assembly.GetExecutingAssembly()};
 
 		services.AddMediatR(assemblies).AddFluentValidation(ConfigureFluentValidation);
 		services.AddFluentValidation(assemblies);
