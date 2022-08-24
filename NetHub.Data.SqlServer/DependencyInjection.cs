@@ -29,7 +29,6 @@ public static class DependencyInjection
 			.AddEntityFrameworkStores<SqlServerDbContext>();
 
 		services.AddTransient<UserManager<User>>();
-		services.AddTransient<SignInManager<User>>();
 
 		services.AddScoped<IDatabaseContext, SqlServerDbContext>();
 	}

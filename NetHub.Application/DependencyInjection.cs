@@ -3,9 +3,11 @@ using FluentValidation.AspNetCore;
 using Mapster;
 using MediatR;
 using MediatR.Extensions.FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetHub.Application.Options;
+using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Application;
 
@@ -16,6 +18,7 @@ public static class DependencyInjection
 		services.RegisterMappings();
 		services.AddCustomMediatR();
 		services.ConfigureOptions(configuration);
+		services.AddTransient<SignInManager<User>>();
 	}
 
 
