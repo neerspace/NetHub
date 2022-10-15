@@ -30,6 +30,7 @@ internal class MappingRegister : IRegister
 
 		config.NewConfig<UpdateArticleLocalizationRequest, ArticleLocalization>()
 			//TODO: Test this
+			//TODO: Test Mirroring
 			.Ignore(ua => ua.Contributors)
 			.IgnoreNullValues(true);
 
