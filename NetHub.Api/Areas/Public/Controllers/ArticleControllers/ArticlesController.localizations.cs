@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NetHub.Api.Abstractions;
 using NetHub.Application.Features.Public.Articles.Localizations;
 using NetHub.Application.Features.Public.Articles.Localizations.Create;
 using NetHub.Application.Features.Public.Articles.Localizations.Delete;
+using NetHub.Application.Features.Public.Articles.Localizations.GetSaving.All;
+using NetHub.Application.Features.Public.Articles.Localizations.GetSaving.One;
+using NetHub.Application.Features.Public.Articles.Localizations.Many;
 using NetHub.Application.Features.Public.Articles.Localizations.One;
 using NetHub.Application.Features.Public.Articles.Localizations.ToggleSaving;
 using NetHub.Application.Features.Public.Articles.Localizations.Update;
@@ -10,14 +14,15 @@ using NetHub.Application.Features.Public.Articles.Localizations.Update;
 namespace NetHub.Api.Areas.Public.Controllers.ArticleControllers;
 
 [ApiVersion(Versions.V1)]
-[Route("/v{version:apiVersion}/articles/{articleId:long}/{languageCode:alpha}")]
+[Route("/v{version:apiVersion}/articles")]
 public class ArticleLocalizationsController : ApiController
 {
-	[HttpGet]
+	[HttpGet("{articleId:long}/{languageCode:alpha}")]
+	[AllowAnonymous]
 	public async Task<ArticleLocalizationModel> GetOne([FromRoute] long articleId, [FromRoute] string languageCode)
 		=> await Mediator.Send(new GetArticleLocalizationRequest(articleId, languageCode));
 
-	[HttpPost]
+	[HttpPost("{articleId:long}/{languageCode:alpha}")]
 	public async Task<IActionResult> Create([FromRoute] long articleId, [FromRoute] string languageCode,
 		[FromBody] CreateArticleLocalizationRequest request)
 	{
@@ -25,7 +30,7 @@ public class ArticleLocalizationsController : ApiController
 		return Created($"/v1/articles/{result.ArticleId}/{result.LanguageCode}", result);
 	}
 
-	[HttpPut]
+	[HttpPut("{articleId:long}/{languageCode:alpha}")]
 	public async Task<IActionResult> Update([FromRoute] long articleId, [FromRoute] string languageCode,
 		[FromBody] UpdateArticleLocalizationRequest request)
 	{
@@ -33,21 +38,31 @@ public class ArticleLocalizationsController : ApiController
 		return NoContent();
 	}
 
-	[HttpDelete]
+	[HttpDelete("{articleId:long}/{languageCode:alpha}")]
 	public async Task<IActionResult> Delete([FromRoute] long articleId, [FromRoute] string languageCode)
 	{
 		await Mediator.Send(new DeleteArticleLocalizationRequest(articleId, languageCode));
 		return NoContent();
 	}
 
-	[HttpPost("toggle-saving")]
-	public async Task<IActionResult> ToggleSaving([FromRoute] long articleId, [FromRoute] string languageCode,
-		ToggleArticleSaveRequest request)
+	[HttpGet("{articleId:long}/{languageCode:alpha}/toggle-saving")]
+	public async Task<IActionResult> ToggleSaving([FromRoute] long articleId, [FromRoute] string languageCode)
 	{
-		await Mediator.Send(request with {ArticleId = articleId, LanguageCode = languageCode});
+		await Mediator.Send(new ToggleArticleSaveRequest(articleId, languageCode));
 		return NoContent();
 	}
-	
+
+	[HttpGet("{articleId:long}/{languageCode:alpha}/get-localization-saving")]
+	public async Task<GetLocalizationSavingResult> GetLocalizationSaving([FromRoute] long articleId,
+		[FromRoute] string languageCode)
+		=> await Mediator.Send(new GetLocalizationSavingRequest(articleId, languageCode));
+
+	[HttpGet("{languageCode:alpha}/get-thread")]
+	[AllowAnonymous]
+	public async Task<ExtendedArticleModel[]> GetThread(string languageCode, int page = 1, int perPage = 20)
+		=> await Mediator.Send(new GetThreadRequest(languageCode, page, perPage));
+
+
 	// [HttpGet("status")]
 	// [Authorize(Policies.HasMasterPermission)]
 	// public async Task<IActionResult> SetArticleStatus([FromRoute] long articleId, [FromRoute] string languageCode,

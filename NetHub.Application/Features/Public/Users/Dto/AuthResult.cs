@@ -12,6 +12,7 @@ public record AuthResult
 
 	/// <example>[Base64]</example>
 	public string RefreshToken { get; init; } = default!;
+	public string? ProfilePhotoLink { get; set; }
 
 	public DateTime RefreshTokenExpires { get; init; }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using NetHub.Application.Extensions;
 using NetHub.Application.Interfaces;
+using NetHub.Core.Constants;
 using NetHub.Core.DependencyInjection;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities;
@@ -29,6 +30,17 @@ internal class UserProvider : IUserProvider
 	public ClaimsPrincipal User => _accessor.HttpContext!.User;
 
 	public long GetUserId() => User.GetUserId();
+
+	public long? TryGetUserId()
+	{
+		var claimResult = User.TryGetClaimWithoutAuthorization(Claims.Id, out Claim? claim);
+		if (!claimResult) return null;
+
+		var longResult = long.TryParse(claim?.Value, out long userId);
+
+		return longResult ? userId : null;
+	}
+
 
 	public async Task<User> GetUser()
 	{

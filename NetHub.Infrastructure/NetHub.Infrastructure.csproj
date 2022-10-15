@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Facebook" Version="6.8.0" />
       <PackageReference Include="Google.Apis.Auth.AspNetCore3" Version="1.57.0" />
       <PackageReference Include="Google.Apis.Core" Version="1.57.0" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />

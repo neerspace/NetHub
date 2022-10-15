@@ -1,10 +1,9 @@
-﻿using Mapster;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using NetHub.Application.Features.Public.Users.Dto;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Tools;
 using NetHub.Core.Exceptions;
-using NetHub.Core.Extensions;
 using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Application.Features.Public.Users.Sso;
@@ -26,53 +25,58 @@ public class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthResult, string)>
 	// protected override async Task<(AuthModel, string)> Handle(SsoEnterRequest request)
 	protected override async Task<(AuthResult, string)> Handle(SsoEnterRequest request)
 	{
-		var user = await _userManager.FindByEmailAsync(request.Email);
+		var loginInfo = await GetUserLoginInfo(request.ProviderKey, request.Provider);
+		var user = await _userManager.FindByIdAsync(loginInfo?.UserId.ToString());
 
 		var validated = false;
 
 		if (user is null)
 		{
-			await RegisterUser(request);
+			user = await RegisterUser(request);
 			validated = true;
 		}
 
-		var loggedUser = await LoginUser(request, user, validated);
+		await LoginUser(request, validated);
 
-		var dto = await _jwtService.GenerateAsync(loggedUser);
+		var dto = await _jwtService.GenerateAsync(user);
+		dto.ProfilePhotoLink = user.ProfilePhotoLink;
 
 		// return (dto.Adapt<AuthModel>(), dto.RefreshToken);
 		return (dto, dto.RefreshToken);
 	}
 
-	private async Task<User> LoginUser(SsoEnterRequest request, User? user, bool validated)
+	private async Task LoginUser(SsoEnterRequest request, bool validated)
 	{
-		user ??= await _userManager.FindByEmailAsync(request.Email);
-		var userProviders = await _userManager.GetLoginsAsync(user);
+		// var loginInfo = await GetUserLoginInfo(request.ProviderKey, request.Provider);
+		// user ??= await _userManager.FindByIdAsync(loginInfo!.UserId.ToString());
 
-		if (userProviders.All(up => up.ProviderDisplayName.ToEnum<ProviderType>() != request.Provider))
-			throw new ValidationFailedException($"Login by {request.Provider} not supported for this user");
+		// var userProviders = await _userManager.GetLoginsAsync(user);
+		//
+		// if (userProviders.All(up => up.ProviderDisplayName.ToEnum<ProviderType>() != request.Provider))
+		// 	throw new ValidationFailedException($"Login by {request.Provider} not supported for this user");
 
 		if (!validated)
 			await ValidateUser(request);
 
-		if (user is null)
-			throw new ValidationFailedException("Username", "No such User with provided username");
+		// if (user is null)
+			// throw new ValidationFailedException("Username", "No such User with provided username");
 
-		return user;
+		// return user;
 	}
 
 
-	private async Task RegisterUser(SsoEnterRequest request)
+	private async Task<User> RegisterUser(SsoEnterRequest request)
 	{
 		await ValidateUser(request);
 
 		var user = new User
 		{
 			UserName = request.Username,
-			FirstName = request.FirstName,
+			FirstName = request.FirstName!,
 			LastName = request.LastName,
 			MiddleName = request.MiddleName,
-			Email = request.Email,
+			Email = request.Email!,
+			ProfilePhotoLink = request.ProfilePhotoLink,
 			EmailConfirmed = request.Provider is not ProviderType.Telegram
 		};
 
@@ -81,9 +85,11 @@ public class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthResult, string)>
 			throw new ValidationFailedException(result.Errors.First().Description);
 
 		await _userManager.AddLoginAsync(user,
-			new UserLoginInfo(request.Provider.ToString(),
-				Guid.NewGuid().ToString(),
-				request.Provider.ToString()));
+			new UserLoginInfo(request.Provider.ToString().ToLower(),
+				request.ProviderKey,
+				request.Provider.ToString().ToLower()));
+
+		return user;
 	}
 
 	private async Task ValidateUser(SsoEnterRequest request)
@@ -91,13 +97,17 @@ public class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthResult, string)>
 		if (request.ProviderMetadata is not {Count: > 0})
 			throw new ValidationFailedException("Metadata not provided");
 
-		var metadata = request.ProviderMetadata;
-		if (!metadata.TryGetValue("Email", out _))
-			metadata.Add("Email", request.Email);
-
-		var isValid = await _validator.ValidateAsync(request.Provider, metadata, SsoType.Login);
+		var isValid = await _validator.ValidateAsync(request, SsoType.Login);
 
 		if (!isValid)
 			throw new ValidationFailedException("Provided invalid data");
+	}
+
+	private async Task<IdentityUserLogin<long>?> GetUserLoginInfo(string key, ProviderType provider)
+	{
+		return await Database.Set<IdentityUserLogin<long>>()
+			.SingleOrDefaultAsync(info =>
+				info.ProviderKey == key &&
+				info.ProviderDisplayName == provider.ToString().ToLower());
 	}
 }

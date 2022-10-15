@@ -22,8 +22,9 @@ public class ResourcesController : ApiController
 
 	[HttpPost("user/profile-photo")]
 	//TODO: Test it
-	public async Task<SetUserPhotoResult> SetUserPhoto(SetUserPhotoRequest request)
+	public async Task<SetUserPhotoResult> SetUserPhoto(IFormFile? file, string? link)
 	{
+		var request = new SetUserPhotoRequest(file, link);
 		var result = await Mediator.Send(request);
 		return result;
 	}

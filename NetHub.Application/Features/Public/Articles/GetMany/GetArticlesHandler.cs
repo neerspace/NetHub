@@ -19,6 +19,7 @@ public class GetArticlesHandler : DbHandler<GetArticlesRequest, ArticleModel[]>
 
 		var articles = await Database.Set<Article>()
 			.Include(a => a.Localizations)
+			.Include(a => a.Tags)!.ThenInclude(t => t.Tag)
 			.Where(a =>
 				a.Localizations != null &&
 				a.Localizations.Count(l => l.LanguageCode == request.Code) == 1)
@@ -30,7 +31,9 @@ public class GetArticlesHandler : DbHandler<GetArticlesRequest, ArticleModel[]>
 				Name = a.Name,
 				Created = a.Created,
 				Updated = a.Updated,
-				Localizations = a.Localizations!.Where(l => l.LanguageCode == request.Code).ToList()
+				Rate = a.Rate,
+				Localizations = a.Localizations!.Where(l => l.LanguageCode == request.Code).ToList(),
+				Tags = a.Tags
 			})
 			.ProjectToType<ArticleModel>()
 			.ToArrayAsync(cancel);

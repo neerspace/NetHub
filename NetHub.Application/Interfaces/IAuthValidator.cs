@@ -4,5 +4,5 @@ namespace NetHub.Application.Interfaces;
 
 public interface IAuthValidator
 {
-	Task<bool> ValidateAsync(ProviderType provider, Dictionary<string, string> metadata, SsoType type);
+	Task<bool> ValidateAsync(SsoEnterRequest request, SsoType type);
 }

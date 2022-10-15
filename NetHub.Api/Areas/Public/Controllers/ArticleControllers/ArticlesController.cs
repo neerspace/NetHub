@@ -7,17 +7,21 @@ using NetHub.Application.Features.Public.Articles.Create;
 using NetHub.Application.Features.Public.Articles.Delete;
 using NetHub.Application.Features.Public.Articles.GetMany;
 using NetHub.Application.Features.Public.Articles.Localizations;
+using NetHub.Application.Features.Public.Articles.Localizations.GetSaving.All;
 using NetHub.Application.Features.Public.Articles.One;
 using NetHub.Application.Features.Public.Articles.Ratings.Get;
-using NetHub.Application.Features.Public.Articles.Ratings.Rate;
+using NetHub.Application.Features.Public.Articles.Ratings.SetRate;
 using NetHub.Application.Features.Public.Articles.Update;
 using NetHub.Application.Features.Public.Articles.User;
+using NetHub.Data.SqlServer.Entities.Views;
+using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Api.Areas.Public.Controllers.ArticleControllers;
 
 public class ArticlesController : ApiController
 {
 	[HttpGet("{id:long}")]
+	[AllowAnonymous]
 	public async Task<ArticleModel> GetOne([FromRoute] long id)
 	{
 		var (model, guids) = await Mediator.Send(new GetArticleRequest(id));
@@ -60,7 +64,7 @@ public class ArticlesController : ApiController
 
 	[HttpGet("{id:long}/rate")]
 	public async Task<IActionResult> Rate([FromRoute] long id,
-		[FromQuery] RateModel rating)
+		[FromQuery] Rating rating)
 	{
 		await Mediator.Send(new RateArticleRequest(id, rating));
 		return Ok();
@@ -72,4 +76,12 @@ public class ArticlesController : ApiController
 		var result = await Mediator.Send(new GetArticleRateRequest(id));
 		return result;
 	}
+
+	[HttpGet("saved")]
+	public async Task<ExtendedArticleModel[]> GetSaved()
+	{
+		var result = await Mediator.Send(new GetSavedArticlesRequest());
+		return result;
+	}
+
 }

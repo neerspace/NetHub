@@ -2,7 +2,6 @@ using System.IdentityModel.Tokens.Jwt;
 using NetHub.Api;
 using NetHub.Api.Configuration;
 using NetHub.Api.Configuration.Swagger;
-using NetHub.Api.Middleware;
 using NetHub.Application;
 using NetHub.Data.SqlServer;
 using NetHub.Infrastructure;
@@ -73,17 +72,18 @@ static void ConfigureWebApp(WebApplication app)
 
 	app.UseAuthentication();
 	app.UseAuthorization();
-	
+	// app.UseHealthChecks("/health-check");
+
 	// app.UseMiddleware<ProfilesMiddleware>();
-	
+
 	app.MapControllers();
 }
 
 static ILogger ConfigureNLog(string loggerConfigName = "NLog.json")
 {
 	var config = new ConfigurationBuilder()
-			.SetBasePath(Directory.GetCurrentDirectory())
-			.AddJsonFile(loggerConfigName, optional: true, reloadOnChange: true).Build();
+		.SetBasePath(Directory.GetCurrentDirectory())
+		.AddJsonFile(loggerConfigName, optional: true, reloadOnChange: true).Build();
 
 	LogManager.Configuration = new NLogLoggingConfiguration(config.GetRequiredSection("NLog"));
 	return NLogBuilder.ConfigureNLog(LogManager.Configuration).GetLogger("Program");

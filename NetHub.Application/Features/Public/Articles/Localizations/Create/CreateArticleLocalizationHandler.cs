@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Linq.Dynamic.Core;
-using System.Text;
-using System.Text.RegularExpressions;
-using Mapster;
+﻿using Mapster;
 using Microsoft.EntityFrameworkCore;
 using NetHub.Application.Tools;
 using NetHub.Core.Constants;
@@ -23,6 +19,8 @@ public class CreateArticleLocalizationHandler :
 
 	protected override async Task<ArticleLocalizationModel> Handle(CreateArticleLocalizationRequest request)
 	{
+		//TODO: university (delayed publication)
+		
 		var userId = UserProvider.GetUserId();
 		var article = await Database.Set<Article>()
 			.Include(a => a.Localizations)
@@ -57,6 +55,8 @@ public class CreateArticleLocalizationHandler :
 	private async Task<IEnumerable<ArticleContributor>> SetContributors(ArticleContributorModel[]? contributors,
 		long mainAuthorId)
 	{
+		//TODO: university (not allowed to add more than 6 contributors)
+
 		var returnContributors = new List<ArticleContributor>
 		{
 			new()

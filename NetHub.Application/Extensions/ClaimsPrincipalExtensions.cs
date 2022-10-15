@@ -52,6 +52,18 @@ public static class ClaimsPrincipalExtensions
 		claim = user.Claims.SingleOrDefault(c => string.Equals(c.Type, type, StringComparison.OrdinalIgnoreCase));
 		return claim is not null;
 	}
+	
+	/// <summary>
+	/// Gets value from the claim with the given type.
+	/// </summary>
+	/// <param name="user">Current user principal</param>
+	/// <param name="type">Claim type</param>
+	/// <returns>Found claim or returns null</returns>
+	public static bool TryGetClaimWithoutAuthorization(this ClaimsPrincipal user, string type, out Claim? claim)
+	{
+		claim = user.Claims.SingleOrDefault(c => string.Equals(c.Type, type, StringComparison.OrdinalIgnoreCase));
+		return claim is not null;
+	}
 
 	/// <summary>
 	/// Gets list of all values from the claim with the given type.

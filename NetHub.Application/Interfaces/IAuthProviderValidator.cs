@@ -6,7 +6,7 @@ public interface IAuthProviderValidator
 {
 	ProviderType Type { get; }
 
-	Task<bool> ValidateAsync(Dictionary<string, string> metadata, SsoType type);
+	Task<bool> ValidateAsync(SsoEnterRequest request, SsoType type);
 }
 
 public enum SsoType

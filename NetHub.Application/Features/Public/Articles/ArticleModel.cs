@@ -10,6 +10,7 @@ public class ArticleModel
 	public DateTime Created { get; set; }
 	public DateTime? Updated { get; set; }
 	public string? OriginalArticleLink { get; set; }
+	public int Rate { get; set; }
 	public ArticleLocalizationModel[]? Localizations { get; set; }
 	public string[]? ImagesLinks { get; set; }
 	public string[] Tags { get; set; } = default!;

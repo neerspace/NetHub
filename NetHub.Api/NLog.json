@@ -2,7 +2,7 @@
 	"NLog": {
 		"autoReload": true,
 		"throwConfigExceptions": true,
-		"internalLogLevel": "Info",
+		"internalLogLevel": "Error",
 		"internalLogFile": "${basedir}/logs/nlog-internal.log",
 		"extensions": [
 			{ "assembly": "NLog.Web.AspNetCore" }

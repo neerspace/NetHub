@@ -4,8 +4,10 @@ namespace NetHub.Api.Configuration;
 
 public static class ApiExtensions
 {
-	public static void AddCorsPolicies(this IServiceCollection services)
+	public static void AddCorsPolicies(this IServiceCollection services, IConfiguration configuration)
 	{
+		var config = configuration.GetSection("Configuration").Get<ProjectOptions>();
+
 		services.AddCors(o => o.AddPolicy("Cors", builder =>
 		{
 			// TODO: add normal CORS :)
@@ -13,7 +15,7 @@ public static class ApiExtensions
 			// 	.WithHeaders("Content-Type", "Authorization", "Set-Cookie")
 			// 	.AllowCredentials();
 			// builder.AllowAnyOrigin()
-			builder.WithOrigins("https://testttt-mu.vercel.app")
+			builder.WithOrigins(config.AllowedOrigins)
 				.AllowAnyMethod()
 				.AllowAnyHeader()
 				.AllowCredentials();

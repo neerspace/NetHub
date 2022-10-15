@@ -8,7 +8,7 @@ using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Application.Features.Public.Users.Me;
 
-public class GetUserHandler : AuthorizedHandler<GetUserRequest, UserProfileDto>
+public class GetUserHandler : AuthorizedHandler<GetUserRequest, UserDto>
 {
 	private readonly UserManager<User> _userManager;
 
@@ -17,11 +17,11 @@ public class GetUserHandler : AuthorizedHandler<GetUserRequest, UserProfileDto>
 		_userManager = serviceProvider.GetRequiredService<UserManager<User>>();
 	}
 
-	protected override async Task<UserProfileDto> Handle(GetUserRequest request)
+	protected override async Task<UserDto> Handle(GetUserRequest request)
 	{
 		var userId = UserProvider.GetUserId();
 		var user = await _userManager.FindByIdAsync(userId);
 
-		return user.Adapt<UserProfileDto>();
+		return user.Adapt<UserDto>();
 	}
 }

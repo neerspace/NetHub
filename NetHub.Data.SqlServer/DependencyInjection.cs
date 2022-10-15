@@ -25,6 +25,7 @@ public static class DependencyInjection
 			{
 				o.Password.RequireUppercase = false;
 				o.Password.RequireNonAlphanumeric = false;
+				o.User.RequireUniqueEmail = true;
 			})
 			.AddEntityFrameworkStores<SqlServerDbContext>();
 

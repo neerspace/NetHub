@@ -3,7 +3,7 @@ using NetHub.Application.Features.Public.Users.Dto;
 
 namespace NetHub.Application.Features.Public.Users.Register;
 
-public class RegisterUserRequest : IRequest<UserProfileDto>
+public class RegisterUserRequest : IRequest<UserDto>
 {
 	public string UserName { get; set; } = default!;
 	public string Email { get; set; } = default!;

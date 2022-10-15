@@ -13,4 +13,6 @@ public record ArticleLocalizationModel
 	public ContentStatus Status { get; set; }
 	public int Views { get; set; }
 	public int Rate { get; set; }
+	public DateTime Created { get; set; }
+	public DateTime? Updated { get; set; }
 }

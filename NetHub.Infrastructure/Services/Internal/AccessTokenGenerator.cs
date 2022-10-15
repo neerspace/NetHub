@@ -49,7 +49,8 @@ public class AccessTokenGenerator
 		var claims = new List<Claim>
 		{
 			new(Claims.Id, user.Id.ToString()),
-			new(Claims.Username, user.UserName)
+			new(Claims.Username, user.UserName),
+			new(Claims.Image, user.ProfilePhotoLink ?? "")
 		};
 
 		IEnumerable<string> roles = await GetUserRolesAsync(user.Id, cancel);

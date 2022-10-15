@@ -13,6 +13,6 @@ public class AuthProviderValidator : IAuthValidator
 	public AuthProviderValidator(IEnumerable<IAuthProviderValidator> validators) => _validators = validators;
 
 
-	public async Task<bool> ValidateAsync(ProviderType provider, Dictionary<string, string>? metadata, SsoType type)
-		=> await _validators.First(v => v.Type == provider).ValidateAsync(metadata, type);
+	public async Task<bool> ValidateAsync(SsoEnterRequest request, SsoType type)
+		=> await _validators.First(v => v.Type == request.Provider).ValidateAsync(request, type);
 }

@@ -1,5 +1,5 @@
-﻿using NetHub.Application.Features.Public.Articles.Ratings.Rate;
+﻿using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Application.Features.Public.Articles.Localizations;
 
-public record RatingModel(RateModel Rating);
+public record RatingModel(Rating Rating);

@@ -1,9 +1,8 @@
-﻿using Mapster;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NetHub.Application.Features.Public.Articles.Localizations;
-using NetHub.Application.Features.Public.Articles.Ratings.Rate;
 using NetHub.Application.Tools;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
+using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Application.Features.Public.Articles.Ratings.Get;
 
@@ -19,6 +18,6 @@ public class GetArticleRateHandler : AuthorizedHandler<GetArticleRateRequest, Ra
 			.Include(ar => ar.Article)
 			.FirstOrDefaultAsync(ar => ar.ArticleId == request.ArticleId);
 
-		return rating is null ? new RatingModel(RateModel.None) : new RatingModel(rating.Rating.Adapt<RateModel>());
+		return rating is null ? new RatingModel(Rating.None) : new RatingModel(rating.Rating);
 	}
 }

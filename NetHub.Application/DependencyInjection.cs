@@ -33,6 +33,7 @@ public static class DependencyInjection
 	{
 		services.Configure<MezhaOptions>(configuration.GetSection("Mezha"));
 		services.Configure<TelegramOptions>(configuration.GetSection("Telegram"));
+		services.Configure<FacebookOptions>(configuration.GetSection("Facebook"));
 		services.ConfigureOptions<JwtOptions.Configurator>();
 	}
 

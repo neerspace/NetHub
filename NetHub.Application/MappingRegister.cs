@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using NetHub.Application.Features.Public.Articles;
 using NetHub.Application.Features.Public.Articles.Localizations.Create;
+using NetHub.Application.Features.Public.Articles.Localizations.GetSaving.All;
 using NetHub.Application.Features.Public.Articles.Localizations.Update;
 using NetHub.Application.Models.Mezha;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
@@ -31,6 +32,10 @@ internal class MappingRegister : IRegister
 			//TODO: Test this
 			.Ignore(ua => ua.Contributors)
 			.IgnoreNullValues(true);
+
+		config.NewConfig<ArticleLocalization, ExtendedArticleModel>()
+			.Map(ea => ea.LocalizationId, al => al.Id)
+			.Map(ea => ea.Rate, al => al.Article!.Rate);
 	}
 
 	private void MezhaMappings(TypeAdapterConfig config)

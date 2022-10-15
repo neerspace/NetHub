@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Xunit;
 
-namespace NetHub.Tests;
+namespace NetHub.Tests.Features;
 
 public class TelegramHmacTest
 {

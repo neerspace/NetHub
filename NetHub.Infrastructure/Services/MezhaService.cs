@@ -6,6 +6,7 @@ using NetHub.Application.Models.Mezha;
 using NetHub.Application.Options;
 using NetHub.Core.DependencyInjection;
 using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace NetHub.Infrastructure.Services;
 
@@ -22,7 +23,10 @@ internal class MezhaService : IMezhaService
 	}
 
 
-	public async Task<PostModel[]> GetNews(PostsFilter filter) => await GetPosts(MezhaArticleTypes.News.Id, filter);
+	public async Task<PostModel[]> GetNews(PostsFilter filter)
+	{
+		return await GetPosts(MezhaArticleTypes.News.Id, filter);
+	}
 
 	private async Task<PostModel[]> GetPosts(int category, PostsFilter filter)
 	{
@@ -41,9 +45,11 @@ internal class MezhaService : IMezhaService
 
 		var requestUri = uri.AddQueryParameters(parameters);
 
-		var responseMessage = await _client.GetAsync(requestUri);
+		var response = await _client.GetAsync(requestUri);
 
-		var posts = JsonConvert.DeserializeObject<PostModel[]>(await responseMessage.Content.ReadAsStringAsync());
+		var message = await response.Content.ReadAsStringAsync();
+
+		var posts = JsonSerializer.Deserialize<PostModel[]>(message)!;
 
 		return posts;
 	}

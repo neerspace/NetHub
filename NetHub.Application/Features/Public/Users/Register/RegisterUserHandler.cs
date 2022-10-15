@@ -8,7 +8,7 @@ using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Application.Features.Public.Users.Register;
 
-public class RegisterUserHandler : DbHandler<RegisterUserRequest, UserProfileDto>
+public class RegisterUserHandler : DbHandler<RegisterUserRequest, UserDto>
 {
 	private readonly UserManager<User> _userManager;
 
@@ -17,7 +17,7 @@ public class RegisterUserHandler : DbHandler<RegisterUserRequest, UserProfileDto
 		_userManager = serviceProvider.GetRequiredService<UserManager<User>>();
 	}
 
-	protected override async Task<UserProfileDto> Handle(RegisterUserRequest request)
+	protected override async Task<UserDto> Handle(RegisterUserRequest request)
 	{
 		if (request.Password != request.PasswordConfirm)
 			throw new ValidationFailedException("Passwords must match");
@@ -34,6 +34,6 @@ public class RegisterUserHandler : DbHandler<RegisterUserRequest, UserProfileDto
 
 		var registeredUser = await _userManager.FindByNameAsync(request.UserName);
 
-		return registeredUser.Adapt<UserProfileDto>();
+		return registeredUser.Adapt<UserDto>();
 	}
 }

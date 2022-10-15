@@ -1,5 +1,4 @@
 ﻿using Mapster;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using NetHub.Application.Tools;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
@@ -21,6 +20,7 @@ public class GetArticleHandler : DbHandler<GetArticleRequest, (ArticleModel, Gui
 		//TODO: TEST IT!!!!!!!!!!!!!!!
 		
 		var article = await Database.Set<Article>()
+			.Include(a => a.Localizations)
 			.Include(a => a.Tags)!.ThenInclude(at => at.Tag)
 			.Include(a => a.Images)
 			.FirstOr404Async(a => a.Id == request.Id);

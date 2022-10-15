@@ -24,37 +24,27 @@ public class ToggleArticleSaveHandler : AuthorizedHandler<ToggleArticleSaveReque
 			             sa.Localization.LanguageCode == request.LanguageCode)
 			.FirstOrDefaultAsync();
 
-		switch (request.Action)
+		if (savedArticleEntity is null)
 		{
-			case SaveArticleAction.Save:
-				if (savedArticleEntity is null)
-				{
-					var localization = await Database.Set<ArticleLocalization>()
-						.Where(al => al.ArticleId == request.ArticleId &&
-						             al.LanguageCode == request.LanguageCode)
-						.FirstOr404Async();
+			var localization = await Database.Set<ArticleLocalization>()
+				.Where(al => al.ArticleId == request.ArticleId &&
+				             al.LanguageCode == request.LanguageCode)
+				.FirstOr404Async();
 
-					await Database.Set<SavedArticle>().AddAsync(new SavedArticle
-					{
-						UserId = userId,
-						LocalizationId = localization.Id,
-					});
+			await Database.Set<SavedArticle>().AddAsync(new SavedArticle
+			{
+				UserId = userId,
+				LocalizationId = localization.Id,
+			});
 
-					await Database.SaveChangesAsync();
-				}
+			await Database.SaveChangesAsync();
 
-				break;
-
-			case SaveArticleAction.Delete:
-				if (savedArticleEntity is not null)
-				{
-					Database.Set<SavedArticle>().Remove(savedArticleEntity);
-					await Database.SaveChangesAsync();
-				}
-
-				break;
+			return Unit.Value;
 		}
-		
+
+		Database.Set<SavedArticle>().Remove(savedArticleEntity);
+		await Database.SaveChangesAsync();
+
 		return Unit.Value;
 	}
 }

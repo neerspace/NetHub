@@ -28,8 +28,9 @@ public static class DependencyInjection
 
 		services.BindConfigurationOptions(configuration);
 
-		services.AddCorsPolicies();
+		services.AddCorsPolicies(configuration);
 		services.AddControllers()
+
 			.AddMvcOptions(ConfigureMvcOptions)
 			.AddJsonOptions(ConfigureJsonOptions);
 
@@ -51,6 +52,7 @@ public static class DependencyInjection
 	private static void BindConfigurationOptions(this IServiceCollection services, IConfiguration configuration)
 	{
 		// services.Configure<TelegramOptions>(configuration.GetSection("Google"));
+		services.Configure<ProjectOptions>(configuration.GetSection("Configuration"));
 	}
 
 
