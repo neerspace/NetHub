@@ -28,11 +28,11 @@ using ILogger = NLog.ILogger;
 	}
 	catch (Exception e)
 	{
-		// logger.Fatal(e);
+		logger.Fatal(e);
 	}
 	finally
 	{
-		// logger.Info("Application is now stopping");
+		logger.Info("Application is now stopping");
 		LogManager.Shutdown();
 	}
 }
@@ -49,9 +49,6 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
 	builder.Services.AddInfrastructure();
 	builder.Services.AddWebApi(builder.Configuration);
 
-	// Add services to the container.
-	builder.Services.AddControllers();
-
 	// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 	builder.Services.AddEndpointsApiExplorer();
 	builder.Services.AddSwaggerGen();
@@ -59,6 +56,8 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
 
 static void ConfigureWebApp(WebApplication app)
 {
+	app.UseDeveloperExceptionPage();
+
 	if (app.Configuration.GetSwaggerSettings().Enabled)
 	{
 		app.UseCustomSwagger();
@@ -66,10 +65,10 @@ static void ConfigureWebApp(WebApplication app)
 	}
 
 	app.UseCors("Cors");
+	
 	app.UseHttpsRedirection();
 
 	app.UseCustomExceptionHandler();
-
 	app.UseAuthentication();
 	app.UseAuthorization();
 	// app.UseHealthChecks("/health-check");

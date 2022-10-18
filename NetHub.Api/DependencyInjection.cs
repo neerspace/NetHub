@@ -1,12 +1,9 @@
-﻿using System.Reflection;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Options;
@@ -16,6 +13,7 @@ using NetHub.Api.Configuration.Swagger;
 using NetHub.Api.Middleware;
 using NetHub.Application.Options;
 using NetHub.Core.DependencyInjection;
+using NetHub.Infrastructure;
 
 namespace NetHub.Api;
 
@@ -30,11 +28,9 @@ public static class DependencyInjection
 
 		services.AddCorsPolicies(configuration);
 		services.AddControllers()
-
 			.AddMvcOptions(ConfigureMvcOptions)
 			.AddJsonOptions(ConfigureJsonOptions);
 
-		services.AddAuthProviders(configuration);
 
 		services.ConfigureApiBehaviorOptions();
 		services.AddCustomApiVersioning();
@@ -42,7 +38,8 @@ public static class DependencyInjection
 
 		var serviceProvider = services.BuildServiceProvider();
 		var jwtOptions = serviceProvider.GetRequiredService<IOptions<JwtOptions>>().Value;
-		services.AddJwtAuthentication(jwtOptions);
+
+		services.AddJwtAuthentication(jwtOptions, configuration);
 		services.AddPoliciesAuthorization();
 
 		if (configuration.GetSwaggerSettings().Enabled)
@@ -74,25 +71,25 @@ public static class DependencyInjection
 		services.AddTransient(typeof(IPipelineBehavior<,>), typeof(FluentValidationBehavior<,>));
 	}
 
-	private static void AddJwtAuthentication(this IServiceCollection services, JwtOptions jwt)
+	private static void AddJwtAuthentication(this IServiceCollection services, JwtOptions jwt,
+		IConfiguration configuration)
 	{
 		services.AddAuthentication(options =>
+		{
+			options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+			options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+		}).AddJwtBearer(options =>
+		{
+			options.RequireHttpsMetadata = false;
+			options.TokenValidationParameters = new TokenValidationParameters
 			{
-				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-			})
-			.AddJwtBearer(options =>
-			{
-				options.RequireHttpsMetadata = false;
-				options.TokenValidationParameters = new TokenValidationParameters
-				{
-					ValidateIssuer = false,
-					ValidateAudience = false,
-					// ValidateLifetime = true,
-					IssuerSigningKey = jwt.Secret,
-					ValidateIssuerSigningKey = true,
-				};
-			});
+				ValidateIssuer = false,
+				ValidateAudience = false,
+				// ValidateLifetime = true,
+				IssuerSigningKey = jwt.Secret,
+				ValidateIssuerSigningKey = true,
+			};
+		}).AddGoogleAuthProvider(configuration);
 	}
 }
 

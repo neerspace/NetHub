@@ -12,8 +12,8 @@ public static class DependencyInjection
 		{
 			options.SwaggerDoc("v1", new OpenApiInfo
 			{
-				Description = "Nethub Api Swagger",
-				Title = "Nethub Api Swagger",
+				Description = "NetHub Api Swagger",
+				Title = "NetHub Api Swagger",
 				Version = "1",
 			});
 			options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme

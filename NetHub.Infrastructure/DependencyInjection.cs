@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetHub.Application.Options;
 using NetHub.Core.DependencyInjection;
@@ -12,18 +13,18 @@ public static class DependencyInjection
 		services.RegisterServicesFromAssembly("NetHub.Infrastructure");
 	}
 
-	public static IServiceCollection AddGoogleAuthProvider(this IServiceCollection services, IConfiguration configuration)
+	public static AuthenticationBuilder AddGoogleAuthProvider(this AuthenticationBuilder builder, IConfiguration configuration)
 	{
 		var googleOptions = configuration
 			.GetSection("Google")
 			.Get<GoogleOptions>();
 
-		services.AddAuthentication().AddGoogleOpenIdConnect(options =>
+		builder.AddGoogleOpenIdConnect(options =>
 		{
 			options.ClientId = googleOptions.ClientId;
 			options.ClientSecret = googleOptions.ClientSecret;
 		});
 
-		return services;
+		return builder;
 	}
 }

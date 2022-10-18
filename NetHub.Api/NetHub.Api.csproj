@@ -41,10 +41,4 @@
       <Folder Include="Areas\Public" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Update="AuthProvidersInjection.cs">
-        <DependentUpon>DependencyInjection.cs</DependentUpon>
-      </Compile>
-    </ItemGroup>
-
 </Project>
