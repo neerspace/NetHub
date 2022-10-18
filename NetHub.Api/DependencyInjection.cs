@@ -30,8 +30,7 @@ public static class DependencyInjection
 		services.AddControllers()
 			.AddMvcOptions(ConfigureMvcOptions)
 			.AddJsonOptions(ConfigureJsonOptions);
-
-
+		
 		services.ConfigureApiBehaviorOptions();
 		services.AddCustomApiVersioning();
 		services.RegisterServicesFromAssembly("NetHub.Api");
