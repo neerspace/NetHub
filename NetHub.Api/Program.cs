@@ -16,7 +16,7 @@ using ILogger = NLog.ILogger;
 	try
 	{
 		var builder = WebApplication.CreateBuilder(args);
-		builder.Configuration.AddJsonFile("appsettings.Secrets.json");
+		// builder.Configuration.AddJsonFile("appsettings.Secrets.json");
 
 		ConfigureBuilder(builder);
 
