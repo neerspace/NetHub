@@ -14,8 +14,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Infrastructure", "Ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Data.SqlServer", "NetHub.Data.SqlServer\NetHub.Data.SqlServer.csproj", "{927A610F-4848-4466-92BA-56A6F7367E0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Recommendations", "NetHub.Recommendations\NetHub.Recommendations.csproj", "{28A85F2B-B179-4E84-871A-F23919750259}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Tests", "NetHub.Tests\NetHub.Tests.csproj", "{FF0A8289-923B-4941-AB2B-BA816E339910}"
 EndProject
 Global
