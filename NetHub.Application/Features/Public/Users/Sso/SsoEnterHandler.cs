@@ -40,6 +40,7 @@ public class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthResult, string)>
 
 		var dto = await _jwtService.GenerateAsync(user);
 		dto.ProfilePhotoLink = user.ProfilePhotoLink;
+		dto.FirstName = user.FirstName;
 
 		// return (dto.Adapt<AuthModel>(), dto.RefreshToken);
 		return (dto, dto.RefreshToken);

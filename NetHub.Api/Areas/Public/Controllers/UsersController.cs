@@ -105,7 +105,7 @@ public class UserController : ApiController
 		return result;
 	}
 
-	[HttpPut("change-username")]
+	[HttpPut("username")]
 	public async Task<IActionResult> ChangeUsername([FromBody] ChangeUsernameRequest request)
 	{
 		await Mediator.Send(request);
