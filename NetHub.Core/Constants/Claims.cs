@@ -6,6 +6,7 @@ public struct Claims
 {
 	public const string Id = "sid";
 	public const string Username = "username";
+	public const string FirstName = "firstname";
 	public const string Image = "image";
 	public const string Role = ClaimTypes.Role;
 	public const string Email = ClaimTypes.Email;
