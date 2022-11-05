@@ -43,12 +43,12 @@ public static class DependencyInjection
 
 	public static void UseCustomSwagger(this IApplicationBuilder app)
 	{
+		var swaggerSettings = app.ApplicationServices.GetRequiredService<IConfiguration>().GetSwaggerSettings();
+		var apiProvider = app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
+
 		app.UseSwagger();
 		app.UseSwaggerUI(options =>
 		{
-			var swaggerSettings = app.ApplicationServices.GetRequiredService<IConfiguration>().GetSwaggerSettings();
-			var apiProvider = app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
-
 			foreach (ApiVersionDescription description in apiProvider.ApiVersionDescriptions)
 			{
 				string name = $"{swaggerSettings.Title} {description.GroupName.ToUpper()}";
@@ -59,6 +59,15 @@ public static class DependencyInjection
 			options.DocumentTitle = "Swagger - " + swaggerSettings.Title;
 			options.InjectStylesheet("/swagger/custom.css");
 			options.InjectJavascript("/swagger/custom.js");
+		});
+
+		app.UseReDoc(options =>
+		{
+			var description = apiProvider.ApiVersionDescriptions[0];
+			options.DocumentTitle = $"{swaggerSettings.Title} {description.GroupName.ToUpper()}";
+			options.SpecUrl = $"../swagger/{description.GroupName}/swagger.json";
+			options.RoutePrefix = "dogs";
+			options.HeadContent = "NetHub Api Docs";
 		});
 	}
 

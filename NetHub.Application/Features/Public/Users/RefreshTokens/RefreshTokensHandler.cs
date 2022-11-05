@@ -6,7 +6,7 @@ using NetHub.Application.Tools;
 
 namespace NetHub.Application.Features.Public.Users.RefreshTokens;
 
-public class RefreshTokensHandler : AuthorizedHandler<RefreshTokensRequest, (AuthResult,string)>
+public class RefreshTokensHandler : AuthorizedHandler<RefreshTokensRequest, (AuthResult, string)>
 {
 	private readonly IJwtService _jwtService;
 
@@ -16,15 +16,18 @@ public class RefreshTokensHandler : AuthorizedHandler<RefreshTokensRequest, (Aut
 	}
 
 	// protected override async Task<(AuthModel,string)> Handle(RefreshTokensRequest request)
-	protected override async Task<(AuthResult,string)> Handle(RefreshTokensRequest request)
+	protected override async Task<(AuthResult, string)> Handle(RefreshTokensRequest request)
 	{
 		var user = await UserProvider.GetUser();
-		
-		var dto = await _jwtService.RefreshAsync(request.RefreshToken);
 
-		dto.FirstName = user.FirstName;
-		dto.ProfilePhotoLink = user.ProfilePhotoLink;
-		
+		var dto = await _jwtService.RefreshAsync(request.RefreshToken)
+			with
+			{
+				ProfilePhotoLink = user.ProfilePhotoLink,
+				FirstName = user.FirstName,
+			};
+
+
 		return (dto, dto.RefreshToken);
 	}
 }

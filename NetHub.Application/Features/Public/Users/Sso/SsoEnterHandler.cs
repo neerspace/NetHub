@@ -38,9 +38,15 @@ public class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthResult, string)>
 
 		await LoginUser(request, validated);
 
-		var dto = await _jwtService.GenerateAsync(user);
-		dto.ProfilePhotoLink = user.ProfilePhotoLink;
-		dto.FirstName = user.FirstName;
+		var dto = await _jwtService.GenerateAsync(user)
+			with
+			{
+				ProfilePhotoLink = user.ProfilePhotoLink,
+				FirstName = user.FirstName
+			};
+
+		// dto.ProfilePhotoLink = user.ProfilePhotoLink;
+		// dto.FirstName = user.FirstName;
 
 		// return (dto.Adapt<AuthModel>(), dto.RefreshToken);
 		return (dto, dto.RefreshToken);
@@ -60,7 +66,7 @@ public class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthResult, string)>
 			await ValidateUser(request);
 
 		// if (user is null)
-			// throw new ValidationFailedException("Username", "No such User with provided username");
+		// throw new ValidationFailedException("Username", "No such User with provided username");
 
 		// return user;
 	}
@@ -88,7 +94,7 @@ public class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthResult, string)>
 		await _userManager.AddLoginAsync(user,
 			new UserLoginInfo(request.Provider.ToString().ToLower(),
 				request.ProviderKey,
-				request.Provider.ToString().ToLower()));
+				null));
 
 		return user;
 	}
@@ -109,6 +115,6 @@ public class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthResult, string)>
 		return await Database.Set<IdentityUserLogin<long>>()
 			.SingleOrDefaultAsync(info =>
 				info.ProviderKey == key &&
-				info.ProviderDisplayName == provider.ToString().ToLower());
+				info.LoginProvider == provider.ToString().ToLower());
 	}
 }
