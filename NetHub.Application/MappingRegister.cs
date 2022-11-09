@@ -3,6 +3,7 @@ using NetHub.Application.Features.Public.Articles;
 using NetHub.Application.Features.Public.Articles.Localizations.Create;
 using NetHub.Application.Features.Public.Articles.Localizations.GetSaving.All;
 using NetHub.Application.Features.Public.Articles.Localizations.Update;
+using NetHub.Application.Models.Currency;
 using NetHub.Application.Models.Mezha;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
 
@@ -44,5 +45,12 @@ internal class MappingRegister : IRegister
 		config.NewConfig<PostModel, PostDto>()
 			.Ignore(pm => pm.Tags)
 			.Ignore(pm => pm.Categories);
+	}
+
+	private void CurrencyMappings(TypeAdapterConfig config)
+	{
+		config.NewConfig<OneExchangeResponse, OneExchangeDto>()
+			.Map(od => od.CurrencyFrom, or => or.CurrencyCodeA)
+			.Map(od => od.CurrencyTo, or => or.CurrencyCodeB);
 	}
 }

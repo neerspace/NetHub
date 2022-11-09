@@ -46,7 +46,7 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
 
 	builder.Services.AddSqlServerDatabase(builder.Configuration);
 	builder.Services.AddApplication(builder.Configuration);
-	builder.Services.AddInfrastructure();
+	builder.Services.AddInfrastructure(builder.Configuration);
 	builder.Services.AddWebApi(builder.Configuration);
 
 	// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -65,15 +65,12 @@ static void ConfigureWebApp(WebApplication app)
 	}
 
 	app.UseCors("Cors");
-	
+
 	app.UseHttpsRedirection();
 
 	app.UseCustomExceptionHandler();
 	app.UseAuthentication();
 	app.UseAuthorization();
-	// app.UseHealthChecks("/health-check");
-
-	// app.UseMiddleware<ProfilesMiddleware>();
 
 	app.MapControllers();
 }
