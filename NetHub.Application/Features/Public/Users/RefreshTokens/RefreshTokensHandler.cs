@@ -23,6 +23,7 @@ public class RefreshTokensHandler : AuthorizedHandler<RefreshTokensRequest, (Aut
 		var dto = await _jwtService.RefreshAsync(request.RefreshToken)
 			with
 			{
+				Id = user.Id,
 				ProfilePhotoLink = user.ProfilePhotoLink,
 				FirstName = user.FirstName,
 			};

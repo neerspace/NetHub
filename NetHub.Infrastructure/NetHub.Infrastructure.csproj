@@ -16,6 +16,8 @@
       <PackageReference Include="Google.Apis.Core" Version="1.57.0" />
       <PackageReference Include="LazyCache.AspNetCore" Version="2.4.0" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
+      <PackageReference Include="NeerCore.Logging.NLog" Version="1.6.2" />
+      <PackageReference Include="Sieve" Version="2.5.5" />
     </ItemGroup>
 
     <ItemGroup>

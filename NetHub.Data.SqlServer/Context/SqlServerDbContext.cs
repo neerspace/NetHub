@@ -5,6 +5,7 @@ using NetHub.Core.Abstractions.Context;
 using NetHub.Data.SqlServer.Configuration.Conversions;
 using NetHub.Data.SqlServer.DataSeeding;
 using NetHub.Data.SqlServer.Entities;
+using NetHub.Data.SqlServer.Entities.ArticleEntities;
 using NetHub.Data.SqlServer.Entities.Views;
 using NetHub.Data.SqlServer.Enums;
 
@@ -36,8 +37,9 @@ public class SqlServerDbContext : IdentityDbContext<User, AppRole, long,
 				.HasConversion(s => s.ToString(), s => Enum.Parse<ContentStatus>(s));
 			config.Property(ea => ea.Vote)
 				.HasConversion(s => s.ToString(), s => Enum.Parse<Rating>(s));
+			config.Property(ea => ea.ContributorRole)
+				.HasConversion(s => s.ToString(), s => Enum.Parse<ArticleContributorRole>(s));
 		});
-
 
 		builder.SeedDefaultUser();
 		builder.SeedRoles();

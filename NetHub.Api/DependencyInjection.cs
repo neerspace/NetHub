@@ -14,6 +14,7 @@ using NetHub.Api.Middleware;
 using NetHub.Application.Options;
 using NetHub.Core.DependencyInjection;
 using NetHub.Infrastructure;
+using Sieve.Models;
 
 namespace NetHub.Api;
 
@@ -26,6 +27,7 @@ public static class DependencyInjection
 
 		services.BindConfigurationOptions(configuration);
 
+		
 		services.AddCorsPolicies(configuration);
 		services.AddControllers()
 			.AddMvcOptions(ConfigureMvcOptions)

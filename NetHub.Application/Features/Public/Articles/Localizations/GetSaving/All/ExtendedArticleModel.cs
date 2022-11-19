@@ -1,4 +1,5 @@
-﻿using NetHub.Data.SqlServer.Enums;
+﻿using NetHub.Data.SqlServer.Entities.Views;
+using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Application.Features.Public.Articles.Localizations.GetSaving.All;
 
@@ -17,5 +18,9 @@ public record ExtendedArticleModel
 	public long ArticleId { get; set; }
 	public string LanguageCode { get; set; } = default!;
 	public long LocalizationId { get; set; }
+	public long ContributorId { get; set; }
+	public ArticleContributorRole ContributorRole { get; set; }
+
+	// public ArticleContributorModel2[] Contributors { get; set; }
 	public int Rate { get; set; }
 }
