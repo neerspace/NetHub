@@ -43,6 +43,9 @@ public record ArticleLocalization : IEntity
 
 	[Sieve(CanSort = true)]
 	public DateTime? Updated { get; set; }
+	
+	public long? LastContributorId { get; set; }
+	public User? LastContributor { get; set; }
 
 	[Sieve(CanFilter = true)]
 	public virtual ICollection<ArticleContributor> Contributors { get; set; } = default!;

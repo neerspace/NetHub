@@ -39,6 +39,8 @@ public class SqlServerDbContext : IdentityDbContext<User, AppRole, long,
 				.HasConversion(s => s.ToString(), s => Enum.Parse<Rating>(s));
 			config.Property(ea => ea.ContributorRole)
 				.HasConversion(s => s.ToString(), s => Enum.Parse<ArticleContributorRole>(s));
+			config.Property(ea => ea.Status)
+				.HasConversion(s => s.ToString(), s => Enum.Parse<ContentStatus>(s));
 		});
 
 		builder.SeedDefaultUser();

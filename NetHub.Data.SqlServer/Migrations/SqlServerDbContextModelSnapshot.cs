@@ -164,14 +164,14 @@ namespace NetHub.Data.SqlServer.Migrations
                         new
                         {
                             Id = 1L,
-                            ConcurrencyStamp = "016f166d-111d-426e-83a9-9dc481eb2d54",
+                            ConcurrencyStamp = "4e085a29-236b-4b6e-8fc0-0f965f12dd59",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = 2L,
-                            ConcurrencyStamp = "eb45aa27-dff5-478a-9115-40ed6ec4c3b6",
+                            ConcurrencyStamp = "7aae5f20-7209-43ca-b5ae-150bd453b19b",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -208,7 +208,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Articles", (string)null);
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleContributor", b =>
@@ -235,7 +235,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ArticleContributors", (string)null);
+                    b.ToTable("ArticleContributors");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleLocalization", b =>
@@ -268,6 +268,9 @@ namespace NetHub.Data.SqlServer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(2)");
 
+                    b.Property<long?>("LastContributorId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -289,7 +292,9 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("LanguageCode");
 
-                    b.ToTable("ArticleLocalizations", (string)null);
+                    b.HasIndex("LastContributorId");
+
+                    b.ToTable("ArticleLocalizations");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleRating", b =>
@@ -308,7 +313,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ArticleRatings", (string)null);
+                    b.ToTable("ArticleRatings");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleResource", b =>
@@ -323,7 +328,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.ToTable("ArticleResources", (string)null);
+                    b.ToTable("ArticleResources");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleTag", b =>
@@ -338,7 +343,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.ToTable("ArticleTags", (string)null);
+                    b.ToTable("ArticleTags");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Language", b =>
@@ -432,7 +437,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("LocalizationId");
 
-                    b.ToTable("SavedArticles", (string)null);
+                    b.ToTable("SavedArticles");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Tag", b =>
@@ -451,7 +456,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("Tags", (string)null);
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.User", b =>
@@ -491,8 +496,8 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LockoutEnd")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
@@ -555,7 +560,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         {
                             Id = 19L,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "29d0ec53-78a6-43ff-8296-eee1a2b61ec7",
+                            ConcurrencyStamp = "637c871e-b481-4998-99ea-6c3a22343fa7",
                             Email = "aspadmin@asp.net",
                             EmailConfirmed = true,
                             FirstName = "vlad",
@@ -564,13 +569,78 @@ namespace NetHub.Data.SqlServer.Migrations
                             MiddleName = "tarasovich",
                             NormalizedEmail = "ASPADMIN@ASP.NET",
                             NormalizedUserName = "ASPADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJpsaWAdLPdgyvyQHO61Qt0U8aONljeufCcR36F+Pzd9iQi9SbT+fIgHsOHwId+4Pw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELGbFjSODI6MXGFB5pnPkiNKchu8Obb0oPmWIVjR+QOLMBqdPAooQ1EDJWFHxpf5IQ==",
                             PhoneNumberConfirmed = false,
-                            Registered = new DateTime(2022, 8, 16, 9, 13, 41, 362, DateTimeKind.Utc).AddTicks(3214),
-                            SecurityStamp = "e198b9cb-ae94-4d1b-8818-06c1f473aa54",
+                            Registered = new DateTime(2022, 11, 24, 11, 40, 54, 713, DateTimeKind.Utc).AddTicks(4932),
+                            SecurityStamp = "33a9de2a-8849-4dbd-af6c-c85db75d4b5c",
                             TwoFactorEnabled = false,
                             UserName = "aspadmin"
                         });
+                });
+
+            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Views.ExtendedUserArticle", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("LocalizationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ArticleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ContributorId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ContributorRole")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Html")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSaved")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("SavedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Views")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Vote")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LocalizationId");
+
+                    b.ToView("v_ExtendedUserArticle");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
@@ -663,9 +733,15 @@ namespace NetHub.Data.SqlServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("NetHub.Data.SqlServer.Entities.User", "LastContributor")
+                        .WithMany()
+                        .HasForeignKey("LastContributorId");
+
                     b.Navigation("Article");
 
                     b.Navigation("Language");
+
+                    b.Navigation("LastContributor");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleRating", b =>
@@ -761,7 +837,29 @@ namespace NetHub.Data.SqlServer.Migrations
                         .WithMany()
                         .HasForeignKey("PhotoId");
 
+                    b.OwnsOne("NetHub.Data.SqlServer.Entities.UsernameChange", "UsernameChanges", b1 =>
+                        {
+                            b1.Property<long>("UserId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<byte>("Count")
+                                .HasColumnType("tinyint");
+
+                            b1.Property<DateTime?>("LastTime")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("UserProfiles");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
                     b.Navigation("Photo");
+
+                    b.Navigation("UsernameChanges")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.AppRole", b =>

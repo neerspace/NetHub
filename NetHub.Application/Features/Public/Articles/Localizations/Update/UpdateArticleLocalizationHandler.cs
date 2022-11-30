@@ -30,7 +30,7 @@ public class UpdateArticleLocalizationHandler : AuthorizedHandler<UpdateArticleL
 		if (localization is null)
 			throw new NotFoundException("No such article localization");
 
-		if (localization.GetAuthorId() != userId)
+		if (localization.Contributors.All(ac => ac.Id != userId))
 			throw new PermissionsException();
 
 		if (localization.Status == ContentStatus.Published)
@@ -51,6 +51,7 @@ public class UpdateArticleLocalizationHandler : AuthorizedHandler<UpdateArticleL
 			await SetNewLanguage(request, localization);
 
 		localization.Updated = DateTime.UtcNow;
+		localization.LastContributorId = userId;
 
 		await Database.SaveChangesAsync();
 
