@@ -4,5 +4,7 @@ public enum ArticleContributorRole
 {
 	Author,
 	Editor,
-	Test
+	Test,
+	Copyrighter,
+	Translator
 }

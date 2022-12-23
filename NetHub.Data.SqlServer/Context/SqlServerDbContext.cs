@@ -36,7 +36,7 @@ public class SqlServerDbContext : IdentityDbContext<User, AppRole, long,
 			config.Property(ea => ea.Status)
 				.HasConversion(s => s.ToString(), s => Enum.Parse<ContentStatus>(s));
 			config.Property(ea => ea.Vote)
-				.HasConversion(s => s.ToString(), s => Enum.Parse<Rating>(s));
+				.HasConversion(s => s.ToString(), s => s == null ? null : Enum.Parse<Vote>(s));
 			config.Property(ea => ea.ContributorRole)
 				.HasConversion(s => s.ToString(), s => Enum.Parse<ArticleContributorRole>(s));
 			config.Property(ea => ea.Status)

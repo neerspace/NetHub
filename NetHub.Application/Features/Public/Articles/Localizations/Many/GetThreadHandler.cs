@@ -1,15 +1,9 @@
-﻿using System.Linq.Dynamic.Core;
-using System.Linq.Expressions;
-using Mapster;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.DependencyInjection;
-using NetHub.Application.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection;
 using NetHub.Application.Features.Public.Articles.Localizations.GetSaving.All;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Models;
 using NetHub.Application.Tools;
-using NetHub.Data.SqlServer.Entities;
+using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
 using NetHub.Data.SqlServer.Entities.Views;
 
@@ -41,10 +35,12 @@ public class GetThreadHandler : DbHandler<GetThreadRequest, ExtendedArticleModel
 	private async Task<ExtendedArticleModel[]> GetSimpleArticles(FilterRequest request, CancellationToken cancel)
 	{
 		if (request.Filters != null && request.Filters.Contains("contributorRole"))
-			request.Filters = request.Filters.Replace("contributorRole==Author", "");
+			request.Filters = request.Filters.Replace(",contributorRole==Author", "");
 
 		if (request.Filters != null && request.Filters.Contains("contributorId"))
 			request.Filters = request.Filters.Replace("contributorId", "InContributors");
+
+		request.Filters += ",status==published";
 
 		var result = await _filterService
 			.FilterAsync<ArticleLocalization, ExtendedArticleModel>(request, cancel, al => al.Contributors);
@@ -56,6 +52,8 @@ public class GetThreadHandler : DbHandler<GetThreadRequest, ExtendedArticleModel
 		long userId)
 	{
 		request.Filters += $",userId=={userId}";
+		request.Filters += ",status==published";
+
 		var result =
 			await _filterService.FilterAsync<ExtendedUserArticle, ExtendedArticleModel>(request, ct: cancel);
 		return result;

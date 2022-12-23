@@ -43,7 +43,13 @@ public record ArticleLocalization : IEntity
 
 	[Sieve(CanSort = true)]
 	public DateTime? Updated { get; set; }
-	
+
+	[Sieve(CanSort = true)]
+	public DateTime? Published { get; set; }
+
+	[Sieve(CanSort = true)]
+	public DateTime? Banned { get; set; }
+
 	public long? LastContributorId { get; set; }
 	public User? LastContributor { get; set; }
 

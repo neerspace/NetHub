@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetHub.Data.SqlServer.Context;
 
@@ -11,9 +12,10 @@ using NetHub.Data.SqlServer.Context;
 namespace NetHub.Data.SqlServer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
-    partial class SqlServerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221215111540_ArticleDates")]
+    partial class ArticleDates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,14 +166,14 @@ namespace NetHub.Data.SqlServer.Migrations
                         new
                         {
                             Id = 1L,
-                            ConcurrencyStamp = "901beb85-ed89-402c-bfa0-f85eb9dd4afc",
+                            ConcurrencyStamp = "c4dd8a4d-3086-4d37-8a22-fb3c4c1023ce",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = 2L,
-                            ConcurrencyStamp = "5ab603f6-6e8c-4189-831c-14999b30c293",
+                            ConcurrencyStamp = "3f52c231-3e16-4922-9d76-c5736216b44e",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -309,6 +311,25 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.ToTable("ArticleLocalizations");
                 });
 
+            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleRating", b =>
+                {
+                    b.Property<long>("ArticleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Rating")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ArticleId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ArticleRatings");
+                });
+
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleResource", b =>
                 {
                     b.Property<Guid>("ResourceId")
@@ -337,25 +358,6 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.HasIndex("ArticleId");
 
                     b.ToTable("ArticleTags");
-                });
-
-            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleVote", b =>
-                {
-                    b.Property<long>("ArticleId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Vote")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ArticleId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ArticleVotes");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Language", b =>
@@ -572,7 +574,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         {
                             Id = 19L,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9ac70bd5-c9f9-4903-b32d-5c083503630b",
+                            ConcurrencyStamp = "0afab653-7850-4ee3-948c-a9cff8d4b5af",
                             Email = "aspadmin@asp.net",
                             EmailConfirmed = true,
                             FirstName = "vlad",
@@ -581,10 +583,10 @@ namespace NetHub.Data.SqlServer.Migrations
                             MiddleName = "tarasovich",
                             NormalizedEmail = "ASPADMIN@ASP.NET",
                             NormalizedUserName = "ASPADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFVWXbnQJ5iUN2R1rPIaQtPcW6nKDbUcvlJSWJy+KvMPOEjdKj+SFqCQI62Xv/F1nQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHXPfCNDnl26iDEounMx1ykhj8nTVj+JoST0VBm7igJ0rUb+gYUfzwM44i4jIEviNg==",
                             PhoneNumberConfirmed = false,
-                            Registered = new DateTime(2022, 12, 15, 15, 32, 36, 624, DateTimeKind.Utc).AddTicks(1698),
-                            SecurityStamp = "ad6eec43-1878-4024-8804-edc101a4c66c",
+                            Registered = new DateTime(2022, 12, 15, 11, 15, 39, 665, DateTimeKind.Utc).AddTicks(1558),
+                            SecurityStamp = "6bc7c25e-d2ac-41cb-9f1a-bc4ab191efd4",
                             TwoFactorEnabled = false,
                             UserName = "aspadmin"
                         });
@@ -762,6 +764,25 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.Navigation("LastContributor");
                 });
 
+            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleRating", b =>
+                {
+                    b.HasOne("NetHub.Data.SqlServer.Entities.ArticleEntities.Article", "Article")
+                        .WithMany()
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NetHub.Data.SqlServer.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleResource", b =>
                 {
                     b.HasOne("NetHub.Data.SqlServer.Entities.ArticleEntities.Article", "Article")
@@ -798,25 +819,6 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.Navigation("Article");
 
                     b.Navigation("Tag");
-                });
-
-            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleVote", b =>
-                {
-                    b.HasOne("NetHub.Data.SqlServer.Entities.ArticleEntities.Article", "Article")
-                        .WithMany()
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NetHub.Data.SqlServer.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Article");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.RefreshToken", b =>

@@ -2,4 +2,4 @@
 
 namespace NetHub.Application.Features.Public.Articles.Localizations;
 
-public record RatingModel(Rating Rating);
+public record RatingModel(Vote? Vote);

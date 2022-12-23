@@ -1,8 +1,7 @@
 ﻿namespace NetHub.Data.SqlServer.Enums;
 
-public enum Rating: short
+public enum Vote: short
 {
 	Up,
 	Down,
-	None
 }

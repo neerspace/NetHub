@@ -13,3 +13,10 @@ public class UserDto
 	public string? Description { get; set; }
 	public DateTime Registered { get; set; }
 }
+
+public class PrivateUserDto
+{
+	public long Id { get; set; }
+	public string UserName { get; set; } = default!;
+	public string? ProfilePhotoLink { get; set; }
+}

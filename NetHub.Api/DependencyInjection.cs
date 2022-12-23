@@ -64,6 +64,20 @@ public static class DependencyInjection
 	{
 		// To serialize enum members as strings in json
 		options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+		IEnumerable<int> a = new[] {1, 2};
+
+		var b = a.ToString();
+		var c = a.ToString();
+		foreach (var g in a)
+		{
+			
+		}
+		
+		foreach (var g in a)
+		{
+			
+		}
+
 	}
 
 	private static void AddFluentValidation(this IServiceCollection services)

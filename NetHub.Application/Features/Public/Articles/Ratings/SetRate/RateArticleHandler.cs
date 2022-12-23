@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using NetHub.Application.Tools;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
-using NetHub.Data.SqlServer.Entities.Views;
 using NetHub.Data.SqlServer.Enums;
 using NetHub.Data.SqlServer.Extensions;
 
@@ -18,56 +17,66 @@ public class RateArticleHandler : AuthorizedHandler<RateArticleRequest>
 	{
 		var userId = UserProvider.GetUserId();
 
-		var rating = await Database.Set<ArticleRating>()
-			.Include(ar => ar.Article)
-			.Where(ar =>
-				ar.ArticleId == request.ArticleId && ar.UserId == userId)
+		var actualVote = await Database.Set<ArticleVote>()
+			.Include(av => av.Article)
+			.Where(av =>
+				av.ArticleId == request.ArticleId && av.UserId == userId)
 			.FirstOrDefaultAsync();
 
 		var article = await Database.Set<Article>()
 			.FirstOr404Async(a => a.Id == request.ArticleId);
 
-		switch (request.Rating)
+		if (actualVote is null)
 		{
-			case Rating.None when rating is not null:
-				Database.Set<ArticleRating>().Remove(rating);
-				article.Rate += rating.Rating == Rating.Up ? -1 : 1;
-				break;
-			case Rating.Up or Rating.Down:
+			var voteEntity = new ArticleVote
 			{
-				var ratingEntity = new ArticleRating
-				{
-					ArticleId = article.Id,
-					UserId = userId,
-					Rating = request.Rating
-				};
+				ArticleId = article.Id,
+				UserId = userId,
+				Vote = request.Vote 
+			};
 
-				if (rating is null)
-				{
-					Database.Set<ArticleRating>().Add(ratingEntity);
-					article.Rate += request.Rating == Rating.Up ? 1 : -1;
-				}
-				else
-				{
-					switch (rating.Rating)
-					{
-						case Rating.Up when request.Rating is Rating.Down:
-							article.Rate -= 2;
-							break;
-						case Rating.Down when request.Rating is Rating.Up:
-							article.Rate += 2;
-							break;
-					}
-
-					rating.Rating = request.Rating;
-				}
-
-				break;
-			}
+			article.Rate += request.Vote == Vote.Up ? 1 : -1;
+			
+			Database.Set<ArticleVote>().Add(voteEntity);
+			await Database.SaveChangesAsync();
+			
+			return Unit.Value;
 		}
 
+		switch (request.Vote)
+		{
+			case Vote.Up:
+				//was up
+				if (actualVote.Vote == Vote.Up)
+				{
+					article.Rate -= 1;
+					Database.Set<ArticleVote>().Remove(actualVote);
+					break;
+				}
+
+				//was down
+				article.Rate += 2;
+				actualVote.Vote = Vote.Up;
+				
+				break;
+			case Vote.Down:
+				//was down
+				if (actualVote.Vote == Vote.Down)
+				{
+					article.Rate += 1;
+					Database.Set<ArticleVote>().Remove(actualVote);
+					break;
+				}
+
+				//was up
+				article.Rate -= 2;
+				actualVote.Vote = Vote.Down;
+
+				break;
+		}
+		
 		await Database.SaveChangesAsync();
 
 		return Unit.Value;
-	}
+	 }
 }

@@ -5,9 +5,9 @@ using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Data.SqlServer.Configuration.Articles;
 
-public class ArticleRatingConfiguration : IEntityTypeConfiguration<ArticleRating>
+public class ArticleRatingConfiguration : IEntityTypeConfiguration<ArticleVote>
 {
-	public void Configure(EntityTypeBuilder<ArticleRating> builder)
+	public void Configure(EntityTypeBuilder<ArticleVote> builder)
 	{
 		builder.HasKey(ar => new {LocalizationId = ar.ArticleId, ar.UserId});
 
@@ -16,8 +16,8 @@ public class ArticleRatingConfiguration : IEntityTypeConfiguration<ArticleRating
 			.HasForeignKey(ar => ar.UserId)
 			.OnDelete(DeleteBehavior.NoAction);
 
-		builder.Property(ar => ar.Rating)
+		builder.Property(ar => ar.Vote)
 			.HasConversion(r => r.ToString(),
-				value => Enum.Parse<Rating>(value));
+				value => Enum.Parse<Vote>(value));
 	}
 }

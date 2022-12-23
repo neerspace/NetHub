@@ -21,5 +21,5 @@ public class SavedArticle : IEntity
 
 	#endregion
 
-	public DateTime SavedDate { get; set; } = DateTime.UtcNow;
+	public DateTimeOffset SavedDate { get; set; } = DateTimeOffset.UtcNow;
 }

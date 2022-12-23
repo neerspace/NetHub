@@ -14,7 +14,7 @@ public class ExtendedUserArticle : IEntity
 	[Sieve(CanSort = true)]
 	public DateTimeOffset? SavedDate { get; set; }
 
-	public Rating Vote { get; set; }
+	public Vote? Vote { get; set; }
 	public string Title { get; set; } = default!;
 	public string Description { get; set; } = default!;
 	public string Html { get; set; } = default!;
@@ -27,6 +27,12 @@ public class ExtendedUserArticle : IEntity
 
 	[Sieve(CanSort = true)]
 	public DateTimeOffset? Updated { get; set; }
+
+	[Sieve(CanSort = true)]
+	public DateTime? Published { get; set; }
+
+	[Sieve(CanSort = true)]
+	public DateTime? Banned { get; set; }
 
 	[Sieve(CanSort = true)]
 	public int Views { get; set; } = 0;
