@@ -4,7 +4,7 @@ using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Data.SqlServer.Seeders;
 
-public class AppRoleClaimSeeder : IEntityDataSeeder<AppRoleClaim>
+internal class AppRoleClaimSeeder : IEntityDataSeeder<AppRoleClaim>
 {
     public IEnumerable<AppRoleClaim> Data => new[]
     {

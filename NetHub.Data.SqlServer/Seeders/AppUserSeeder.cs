@@ -4,7 +4,7 @@ using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Data.SqlServer.Seeders;
 
-public class AppUserSeeder : IEntityDataSeeder<User>
+internal class AppUserSeeder : IEntityDataSeeder<User>
 {
     public IEnumerable<User> Data => new[]
     {

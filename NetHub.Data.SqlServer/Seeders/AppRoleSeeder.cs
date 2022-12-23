@@ -3,7 +3,7 @@ using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Data.SqlServer.Seeders;
 
-public class AppRoleSeeder : IEntityDataSeeder<AppRole>
+internal class AppRoleSeeder : IEntityDataSeeder<AppRole>
 {
     public IEnumerable<AppRole> Data => new[]
     {
