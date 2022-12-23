@@ -77,7 +77,7 @@ public class CreateArticleLocalizationHandler :
 				throw new ApiException("One user can not contribute the same role several times");
 
 			var dbContributor = await Database.Set<Data.SqlServer.Entities.User>()
-				.FirstOrDefaultAsync(p => p.Id == contributor.UserId);
+				.SingleOrDefaultAsync(p => p.Id == contributor.UserId);
 			if (dbContributor is null)
 				throw new NotFoundException($"No user with id: {contributor.UserId}");
 

@@ -64,9 +64,9 @@ public class ArticlesController : ApiController
 
 	[HttpGet("{id:long}/rate")]
 	public async Task<IActionResult> Rate([FromRoute] long id,
-		[FromQuery] Rating rating)
+		[FromQuery] Vote vote)
 	{
-		await Mediator.Send(new RateArticleRequest(id, rating));
+		await Mediator.Send(new RateArticleRequest(id, vote));
 		return Ok();
 	}
 

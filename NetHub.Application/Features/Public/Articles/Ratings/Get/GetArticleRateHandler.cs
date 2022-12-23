@@ -14,10 +14,10 @@ public class GetArticleRateHandler : AuthorizedHandler<GetArticleRateRequest, Ra
 
 	protected override async Task<RatingModel> Handle(GetArticleRateRequest request)
 	{
-		var rating = await Database.Set<ArticleRating>()
+		var rating = await Database.Set<ArticleVote>()
 			.Include(ar => ar.Article)
 			.FirstOrDefaultAsync(ar => ar.ArticleId == request.ArticleId);
 
-		return rating is null ? new RatingModel(Rating.None) : new RatingModel(rating.Rating);
+		return rating is null ? new RatingModel(null) : new RatingModel(rating.Vote);
 	}
 }

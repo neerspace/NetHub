@@ -1,4 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
+using NeerCore.Logging;
+using NeerCore.Logging.Extensions;
 using NetHub.Api;
 using NetHub.Api.Configuration;
 using NetHub.Api.Configuration.Swagger;
@@ -6,12 +8,11 @@ using NetHub.Application;
 using NetHub.Data.SqlServer;
 using NetHub.Infrastructure;
 using NLog;
-using NLog.Extensions.Logging;
 using NLog.Web;
 using ILogger = NLog.ILogger;
 
 {
-	ILogger logger = ConfigureNLog();
+	ILogger logger = LoggerInstaller.InitFromCurrentEnvironment();
 
 	try
 	{
@@ -40,13 +41,10 @@ using ILogger = NLog.ILogger;
 
 static void ConfigureBuilder(WebApplicationBuilder builder)
 {
-	// Change default logging provider to NLog
-	builder.Logging.ClearProviders();
-	builder.Logging.AddNLogWeb(LogManager.Configuration);
-
+	builder.Logging.ConfigureNLogAsDefault();
 	builder.Services.AddSqlServerDatabase(builder.Configuration);
 	builder.Services.AddApplication(builder.Configuration);
-	builder.Services.AddInfrastructure();
+	builder.Services.AddInfrastructure(builder.Configuration);
 	builder.Services.AddWebApi(builder.Configuration);
 
 	// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -65,25 +63,12 @@ static void ConfigureWebApp(WebApplication app)
 	}
 
 	app.UseCors("Cors");
-	
+
 	app.UseHttpsRedirection();
 
 	app.UseCustomExceptionHandler();
 	app.UseAuthentication();
 	app.UseAuthorization();
-	// app.UseHealthChecks("/health-check");
-
-	// app.UseMiddleware<ProfilesMiddleware>();
 
 	app.MapControllers();
-}
-
-static ILogger ConfigureNLog(string loggerConfigName = "NLog.json")
-{
-	var config = new ConfigurationBuilder()
-		.SetBasePath(Directory.GetCurrentDirectory())
-		.AddJsonFile(loggerConfigName, optional: true, reloadOnChange: true).Build();
-
-	LogManager.Configuration = new NLogLoggingConfiguration(config.GetRequiredSection("NLog"));
-	return NLogBuilder.ConfigureNLog(LogManager.Configuration).GetLogger("Program");
 }

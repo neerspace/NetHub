@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Google.Cloud.Translation.V2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NetHub.Api.Abstractions;
 using NetHub.Application.Extensions;
 using NetHub.Core.Abstractions.Context;
+using NetHub.Infrastructure.Services;
 
 namespace NetHub.Api.Areas.Public.Controllers;
 

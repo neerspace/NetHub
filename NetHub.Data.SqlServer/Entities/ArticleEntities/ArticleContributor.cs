@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using NetHub.Data.SqlServer.Enums;
+using Sieve.Attributes;
 
 namespace NetHub.Data.SqlServer.Entities.ArticleEntities;
 
@@ -8,11 +9,14 @@ public record ArticleContributor
 {
 	public long Id { get; set; }
 
+	[Sieve(CanFilter = true)]
 	public ArticleContributorRole Role { get; set; }
 
 	#region Contributor
 
+	[Sieve(CanFilter = true)]
 	public long UserId { get; set; }
+
 	public virtual User? User { get; set; }
 
 	#endregion

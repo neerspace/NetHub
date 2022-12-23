@@ -8,6 +8,7 @@ public class User : IdentityUser<long>, IEntity
 {
 	public override long Id { get; set; }
 	public override string UserName { get; set; } = default!;
+	public UsernameChange UsernameChanges { get; set; } = default!;
 	public string FirstName { get; set; } = default!;
 	public string? LastName { get; set; }
 	public string? MiddleName { get; set; }

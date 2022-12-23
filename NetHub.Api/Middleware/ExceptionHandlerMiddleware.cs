@@ -1,8 +1,11 @@
 ﻿#define EXTENDED_500_ERROR_RESPONSE
 
+using System.Data.Common;
 using System.Net;
 using System.Text.Json;
 using FluentValidation;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using NetHub.Application.Models;
 using NetHub.Core;
 using NetHub.Core.Exceptions;
@@ -36,6 +39,10 @@ public class ExceptionHandlerMiddleware : IMiddleware
 				await Write500StatusCodeResponseAsync(context, e);
 			else
 				await WriteJsonResponseAsync(context, e.StatusCode, CreateError(e));
+		}
+		catch (DbUpdateException e)
+		{
+			await WriteJsonResponseAsync(context, HttpStatusCode.BadRequest, e.InnerException.HResult);
 		}
 		catch (Exception e)
 		{

@@ -14,6 +14,7 @@ using NetHub.Api.Middleware;
 using NetHub.Application.Options;
 using NetHub.Core.DependencyInjection;
 using NetHub.Infrastructure;
+using Sieve.Models;
 
 namespace NetHub.Api;
 
@@ -26,6 +27,7 @@ public static class DependencyInjection
 
 		services.BindConfigurationOptions(configuration);
 
+		
 		services.AddCorsPolicies(configuration);
 		services.AddControllers()
 			.AddMvcOptions(ConfigureMvcOptions)
@@ -62,6 +64,20 @@ public static class DependencyInjection
 	{
 		// To serialize enum members as strings in json
 		options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+		IEnumerable<int> a = new[] {1, 2};
+
+		var b = a.ToString();
+		var c = a.ToString();
+		foreach (var g in a)
+		{
+			
+		}
+		
+		foreach (var g in a)
+		{
+			
+		}
+
 	}
 
 	private static void AddFluentValidation(this IServiceCollection services)

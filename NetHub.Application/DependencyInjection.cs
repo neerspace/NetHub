@@ -35,6 +35,7 @@ public static class DependencyInjection
 		services.Configure<TelegramOptions>(configuration.GetSection("Telegram"));
 		services.Configure<FacebookOptions>(configuration.GetSection("Facebook"));
 		services.ConfigureOptions<JwtOptions.Configurator>();
+		services.Configure<CurrencyRateOptions>(configuration.GetSection("CurrencyRate"));
 	}
 
 	private static void RegisterMappings(this IServiceCollection services)

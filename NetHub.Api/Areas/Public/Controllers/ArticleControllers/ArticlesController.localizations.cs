@@ -10,6 +10,7 @@ using NetHub.Application.Features.Public.Articles.Localizations.Many;
 using NetHub.Application.Features.Public.Articles.Localizations.One;
 using NetHub.Application.Features.Public.Articles.Localizations.ToggleSaving;
 using NetHub.Application.Features.Public.Articles.Localizations.Update;
+using NetHub.Application.Models;
 
 namespace NetHub.Api.Areas.Public.Controllers.ArticleControllers;
 
@@ -59,8 +60,8 @@ public class ArticleLocalizationsController : ApiController
 
 	[HttpGet("{languageCode:alpha}/get-thread")]
 	[AllowAnonymous]
-	public async Task<ExtendedArticleModel[]> GetThread(string languageCode, int page = 1, int perPage = 20)
-		=> await Mediator.Send(new GetThreadRequest(languageCode, page, perPage));
+	public async Task<ExtendedArticleModel[]> GetThread([FromQuery] GetThreadRequest request)
+		=> await Mediator.Send(request);
 
 
 	// [HttpGet("status")]

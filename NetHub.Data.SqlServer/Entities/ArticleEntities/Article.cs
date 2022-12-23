@@ -15,6 +15,9 @@ public class Article : IEntity
 
 	public DateTime Created { get; set; } = DateTime.UtcNow;
 	public DateTime? Updated { get; set; }
+	public DateTime? Published { get; set; }
+
+	public DateTime? Banned { get; set; }
 
 	#region Author
 

@@ -24,6 +24,6 @@ public class GetSavedArticlesHandler : AuthorizedHandler<GetSavedArticlesRequest
 			.ProjectToType<ExtendedArticleModel>()
 			.ToArrayAsync();
 
-		return saved;
+		return saved.DistinctBy(s => s.LocalizationId).ToArray();
 	}
 }

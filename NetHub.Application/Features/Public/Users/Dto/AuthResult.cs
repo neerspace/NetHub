@@ -2,6 +2,8 @@
 
 public record AuthResult
 {
+	public long Id { get; set; }
+
 	/// <example>aspadmin</example>
 	public string Username { get; init; } = default!;
 

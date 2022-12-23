@@ -3,8 +3,8 @@ using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Data.SqlServer.Entities.ArticleEntities;
 
-[Table($"{nameof(ArticleRating)}s")]
-public record ArticleRating
+[Table($"{nameof(ArticleVote)}s")]
+public record ArticleVote
 {
 	#region Localization
 
@@ -20,5 +20,5 @@ public record ArticleRating
 
 	#endregion
 	
-	public Rating Rating { get; set; }
+	public Vote Vote { get; set; }
 }
