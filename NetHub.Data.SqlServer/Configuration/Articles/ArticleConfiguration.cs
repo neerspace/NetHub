@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
-using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Data.SqlServer.Configuration.Articles;
 

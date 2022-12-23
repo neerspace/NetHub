@@ -1,8 +1,13 @@
-﻿namespace NetHub.Core.Exceptions;
+﻿using System.Net;
+using NeerCore.Exceptions;
 
-public class PermissionsException : ForbidException
+namespace NetHub.Core.Exceptions;
+
+public class PermissionsException : HttpException
 {
-    public PermissionsException() : base("You have no permissions to do this")
-    {
-    }
+    public override HttpStatusCode StatusCode => HttpStatusCode.Forbidden;
+
+    public override string ErrorType => "PermissionDenied";
+
+    public PermissionsException() : base("You have no permissions to do this") { }
 }

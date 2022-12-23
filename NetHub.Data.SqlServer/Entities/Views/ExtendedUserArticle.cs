@@ -1,4 +1,4 @@
-﻿using NetHub.Core.Abstractions.Entities;
+﻿using NeerCore.Data.Abstractions;
 using NetHub.Data.SqlServer.Enums;
 using Sieve.Attributes;
 

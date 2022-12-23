@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using NetHub.Core.Abstractions.Entities;
+using NeerCore.Data.Abstractions;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
 
 namespace NetHub.Data.SqlServer.Entities;
