@@ -1,6 +1,6 @@
 ﻿using NeerCore.Exceptions;
-using NetHub.Data.SqlServer.Entities;
-using NetHub.Data.SqlServer.Entities.ArticleEntities;
+using NetHub.Data.SqlServer.Entities.Articles;
+using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Application.Extensions;

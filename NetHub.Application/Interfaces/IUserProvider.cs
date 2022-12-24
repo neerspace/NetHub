@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using NetHub.Data.SqlServer.Entities;
+using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Application.Interfaces;
 

@@ -8,34 +8,29 @@ using NetHub.Api.Shared;
 using NetHub.Application;
 using NetHub.Data.SqlServer;
 using NetHub.Infrastructure;
-using NLog;
-using ILogger = NLog.ILogger;
 
+var logger = LoggerInstaller.InitFromCurrentEnvironment();
+
+try
 {
-    ILogger logger = LoggerInstaller.InitFromCurrentEnvironment();
+    var builder = WebApplication.CreateBuilder(args);
+    // builder.Configuration.AddJsonFile("appsettings.Secrets.json");
 
-    try
-    {
-        var builder = WebApplication.CreateBuilder(args);
-        // builder.Configuration.AddJsonFile("appsettings.Secrets.json");
+    ConfigureBuilder(builder);
 
-        ConfigureBuilder(builder);
+    var app = builder.Build();
+    JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+    ConfigureWebApp(app);
 
-        var app = builder.Build();
-        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-        ConfigureWebApp(app);
-
-        app.Run();
-    }
-    catch (Exception e)
-    {
-        logger.Fatal(e);
-    }
-    finally
-    {
-        logger.Info("Application is now stopping");
-        LogManager.Shutdown();
-    }
+    app.Run();
+}
+catch (Exception e)
+{
+    logger.Fatal(e);
+}
+finally
+{
+    logger.Info("Application is now stopping");
 }
 
 
@@ -43,8 +38,8 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
 {
     builder.Logging.ConfigureNLogAsDefault();
     builder.Services.AddSqlServerDatabase(builder.Configuration);
-    builder.Services.AddApplication(builder.Configuration);
     builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.AddApplication(builder.Configuration);
     builder.Services.AddWebApi(builder.Configuration);
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

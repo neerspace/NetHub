@@ -4,7 +4,7 @@ using NeerCore.Data.EntityFramework.Extensions;
 using NeerCore.Exceptions;
 using NetHub.Application.Tools;
 using NetHub.Core.Exceptions;
-using NetHub.Data.SqlServer.Entities.ArticleEntities;
+using NetHub.Data.SqlServer.Entities.Articles;
 
 namespace NetHub.Application.Features.Public.Articles.Update;
 
@@ -24,7 +24,7 @@ internal sealed class UpdateArticleHandler : AuthorizedHandler<UpdateArticleRequ
 
         if (request.AuthorId is not null)
             article.AuthorId =
-                await Database.Set<Data.SqlServer.Entities.User>().FirstOrDefaultAsync(p => p.Id == request.AuthorId, ct) is null
+                await Database.Set<Data.SqlServer.Entities.Identity.User>().FirstOrDefaultAsync(p => p.Id == request.AuthorId, ct) is null
                     ? throw new NotFoundException("No user with such Id")
                     : request.AuthorId.Value;
 

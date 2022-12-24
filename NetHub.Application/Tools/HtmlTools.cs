@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
-using NetHub.Data.SqlServer.Entities.ArticleEntities;
+using NetHub.Data.SqlServer.Entities.Articles;
 
 namespace NetHub.Application.Tools;
 

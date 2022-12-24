@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Enums;
 using Sieve.Attributes;
 
-namespace NetHub.Data.SqlServer.Entities.ArticleEntities;
+namespace NetHub.Data.SqlServer.Entities.Articles;
 
 [Table($"{nameof(ArticleContributor)}s")]
 public record ArticleContributor

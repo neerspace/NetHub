@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Enums;
 
-namespace NetHub.Data.SqlServer.Entities.ArticleEntities;
+namespace NetHub.Data.SqlServer.Entities.Articles;
 
 [Table($"{nameof(ArticleVote)}s")]
 public record ArticleVote

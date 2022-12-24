@@ -1,5 +1,5 @@
 ﻿using NeerCore.Data.EntityFramework.Abstractions;
-using NetHub.Data.SqlServer.Entities;
+using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Data.SqlServer.Seeders;
 

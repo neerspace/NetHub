@@ -1,5 +1,5 @@
 ﻿using NetHub.Application.Features.Public.Users.Dto;
-using NetHub.Data.SqlServer.Entities;
+using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Application.Interfaces;
 

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -10,8 +10,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
-    <PackageReference Include="NeerCore" Version="2.0.0-alpha1" />
-    <PackageReference Include="NeerCore.DependencyInjection" Version="2.0.0-alpha1" />
+    <PackageReference Include="NeerCore" Version="2.0.0-alpha3" />
+    <PackageReference Include="NeerCore.DependencyInjection" Version="2.0.0-alpha4" />
   </ItemGroup>
 
 </Project>

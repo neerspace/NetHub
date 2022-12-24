@@ -5,7 +5,7 @@ using NetHub.Application.Features.Public.Articles.Localizations.GetSaving.All;
 using NetHub.Application.Features.Public.Articles.Localizations.Update;
 using NetHub.Application.Models.Currency;
 using NetHub.Application.Models.Mezha;
-using NetHub.Data.SqlServer.Entities.ArticleEntities;
+using NetHub.Data.SqlServer.Entities.Articles;
 
 namespace NetHub.Application;
 

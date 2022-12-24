@@ -6,7 +6,7 @@ using NetHub.Application.Tools;
 using NetHub.Core.Constants;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities;
-using NetHub.Data.SqlServer.Entities.ArticleEntities;
+using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Application.Features.Public.Articles.Localizations.Update;
@@ -94,7 +94,7 @@ internal sealed class UpdateArticleLocalizationHandler : AuthorizedHandler<Updat
             if (count > 1)
                 throw new ApiException("One user can not contribute the same role several times");
 
-            var dbContributor = await Database.Set<Data.SqlServer.Entities.User>()
+            var dbContributor = await Database.Set<Data.SqlServer.Entities.Identity.User>()
                 .FirstOrDefaultAsync(p => p.Id == contributor.UserId, ct);
             if (dbContributor is null)
                 throw new ApiException($"No user with id: {contributor.UserId}");

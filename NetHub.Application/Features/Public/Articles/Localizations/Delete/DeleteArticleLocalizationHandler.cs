@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
 using NetHub.Application.Tools;
 using NetHub.Core.Exceptions;
-using NetHub.Data.SqlServer.Entities.ArticleEntities;
+using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Application.Features.Public.Articles.Localizations.Delete;

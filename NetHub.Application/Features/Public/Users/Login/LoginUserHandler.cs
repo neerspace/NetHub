@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NeerCore.Exceptions;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Tools;
-using NetHub.Data.SqlServer.Entities;
+using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Application.Features.Public.Users.Login;
 

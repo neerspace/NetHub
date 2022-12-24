@@ -7,7 +7,7 @@ using NeerCore.Exceptions;
 using NetHub.Application.Extensions;
 using NetHub.Application.Interfaces;
 using NetHub.Core.Constants;
-using NetHub.Data.SqlServer.Entities;
+using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Infrastructure.Services;
 

@@ -1,5 +1,5 @@
 ﻿using NeerCore.DependencyInjection;
-using NetHub.Data.SqlServer.Entities.ArticleEntities;
+using NetHub.Data.SqlServer.Entities.Articles;
 using Sieve.Services;
 using static System.Int32;
 

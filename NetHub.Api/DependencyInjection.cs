@@ -1,8 +1,5 @@
-﻿using FluentValidation;
-using MediatR;
-using NeerCore.Api.Extensions;
+﻿using NeerCore.Api.Extensions;
 using NetHub.Api.Shared.Extensions;
-using NetHub.Application.PipelineBehaviors;
 
 namespace NetHub.Api;
 
@@ -12,18 +9,12 @@ public static class DependencyInjection
     {
         services.AddHttpClient();
 
-        services.AddJwtAuthentication();
-        services.AddPoliciesAuthorization();
-
         services.AddNeerApiServices();
         services.AddNeerControllers();
 
-        services.AddCorsPolicies(configuration);
-    }
+        services.AddJwtAuthentication();
+        services.AddPoliciesAuthorization();
 
-    private static void AddFluentValidation(this IServiceCollection services)
-    {
-        services.AddValidatorsFromAssemblies(new[] { typeof(Application.DependencyInjection).Assembly });
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(FluentValidationBehavior<,>));
+        services.AddCorsPolicies(configuration);
     }
 }

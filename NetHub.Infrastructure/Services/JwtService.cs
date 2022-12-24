@@ -6,6 +6,7 @@ using NetHub.Application.Features.Public.Users.Dto;
 using NetHub.Application.Interfaces;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
+using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Infrastructure.Services.Internal;
 
 namespace NetHub.Infrastructure.Services;

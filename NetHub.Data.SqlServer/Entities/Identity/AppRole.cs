@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using NeerCore.Data.Abstractions;
 
-namespace NetHub.Data.SqlServer.Entities;
+namespace NetHub.Data.SqlServer.Entities.Identity;
 
 public class AppRole : IdentityRole<long>, IEntity
 {

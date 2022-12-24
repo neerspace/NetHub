@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
 using NetHub.Application.Tools;
-using NetHub.Data.SqlServer.Entities;
+using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Application.Features.Public.Users.ChangeUsername;
 

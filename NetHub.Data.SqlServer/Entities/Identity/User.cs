@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using NeerCore.Data.Abstractions;
-using NetHub.Data.SqlServer.Entities.ArticleEntities;
+using NetHub.Data.SqlServer.Entities.Articles;
 
-namespace NetHub.Data.SqlServer.Entities;
+namespace NetHub.Data.SqlServer.Entities.Identity;
 
 public class User : IdentityUser<long>, IEntity
 {

@@ -3,7 +3,7 @@ using NetHub.Application.Features.Public.Articles.Localizations.GetSaving.All;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Models;
 using NetHub.Application.Tools;
-using NetHub.Data.SqlServer.Entities.ArticleEntities;
+using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Entities.Views;
 
 namespace NetHub.Application.Features.Public.Articles.Localizations.Many;

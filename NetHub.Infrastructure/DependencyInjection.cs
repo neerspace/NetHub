@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NeerCore.DependencyInjection.Extensions;
 using NetHub.Application;
 using NetHub.Application.Options;
 using NetHub.Infrastructure.Services.Internal.Sieve;
@@ -12,6 +13,7 @@ public static class DependencyInjection
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddAllServices(options => options.ResolveInternalImplementations = true);
         services.AddLazyCache();
         services.AddCustomSieve();
         services.AddHttpClients(configuration);
