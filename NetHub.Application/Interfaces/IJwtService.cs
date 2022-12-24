@@ -1,10 +1,10 @@
 ﻿using NetHub.Application.Features.Public.Users.Dto;
-using NetHub.Data.SqlServer.Entities;
+using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Application.Interfaces;
 
 public interface IJwtService
 {
-	Task<AuthResult> GenerateAsync(User user, CancellationToken cancel = default);
+	Task<AuthResult> GenerateAsync(AppUser user, CancellationToken cancel = default);
 	Task<AuthResult> RefreshAsync(string refreshToken, CancellationToken cancel = default);
 }

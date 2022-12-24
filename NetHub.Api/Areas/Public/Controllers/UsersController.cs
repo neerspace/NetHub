@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NetHub.Api.Abstractions;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Features.Public.Users;
 using NetHub.Application.Features.Public.Users.ChangeUsername;
 using NetHub.Application.Features.Public.Users.CheckUserExists;

@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Tests", "NetHub.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Admin", "NetHub.Admin\NetHub.Admin.csproj", "{59872DEE-1E31-4646-A65C-53D48B642B1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Core.Security", "NetHub.Core.Security\NetHub.Core.Security.csproj", "{D3216987-D157-4205-AF1C-FAE3EDB3C571}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Api.Shared", "NetHub.Api.Shared\NetHub.Api.Shared.csproj", "{D3216987-D157-4205-AF1C-FAE3EDB3C571}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AAF91661-610D-4DEB-B1E8-33D8F7E60D93}"
 EndProject

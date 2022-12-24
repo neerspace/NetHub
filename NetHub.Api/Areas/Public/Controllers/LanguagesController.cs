@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NetHub.Api.Abstractions;
+using NetHub.Api.Shared;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Features.Public.Languages;
 using NetHub.Application.Features.Public.Languages.GetMany;
 

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using NetHub.Application.Interfaces;
-using NetHub.Data.SqlServer.Entities;
+using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Application.Tools;
 
@@ -12,7 +12,7 @@ public abstract class AuthorizedHandler<TRequest, TResult> : DbHandler<TRequest,
     private readonly IServiceProvider _serviceProvider;
 
     protected readonly IUserProvider UserProvider;
-    protected UserManager<User> UserManager => _serviceProvider.GetRequiredService<UserManager<User>>();
+    protected UserManager<AppUser> UserManager => _serviceProvider.GetRequiredService<UserManager<AppUser>>();
 
     protected AuthorizedHandler(IServiceProvider serviceProvider) : base(serviceProvider)
     {

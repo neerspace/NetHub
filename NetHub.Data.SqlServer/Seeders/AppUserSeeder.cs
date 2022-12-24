@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using NeerCore.Data.EntityFramework.Abstractions;
-using NetHub.Data.SqlServer.Entities;
+using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Data.SqlServer.Seeders;
 
-internal class AppUserSeeder : IEntityDataSeeder<User>
+internal class AppUserSeeder : IEntityDataSeeder<AppUser>
 {
-    public IEnumerable<User> Data => new[]
+    private static readonly PasswordHasher<AppUser> Hasher = new();
+
+    public IEnumerable<AppUser> Data => new[]
     {
-        new User
+        new AppUser
         {
             Id = 19,
             UserName = "aspadmin",
@@ -19,10 +21,8 @@ internal class AppUserSeeder : IEntityDataSeeder<User>
             Email = "aspadmin@asp.net",
             NormalizedEmail = "ASPADMIN@ASP.NET",
             EmailConfirmed = true,
-            PasswordHash = Hasher.HashPassword(null, "aspX1234"),
-            SecurityStamp = Guid.NewGuid().ToString()
+            PasswordHash = Hasher.HashPassword(null!, "aspX1234"),
+            SecurityStamp = "6904F123-FB6C-4886-A401-C69CD895E8D5"
         },
     };
-
-    private static readonly PasswordHasher<User?> Hasher = new();
 }

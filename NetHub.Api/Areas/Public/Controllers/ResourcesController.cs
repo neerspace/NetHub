@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NetHub.Api.Abstractions;
+using NetHub.Api.Shared;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Extensions;
-using NetHub.Application.Features.Public.Articles.Resources;
 using NetHub.Application.Features.Public.Articles.Resources.Add;
+using NetHub.Application.Features.Public.Resources;
 using NetHub.Application.Features.Public.Resources.Get;
 using NetHub.Application.Features.Public.Users.Resources;
 

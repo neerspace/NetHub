@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NeerCore.DependencyInjection.Extensions;
 using NetHub.Application;
 using NetHub.Application.Options;
 using NetHub.Infrastructure.Services.Internal.Sieve;
@@ -12,22 +13,10 @@ public static class DependencyInjection
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddAllServices(options => options.ResolveInternalImplementations = true);
         services.AddLazyCache();
         services.AddCustomSieve();
         services.AddHttpClients(configuration);
-    }
-
-    public static AuthenticationBuilder AddGoogleAuthProvider(this AuthenticationBuilder builder, IConfiguration configuration)
-    {
-        var googleOptions = configuration.GetSection("Google").Get<GoogleOptions>()!;
-
-        builder.AddGoogleOpenIdConnect(options =>
-        {
-            options.ClientId = googleOptions.ClientId;
-            options.ClientSecret = googleOptions.ClientSecret;
-        });
-
-        return builder;
     }
 
     private static void AddHttpClients(this IServiceCollection services, IConfiguration configuration)

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NetHub.Api.Abstractions;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Extensions;
 using NetHub.Application.Features.Public.Articles;
 using NetHub.Application.Features.Public.Articles.Create;
@@ -13,7 +13,6 @@ using NetHub.Application.Features.Public.Articles.Ratings.Get;
 using NetHub.Application.Features.Public.Articles.Ratings.SetRate;
 using NetHub.Application.Features.Public.Articles.Update;
 using NetHub.Application.Features.Public.Articles.User;
-using NetHub.Data.SqlServer.Entities.Views;
 using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Api.Areas.Public.Controllers.ArticleControllers;

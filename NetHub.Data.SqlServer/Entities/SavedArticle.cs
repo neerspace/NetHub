@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using NeerCore.Data.Abstractions;
-using NetHub.Data.SqlServer.Entities.ArticleEntities;
+using NetHub.Data.SqlServer.Entities.Articles;
+using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Data.SqlServer.Entities;
 
@@ -17,7 +18,7 @@ public class SavedArticle : IEntity
 	#region User
 
 	public long UserId { get; set; }
-	public virtual User? User { get; set; }
+	public virtual AppUser? User { get; set; }
 
 	#endregion
 

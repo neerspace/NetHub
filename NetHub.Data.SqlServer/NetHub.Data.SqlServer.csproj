@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.1" />
-    <PackageReference Include="NeerCore.Data.EntityFramework" Version="2.0.0-alpha1" />
+    <PackageReference Include="NeerCore.Data.EntityFramework" Version="2.0.0-alpha3" />
     <PackageReference Include="Sieve" Version="2.5.5" />
   </ItemGroup>
 
@@ -25,6 +25,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="efbundle" />
   </ItemGroup>
 
 </Project>

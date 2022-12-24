@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Application.Tools;
 using NetHub.Data.SqlServer.Entities;
-using NetHub.Data.SqlServer.Entities.ArticleEntities;
+using NetHub.Data.SqlServer.Entities.Articles;
 
 namespace NetHub.Application.Features.Public.Articles.GetMany;
 

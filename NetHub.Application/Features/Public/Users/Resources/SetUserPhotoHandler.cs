@@ -3,7 +3,7 @@ using NeerCore.Exceptions;
 using NetHub.Application.Extensions;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Tools;
-using NetHub.Data.SqlServer.Entities;
+using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Application.Features.Public.Users.Resources;
 
@@ -18,7 +18,7 @@ internal sealed class SetUserPhotoHandler : AuthorizedHandler<SetUserPhotoReques
 
     public override async Task<SetUserPhotoResult> Handle(SetUserPhotoRequest request, CancellationToken ct)
     {
-        var user = await Database.Set<User>().FirstOr404Async(u => u.Id == UserProvider.GetUserId(), ct);
+        var user = await Database.Set<AppUser>().FirstOr404Async(u => u.Id == UserProvider.GetUserId(), ct);
 
         if (user.PhotoId is not null)
             await _resourceService.DeleteResourceFromDb(user.PhotoId.Value);

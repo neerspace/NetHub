@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using NeerCore.Data.Abstractions;
+using NetHub.Data.SqlServer.Entities.Identity;
 
-namespace NetHub.Data.SqlServer.Entities.ArticleEntities;
+namespace NetHub.Data.SqlServer.Entities.Articles;
 
 [Table($"{nameof(Article)}s")]
 public class Article : IEntity
@@ -22,7 +23,7 @@ public class Article : IEntity
 	#region Author
 
 	public long AuthorId { get; set; }
-	public virtual User? Author { get; set; }
+	public virtual AppUser? Author { get; set; }
 
 	#endregion
 

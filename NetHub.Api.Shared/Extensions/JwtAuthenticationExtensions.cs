@@ -1,13 +1,16 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NetHub.Application.Options;
 
-namespace NetHub.Admin.Extensions;
+namespace NetHub.Api.Shared.Extensions;
 
 public static class JwtAuthenticationExtensions
 {
-    public static void AddJwtAuthentication(this IServiceCollection services)
+    public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         var options = services.BuildServiceProvider().GetRequiredService<IOptions<JwtOptions>>().Value;
 
@@ -32,7 +35,7 @@ public static class JwtAuthenticationExtensions
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = options.Secret,
 
-                ValidateLifetime = true
+                // ValidateLifetime = true,
             };
 
             // TODO: Uncomment to use with SignalR
@@ -51,6 +54,19 @@ public static class JwtAuthenticationExtensions
             //         return Task.CompletedTask;
             //     }
             // };
+        }).AddGoogleAuthProvider(configuration);
+    }
+
+    public static AuthenticationBuilder AddGoogleAuthProvider(this AuthenticationBuilder builder, IConfiguration configuration)
+    {
+        var googleOptions = configuration.GetSection("Google").Get<GoogleOptions>()!;
+
+        builder.AddGoogleOpenIdConnect(options =>
+        {
+            options.ClientId = googleOptions.ClientId;
+            options.ClientSecret = googleOptions.ClientSecret;
         });
+
+        return builder;
     }
 }

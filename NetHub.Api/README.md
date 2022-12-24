@@ -1,4 +1,4 @@
-# Project Documentation
+Alternative documentation – [ReDoc](/docs-{version}).
 
 ## Authorization / Registration flow
 

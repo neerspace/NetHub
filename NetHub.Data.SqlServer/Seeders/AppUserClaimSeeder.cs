@@ -10,9 +10,9 @@ internal class AppUserClaimSeeder : IEntityDataSeeder<AppUserClaim>
     {
         new AppUserClaim
         {
-            Id = 1,
+            Id = 4,
             UserId = 19,
-            ClaimType = Claims.Permission,
+            ClaimType = Claims.Permissions,
             ClaimValue = Permissions.Master
         }
     };

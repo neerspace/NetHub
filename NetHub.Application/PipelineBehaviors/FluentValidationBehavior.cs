@@ -1,20 +1,20 @@
 ﻿using FluentValidation;
 using MediatR;
 
-namespace NetHub.Api.Middleware;
+namespace NetHub.Application.PipelineBehaviors;
 
 public class FluentValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
-    
+
     public FluentValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
         _validators = validators;
     }
 
-    public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
-        RequestHandlerDelegate<TResponse> next)
+
+    public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken ct)
     {
         var context = new ValidationContext<TRequest>(request);
         var failures = _validators

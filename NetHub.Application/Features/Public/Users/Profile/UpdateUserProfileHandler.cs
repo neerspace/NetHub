@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Application.Tools;
-using NetHub.Data.SqlServer.Entities;
+using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Application.Features.Public.Users.Profile;
 
@@ -12,7 +12,7 @@ internal sealed class UpdateUserProfileHandler : AuthorizedHandler<UpdateUserPro
 
     public override async Task<Unit> Handle(UpdateUserProfileRequest request, CancellationToken ct)
     {
-        var user = await Database.Set<User>().FirstOr404Async(u => u.Id == UserProvider.GetUserId(), ct);
+        var user = await Database.Set<AppUser>().FirstOr404Async(u => u.Id == UserProvider.GetUserId(), ct);
 
         if (user.FirstName != request.FirstName)
             user.FirstName = request.FirstName;

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using NeerCore.Data.Abstractions;
 
-namespace NetHub.Data.SqlServer.Entities.ArticleEntities;
+namespace NetHub.Data.SqlServer.Entities.Articles;
 
 [Table($"{nameof(ArticleResource)}s")]
 public class ArticleResource : IEntity
