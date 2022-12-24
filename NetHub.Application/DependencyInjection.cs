@@ -32,6 +32,7 @@ public static class DependencyInjection
 
     private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
     {
+        // TODO: use NeerCore Configurator instead
         services.Configure<MezhaOptions>(configuration.GetSection("Mezha"));
         services.Configure<TelegramOptions>(configuration.GetSection("Telegram"));
         services.Configure<FacebookOptions>(configuration.GetSection("Facebook"));

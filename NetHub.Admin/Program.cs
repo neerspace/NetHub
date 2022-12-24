@@ -42,10 +42,10 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
     builder.Logging.ConfigureNLogAsDefault();
     builder.Configuration.AddJsonFile("appsettings.Secrets.json");
 
-    builder.Services.AddSqlServerDatabase(builder.Configuration);
+    builder.Services.AddSqlServerDatabase();
     builder.Services.AddApplication(builder.Configuration);
     builder.Services.AddInfrastructure(builder.Configuration);
-    builder.Services.AddWebAdminApi();
+    builder.Services.AddWebAdminApi(builder.Configuration);
 }
 
 static void ConfigureWebApp(WebApplication app)
@@ -65,10 +65,10 @@ static void ConfigureWebApp(WebApplication app)
     app.MapControllers();
 }
 
-static void MigrateDatabase(WebApplication app)
+static void MigrateDatabase(IHost app)
 {
     using var scope = app.Services.CreateScope();
-    var database = scope.ServiceProvider.GetRequiredService<ISqlServerDatabase>() as SqlServerDbContext;
-    if (database is null) throw new InternalServerException($"{nameof(ISqlServerDatabase)} DB context cannot be resolved.");
+    if (scope.ServiceProvider.GetRequiredService<ISqlServerDatabase>() is not SqlServerDbContext database) 
+        throw new InternalServerException($"{nameof(ISqlServerDatabase)} DB context cannot be resolved.");
     database.Database.Migrate();
 }

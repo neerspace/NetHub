@@ -12,7 +12,7 @@ public static class DependencyInjection
         services.AddNeerApiServices();
         services.AddNeerControllers();
 
-        services.AddJwtAuthentication();
+        services.AddJwtAuthentication(configuration);
         services.AddPoliciesAuthorization();
 
         services.AddCorsPolicies(configuration);

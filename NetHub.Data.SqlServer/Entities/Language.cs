@@ -2,7 +2,7 @@
 
 namespace NetHub.Data.SqlServer.Entities;
 
-public class Language : IEntity
+public sealed class Language : IEntity
 {
     public string Code { get; set; } = default!;
     public string Name { get; set; } = default!;

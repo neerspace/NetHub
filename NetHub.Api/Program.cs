@@ -1,12 +1,15 @@
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.EntityFrameworkCore;
 using NeerCore.Api.Extensions;
 using NeerCore.Api.Swagger.Extensions;
+using NeerCore.Exceptions;
 using NeerCore.Logging;
 using NeerCore.Logging.Extensions;
 using NetHub.Api;
 using NetHub.Api.Shared;
 using NetHub.Application;
 using NetHub.Data.SqlServer;
+using NetHub.Data.SqlServer.Context;
 using NetHub.Infrastructure;
 
 var logger = LoggerInstaller.InitFromCurrentEnvironment();
@@ -15,10 +18,14 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
     // builder.Configuration.AddJsonFile("appsettings.Secrets.json");
-
+    logger.Debug("Configuring application builder");
     ConfigureBuilder(builder);
 
     var app = builder.Build();
+    logger.Info("Syncing database migrations");
+    MigrateDatabase(app);
+
+    logger.Debug("Configuring web application");
     JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
     ConfigureWebApp(app);
 
@@ -37,7 +44,7 @@ finally
 static void ConfigureBuilder(WebApplicationBuilder builder)
 {
     builder.Logging.ConfigureNLogAsDefault();
-    builder.Services.AddSqlServerDatabase(builder.Configuration);
+    builder.Services.AddSqlServerDatabase();
     builder.Services.AddInfrastructure(builder.Configuration);
     builder.Services.AddApplication(builder.Configuration);
     builder.Services.AddWebApi(builder.Configuration);
@@ -66,4 +73,12 @@ static void ConfigureWebApp(WebApplication app)
     app.UseAuthorization();
 
     app.MapControllers();
+}
+
+static void MigrateDatabase(IHost app)
+{
+    using var scope = app.Services.CreateScope();
+    if (scope.ServiceProvider.GetRequiredService<ISqlServerDatabase>() is not SqlServerDbContext database)
+        throw new InternalServerException($"{nameof(ISqlServerDatabase)} DB context cannot be resolved.");
+    database.Database.Migrate();
 }

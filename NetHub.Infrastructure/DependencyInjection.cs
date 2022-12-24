@@ -19,19 +19,6 @@ public static class DependencyInjection
         services.AddHttpClients(configuration);
     }
 
-    public static AuthenticationBuilder AddGoogleAuthProvider(this AuthenticationBuilder builder, IConfiguration configuration)
-    {
-        var googleOptions = configuration.GetSection("Google").Get<GoogleOptions>()!;
-
-        builder.AddGoogleOpenIdConnect(options =>
-        {
-            options.ClientId = googleOptions.ClientId;
-            options.ClientSecret = googleOptions.ClientSecret;
-        });
-
-        return builder;
-    }
-
     private static void AddHttpClients(this IServiceCollection services, IConfiguration configuration)
     {
         var currencyOptions = configuration.GetSection("CurrencyRate").Get<CurrencyRateOptions>()!;

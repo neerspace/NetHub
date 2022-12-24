@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
@@ -8,12 +7,7 @@ namespace NetHub.Data.SqlServer;
 
 public static class DependencyInjection
 {
-    public static void AddSqlServerDatabase(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddDbContext();
-    }
-
-    private static void AddDbContext(this IServiceCollection services)
+    public static void AddSqlServerDatabase(this IServiceCollection services)
     {
         var contextFactory = new SqlServerDbContextFactory();
         services.AddDbContext<SqlServerDbContext>(cob => contextFactory.ConfigureContextOptions(cob));

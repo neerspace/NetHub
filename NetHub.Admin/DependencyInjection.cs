@@ -9,11 +9,11 @@ namespace NetHub.Admin;
 
 public static class DependencyInjection
 {
-    public static void AddWebAdminApi(this IServiceCollection services)
+    public static void AddWebAdminApi(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddNeerApiServices();
 
-        services.AddJwtAuthentication();
+        services.AddJwtAuthentication(configuration);
         services.AddPoliciesAuthorization();
 
         services.AddFluentValidationAutoValidation(fv =>
