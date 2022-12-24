@@ -5,13 +5,14 @@ using NetHub.Application.Models;
 
 namespace NetHub.Application.Features.Public.Articles.Localizations.Many;
 
-public record GetThreadRequest : FilterRequest, IRequest<ExtendedArticleModel[]>;
+public sealed record GetThreadRequest : FilterRequest, IRequest<ExtendedArticleModel[]>;
 // (string LanguageCode, string? Filters, string Sorting, int Page = 1, int Limit = 20) : IRequest<ExtendedArticleModel[]>, Filter;
 
-public class GetThreadValidator : AbstractValidator<GetThreadRequest>
+internal sealed class GetThreadValidator : AbstractValidator<GetThreadRequest>
 {
-	public GetThreadValidator()
-	{
-		RuleFor(r => r.Filters).Must(f => f.Contains("languageCode")).NotNull().WithMessage("Language code required");
-	}
+    public GetThreadValidator()
+    {
+        RuleFor(r => r.Filters).Must(f => f.Contains("languageCode"))
+            .NotNull().WithMessage("Language code required");
+    }
 }

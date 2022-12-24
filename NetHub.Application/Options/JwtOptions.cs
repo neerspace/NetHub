@@ -7,24 +7,26 @@ namespace NetHub.Application.Options;
 
 public class JwtOptions
 {
-	public SecurityKey? Secret { get; set; }
-	public TimeSpan AccessTokenLifetime { get; set; }
-	public TimeSpan RefreshTokenLifetime { get; set; }
+    public SecurityKey? Secret { get; set; }
+    public string? Issuer { get; set; }
+    public string[]? Audiences { get; set; }
+    public TimeSpan AccessTokenLifetime { get; set; }
+    public TimeSpan RefreshTokenLifetime { get; set; }
 
-	internal class Configurator : IConfigureOptions<JwtOptions>
-	{
-		private readonly IConfiguration _configuration;
 
-		public Configurator(IConfiguration configuration)
-		{
-			_configuration = configuration;
-		}
+    internal class Configurator : IConfigureOptions<JwtOptions>
+    {
+        private readonly IConfiguration _configuration;
+        public Configurator(IConfiguration configuration) => _configuration = configuration;
 
-		public void Configure(JwtOptions options)
-		{
-			options.Secret = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Jwt:Secret"]));
-			options.AccessTokenLifetime = TimeSpan.Parse(_configuration["Jwt:AccessTokenLifetime"]);
-			options.RefreshTokenLifetime = TimeSpan.Parse(_configuration["Jwt:RefreshTokenLifetime"]);
-		}
-	}
+        public void Configure(JwtOptions options)
+        {
+            var config = _configuration.GetRequiredSection("Jwt");
+            options.Secret = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(config.GetValue<string>(nameof(Secret))));
+            options.Issuer = config.GetValue<string>(nameof(Issuer));
+            options.Audiences = config.GetValue<string[]>(nameof(Audiences));
+            options.AccessTokenLifetime = config.GetValue<TimeSpan>(nameof(AccessTokenLifetime));
+            options.RefreshTokenLifetime = config.GetValue<TimeSpan>(nameof(RefreshTokenLifetime));
+        }
+    }
 }

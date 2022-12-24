@@ -1,3 +1,4 @@
 ﻿namespace NetHub.Application.Features.Public.Articles.Resources;
 
-public record ArticleImageLinkModel(string Location);
+// TODO: useless shit
+public sealed record ArticleImageLinkModel(string Location);

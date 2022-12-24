@@ -2,4 +2,4 @@
 
 namespace NetHub.Application.Features.Public.Articles.Localizations.GetSaving.All;
 
-public record GetSavedArticlesRequest() : IRequest<ExtendedArticleModel[]>;
+public sealed record GetSavedArticlesRequest : IRequest<ExtendedArticleModel[]>;

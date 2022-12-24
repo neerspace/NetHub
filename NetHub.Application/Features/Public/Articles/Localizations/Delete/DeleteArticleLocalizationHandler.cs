@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using NeerCore.Exceptions;
 using NetHub.Application.Tools;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
@@ -7,19 +8,17 @@ using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Application.Features.Public.Articles.Localizations.Delete;
 
-public class DeleteArticleLocalizationHandler : AuthorizedHandler<DeleteArticleLocalizationRequest>
+internal sealed class DeleteArticleLocalizationHandler : AuthorizedHandler<DeleteArticleLocalizationRequest>
 {
-    public DeleteArticleLocalizationHandler(IServiceProvider serviceProvider) : base(serviceProvider)
-    {
-    }
+    public DeleteArticleLocalizationHandler(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
-    protected override async Task<Unit> Handle(DeleteArticleLocalizationRequest request)
+    public override async Task<Unit> Handle(DeleteArticleLocalizationRequest request, CancellationToken ct)
     {
         var userId = UserProvider.GetUserId();
 
         var localization = await Database.Set<ArticleLocalization>()
             .Include(al => al.Contributors)
-            .SingleOrDefaultAsync(al => al.ArticleId == request.ArticleId && al.LanguageCode == request.LanguageCode);
+            .SingleOrDefaultAsync(al => al.ArticleId == request.ArticleId && al.LanguageCode == request.LanguageCode, ct);
 
         if (localization is null)
             throw new NotFoundException("No such article localization");
@@ -29,7 +28,7 @@ public class DeleteArticleLocalizationHandler : AuthorizedHandler<DeleteArticleL
 
         Database.Set<ArticleLocalization>().Remove(localization);
 
-        await Database.SaveChangesAsync();
+        await Database.SaveChangesAsync(ct);
 
         return Unit.Value;
     }

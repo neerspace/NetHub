@@ -1,33 +1,29 @@
 ﻿using Mapster;
 using Microsoft.EntityFrameworkCore;
+using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Application.Tools;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
-using NetHub.Data.SqlServer.Extensions;
 
 namespace NetHub.Application.Features.Public.Articles.One;
 
-public class GetArticleHandler : DbHandler<GetArticleRequest, (ArticleModel, Guid[]?)>
+internal sealed class GetArticleHandler : DbHandler<GetArticleRequest, (ArticleModel, Guid[]?)>
 {
-	private readonly IServiceProvider _serviceProvider;
+    public GetArticleHandler(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
-	public GetArticleHandler(IServiceProvider serviceProvider) : base(serviceProvider)
-	{
-		_serviceProvider = serviceProvider;
-	}
 
-	protected override async Task<(ArticleModel, Guid[]?)> Handle(GetArticleRequest request)
-	{
-		//TODO: TEST IT!!!!!!!!!!!!!!!
-		
-		var article = await Database.Set<Article>()
-			.Include(a => a.Localizations)
-			.Include(a => a.Tags)!.ThenInclude(at => at.Tag)
-			.Include(a => a.Images)
-			.FirstOr404Async(a => a.Id == request.Id);
+    public override async Task<(ArticleModel, Guid[]?)> Handle(GetArticleRequest request, CancellationToken ct)
+    {
+        //TODO: TEST IT!!!!!!!!!!!!!!!
 
-		var model = article.Adapt<ArticleModel>();
-		var imageIds = article.Images?.Select(i => i.ResourceId).ToArray();
+        var article = await Database.Set<Article>()
+            .Include(a => a.Localizations)
+            .Include(a => a.Tags)!.ThenInclude(at => at.Tag)
+            .Include(a => a.Images)
+            .FirstOr404Async(a => a.Id == request.Id, ct);
 
-		return (model, imageIds);
-	}
+        var model = article.Adapt<ArticleModel>();
+        var imageIds = article.Images?.Select(i => i.ResourceId).ToArray();
+
+        return (model, imageIds);
+    }
 }

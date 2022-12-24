@@ -1,9 +1,8 @@
 ﻿using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using NetHub.Core.Abstractions.Entities;
-using NetHub.Core.Exceptions;
-using NetHub.Core.Extensions;
+using NeerCore.Data.Abstractions;
+using NeerCore.Exceptions;
 
 namespace NetHub.Data.SqlServer.Extensions;
 
@@ -14,7 +13,7 @@ public static class QueryableExtensions
         where TEntity : class, IEntity
     {
         return await queryable.FirstOrDefaultAsync(cancel)
-               ?? throw new NotFoundException(typeof(TEntity).Name.CamelCaseToWords() + " not found.");
+               ?? throw new NotFoundException(typeof(TEntity).Name + " not found.");
     }
 
     public static async Task<TEntity> FirstOr404Async<TEntity>(this IQueryable<TEntity> queryable,
@@ -23,7 +22,7 @@ public static class QueryableExtensions
         where TEntity : class, IEntity
     {
         return await queryable.FirstOrDefaultAsync(predicate, cancel)
-               ?? throw new NotFoundException(typeof(TEntity).Name.CamelCaseToWords() + " not found.");
+               ?? throw new NotFoundException(typeof(TEntity).Name + " not found.");
     }
 
     public static IQueryable<TEntity> Filter<TEntity>(this IQueryable<TEntity> queryable, string? filter,
@@ -59,7 +58,7 @@ public static class QueryableExtensions
         where TEntity : class, IEntity
     {
         if (skip is not null && take is not null)
-            return queryable.Skip((int) skip).Take((int) take);
+            return queryable.Skip((int)skip).Take((int)take);
 
         return queryable;
     }

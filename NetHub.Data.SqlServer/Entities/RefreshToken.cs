@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using NetHub.Core.Abstractions.Entities;
+using NeerCore.Data.Abstractions;
 
 namespace NetHub.Data.SqlServer.Entities;
 

@@ -1,39 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <DocumentationFile>bin\Debug\NetHub.Application.xml</DocumentationFile>
-      <NoWarn>1701;1702;1591</NoWarn>
-    </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetHub.Data.SqlServer\NetHub.Data.SqlServer.csproj" />
+  </ItemGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <DocumentationFile>bin\Release\NetHub.Application.xml</DocumentationFile>
-      <NoWarn>1701;1702;1591</NoWarn>
-    </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NeerCore.Application.MediatR" Version="2.0.0-alpha1" />
+    <PackageReference Include="NeerCore.Mapping.Mapster" Version="2.0.0-alpha1" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Features\Protected" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Elasticsearch.Net" Version="7.17.1" />
-        <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.4.0" />
-        <PackageReference Include="Mapster" Version="7.3.0" />
-        <PackageReference Include="MediatR.Extensions.FluentValidation.AspNetCore" Version="2.0.0" />
-        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
-        <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-        <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\NetHub.Core\NetHub.Core.csproj" />
-      <ProjectReference Include="..\NetHub.Data.SqlServer\NetHub.Data.SqlServer.csproj" />
-    </ItemGroup>
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
 
 </Project>

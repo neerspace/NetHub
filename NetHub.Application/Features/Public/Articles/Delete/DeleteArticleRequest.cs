@@ -2,4 +2,4 @@
 
 namespace NetHub.Application.Features.Public.Articles.Delete;
 
-public record DeleteArticleRequest(long Id) : IRequest;
+public sealed record DeleteArticleRequest(long Id) : IRequest;

@@ -3,5 +3,9 @@ using MediatR;
 
 namespace NetHub.Application.Features.Public.Articles.Update;
 
-public record UpdateArticleRequest([property: JsonIgnore] long Id, string? Name, long? AuthorId,
-	string? OriginalArticleLink) : IRequest;
+public sealed record UpdateArticleRequest(
+    [property: JsonIgnore] long Id,
+    string? Name,
+    long? AuthorId,
+    string? OriginalArticleLink
+) : IRequest;

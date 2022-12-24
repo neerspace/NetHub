@@ -1,3 +1,3 @@
 ﻿namespace NetHub.Application.Features.Public.Users.CheckUsername;
 
-public record CheckUsernameResult(bool IsAvailable);
+public sealed record CheckUsernameResult(bool IsAvailable);

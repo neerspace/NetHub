@@ -1,6 +1,7 @@
 ﻿namespace NetHub.Application.Features.Public.Articles;
 
-public class TagModel
+// TODO: one more useless shit
+public sealed class TagModel
 {
-	public string Name { get; set; } = default!;
+    public string Name { get; set; } = default!;
 }

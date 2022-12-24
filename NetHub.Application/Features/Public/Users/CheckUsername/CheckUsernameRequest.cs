@@ -3,12 +3,12 @@ using MediatR;
 
 namespace NetHub.Application.Features.Public.Users.CheckUsername;
 
-public record CheckUsernameRequest(string Username) : IRequest<CheckUsernameResult>;
+public sealed record CheckUsernameRequest(string Username) : IRequest<CheckUsernameResult>;
 
-public class CheckUsernameValidator : AbstractValidator<CheckUsernameRequest>
+internal sealed class CheckUsernameValidator : AbstractValidator<CheckUsernameRequest>
 {
-	public CheckUsernameValidator()
-	{
-		RuleFor(r => r.Username).NotNull().NotEmpty().WithMessage("Username is required");
-	}
+    public CheckUsernameValidator()
+    {
+        RuleFor(r => r.Username).NotNull().NotEmpty().WithMessage("Username is required");
+    }
 }
