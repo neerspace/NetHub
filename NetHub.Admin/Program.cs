@@ -45,7 +45,7 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
     builder.Services.AddSqlServerDatabase();
     builder.Services.AddApplication(builder.Configuration);
     builder.Services.AddInfrastructure(builder.Configuration);
-    builder.Services.AddWebAdminApi(builder.Configuration);
+    builder.Services.AddWebAdminApi();
 }
 
 static void ConfigureWebApp(WebApplication app)
@@ -68,7 +68,7 @@ static void ConfigureWebApp(WebApplication app)
 static void MigrateDatabase(IHost app)
 {
     using var scope = app.Services.CreateScope();
-    if (scope.ServiceProvider.GetRequiredService<ISqlServerDatabase>() is not SqlServerDbContext database) 
+    if (scope.ServiceProvider.GetRequiredService<ISqlServerDatabase>() is not SqlServerDbContext database)
         throw new InternalServerException($"{nameof(ISqlServerDatabase)} DB context cannot be resolved.");
     database.Database.Migrate();
 }
