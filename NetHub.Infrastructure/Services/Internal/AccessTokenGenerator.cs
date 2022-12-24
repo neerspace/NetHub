@@ -25,7 +25,7 @@ internal sealed class AccessTokenGenerator
         _options = optionsAccessor.Value;
     }
 
-    public async Task<JwtToken> GenerateAsync(User user, CancellationToken cancel = default)
+    public async Task<JwtToken> GenerateAsync(AppUser user, CancellationToken cancel = default)
     {
         DateTime expires = DateTime.UtcNow.Add(_options.AccessTokenLifetime);
 
@@ -43,7 +43,7 @@ internal sealed class AccessTokenGenerator
         return new JwtToken(tokenHandler.WriteToken(jwt), expires);
     }
 
-    private async Task<IEnumerable<Claim>> GetUserClaimsAsync(User user, CancellationToken cancel)
+    private async Task<IEnumerable<Claim>> GetUserClaimsAsync(AppUser user, CancellationToken cancel)
     {
         var claims = new List<Claim>
         {

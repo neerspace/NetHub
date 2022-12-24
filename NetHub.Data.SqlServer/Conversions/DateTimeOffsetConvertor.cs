@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace NetHub.Data.SqlServer.Configuration.Conversions;
+namespace NetHub.Data.SqlServer.Conversions;
 
 public class DateTimeOffsetConvertor : ValueConverter<DateTimeOffset, DateTime>
 {

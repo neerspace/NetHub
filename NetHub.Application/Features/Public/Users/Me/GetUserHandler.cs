@@ -10,11 +10,11 @@ namespace NetHub.Application.Features.Public.Users.Me;
 
 internal sealed class GetUserHandler : AuthorizedHandler<GetUserRequest, UserDto>
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public GetUserHandler(IServiceProvider serviceProvider) : base(serviceProvider)
     {
-        _userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+        _userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
     }
 
     public override async Task<UserDto> Handle(GetUserRequest request, CancellationToken ct)

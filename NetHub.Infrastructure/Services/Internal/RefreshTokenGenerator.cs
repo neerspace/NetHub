@@ -24,7 +24,7 @@ internal sealed class RefreshTokenGenerator
         _refreshTokensSet = _database.Set<RefreshToken>();
     }
 
-    public async Task<JwtToken> GenerateAsync(User user, CancellationToken cancel = default)
+    public async Task<JwtToken> GenerateAsync(AppUser user, CancellationToken cancel = default)
     {
         DateTime expires = DateTime.UtcNow.Add(_options.RefreshTokenLifetime);
         string token = GenerateRandomToken();

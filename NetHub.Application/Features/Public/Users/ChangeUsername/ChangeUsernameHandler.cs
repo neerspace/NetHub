@@ -14,7 +14,7 @@ public class ChangeUsernameHandler : AuthorizedHandler<ChangeUsernameRequest>
     {
         //TODO: university (not allowed to change username more than 3 times at week)
 
-        var isExist = await Database.Set<User>().AnyAsync(u => u.UserName == request.Username, ct);
+        var isExist = await Database.Set<AppUser>().AnyAsync(u => u.UserName == request.Username, ct);
 
         if (isExist)
             throw new ValidationFailedException("username", "User with such username already exists");

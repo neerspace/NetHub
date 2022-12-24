@@ -23,7 +23,7 @@ public class Article : IEntity
 	#region Author
 
 	public long AuthorId { get; set; }
-	public virtual User? Author { get; set; }
+	public virtual AppUser? Author { get; set; }
 
 	#endregion
 

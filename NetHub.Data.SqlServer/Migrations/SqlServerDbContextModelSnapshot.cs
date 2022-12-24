@@ -20,7 +20,7 @@ namespace NetHub.Data.SqlServer.Migrations
                 .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
@@ -28,7 +28,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -61,7 +61,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -135,7 +135,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -183,7 +183,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<long>("AuthorId")
                         .HasColumnType("bigint");
@@ -214,7 +214,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Articles");
+                    b.ToTable("Articles", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleContributor", b =>
@@ -223,7 +223,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<long>("LocalizationId")
                         .HasColumnType("bigint");
@@ -241,7 +241,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ArticleContributors");
+                    b.ToTable("ArticleContributors", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleLocalization", b =>
@@ -250,7 +250,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<long>("ArticleId")
                         .HasColumnType("bigint");
@@ -306,7 +306,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("LastContributorId");
 
-                    b.ToTable("ArticleLocalizations");
+                    b.ToTable("ArticleLocalizations", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleResource", b =>
@@ -321,7 +321,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.ToTable("ArticleResources");
+                    b.ToTable("ArticleResources", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleTag", b =>
@@ -336,7 +336,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.ToTable("ArticleTags");
+                    b.ToTable("ArticleTags", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.ArticleEntities.ArticleVote", b =>
@@ -355,7 +355,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ArticleVotes");
+                    b.ToTable("ArticleVotes", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Language", b =>
@@ -380,7 +380,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -449,7 +449,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("LocalizationId");
 
-                    b.ToTable("SavedArticles");
+                    b.ToTable("SavedArticles", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Tag", b =>
@@ -458,7 +458,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -468,7 +468,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.User", b =>
@@ -477,7 +477,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -658,7 +658,9 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasKey("UserId", "LocalizationId");
 
-                    b.ToView("v_ExtendedUserArticle");
+                    b.ToTable((string)null);
+
+                    b.ToView("v_ExtendedUserArticle", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
@@ -855,7 +857,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .WithMany()
                         .HasForeignKey("PhotoId");
 
-                    b.OwnsOne("NetHub.Data.SqlServer.Entities.UsernameChange", "UsernameChanges", b1 =>
+                    b.OwnsOne("NetHub.Data.SqlServer.Entities.User.UsernameChanges#NetHub.Data.SqlServer.Entities.UsernameChange", "UsernameChanges", b1 =>
                         {
                             b1.Property<long>("UserId")
                                 .HasColumnType("bigint");
@@ -868,7 +870,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("UserProfiles");
+                            b1.ToTable("UserProfiles", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");

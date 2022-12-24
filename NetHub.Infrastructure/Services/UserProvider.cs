@@ -16,11 +16,11 @@ internal sealed class UserProvider : IUserProvider
 {
     private readonly IHttpContextAccessor _accessor;
 
-    private UserManager<User> UserManager =>
-        _accessor.HttpContext!.RequestServices.GetRequiredService<UserManager<User>>();
+    private UserManager<AppUser> UserManager =>
+        _accessor.HttpContext!.RequestServices.GetRequiredService<UserManager<AppUser>>();
 
 
-    private User? _userProfile;
+    private AppUser? _userProfile;
 
     public UserProvider(IHttpContextAccessor accessor)
     {
@@ -42,7 +42,7 @@ internal sealed class UserProvider : IUserProvider
     }
 
 
-    public async Task<User> GetUser()
+    public async Task<AppUser> GetUser()
     {
         var user = await UserManager.FindByIdAsync(GetUserId().ToString());
         if (user is null) throw new UnauthorizedException("Authorized used required");

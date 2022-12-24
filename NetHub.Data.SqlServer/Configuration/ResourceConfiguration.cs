@@ -10,11 +10,8 @@ public class ResourceConfiguration : IEntityTypeConfiguration<Resource>
     {
         builder.HasKey(r => r.Id);
 
-        builder.Property(r => r.Id)
-            .HasDefaultValueSql("NEWID()");
+        builder.Property(r => r.Id).HasDefaultValueSql("NEWID()");
         builder.Property(r => r.Filename).HasMaxLength(128);
         builder.Property(r => r.Mimetype).HasMaxLength(32);
-        
-        builder.ToTable("Resources");
     }
 }

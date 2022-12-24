@@ -8,7 +8,7 @@ internal class AppUserRoleConfiguration : IEntityTypeConfiguration<AppUserRole>
 {
     public void Configure(EntityTypeBuilder<AppUserRole> builder)
     {
-        builder.ToTable($"{nameof(AppUserRole)}s").HasKey(e => new { e.UserId, e.RoleId });
+        builder.HasKey(e => new { e.UserId, e.RoleId });
 
         builder.HasOne(e => e.Role)
             .WithMany(e => e.UserRoles)

@@ -10,7 +10,7 @@ internal class AppRoleClaimSeeder : IEntityDataSeeder<AppRoleClaim>
     {
         new AppRoleClaim
         {
-            Id = 1,
+            Id = 3,
             RoleId = 2,
             ClaimType = Claims.Permissions,
             ClaimValue = Permissions.Admin

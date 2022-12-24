@@ -5,11 +5,11 @@ using NetHub.Data.SqlServer.Extensions;
 
 namespace NetHub.Data.SqlServer.Configuration.Identity;
 
-internal class AppUserConfiguration : IEntityTypeConfiguration<User>
+internal class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<AppUser> builder)
     {
-        builder.ToTable($"{nameof(User)}s").HasKey(e => e.Id);
+        builder.HasKey(e => e.Id);
 
         builder.Property(e => e.UserName).AsText();
         builder.Property(e => e.NormalizedUserName).AsText();

@@ -12,7 +12,5 @@ public class LanguageConfiguration : IEntityTypeConfiguration<Language>
 
         builder.Property(l => l.Code).HasMaxLength(2);
         builder.Property(l => l.Name).HasMaxLength(128);
-        
-        builder.ToTable("Languages");
     }
 }

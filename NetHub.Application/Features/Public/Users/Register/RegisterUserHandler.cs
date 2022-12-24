@@ -10,11 +10,11 @@ namespace NetHub.Application.Features.Public.Users.Register;
 
 internal sealed class RegisterUserHandler : DbHandler<RegisterUserRequest, UserDto>
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<AppUser> _userManager;
 
     public RegisterUserHandler(IServiceProvider serviceProvider) : base(serviceProvider)
     {
-        _userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+        _userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
     }
 
     public override async Task<UserDto> Handle(RegisterUserRequest request, CancellationToken ct)
@@ -22,7 +22,7 @@ internal sealed class RegisterUserHandler : DbHandler<RegisterUserRequest, UserD
         if (request.Password != request.PasswordConfirm)
             throw new ValidationFailedException("Passwords must match");
 
-        var user = request.Adapt<User>();
+        var user = request.Adapt<AppUser>();
 
         var res = await _userManager.CreateAsync(user, request.Password);
 

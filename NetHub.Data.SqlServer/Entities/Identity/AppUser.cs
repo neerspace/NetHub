@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 using NeerCore.Data.Abstractions;
 using NetHub.Data.SqlServer.Entities.Articles;
 
 namespace NetHub.Data.SqlServer.Entities.Identity;
 
-public sealed class User : IdentityUser<long>, IEntity
+[Table($"{nameof(AppUser)}s")]
+public sealed class AppUser : IdentityUser<long>, IEntity
 {
     public override long Id { get; set; }
     public override string UserName { get; set; } = default!;

@@ -19,7 +19,7 @@ public static class DependencyInjection
         services.RegisterMappings();
         services.AddMediatorApplication();
         services.ConfigureOptions(configuration);
-        services.AddTransient<SignInManager<User>>();
+        services.AddTransient<SignInManager<AppUser>>();
     }
 
 

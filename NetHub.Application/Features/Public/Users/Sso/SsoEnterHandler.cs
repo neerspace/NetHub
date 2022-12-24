@@ -10,11 +10,11 @@ namespace NetHub.Application.Features.Public.Users.Sso;
 
 public sealed class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthResult, string)>
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<AppUser> _userManager;
     private readonly IAuthValidator _validator;
     private readonly IJwtService _jwtService;
 
-    public SsoEnterHandler(IServiceProvider serviceProvider, UserManager<User> userManager,
+    public SsoEnterHandler(IServiceProvider serviceProvider, UserManager<AppUser> userManager,
         IAuthValidator validator, IJwtService jwtService) : base(serviceProvider)
     {
         _userManager = userManager;
@@ -75,11 +75,11 @@ public sealed class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthResult, st
     }
 
 
-    private async Task<User> RegisterUserAsync(SsoEnterRequest request, CancellationToken ct)
+    private async Task<AppUser> RegisterUserAsync(SsoEnterRequest request, CancellationToken ct)
     {
         await ValidateUserAsync(request, ct);
 
-        var user = new User
+        var user = new AppUser
         {
             UserName = request.Username,
             FirstName = request.FirstName!,

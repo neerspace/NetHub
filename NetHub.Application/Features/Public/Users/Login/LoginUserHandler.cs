@@ -11,14 +11,14 @@ namespace NetHub.Application.Features.Public.Users.Login;
 public sealed class LoginUserHandler : DbHandler<LoginUserRequest, (AuthModel, string)>
 {
     private readonly IJwtService _jwtService;
-    private readonly UserManager<User> _userManager;
-    private readonly SignInManager<User> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
 
     public LoginUserHandler(IServiceProvider serviceProvider) : base(serviceProvider)
     {
         _jwtService = serviceProvider.GetRequiredService<IJwtService>();
-        _userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-        _signInManager = serviceProvider.GetRequiredService<SignInManager<User>>();
+        _userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+        _signInManager = serviceProvider.GetRequiredService<SignInManager<AppUser>>();
     }
 
     public override async Task<(AuthModel, string)> Handle(LoginUserRequest request, CancellationToken ct)

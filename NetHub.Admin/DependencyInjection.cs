@@ -19,7 +19,7 @@ public static class DependencyInjection
         services.AddFluentValidationAutoValidation(fv =>
             fv.DisableDataAnnotationsValidation = true);
         services.AddFluentValidationClientsideAdapters();
-        services.AddValidatorsFromAssemblyContaining<User>(ServiceLifetime.Transient);
+        services.AddValidatorsFromAssemblyContaining<AppUser>(ServiceLifetime.Transient);
 
         services.AddFluentValidationRulesToSwagger();
     }

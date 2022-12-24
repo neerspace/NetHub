@@ -13,7 +13,7 @@ internal sealed class GetUsersInfoHandler : DbHandler<GetUsersInfoRequest, UserD
 
     public override async Task<UserDto[]> Handle(GetUsersInfoRequest request, CancellationToken ct)
     {
-        var users = await Database.Set<User>().Where(u => request.Ids.Contains(u.Id)).ToArrayAsync(ct);
+        var users = await Database.Set<AppUser>().Where(u => request.Ids.Contains(u.Id)).ToArrayAsync(ct);
 
         return users.Select(u => u.Adapt<UserDto>()).ToArray();
     }

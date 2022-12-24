@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NeerCore.Data.EntityFramework.Design;
 using NeerCore.Data.EntityFramework.Extensions;
-using NetHub.Data.SqlServer.Configuration.Conversions;
+using NetHub.Data.SqlServer.Conversions;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Entities.Views;
@@ -11,7 +11,7 @@ using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Data.SqlServer.Context;
 
-public class SqlServerDbContext : IdentityDbContext<User, AppRole, long, AppUserClaim,
+public class SqlServerDbContext : IdentityDbContext<AppUser, AppRole, long, AppUserClaim,
     AppUserRole, AppUserLogin, AppRoleClaim, RefreshToken>, ISqlServerDatabase
 {
     public SqlServerDbContext(DbContextOptions options) : base(options) { }
@@ -20,6 +20,7 @@ public class SqlServerDbContext : IdentityDbContext<User, AppRole, long, AppUser
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        builder.AddAllEntities();
         builder.ConfigureEntities(config =>
         {
             config.EngineStrategy = DbEngineStrategy.SqlServer;

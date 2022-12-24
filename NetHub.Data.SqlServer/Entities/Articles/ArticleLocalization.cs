@@ -52,7 +52,7 @@ public record ArticleLocalization : IEntity
 	public DateTime? Banned { get; set; }
 
 	public long? LastContributorId { get; set; }
-	public User? LastContributor { get; set; }
+	public AppUser? LastContributor { get; set; }
 
 	[Sieve(CanFilter = true)]
 	public virtual ICollection<ArticleContributor> Contributors { get; set; } = default!;

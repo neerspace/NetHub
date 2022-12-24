@@ -26,7 +26,7 @@ internal sealed class JwtService : IJwtService
         _accessTokenGenerator = accessTokenGenerator;
     }
 
-    public async Task<AuthResult> GenerateAsync(User user, CancellationToken cancel)
+    public async Task<AuthResult> GenerateAsync(AppUser user, CancellationToken cancel)
     {
         (string? accessToken, DateTime accessTokenExpires) = await _accessTokenGenerator.GenerateAsync(user, cancel);
         (string? refreshToken, DateTime refreshTokenExpires) = await _refreshTokenGenerator.GenerateAsync(user, cancel);

@@ -13,7 +13,7 @@ internal sealed class SearchUsersHandler : DbHandler<SearchUsersRequest, Private
 
     public override Task<PrivateUserDto[]> Handle(SearchUsersRequest request, CancellationToken ct)
     {
-        var result = Database.Set<User>()
+        var result = Database.Set<AppUser>()
             .Where(u => u.NormalizedUserName.Contains(request.Username.ToUpper()))
             .ProjectToType<PrivateUserDto>()
             .ToArrayAsync(ct);

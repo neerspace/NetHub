@@ -5,6 +5,6 @@ namespace NetHub.Application.Interfaces;
 
 public interface IJwtService
 {
-	Task<AuthResult> GenerateAsync(User user, CancellationToken cancel = default);
+	Task<AuthResult> GenerateAsync(AppUser user, CancellationToken cancel = default);
 	Task<AuthResult> RefreshAsync(string refreshToken, CancellationToken cancel = default);
 }

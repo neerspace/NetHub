@@ -11,7 +11,7 @@ internal sealed class CheckUsernameHandler : DbHandler<CheckUsernameRequest, Che
 
     public override async Task<CheckUsernameResult> Handle(CheckUsernameRequest request, CancellationToken ct)
     {
-        var isExist = await Database.Set<User>().AnyAsync(u => u.UserName == request.Username, ct);
+        var isExist = await Database.Set<AppUser>().AnyAsync(u => u.UserName == request.Username, ct);
 
         return new(!isExist);
     }
