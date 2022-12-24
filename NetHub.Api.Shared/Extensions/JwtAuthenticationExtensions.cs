@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NetHub.Application.Options;
 
-namespace NetHub.Admin.Extensions;
+namespace NetHub.Api.Shared.Extensions;
 
 public static class JwtAuthenticationExtensions
 {

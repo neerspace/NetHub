@@ -2,7 +2,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using NeerCore.Api.Extensions;
-using NetHub.Admin.Extensions;
+using NetHub.Api.Shared.Extensions;
 using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Admin;

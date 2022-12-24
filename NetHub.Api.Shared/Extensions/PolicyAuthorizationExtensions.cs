@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
+using NeerCore.Extensions;
+using NetHub.Core.Constants;
 
-namespace NetHub.Admin.Extensions;
+namespace NetHub.Api.Shared.Extensions;
 
 public static class PolicyAuthorizationExtensions
 {
@@ -43,10 +46,10 @@ public static class PolicyAuthorizationExtensions
         options.AddReadPolicy(policy, permission.GetRequiredDisplayName(), altPermission.GetRequiredDisplayName());
 
     private static void AddReadPolicy(this AuthorizationOptions options, string policy, string permission, string altPermission) =>
-        options.AddPolicy(policy, p => p.RequireClaim(AppClaims.Permissions,
+        options.AddPolicy(policy, p => p.RequireClaim(Claims.Permissions,
             permission, altPermission, MasterPermission));
 
     private static void AddManagePolicy(this AuthorizationOptions options, string policy, string permission) =>
-        options.AddPolicy(policy, p => p.RequireClaim(AppClaims.Permissions,
+        options.AddPolicy(policy, p => p.RequireClaim(Claims.Permissions,
             permission, MasterPermission));
 }

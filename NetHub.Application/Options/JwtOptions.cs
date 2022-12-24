@@ -22,7 +22,7 @@ public class JwtOptions
         public void Configure(JwtOptions options)
         {
             var config = _configuration.GetRequiredSection("Jwt");
-            options.Secret = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(config.GetValue<string>(nameof(Secret))));
+            options.Secret = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(config.GetValue<string>(nameof(Secret))!));
             options.Issuer = config.GetValue<string>(nameof(Issuer));
             options.Audiences = config.GetValue<string[]>(nameof(Audiences));
             options.AccessTokenLifetime = config.GetValue<TimeSpan>(nameof(AccessTokenLifetime));

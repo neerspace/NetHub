@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace NetHub.Admin;
+namespace NetHub.Api.Shared;
 
 /// <summary>
 /// Required permission value pattern:

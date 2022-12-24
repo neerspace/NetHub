@@ -1,8 +1,8 @@
-﻿using NetHub.Application.Interfaces;
+﻿using NeerCore.Data.EntityFramework.Extensions;
+using NetHub.Application.Interfaces;
 using NetHub.Application.Tools;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities.ArticleEntities;
-using NetHub.Data.SqlServer.Extensions;
 
 namespace NetHub.Application.Features.Public.Articles.Resources.Add;
 

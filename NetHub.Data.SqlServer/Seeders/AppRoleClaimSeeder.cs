@@ -12,7 +12,7 @@ internal class AppRoleClaimSeeder : IEntityDataSeeder<AppRoleClaim>
         {
             Id = 1,
             RoleId = 2,
-            ClaimType = Claims.Permission,
+            ClaimType = Claims.Permissions,
             ClaimValue = Permissions.Admin
         }
     };

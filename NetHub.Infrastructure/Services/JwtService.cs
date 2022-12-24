@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NeerCore.Data.EntityFramework.Extensions;
 using NeerCore.DependencyInjection;
 using NeerCore.Exceptions;
 using NetHub.Application.Features.Public.Users.Dto;
@@ -6,8 +7,6 @@ using NetHub.Application.Interfaces;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Infrastructure.Services.Internal;
-using NetHub.Data.SqlServer.Extensions;
-
 
 namespace NetHub.Infrastructure.Services;
 
@@ -45,8 +44,11 @@ internal sealed class JwtService : IJwtService
     {
         var refreshTokens = _database.Set<RefreshToken>();
 
-        var token = await refreshTokens.Where(rt => rt.Value == refreshToken).Include(rt => rt.User)
+        var token = await refreshTokens
+            .Where(rt => rt.Value == refreshToken)
+            .Include(rt => rt.User)
             .FirstOr404Async(cancel);
+
         if (!_refreshTokenGenerator.IsValid(token))
             throw new ValidationFailedException("Refresh token is invalid.");
 

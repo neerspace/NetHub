@@ -1,11 +1,14 @@
+using Microsoft.EntityFrameworkCore;
 using NeerCore.Api;
 using NeerCore.Api.Extensions;
 using NeerCore.Api.Swagger.Extensions;
+using NeerCore.Exceptions;
 using NeerCore.Logging;
 using NeerCore.Logging.Extensions;
 using NetHub.Admin;
 using NetHub.Application;
 using NetHub.Data.SqlServer;
+using NetHub.Data.SqlServer.Context;
 using NetHub.Infrastructure;
 
 var logger = LoggerInstaller.InitFromCurrentEnvironment();
@@ -41,8 +44,8 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
 
     builder.Services.AddSqlServerDatabase(builder.Configuration);
     builder.Services.AddApplication(builder.Configuration);
-    builder.Services.AddInfrastructure();
-    builder.Services.AddWebAdminApi(builder.Configuration);
+    builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.AddWebAdminApi();
 }
 
 static void ConfigureWebApp(WebApplication app)
@@ -65,6 +68,7 @@ static void ConfigureWebApp(WebApplication app)
 static void MigrateDatabase(WebApplication app)
 {
     using var scope = app.Services.CreateScope();
-    var database = scope.ServiceProvider.GetRequiredService<>();
+    var database = scope.ServiceProvider.GetRequiredService<ISqlServerDatabase>() as SqlServerDbContext;
+    if (database is null) throw new InternalServerException($"{nameof(ISqlServerDatabase)} DB context cannot be resolved.");
     database.Database.Migrate();
 }
