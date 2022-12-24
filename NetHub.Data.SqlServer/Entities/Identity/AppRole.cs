@@ -11,5 +11,7 @@ public sealed class AppRole : IdentityRole<long>, IEntity
     public override string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
 
 
+    public ICollection<AppUserRole>? UserRoles { get; init; }
+    public ICollection<AppRoleClaim>? RoleClaims { get; init; }
     public ICollection<AppUserRole>? Users { get; set; }
 }

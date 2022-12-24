@@ -22,6 +22,8 @@ public sealed class User : IdentityUser<long>, IEntity
     public DateTime Registered { get; set; } = DateTime.UtcNow;
 
 
+    public ICollection<AppUserRole>? UserRoles { get; init; }
+    public ICollection<AppUserClaim>? UserClaims { get; init; }
     public ICollection<Article>? Articles { get; set; }
     public ICollection<SavedArticle>? SavedArticles { get; set; }
 
