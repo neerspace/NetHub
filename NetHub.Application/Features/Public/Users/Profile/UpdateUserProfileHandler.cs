@@ -5,30 +5,29 @@ using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Application.Features.Public.Users.Profile;
 
-public class UpdateUserProfileHandler : AuthorizedHandler<UpdateUserProfileRequest>
+internal sealed class UpdateUserProfileHandler : AuthorizedHandler<UpdateUserProfileRequest>
 {
-	public UpdateUserProfileHandler(IServiceProvider serviceProvider) : base(serviceProvider)
-	{
-	}
+    public UpdateUserProfileHandler(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
-	protected override async Task<Unit> Handle(UpdateUserProfileRequest request)
-	{
-		var user = await Database.Set<User>().FirstOr404Async(u => u.Id == UserProvider.GetUserId());
 
-		if (user.FirstName != request.FirstName)
-			user.FirstName = request.FirstName;
+    public override async Task<Unit> Handle(UpdateUserProfileRequest request, CancellationToken ct)
+    {
+        var user = await Database.Set<User>().FirstOr404Async(u => u.Id == UserProvider.GetUserId(), ct);
 
-		if (user.LastName != request.LastName)
-			user.LastName = request.LastName;
+        if (user.FirstName != request.FirstName)
+            user.FirstName = request.FirstName;
 
-		if (user.MiddleName != request.MiddleName)
-			user.MiddleName = request.MiddleName;
+        if (user.LastName != request.LastName)
+            user.LastName = request.LastName;
 
-		if (user.Description != request.Description)
-			user.Description = request.Description;
+        if (user.MiddleName != request.MiddleName)
+            user.MiddleName = request.MiddleName;
 
-		await Database.SaveChangesAsync();
+        if (user.Description != request.Description)
+            user.Description = request.Description;
 
-		return Unit.Value;
-	}
+        await Database.SaveChangesAsync(ct);
+
+        return Unit.Value;
+    }
 }

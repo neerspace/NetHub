@@ -4,5 +4,5 @@ namespace NetHub.Application.Interfaces;
 
 public interface IAuthValidator
 {
-	Task<bool> ValidateAsync(SsoEnterRequest request, SsoType type);
+	Task<bool> ValidateAsync(SsoEnterRequest request, SsoType type, CancellationToken ct = default);
 }

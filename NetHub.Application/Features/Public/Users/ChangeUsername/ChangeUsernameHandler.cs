@@ -6,27 +6,26 @@ using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Application.Features.Public.Users.ChangeUsername;
 
-public class ChangeUsernameHandler : AuthorizedHandler<ChangeUsernameRequest>
+internal sealed class ChangeUsernameHandler : AuthorizedHandler<ChangeUsernameRequest>
 {
-	public ChangeUsernameHandler(IServiceProvider serviceProvider) : base(serviceProvider)
-	{
-	}
+    public ChangeUsernameHandler(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
-	protected override async Task<Unit> Handle(ChangeUsernameRequest request)
-	{
-		//TODO: university (not allowed to change username more than 3 times at week)
-		
-		var isExist = await Database.Set<User>().AnyAsync(u => u.UserName == request.Username);
 
-		if (isExist)
-			throw new ValidationFailedException("username", "User with such username already exists");
+    public override async Task<Unit> Handle(ChangeUsernameRequest request, CancellationToken ct)
+    {
+        //TODO: university (not allowed to change username more than 3 times at week)
 
-		var user = await UserProvider.GetUser();
+        var isExist = await Database.Set<User>().AnyAsync(u => u.UserName == request.Username, ct);
 
-		await UserManager.SetUserNameAsync(user, request.Username);
+        if (isExist)
+            throw new ValidationFailedException("username", "User with such username already exists");
 
-		await Database.SaveChangesAsync();
+        var user = await UserProvider.GetUser();
 
-		return Unit.Value;
-	}
+        await UserManager.SetUserNameAsync(user, request.Username);
+
+        await Database.SaveChangesAsync(ct);
+
+        return Unit.Value;
+    }
 }

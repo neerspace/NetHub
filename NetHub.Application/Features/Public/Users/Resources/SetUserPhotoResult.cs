@@ -1,3 +1,3 @@
 ﻿namespace NetHub.Application.Features.Public.Users.Resources;
 
-public record SetUserPhotoResult(string Link);
+public sealed record SetUserPhotoResult(string Link);

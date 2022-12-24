@@ -8,20 +8,20 @@ using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Application.Features.Public.Users.Me;
 
-public class GetUserHandler : AuthorizedHandler<GetUserRequest, UserDto>
+internal sealed class GetUserHandler : AuthorizedHandler<GetUserRequest, UserDto>
 {
-	private readonly UserManager<User> _userManager;
+    private readonly UserManager<User> _userManager;
 
-	public GetUserHandler(IServiceProvider serviceProvider) : base(serviceProvider)
-	{
-		_userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-	}
+    public GetUserHandler(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+        _userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+    }
 
-	protected override async Task<UserDto> Handle(GetUserRequest request)
-	{
-		var userId = UserProvider.GetUserId();
-		var user = await _userManager.FindByIdAsync(userId);
+    public override async Task<UserDto> Handle(GetUserRequest request, CancellationToken ct)
+    {
+        var userId = UserProvider.GetUserId();
+        var user = await _userManager.FindByIdAsync(userId);
 
-		return user.Adapt<UserDto>();
-	}
+        return user.Adapt<UserDto>();
+    }
 }
