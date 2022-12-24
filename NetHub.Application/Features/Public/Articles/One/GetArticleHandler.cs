@@ -13,8 +13,6 @@ internal sealed class GetArticleHandler : DbHandler<GetArticleRequest, (ArticleM
 
     public override async Task<(ArticleModel, Guid[]?)> Handle(GetArticleRequest request, CancellationToken ct)
     {
-        //TODO: TEST IT!!!!!!!!!!!!!!!
-
         var article = await Database.Set<Article>()
             .Include(a => a.Localizations)
             .Include(a => a.Tags)!.ThenInclude(at => at.Tag)

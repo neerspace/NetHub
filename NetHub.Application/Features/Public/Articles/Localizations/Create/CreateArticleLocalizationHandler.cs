@@ -17,8 +17,6 @@ internal sealed class CreateArticleLocalizationHandler : AuthorizedHandler<Creat
 
     public override async Task<ArticleLocalizationModel> Handle(CreateArticleLocalizationRequest request, CancellationToken ct)
     {
-        //TODO: university (delayed publication)
-
         var userId = UserProvider.GetUserId();
         var article = await Database.Set<Article>()
             .Include(a => a.Localizations)
@@ -53,8 +51,6 @@ internal sealed class CreateArticleLocalizationHandler : AuthorizedHandler<Creat
     private async Task<IEnumerable<ArticleContributor>> SetContributors(ArticleContributorModel[]? contributors,
         long mainAuthorId)
     {
-        //TODO: university (not allowed to add more than 6 contributors)
-
         var returnContributors = new List<ArticleContributor>
         {
             new()
