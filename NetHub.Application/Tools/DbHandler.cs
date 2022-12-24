@@ -1,40 +1,28 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using NetHub.Application.Features.Public.Articles;
-using NetHub.Core.Abstractions.Context;
+using NetHub.Data.SqlServer.Context;
 
 namespace NetHub.Application.Tools;
 
-public class DbHandler<TRequest, TResult> : IRequestHandler<TRequest, TResult>
-	where TRequest : IRequest<TResult>
+public abstract class DbHandler<TRequest, TResult> : IRequestHandler<TRequest, TResult>
+    where TRequest : IRequest<TResult>
 {
-	private readonly IServiceProvider _serviceProvider;
+    private readonly IServiceProvider _serviceProvider;
 
-	protected readonly IDatabaseContext Database;
-	protected HttpContext HttpContext => _serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext!;
+    protected readonly ISqlServerDatabase Database;
+    protected HttpContext HttpContext => _serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext!;
 
-	public DbHandler(IServiceProvider serviceProvider)
-	{
-		_serviceProvider = serviceProvider;
-		Database = serviceProvider.GetRequiredService<IDatabaseContext>();
-	}
+    protected DbHandler(IServiceProvider serviceProvider)
+    {
+        _serviceProvider = serviceProvider;
+        Database = serviceProvider.GetRequiredService<ISqlServerDatabase>();
+    }
 
-
-	protected virtual Task<TResult> Handle(TRequest request)
-	{
-		throw new NotImplementedException();
-	}
-
-	public virtual Task<TResult> Handle(TRequest request, CancellationToken cancel)
-	{
-		return Handle(request);
-	}
+    public abstract Task<TResult> Handle(TRequest request, CancellationToken ct);
 }
 
-public class DbHandler<TRequest> : DbHandler<TRequest, Unit> where TRequest : IRequest
+public abstract class DbHandler<TRequest> : DbHandler<TRequest, Unit> where TRequest : IRequest
 {
-	public DbHandler(IServiceProvider serviceProvider) : base(serviceProvider)
-	{
-	}
+    protected DbHandler(IServiceProvider serviceProvider) : base(serviceProvider) { }
 }

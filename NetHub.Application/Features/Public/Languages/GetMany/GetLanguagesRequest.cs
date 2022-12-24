@@ -2,4 +2,4 @@
 
 namespace NetHub.Application.Features.Public.Languages.GetMany;
 
-public record GetLanguagesRequest : IRequest<LanguageModel[]>;
+public sealed record GetLanguagesRequest : IRequest<LanguageModel[]>;

@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
+using NeerCore.Data.Abstractions;
 using NetHub.Application.Models;
-using NetHub.Core.Abstractions.Entities;
 
 namespace NetHub.Application.Interfaces;
 

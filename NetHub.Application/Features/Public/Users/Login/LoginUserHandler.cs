@@ -1,9 +1,9 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using NeerCore.Exceptions;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Tools;
-using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Application.Features.Public.Users.Login;

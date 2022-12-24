@@ -4,22 +4,20 @@ using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Application.Features.Public.Articles.Localizations.GetSaving.One;
 
-public class GetLocalizationSavingHandler : AuthorizedHandler<GetLocalizationSavingRequest, GetLocalizationSavingResult>
+internal sealed class GetLocalizationSavingHandler : AuthorizedHandler<GetLocalizationSavingRequest, GetLocalizationSavingResult>
 {
-	public GetLocalizationSavingHandler(IServiceProvider serviceProvider) : base(serviceProvider)
-	{
-	}
+    public GetLocalizationSavingHandler(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
-	protected override async Task<GetLocalizationSavingResult> Handle(GetLocalizationSavingRequest request)
-	{
-		var userId = UserProvider.GetUserId();
+    public override async Task<GetLocalizationSavingResult> Handle(GetLocalizationSavingRequest request, CancellationToken ct)
+    {
+        var userId = UserProvider.GetUserId();
 
-		var savedLocalization = await Database.Set<SavedArticle>()
-			.Include(sa => sa.Localization)
-			.SingleOrDefaultAsync(sa =>
-				sa.UserId == userId && sa.Localization!.ArticleId ==
-				request.ArticleId && sa.Localization.LanguageCode == request.LanguageCode);
+        var savedLocalization = await Database.Set<SavedArticle>()
+            .Include(sa => sa.Localization)
+            .SingleOrDefaultAsync(sa =>
+                sa.UserId == userId && sa.Localization!.ArticleId ==
+                request.ArticleId && sa.Localization.LanguageCode == request.LanguageCode, ct);
 
-		return new(savedLocalization is not null);
-	}
+        return new(savedLocalization is not null);
+    }
 }

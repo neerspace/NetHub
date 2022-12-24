@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using NeerCore.Exceptions;
 using NetHub.Application.Tools;
-using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Application.Features.Public.Users.ChangeUsername;

@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using Microsoft.AspNetCore.Identity;
-using NetHub.Core;
+using NeerCore;
 
 namespace NetHub.Application.Extensions;
 

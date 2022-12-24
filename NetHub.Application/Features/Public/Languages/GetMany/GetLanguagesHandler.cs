@@ -5,18 +5,16 @@ using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Application.Features.Public.Languages.GetMany;
 
-public class GetLanguagesHandler : DbHandler<GetLanguagesRequest, LanguageModel[]>
+internal sealed class GetLanguagesHandler : DbHandler<GetLanguagesRequest, LanguageModel[]>
 {
-	public GetLanguagesHandler(IServiceProvider serviceProvider) : base(serviceProvider)
-	{
-	}
+    public GetLanguagesHandler(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
-	protected override async Task<LanguageModel[]> Handle(GetLanguagesRequest request)
-	{
-		var languages = await Database.Set<Language>()
-			.ProjectToType<LanguageModel>()
-			.ToArrayAsync();
+    public override async Task<LanguageModel[]> Handle(GetLanguagesRequest request, CancellationToken ct)
+    {
+        var languages = await Database.Set<Language>()
+            .ProjectToType<LanguageModel>()
+            .ToArrayAsync(ct);
 
-		return languages;
-	}
+        return languages;
+    }
 }

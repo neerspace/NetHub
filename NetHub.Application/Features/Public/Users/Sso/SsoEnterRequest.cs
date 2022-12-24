@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using NetHub.Application.Features.Public.Users.Dto;
 using NetHub.Application.Interfaces;
