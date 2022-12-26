@@ -8,7 +8,7 @@ using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Application.Features.Public.Users.Sso;
 
-public sealed class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthResult, string)>
+public sealed class SsoEnterHandler : DbHandler<SsoEnterRequest, AuthResult>
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly IAuthValidator _validator;
@@ -22,8 +22,8 @@ public sealed class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthResult, st
         _jwtService = jwtService;
     }
 
-    // protected override async Task<(AuthModel, string)> Handle(SsoEnterRequest request)
-    public override async Task<(AuthResult, string)> Handle(SsoEnterRequest request, CancellationToken ct)
+
+    public override async Task<AuthResult> Handle(SsoEnterRequest request, CancellationToken ct)
     {
         var loginInfo = await GetUserLoginInfoAsync(request.ProviderKey, request.Provider, ct);
         if (loginInfo is null) throw new ValidationFailedException("Login info is invalid");
@@ -40,19 +40,7 @@ public sealed class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthResult, st
 
         await LoginUserAsync(request, validated, ct);
 
-        var dto = await _jwtService.GenerateAsync(user, ct)
-            with
-            {
-                Id = user.Id,
-                ProfilePhotoLink = user.ProfilePhotoLink,
-                FirstName = user.FirstName
-            };
-
-        // dto.ProfilePhotoLink = user.ProfilePhotoLink;
-        // dto.FirstName = user.FirstName;
-
-        // return (dto.Adapt<AuthModel>(), dto.RefreshToken);
-        return (dto, dto.RefreshToken);
+        return await _jwtService.GenerateAsync(user, ct);
     }
 
     private async Task LoginUserAsync(SsoEnterRequest request, bool validated, CancellationToken ct)

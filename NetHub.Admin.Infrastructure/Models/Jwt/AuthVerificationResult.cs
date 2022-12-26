@@ -7,4 +7,8 @@ public sealed record AuthVerificationResult(
     string? UserName,
     AuthMethod PreferAuthMethod,
     IEnumerable<AuthMethod> AllowedAuthMethod
-);
+)
+{
+    /// <example>jurilents</example>
+    public string? UserName { get; init; } = UserName;
+}

@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using NeerCore.Api;
 using NeerCore.Api.Extensions;
 using NeerCore.Api.Swagger.Extensions;

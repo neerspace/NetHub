@@ -8,7 +8,7 @@ using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.Identity;
 
-namespace NetHub.Application.Services;
+namespace NetHub.Application.SharedServices;
 
 [Service]
 public sealed class RefreshTokenGenerator

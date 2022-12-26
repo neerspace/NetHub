@@ -11,6 +11,11 @@ public abstract class Endpoint<TRequest, TResponse> : EndpointBaseAsync
     .WithResult<TResponse> { }
 
 [Route("v{version:apiVersion}")]
+public abstract class ActionEndpoint : EndpointBaseAsync
+    .WithoutRequest
+    .WithoutResult { }
+
+[Route("v{version:apiVersion}")]
 public abstract class ActionEndpoint<TRequest> : EndpointBaseAsync
     .WithRequest<TRequest>
     .WithoutResult { }

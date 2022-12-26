@@ -1,14 +1,14 @@
-﻿using Mapster;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using NeerCore.Exceptions;
+using NetHub.Application.Features.Public.Users.Dto;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Tools;
 using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Application.Features.Public.Users.Login;
 
-public sealed class LoginUserHandler : DbHandler<LoginUserRequest, (AuthModel, string)>
+public sealed class LoginUserHandler : DbHandler<LoginUserRequest, AuthResult>
 {
     private readonly IJwtService _jwtService;
     private readonly UserManager<AppUser> _userManager;
@@ -21,7 +21,8 @@ public sealed class LoginUserHandler : DbHandler<LoginUserRequest, (AuthModel, s
         _signInManager = serviceProvider.GetRequiredService<SignInManager<AppUser>>();
     }
 
-    public override async Task<(AuthModel, string)> Handle(LoginUserRequest request, CancellationToken ct)
+
+    public override async Task<AuthResult> Handle(LoginUserRequest request, CancellationToken ct)
     {
         var user = await _userManager.FindByNameAsync(request.Username);
         if (user is null)
@@ -31,8 +32,6 @@ public sealed class LoginUserHandler : DbHandler<LoginUserRequest, (AuthModel, s
         if (!result.Succeeded)
             throw new ValidationFailedException("Password", "Invalid password");
 
-        var dto = await _jwtService.GenerateAsync(user, ct);
-
-        return (dto.Adapt<AuthModel>(), dto.RefreshToken);
+        return await _jwtService.GenerateAsync(user, ct);
     }
 }

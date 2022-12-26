@@ -3,9 +3,11 @@ using NetHub.Application.Extensions;
 
 namespace NetHub.Admin.Infrastructure.Models.Jwt;
 
-public sealed record AuthVerifyRequest(
-    string Login
-);
+public sealed record AuthVerifyRequest
+{
+    /// <example>jurilents</example>
+    public required string Login { get; init; }
+}
 
 internal sealed class AuthVerifyRequestValidator : AbstractValidator<AuthVerifyRequest>
 {

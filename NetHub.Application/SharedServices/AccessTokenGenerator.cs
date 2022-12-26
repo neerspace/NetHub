@@ -1,6 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -11,7 +10,7 @@ using NetHub.Core.Constants;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
 
-namespace NetHub.Application.Services;
+namespace NetHub.Application.SharedServices;
 
 [Service]
 public sealed class AccessTokenGenerator

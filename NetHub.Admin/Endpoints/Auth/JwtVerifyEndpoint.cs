@@ -6,16 +6,17 @@ using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Extensions;
 
-namespace NetHub.Admin.Endpoints.Jwt;
+namespace NetHub.Admin.Endpoints.Auth;
 
-[Tags(TagNames.Jwt)]
+[Tags(TagNames.Auth)]
 [ApiVersion(Versions.V1)]
 public class JwtVerifyEndpoint : Endpoint<AuthVerifyRequest, AuthVerificationResult>
 {
     private readonly ISqlServerDatabase _database;
     public JwtVerifyEndpoint(ISqlServerDatabase database) => _database = database;
 
-    [HttpPost("jwt/verify")]
+
+    [HttpPost("auth/verify")]
     public override async Task<AuthVerificationResult> HandleAsync([FromBody] AuthVerifyRequest request, CancellationToken ct = default)
     {
         var user = await _database.Set<AppUser>().GetByLoginAsync(request.Login, ct);

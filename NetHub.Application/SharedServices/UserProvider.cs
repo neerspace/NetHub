@@ -9,7 +9,7 @@ using NetHub.Application.Interfaces;
 using NetHub.Core.Constants;
 using NetHub.Data.SqlServer.Entities.Identity;
 
-namespace NetHub.Infrastructure.Services;
+namespace NetHub.Application.SharedServices;
 
 [Service]
 internal sealed class UserProvider : IUserProvider

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NetHub.Application.Tools;
 using NetHub.Data.SqlServer.Entities.Identity;
 

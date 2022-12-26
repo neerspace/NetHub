@@ -7,12 +7,12 @@ namespace NetHub.Application.Options;
 
 public sealed class JwtOptions
 {
-    public SecurityKey? Secret { get; set; }
+    public required SecurityKey Secret { get; set; }
     public string? Issuer { get; set; }
     public string[]? Audiences { get; set; }
     public TimeSpan AccessTokenLifetime { get; set; }
     public TimeSpan RefreshTokenLifetime { get; set; }
-    public string CookieName { get; set; } = default!;
+    public required string RefreshTokenCookieName { get; set; }
 
 
     internal sealed class Configurator : IConfigureOptions<JwtOptions>
@@ -23,12 +23,8 @@ public sealed class JwtOptions
         public void Configure(JwtOptions options)
         {
             var config = _configuration.GetRequiredSection("Jwt");
+            config.Bind(options);
             options.Secret = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(config.GetValue<string>(nameof(Secret))!));
-            options.Issuer = config.GetValue<string>(nameof(Issuer));
-            options.Audiences = config.GetValue<string[]>(nameof(Audiences));
-            options.AccessTokenLifetime = config.GetValue<TimeSpan>(nameof(AccessTokenLifetime));
-            options.RefreshTokenLifetime = config.GetValue<TimeSpan>(nameof(RefreshTokenLifetime));
-            options.CookieName = config.GetValue<string>(nameof(CookieName))!;
         }
     }
 }

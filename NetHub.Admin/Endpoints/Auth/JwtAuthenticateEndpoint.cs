@@ -10,25 +10,26 @@ using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Extensions;
 
-namespace NetHub.Admin.Endpoints.Jwt;
+namespace NetHub.Admin.Endpoints.Auth;
 
-[Tags(TagNames.Jwt)]
+[Tags(TagNames.Auth)]
 [ApiVersion(Versions.V1)]
-public class JwtAuthorizeEndpoint : Endpoint<JwtAuthRequest, AdminAuthResult>
+public class JwtAuthenticateEndpoint : Endpoint<AuthRequest, AdminAuthResult>
 {
     private readonly IJwtService _jwtService;
     private readonly ISqlServerDatabase _database;
     private readonly SignInManager<AppUser> _signInManager;
 
-    public JwtAuthorizeEndpoint(ISqlServerDatabase database, IJwtService jwtService, SignInManager<AppUser> signInManager)
+    public JwtAuthenticateEndpoint(ISqlServerDatabase database, IJwtService jwtService, SignInManager<AppUser> signInManager)
     {
         _database = database;
         _jwtService = jwtService;
         _signInManager = signInManager;
     }
 
-    [HttpPost("jwt/authorize")]
-    public override async Task<AdminAuthResult> HandleAsync([FromBody] JwtAuthRequest request, CancellationToken ct = default)
+
+    [HttpPost("jwt/authenticate")]
+    public override async Task<AdminAuthResult> HandleAsync([FromBody] AuthRequest request, CancellationToken ct = default)
     {
         var user = await _database.Set<AppUser>().GetByLoginAsync(request.Login, ct);
         if (user is null) throw new NotFoundException("User not found.");
@@ -39,7 +40,7 @@ public class JwtAuthorizeEndpoint : Endpoint<JwtAuthRequest, AdminAuthResult>
         {
             Name = jwt.FirstName,
             Username = jwt.Username,
-            ProfilePhotoUrl = jwt.ProfilePhotoLink,
+            ProfilePhotoUrl = jwt.ProfilePhotoUrl,
         };
     }
 

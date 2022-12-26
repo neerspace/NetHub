@@ -4,12 +4,12 @@ using NetHub.Application.Extensions;
 
 namespace NetHub.Admin.Infrastructure.Models.Jwt;
 
-public sealed record JwtAuthRequest(
+public sealed record AuthRequest(
     string Login,
     string? Password
 ) : ICommand<AdminAuthResult>;
 
-internal sealed class JwtAuthRequestValidator : AbstractValidator<JwtAuthRequest>
+internal sealed class JwtAuthRequestValidator : AbstractValidator<AuthRequest>
 {
     public JwtAuthRequestValidator()
     {
