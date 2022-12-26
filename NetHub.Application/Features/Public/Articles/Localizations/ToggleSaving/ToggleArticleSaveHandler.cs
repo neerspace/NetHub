@@ -13,7 +13,7 @@ internal sealed class ToggleArticleSaveHandler : AuthorizedHandler<ToggleArticle
 
     public override async Task<Unit> Handle(ToggleArticleSaveRequest request, CancellationToken ct)
     {
-        var userId = UserProvider.GetUserId();
+        var userId = UserProvider.UserId;
 
         var savedArticleEntity = await Database.Set<SavedArticle>()
             .Include(sa => sa.Localization)

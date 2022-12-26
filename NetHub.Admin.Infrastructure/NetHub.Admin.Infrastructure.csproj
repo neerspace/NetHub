@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NeerCore" Version="2.0.0-alpha4" />
-    <PackageReference Include="NeerCore.DependencyInjection" Version="2.0.0-alpha4" />
+    <ProjectReference Include="..\NetHub.Application\NetHub.Application.csproj" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
 
 </Project>

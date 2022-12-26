@@ -6,7 +6,7 @@ namespace NetHub.Application.Interfaces;
 public interface IUserProvider
 {
     ClaimsPrincipal User { get; }
-    long GetUserId();
+    long UserId { get; }
     long? TryGetUserId();
     Task<AppUser> GetUser();
 }

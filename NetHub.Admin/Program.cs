@@ -6,10 +6,9 @@ using NeerCore.Exceptions;
 using NeerCore.Logging;
 using NeerCore.Logging.Extensions;
 using NetHub.Admin;
-using NetHub.Application;
+using NetHub.Admin.Infrastructure;
 using NetHub.Data.SqlServer;
 using NetHub.Data.SqlServer.Context;
-using NetHub.Infrastructure;
 
 var logger = LoggerInstaller.InitFromCurrentEnvironment();
 
@@ -43,8 +42,7 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
     builder.Configuration.AddJsonFile("appsettings.Secrets.json");
 
     builder.Services.AddSqlServerDatabase();
-    builder.Services.AddApplication(builder.Configuration);
-    builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.AddAdminInfrastructure();
     builder.Services.AddWebAdminApi();
 }
 
@@ -56,7 +54,7 @@ static void ConfigureWebApp(WebApplication app)
     app.UseCors(CorsPolicies.AcceptAll);
     app.UseHttpsRedirection();
 
-    app.UseRequestLocalization();
+    // app.UseRequestLocalization();
     app.UseNeerExceptionHandler();
 
     app.UseAuthentication();
@@ -70,5 +68,5 @@ static void MigrateDatabase(IHost app)
     using var scope = app.Services.CreateScope();
     if (scope.ServiceProvider.GetRequiredService<ISqlServerDatabase>() is not SqlServerDbContext database)
         throw new InternalServerException($"{nameof(ISqlServerDatabase)} DB context cannot be resolved.");
-    database.Database.Migrate();
+    // database.Database.Migrate();
 }

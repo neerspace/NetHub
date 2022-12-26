@@ -11,10 +11,10 @@ using NetHub.Core.Constants;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
 
-namespace NetHub.Infrastructure.Services.Internal;
+namespace NetHub.Application.Services;
 
 [Service]
-internal sealed class AccessTokenGenerator
+public sealed class AccessTokenGenerator
 {
     private readonly ISqlServerDatabase _database;
     private readonly JwtOptions _options;
@@ -25,16 +25,18 @@ internal sealed class AccessTokenGenerator
         _options = optionsAccessor.Value;
     }
 
-    public async Task<JwtToken> GenerateAsync(AppUser user, CancellationToken cancel = default)
+    public async Task<JwtToken> GenerateAsync(AppUser user, CancellationToken ct = default)
     {
         DateTime expires = DateTime.UtcNow.Add(_options.AccessTokenLifetime);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(await GetUserClaimsAsync(user, cancel)),
-            Expires = expires,
+            Subject = new ClaimsIdentity(await GetUserClaimsAsync(user, ct)),
             SigningCredentials = new SigningCredentials(_options.Secret, SecurityAlgorithms.HmacSha256Signature),
+            Issuer = _options.Issuer,
+            Audience = _options.Audiences is { Length: > 0 } ? _options.Audiences[0] : null,
             IssuedAt = DateTime.UtcNow,
+            Expires = expires,
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -43,7 +45,7 @@ internal sealed class AccessTokenGenerator
         return new JwtToken(tokenHandler.WriteToken(jwt), expires);
     }
 
-    private async Task<IEnumerable<Claim>> GetUserClaimsAsync(AppUser user, CancellationToken cancel)
+    private async Task<IEnumerable<Claim>> GetUserClaimsAsync(AppUser user, CancellationToken ct)
     {
         var claims = new List<Claim>
         {
@@ -53,36 +55,36 @@ internal sealed class AccessTokenGenerator
             new(Claims.FirstName, user.FirstName),
         };
 
-        IEnumerable<string> roles = await GetUserRolesAsync(user.Id, cancel);
+        IEnumerable<string> roles = await GetUserRolesAsync(user.Id, ct);
 
         claims.AddRange(roles.Select(role => new Claim(Claims.Role, role)));
 
-        claims.AddRange(await GetUserClaimsAsync(user.Id, cancel));
+        claims.AddRange(await GetUserClaimsAsync(user.Id, ct));
         return claims;
     }
 
-    public async Task<IEnumerable<Claim>> GetUserClaimsAsync(long userId, CancellationToken cancel)
+    private async Task<IEnumerable<Claim>> GetUserClaimsAsync(long userId, CancellationToken ct)
     {
         // TODO: mb smth not works
         List<Claim> claims = await (from u in _database.Set<IdentityUserClaim<long>>()
                 where u.UserId == userId
                 select new Claim(u.ClaimType, u.ClaimValue ?? "null"))
-            .ToListAsync(cancel);
+            .ToListAsync(ct);
 
         claims.AddRange(await _database.Set<IdentityUserRole<long>>()
             .Where(e => e.UserId == userId)
             .Join(_database.Set<IdentityRoleClaim<long>>(), ur => ur.RoleId, rc => rc.RoleId, (_, rc) => rc)
             .Select(e => new Claim(e.ClaimType, e.ClaimValue ?? "null"))
-            .ToListAsync(cancel));
+            .ToListAsync(ct));
 
         return claims;
     }
 
-    public Task<List<string>> GetUserRolesAsync(long userId, CancellationToken cancel)
+    private Task<List<string>> GetUserRolesAsync(long userId, CancellationToken ct)
     {
         return (from u in _database.Set<IdentityUserRole<long>>()
             where u.UserId == userId
             join r in _database.Set<AppRole>() on u.RoleId equals r.Id
-            select r.Name).ToListAsync(cancel);
+            select r.Name).ToListAsync(ct);
     }
 }

@@ -7,14 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="7.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.1" />
-    <PackageReference Include="NeerCore.Api" Version="2.0.0-alpha3" />
+    <PackageReference Include="NeerCore.Api" Version="2.0.0-alpha4" />
     <PackageReference Include="NeerCore.Logging.NLog" Version="2.0.0-alpha3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NetHub.Application\NetHub.Application.csproj" />
+    <ProjectReference Include="..\NetHub.Core\NetHub.Core.csproj" />
   </ItemGroup>
 
 </Project>

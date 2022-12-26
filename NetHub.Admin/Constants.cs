@@ -11,5 +11,5 @@ public static class TagNames
 
 public static class Versions
 {
-    public const string V1 = "1.0-internal";
+    public const string V1 = "1.0";
 }

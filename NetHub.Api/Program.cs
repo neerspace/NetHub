@@ -1,22 +1,19 @@
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.EntityFrameworkCore;
 using NeerCore.Api.Extensions;
 using NeerCore.Api.Swagger.Extensions;
-using NeerCore.Exceptions;
 using NeerCore.Logging;
 using NeerCore.Logging.Extensions;
 using NetHub.Api;
 using NetHub.Api.Shared;
 using NetHub.Application;
 using NetHub.Data.SqlServer;
-using NetHub.Data.SqlServer.Context;
 using NetHub.Infrastructure;
 
 var logger = LoggerInstaller.InitFromCurrentEnvironment();
 
 try
 {
-    var builder = WebApplication.CreateBuilder(args);
+    var builder = WebApplication.CreateBuilder();
     // builder.Configuration.AddJsonFile("appsettings.Secrets.json");
     logger.Debug("Configuring application builder");
     ConfigureBuilder(builder);
@@ -77,8 +74,8 @@ static void ConfigureWebApp(WebApplication app)
 
 static void MigrateDatabase(IHost app)
 {
-    using var scope = app.Services.CreateScope();
-    if (scope.ServiceProvider.GetRequiredService<ISqlServerDatabase>() is not SqlServerDbContext database)
-        throw new InternalServerException($"{nameof(ISqlServerDatabase)} DB context cannot be resolved.");
-    database.Database.Migrate();
+    // using var scope = app.Services.CreateScope();
+    // if (scope.ServiceProvider.GetRequiredService<ISqlServerDatabase>() is not SqlServerDbContext database)
+    //     throw new InternalServerException($"{nameof(ISqlServerDatabase)} DB context cannot be resolved.");
+    // database.Database.Migrate();
 }

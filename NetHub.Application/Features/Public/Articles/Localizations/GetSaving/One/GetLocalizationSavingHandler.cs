@@ -10,7 +10,7 @@ internal sealed class GetLocalizationSavingHandler : AuthorizedHandler<GetLocali
 
     public override async Task<GetLocalizationSavingResult> Handle(GetLocalizationSavingRequest request, CancellationToken ct)
     {
-        var userId = UserProvider.GetUserId();
+        var userId = UserProvider.UserId;
 
         var savedLocalization = await Database.Set<SavedArticle>()
             .Include(sa => sa.Localization)

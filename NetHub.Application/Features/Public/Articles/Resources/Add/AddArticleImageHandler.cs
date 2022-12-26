@@ -17,7 +17,7 @@ public sealed class AddArticleImageHandler : AuthorizedHandler<AddArticleImageRe
 
     public override async Task<Guid> Handle(AddArticleImageRequest request, CancellationToken ct)
     {
-        var userId = UserProvider.GetUserId();
+        var userId = UserProvider.UserId;
 
         var article = await Database.Set<Article>().FirstOr404Async(a => a.Id == request.ArticleId, ct);
 

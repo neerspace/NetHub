@@ -11,13 +11,16 @@ public abstract class AuthorizedHandler<TRequest, TResult> : DbHandler<TRequest,
 {
     private readonly IServiceProvider _serviceProvider;
 
-    protected readonly IUserProvider UserProvider;
+    private IUserProvider? _userProvider;
+
+    protected IUserProvider UserProvider => _userProvider ??= _serviceProvider.GetRequiredService<IUserProvider>();
     protected UserManager<AppUser> UserManager => _serviceProvider.GetRequiredService<UserManager<AppUser>>();
+    private long UserId => UserProvider.UserId;
+
 
     protected AuthorizedHandler(IServiceProvider serviceProvider) : base(serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        UserProvider = serviceProvider.GetRequiredService<IUserProvider>();
     }
 }
 

@@ -12,7 +12,7 @@ internal sealed class DeleteArticleHandler : AuthorizedHandler<DeleteArticleRequ
 
     public override async Task<Unit> Handle(DeleteArticleRequest request, CancellationToken ct)
     {
-        var userId = UserProvider.GetUserId();
+        var userId = UserProvider.UserId;
         var article = await Database.Set<Article>().FirstOr404Async(a => a.Id == request.Id, ct);
 
         if (article.AuthorId != userId)

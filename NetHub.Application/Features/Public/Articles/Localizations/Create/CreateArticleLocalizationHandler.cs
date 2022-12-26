@@ -18,7 +18,7 @@ internal sealed class CreateArticleLocalizationHandler : AuthorizedHandler<Creat
 
     public override async Task<ArticleLocalizationModel> Handle(CreateArticleLocalizationRequest request, CancellationToken ct)
     {
-        var userId = UserProvider.GetUserId();
+        var userId = UserProvider.UserId;
         var article = await Database.Set<Article>()
             .Include(a => a.Localizations)
             .FirstOr404Async(a => a.Id == request.ArticleId, ct);
