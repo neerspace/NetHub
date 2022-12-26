@@ -66,14 +66,14 @@ public sealed class AccessTokenGenerator
     private async Task<IEnumerable<Claim>> GetUserClaimsAsync(long userId, CancellationToken ct)
     {
         // TODO: mb smth not works
-        List<Claim> claims = await (from u in _database.Set<IdentityUserClaim<long>>()
+        List<Claim> claims = await (from u in _database.Set<AppUserClaim>()
                 where u.UserId == userId
                 select new Claim(u.ClaimType, u.ClaimValue ?? "null"))
             .ToListAsync(ct);
 
-        claims.AddRange(await _database.Set<IdentityUserRole<long>>()
+        claims.AddRange(await _database.Set<AppUserRole>()
             .Where(e => e.UserId == userId)
-            .Join(_database.Set<IdentityRoleClaim<long>>(), ur => ur.RoleId, rc => rc.RoleId, (_, rc) => rc)
+            .Join(_database.Set<AppRoleClaim>(), ur => ur.RoleId, rc => rc.RoleId, (_, rc) => rc)
             .Select(e => new Claim(e.ClaimType, e.ClaimValue ?? "null"))
             .ToListAsync(ct));
 
@@ -82,7 +82,7 @@ public sealed class AccessTokenGenerator
 
     private Task<List<string>> GetUserRolesAsync(long userId, CancellationToken ct)
     {
-        return (from u in _database.Set<IdentityUserRole<long>>()
+        return (from u in _database.Set<AppUserRole>()
             where u.UserId == userId
             join r in _database.Set<AppRole>() on u.RoleId equals r.Id
             select r.Name).ToListAsync(ct);

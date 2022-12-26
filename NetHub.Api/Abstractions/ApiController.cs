@@ -12,6 +12,7 @@ namespace NetHub.Api.Shared.Abstractions;
 [ApiVersion(Versions.V1)]
 [Route("/v{version:apiVersion}/[controller]")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Produces("application/json")]
 public abstract class ApiController : ControllerBase
 {
     private IMediator? _mediator;

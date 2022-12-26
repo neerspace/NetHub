@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NetHub.Application.Tools;
+using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Application.Features.Public.Users.CheckUserExists;
 
@@ -11,7 +12,7 @@ internal sealed class CheckUserExistsHandler : DbHandler<CheckUserExistsRequest,
 
     public override async Task<CheckUserExistsResult> Handle(CheckUserExistsRequest request, CancellationToken ct)
     {
-        var loginInfo = await Database.Set<IdentityUserLogin<long>>()
+        var loginInfo = await Database.Set<AppUserLogin>()
             .SingleOrDefaultAsync(l =>
                 l.ProviderKey == request.Key
                 && l.ProviderDisplayName == request.Provider.ToString().ToLower(), ct);
