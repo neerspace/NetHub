@@ -8,6 +8,7 @@ using NetHub.Admin;
 using NetHub.Admin.Infrastructure;
 using NetHub.Data.SqlServer;
 using NetHub.Data.SqlServer.Context;
+using NetHub.Infrastructure;
 
 var logger = LoggerInstaller.InitFromCurrentEnvironment();
 
@@ -41,6 +42,7 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
     builder.Configuration.AddJsonFile("appsettings.Secrets.json");
 
     builder.Services.AddSqlServerDatabase();
+    builder.Services.AddInfrastructure(builder.Configuration);
     builder.Services.AddAdminInfrastructure();
     builder.Services.AddWebAdminApi();
 }

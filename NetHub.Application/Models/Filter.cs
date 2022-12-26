@@ -5,7 +5,7 @@ namespace NetHub.Application.Models;
 public record FilterRequest
 {
     public virtual string? Filters { get; set; }
-    public virtual string Sorts { get; init; } = "id";
+    public virtual string Sorts { get; set; } = "id";
     public virtual int Page { get; init; } = 1;
     public virtual int PageSize { get; init; } = 10;
 }

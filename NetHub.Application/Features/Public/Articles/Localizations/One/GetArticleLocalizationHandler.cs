@@ -38,7 +38,7 @@ internal sealed class GetArticleLocalizationHandler : DbHandler<GetArticleLocali
             var isSaved = await Database.Set<SavedArticle>()
                 .SingleOrDefaultAsync(sa => sa.LocalizationId == localization.Id && sa.UserId == userId, ct);
             var articleVote = await Database.Set<ArticleVote>()
-                .SingleOrDefaultAsync(sa => sa.ArticleId == localization.ArticleId, ct);
+                .SingleOrDefaultAsync(sa => sa.ArticleId == localization.ArticleId && sa.UserId == userId, ct);
 
             localization.IsSaved = isSaved != null;
             localization.SavedDate = isSaved?.SavedDate;

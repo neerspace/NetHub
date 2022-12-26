@@ -19,7 +19,7 @@ public sealed class AppUser : IdentityUser<long>, IEntity
     public override string NormalizedEmail { get; set; } = default!;
     public override bool EmailConfirmed { get; set; }
     public string? Description { get; set; }
-    public string? ProfilePhotoLink { get; set; }
+    public string? ProfilePhotoUrl { get; set; }
 
     public DateTime Registered { get; set; } = DateTime.UtcNow;
 

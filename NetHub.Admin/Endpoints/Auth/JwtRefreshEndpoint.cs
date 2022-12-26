@@ -1,32 +1,34 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NeerCore.Exceptions;
+using NetHub.Admin.Abstractions;
 using NetHub.Application.Features.Public.Users.Dto;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Options;
-using NetHub.Application.Tools;
 
-namespace NetHub.Application.Features.Public.Users.RefreshTokens;
+namespace NetHub.Admin.Endpoints.Auth;
 
-internal sealed class RefreshTokensHandler : AuthorizedHandler<RefreshTokensRequest, AuthResult>
+[Tags(TagNames.Auth)]
+[ApiVersion(Versions.V1)]
+public class JwtRefreshEndpoint : ResultEndpoint<AuthResult>
 {
 	private readonly IJwtService _jwtService;
 	private readonly JwtOptions _jwtOptions;
 
-	public RefreshTokensHandler(IServiceProvider serviceProvider,
-		IOptions<JwtOptions> jwtOptionsAccessor) : base(serviceProvider)
+	public JwtRefreshEndpoint(IJwtService jwtService,
+		IOptions<JwtOptions> jwtOptionsAccessor)
 	{
-		_jwtService = serviceProvider.GetRequiredService<IJwtService>();
+		_jwtService = jwtService;
 		_jwtOptions = jwtOptionsAccessor.Value;
 	}
 
 
-	public override async Task<AuthResult> Handle(RefreshTokensRequest request,
-		CancellationToken ct)
+	[HttpPost("jwt/refresh")]
+	public override async Task<AuthResult> HandleAsync(CancellationToken ct = default)
 	{
 		if (HttpContext.Request.Cookies.TryGetValue(_jwtOptions.RefreshTokenCookieName, out var refreshToken))
 			return await _jwtService.RefreshAsync(refreshToken, ct);
-
+		
 		throw new UnauthorizedException("Refresh token doesn't exist");
 	}
 }

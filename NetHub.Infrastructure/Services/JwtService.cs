@@ -51,7 +51,7 @@ public class JwtService : IJwtService
             Username = user.UserName,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            ProfilePhotoUrl = user.ProfilePhotoLink,
+            ProfilePhotoUrl = user.ProfilePhotoUrl,
             Token = accessToken,
             TokenExpires = accessTokenExpires,
         };

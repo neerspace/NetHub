@@ -7,14 +7,13 @@ using NetHub.Core.Extensions;
 namespace NetHub.Application.Features.Public.Users.Sso;
 
 public sealed class SsoEnterRequest : IRequest<AuthResult>
-
 {
     public string Username { get; set; } = default!;
     public string? Email { get; set; } = default!;
     public string? FirstName { get; set; } = default!;
     public string? LastName { get; set; } = default!;
     public string? MiddleName { get; set; }
-    public string? ProfilePhotoLink { get; set; }
+    public string? ProfilePhotoUrl { get; set; }
     public Dictionary<string, string?> ProviderMetadata { get; set; } = default!;
     public ProviderType Provider { get; set; }
     public string ProviderKey { get; set; } = default!;

@@ -6,7 +6,7 @@ public interface IAuthProviderValidator
 {
 	ProviderType Type { get; }
 
-	Task<bool> ValidateAsync(SsoEnterRequest request, SsoType type, CancellationToken ct = default);
+	Task<bool> ValidateAsync(SsoEnterRequest request, CancellationToken ct = default);
 }
 
 public enum SsoType

@@ -9,6 +9,7 @@ namespace NetHub.Data.SqlServer.Entities.Articles;
 [Table($"{nameof(ArticleLocalization)}s")]
 public record ArticleLocalization : IEntity
 {
+	[Sieve(CanFilter = true, CanSort = true)]
 	public long Id { get; set; }
 
 	#region Article
@@ -36,6 +37,7 @@ public record ArticleLocalization : IEntity
 	[Sieve(CanSort = true)]
 	public int Views { get; set; } = 0;
 
+	[Sieve(CanFilter = true)]
 	public ContentStatus Status { get; set; }
 	public InternalStatus InternalStatus { get; set; }
 

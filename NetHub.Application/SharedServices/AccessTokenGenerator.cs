@@ -50,7 +50,7 @@ public sealed class AccessTokenGenerator
         {
             new(Claims.Id, user.Id.ToString()),
             new(Claims.Username, user.UserName),
-            new(Claims.Image, user.ProfilePhotoLink ?? ""),
+            new(Claims.Image, user.ProfilePhotoUrl ?? ""),
             new(Claims.FirstName, user.FirstName),
         };
 
