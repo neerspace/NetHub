@@ -12,6 +12,6 @@ internal sealed class AuthProviderValidator : IAuthValidator
     public AuthProviderValidator(IEnumerable<IAuthProviderValidator> validators) => _validators = validators;
 
 
-    public async Task<bool> ValidateAsync(SsoEnterRequest request, SsoType type, CancellationToken ct = default)
-        => await _validators.First(v => v.Type == request.Provider).ValidateAsync(request, type, ct);
+    public async Task<bool> ValidateAsync(SsoEnterRequest request, CancellationToken ct = default)
+        => await _validators.First(v => v.Type == request.Provider).ValidateAsync(request, ct);
 }

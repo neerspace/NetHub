@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NetHub.Api.Shared\NetHub.Api.Shared.csproj" />
     <ProjectReference Include="..\NetHub.Admin.Infrastructure\NetHub.Admin.Infrastructure.csproj" />
+    <ProjectReference Include="..\NetHub.Infrastructure\NetHub.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

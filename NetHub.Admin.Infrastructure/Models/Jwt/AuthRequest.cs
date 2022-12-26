@@ -1,13 +1,14 @@
 ﻿using FluentValidation;
 using NeerCore.Application.Abstractions;
 using NetHub.Application.Extensions;
+using NetHub.Application.Features.Public.Users.Dto;
 
 namespace NetHub.Admin.Infrastructure.Models.Jwt;
 
 public sealed record AuthRequest(
     string Login,
     string? Password
-) : ICommand<AdminAuthResult>;
+) : ICommand<AuthResult>;
 
 internal sealed class JwtAuthRequestValidator : AbstractValidator<AuthRequest>
 {

@@ -16,7 +16,7 @@ public class JwtVerifyEndpoint : Endpoint<AuthVerifyRequest, AuthVerificationRes
     public JwtVerifyEndpoint(ISqlServerDatabase database) => _database = database;
 
 
-    [HttpPost("auth/verify")]
+    [HttpPost("jwt/verify")]
     public override async Task<AuthVerificationResult> HandleAsync([FromBody] AuthVerifyRequest request, CancellationToken ct = default)
     {
         var user = await _database.Set<AppUser>().GetByLoginAsync(request.Login, ct);

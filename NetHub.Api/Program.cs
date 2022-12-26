@@ -16,7 +16,6 @@ var logger = LoggerInstaller.InitFromCurrentEnvironment();
 try
 {
 	var builder = WebApplication.CreateBuilder(args);
-	// builder.Configuration.AddJsonFile("appsettings.Secrets.json");
 	logger.Debug("Configuring application builder");
 	ConfigureBuilder(builder);
 
@@ -43,6 +42,8 @@ finally
 static void ConfigureBuilder(WebApplicationBuilder builder)
 {
 	builder.Logging.ConfigureNLogAsDefault();
+	builder.Configuration.AddJsonFile("appsettings.Secrets.json");
+	builder.Configuration.AddJsonFile("appsettings.Development.json");
 	builder.Services.AddSqlServerDatabase();
 	builder.Services.AddInfrastructure(builder.Configuration);
 	builder.Services.AddApplication(builder.Configuration);

@@ -14,7 +14,7 @@ namespace NetHub.Admin.Endpoints.Auth;
 
 [Tags(TagNames.Auth)]
 [ApiVersion(Versions.V1)]
-public class JwtAuthenticateEndpoint : Endpoint<AuthRequest, AdminAuthResult>
+public class JwtAuthenticateEndpoint : Endpoint<AuthRequest, AuthResult>
 {
     private readonly IJwtService _jwtService;
     private readonly ISqlServerDatabase _database;
@@ -29,19 +29,12 @@ public class JwtAuthenticateEndpoint : Endpoint<AuthRequest, AdminAuthResult>
 
 
     [HttpPost("jwt/authenticate")]
-    public override async Task<AdminAuthResult> HandleAsync([FromBody] AuthRequest request, CancellationToken ct = default)
+    public override async Task<AuthResult> HandleAsync([FromBody] AuthRequest request, CancellationToken ct = default)
     {
         var user = await _database.Set<AppUser>().GetByLoginAsync(request.Login, ct);
         if (user is null) throw new NotFoundException("User not found.");
-
-        var jwt = await PasswordAuthorizeAsync(user, request.Password!, ct);
-
-        return new AdminAuthResult
-        {
-            Name = jwt.FirstName,
-            Username = jwt.Username,
-            ProfilePhotoUrl = jwt.ProfilePhotoUrl,
-        };
+        
+        return await PasswordAuthorizeAsync(user, request.Password!, ct);
     }
 
     private async Task<AuthResult> PasswordAuthorizeAsync(AppUser user, string password, CancellationToken cancel)

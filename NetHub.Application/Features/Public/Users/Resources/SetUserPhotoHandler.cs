@@ -28,11 +28,11 @@ internal sealed class SetUserPhotoHandler : AuthorizedHandler<SetUserPhotoReques
             var photoId = await _resourceService.SaveResourceToDb(request.File);
 
             user.PhotoId = photoId;
-            user.ProfilePhotoLink = HttpContext.Request.GetResourceUrl(photoId);
+            user.ProfilePhotoUrl = HttpContext.Request.GetResourceUrl(photoId);
         }
         else if (request.Link is not null)
         {
-            user.ProfilePhotoLink = request.Link;
+            user.ProfilePhotoUrl = request.Link;
         }
         else
         {
@@ -41,6 +41,6 @@ internal sealed class SetUserPhotoHandler : AuthorizedHandler<SetUserPhotoReques
 
         await Database.SaveChangesAsync(ct);
 
-        return new(user.ProfilePhotoLink);
+        return new(user.ProfilePhotoUrl);
     }
 }

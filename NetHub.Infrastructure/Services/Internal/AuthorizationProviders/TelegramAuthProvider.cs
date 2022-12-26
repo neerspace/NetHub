@@ -22,7 +22,7 @@ internal sealed class TelegramAuthProvider : IAuthProviderValidator
     }
 
 
-    public Task<bool> ValidateAsync(SsoEnterRequest request, SsoType type, CancellationToken ct = default)
+    public Task<bool> ValidateAsync(SsoEnterRequest request, CancellationToken ct = default)
     {
         var metadata = request.ProviderMetadata;
 
@@ -52,14 +52,6 @@ internal sealed class TelegramAuthProvider : IAuthProviderValidator
         {
             TryAppend(orderedMeta.ElementAt(i).Key, string.IsNullOrEmpty(orderedMeta.ElementAtOrDefault(i + 1).Value));
         }
-
-
-        // TryAppend("auth_date");
-        // TryAppend("first_name");
-        // TryAppend("id");
-        // TryAppend("last_name");
-        // TryAppend("photo_url");
-        // TryAppend("username", true);
 
         return builder.ToString();
 

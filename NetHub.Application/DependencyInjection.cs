@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetHub.Application.Options;
 using NetHub.Data.SqlServer.Entities.Identity;
+using Sieve.Models;
 
 namespace NetHub.Application;
 
@@ -40,6 +41,7 @@ public static class DependencyInjection
 		services.Configure<FacebookOptions>(configuration.GetSection("Facebook"));
 		services.ConfigureOptions<JwtOptions.Configurator>();
 		services.Configure<CurrencyRateOptions>(configuration.GetSection("CurrencyRate"));
+		services.Configure<SieveOptions>(configuration.GetSection("Sieve"));
 	}
 
 	private static void RegisterMappings(this IServiceCollection services)

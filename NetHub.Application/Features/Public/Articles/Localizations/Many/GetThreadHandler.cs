@@ -33,6 +33,7 @@ internal sealed class GetThreadHandler : DbHandler<GetThreadRequest, ExtendedArt
 
     private async Task<ExtendedArticleModel[]> GetSimpleArticles(FilterRequest request, CancellationToken cancel)
     {
+        
         if (request.Filters != null && request.Filters.Contains("contributorRole"))
             request.Filters = request.Filters.Replace(",contributorRole==Author", "");
 
@@ -40,6 +41,7 @@ internal sealed class GetThreadHandler : DbHandler<GetThreadRequest, ExtendedArt
             request.Filters = request.Filters.Replace("contributorId", "InContributors");
 
         request.Filters += ",status==published";
+        request.Sorts = "published";
 
         var result = await _filterService
             .FilterAsync<ArticleLocalization, ExtendedArticleModel>(request, cancel, al => al.Contributors);
@@ -52,6 +54,7 @@ internal sealed class GetThreadHandler : DbHandler<GetThreadRequest, ExtendedArt
     {
         request.Filters += $",userId=={userId}";
         request.Filters += ",status==published";
+        request.Sorts = "published";
 
         var result =
             await _filterService.FilterAsync<ExtendedUserArticle, ExtendedArticleModel>(request, ct: cancel);
