@@ -16,7 +16,7 @@ internal sealed class UpdateArticleHandler : AuthorizedHandler<UpdateArticleRequ
 
     public override async Task<Unit> Handle(UpdateArticleRequest request, CancellationToken ct)
     {
-        var userId = UserProvider.GetUserId();
+        var userId = UserProvider.UserId;
 
         var article = await Database.Set<Article>().FirstOr404Async(a => a.Id == request.Id, ct);
 

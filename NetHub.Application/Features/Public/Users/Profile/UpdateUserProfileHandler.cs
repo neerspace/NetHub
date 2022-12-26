@@ -12,7 +12,7 @@ internal sealed class UpdateUserProfileHandler : AuthorizedHandler<UpdateUserPro
 
     public override async Task<Unit> Handle(UpdateUserProfileRequest request, CancellationToken ct)
     {
-        var user = await Database.Set<AppUser>().FirstOr404Async(u => u.Id == UserProvider.GetUserId(), ct);
+        var user = await Database.Set<AppUser>().FirstOr404Async(u => u.Id == UserProvider.UserId, ct);
 
         if (user.FirstName != request.FirstName)
             user.FirstName = request.FirstName;

@@ -5,6 +5,7 @@ namespace NetHub.Data.SqlServer.Context;
 
 public class SqlServerDbContextFactory : DbContextFactoryBase<SqlServerDbContext>
 {
+    public override TextWriter? LogWriter => null;
     public override string SelectedConnectionName => "Default";
 
     public override string SettingsPath => "../NetHub.Api/appsettings.Development.json";

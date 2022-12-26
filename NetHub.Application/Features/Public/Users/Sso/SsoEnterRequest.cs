@@ -6,7 +6,7 @@ using NetHub.Core.Extensions;
 
 namespace NetHub.Application.Features.Public.Users.Sso;
 
-public sealed class SsoEnterRequest : IRequest<(AuthResult, string)>
+public sealed class SsoEnterRequest : IRequest<AuthResult>
 
 {
     public string Username { get; set; } = default!;

@@ -19,7 +19,7 @@ internal sealed class GetUserHandler : AuthorizedHandler<GetUserRequest, UserDto
 
     public override async Task<UserDto> Handle(GetUserRequest request, CancellationToken ct)
     {
-        var userId = UserProvider.GetUserId();
+        var userId = UserProvider.UserId;
         var user = await _userManager.FindByIdAsync(userId);
 
         return user.Adapt<UserDto>();

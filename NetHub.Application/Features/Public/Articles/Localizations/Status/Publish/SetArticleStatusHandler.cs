@@ -16,7 +16,7 @@ internal sealed class SetArticleStatusHandler : AuthorizedHandler<SetArticleStat
 
     public override async Task<Unit> Handle(SetArticleStatusRequest statusRequest, CancellationToken ct)
     {
-        var userId = UserProvider.GetUserId();
+        var userId = UserProvider.UserId;
 
         var localization = await Database.Set<ArticleLocalization>()
             .Include(al => al.Contributors)

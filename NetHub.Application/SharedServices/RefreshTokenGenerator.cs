@@ -8,10 +8,10 @@ using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.Identity;
 
-namespace NetHub.Infrastructure.Services.Internal;
+namespace NetHub.Application.SharedServices;
 
 [Service]
-internal sealed class RefreshTokenGenerator
+public sealed class RefreshTokenGenerator
 {
     private readonly JwtOptions _options;
     private readonly ISqlServerDatabase _database;

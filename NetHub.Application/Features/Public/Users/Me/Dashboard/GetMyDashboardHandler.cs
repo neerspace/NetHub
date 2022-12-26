@@ -13,7 +13,7 @@ internal sealed class GetMyDashboardHandler : AuthorizedHandler<GetMyDashboardRe
 
     public override async Task<DashboardDto> Handle(GetMyDashboardRequest request, CancellationToken ct)
     {
-        var userId = UserProvider.GetUserId();
+        var userId = UserProvider.UserId;
 
         var articlesCount = await Database.Set<ArticleContributor>()
             .Where(ac => ac.UserId == userId)

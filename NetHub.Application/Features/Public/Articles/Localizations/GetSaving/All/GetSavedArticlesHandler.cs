@@ -11,7 +11,7 @@ internal sealed class GetSavedArticlesHandler : AuthorizedHandler<GetSavedArticl
 
     public override async Task<ExtendedArticleModel[]> Handle(GetSavedArticlesRequest request, CancellationToken ct)
     {
-        var userId = UserProvider.GetUserId();
+        var userId = UserProvider.UserId;
 
         var saved = await Database.Set<ExtendedUserArticle>()
             .Where(ea => ea.UserId == userId

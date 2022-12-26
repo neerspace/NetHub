@@ -23,7 +23,7 @@ internal sealed class UpdateArticleLocalizationHandler : AuthorizedHandler<Updat
 
     public override async Task<Unit> Handle(UpdateArticleLocalizationRequest request, CancellationToken ct)
     {
-        var userId = UserProvider.GetUserId();
+        var userId = UserProvider.UserId;
         var localization = await _localizations
             .Include(al => al.Contributors)
             .SingleOrDefaultAsync(al =>

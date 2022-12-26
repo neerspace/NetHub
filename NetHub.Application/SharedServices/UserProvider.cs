@@ -9,7 +9,7 @@ using NetHub.Application.Interfaces;
 using NetHub.Core.Constants;
 using NetHub.Data.SqlServer.Entities.Identity;
 
-namespace NetHub.Infrastructure.Services;
+namespace NetHub.Application.SharedServices;
 
 [Service]
 internal sealed class UserProvider : IUserProvider
@@ -29,7 +29,7 @@ internal sealed class UserProvider : IUserProvider
 
     public ClaimsPrincipal User => _accessor.HttpContext!.User;
 
-    public long GetUserId() => User.GetUserId();
+    public long UserId => User.GetUserId();
 
     public long? TryGetUserId()
     {
@@ -44,7 +44,7 @@ internal sealed class UserProvider : IUserProvider
 
     public async Task<AppUser> GetUser()
     {
-        var user = await UserManager.FindByIdAsync(GetUserId().ToString());
+        var user = await UserManager.FindByIdAsync(UserId.ToString());
         if (user is null) throw new UnauthorizedException("Authorized used required");
 
         return _userProfile ??= user;

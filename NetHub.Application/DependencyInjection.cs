@@ -7,7 +7,6 @@ using MediatR.Extensions.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NeerCore.Application.Extensions;
 using NetHub.Application.Options;
 using NetHub.Data.SqlServer.Entities.Identity;
 

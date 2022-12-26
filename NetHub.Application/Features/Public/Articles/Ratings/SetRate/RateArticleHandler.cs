@@ -13,7 +13,7 @@ internal sealed class RateArticleHandler : AuthorizedHandler<RateArticleRequest>
 
     public override async Task<Unit> Handle(RateArticleRequest request, CancellationToken ct)
     {
-        var userId = UserProvider.GetUserId();
+        var userId = UserProvider.UserId;
 
         var actualVote = await Database.Set<ArticleVote>()
             .Include(av => av.Article)
