@@ -18,19 +18,21 @@ public static class JwtAuthenticationExtensions
         {
             authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            authOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            // authOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(jwt =>
         {
             jwt.RequireHttpsMetadata = false;
-            jwt.SaveToken = true;
+            // jwt.SaveToken = true;
 
             jwt.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = options.Issuer is not null,
-                ValidIssuer = options.Issuer,
+                ValidateIssuer = false,
+                // ValidateIssuer = options.Issuer is not null,
+                // ValidIssuer = options.Issuer,
 
-                ValidateAudience = options.Audiences is not null,
-                ValidAudiences = options.Audiences,
+                ValidateAudience = false,
+                // ValidateAudience = options.Audiences is not null,
+                // ValidAudiences = options.Audiences,
 
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = options.Secret,

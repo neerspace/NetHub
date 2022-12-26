@@ -115,7 +115,7 @@ public sealed class SsoEnterHandler : DbHandler<SsoEnterRequest, (AuthResult, st
 
     private async Task<IdentityUserLogin<long>?> GetUserLoginInfoAsync(string key, ProviderType provider, CancellationToken ct)
     {
-        return await Database.Set<IdentityUserLogin<long>>()
+        return await Database.Set<AppUserLogin>()
             .SingleOrDefaultAsync(info =>
                 info.ProviderKey == key &&
                 info.LoginProvider == provider.ToString().ToLower(), ct);

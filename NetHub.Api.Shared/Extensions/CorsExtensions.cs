@@ -13,14 +13,10 @@ public static class CorsExtensions
 
 		services.AddCors(o => o.AddPolicy(Cors.ApiDefault, builder =>
 		{
-			// TODO: add normal CORS :)
-			// 	.WithMethods("POST", "GET", "PUT", "DELETE", "OPTIONS")
-			// 	.WithHeaders("Content-Type", "Authorization", "Set-Cookie")
-			// 	.AllowCredentials();
-			// builder.AllowAnyOrigin()
-			builder.WithOrigins(corsOptions.AllowedOrigins)
-				.AllowAnyMethod()
+			builder.SetIsOriginAllowed(o => true)
+				// .WithOrigins(corsOptions.AllowedOrigins)
 				.AllowAnyHeader()
+				.AllowAnyMethod()
 				.AllowCredentials();
 		}));
 	}
