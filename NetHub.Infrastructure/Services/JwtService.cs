@@ -86,6 +86,7 @@ public class JwtService : IJwtService
             Secure = true,
             SameSite = SameSiteMode.Strict,
             Expires = refreshTokenExpires,
+            Domain = "",
         });
     }
 }

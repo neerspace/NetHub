@@ -8,8 +8,8 @@ namespace NetHub.Api.Areas.Public.Controllers;
 
 public class NewsController : ApiController
 {
-	[HttpGet]
-	[AllowAnonymous]
-	public async Task<PostModel[]> GetMezhaNews([FromQuery] GetMezhaNewsRequest request)
-		=> await Mediator.Send(request);
+    [HttpGet]
+    [AllowAnonymous]
+    public async Task<PostModel[]> GetMezhaNews([FromQuery] GetMezhaNewsRequest request)
+        => await Mediator.Send(request);
 }

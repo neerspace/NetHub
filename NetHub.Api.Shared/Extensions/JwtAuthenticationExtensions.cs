@@ -18,7 +18,7 @@ public static class JwtAuthenticationExtensions
             authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             authOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(jwt =>
+        }).AddCookie().AddJwtBearer(jwt =>
         {
             jwt.RequireHttpsMetadata = false;
 
