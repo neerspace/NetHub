@@ -26,7 +26,7 @@ public class SqlServerDbContext : IdentityDbContext<AppUser, AppRole, long, AppU
             config.EngineStrategy = DbEngineStrategy.SqlServer;
             config.DateTimeKind = DateTimeKind.Utc;
             config.ApplyDataSeeders = true;
-            config.DataAssemblies = new[] { GetType().Assembly, };
+            config.DataAssemblies = new[] { GetType().Assembly };
         });
 
         builder.Entity<ExtendedUserArticle>(config =>
