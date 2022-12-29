@@ -18,9 +18,7 @@ internal sealed class GetArticlesHandler : DbHandler<GetArticlesRequest, Article
         var articles = await Database.Set<Article>()
             .Include(a => a.Localizations)
             .Include(a => a.Tags)!.ThenInclude(t => t.Tag)
-            .Where(a =>
-                a.Localizations != null &&
-                a.Localizations.Count(l => l.LanguageCode == request.Code) == 1)
+            .Where(a => a.Localizations != null && a.Localizations.Count(l => l.LanguageCode == request.Code) == 1)
             .Skip((request.Page - 1) * request.PerPage)
             .Take(request.PerPage)
             .Select(a => new Article
