@@ -12,5 +12,6 @@ public sealed record AuthResult
     public string Token { get; init; } = default!;
 
     public DateTime TokenExpires { get; init; }
+    public DateTime RefreshTokenExpires { get; init; }
     public string? ProfilePhotoUrl { get; set; }
 }

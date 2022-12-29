@@ -13,7 +13,7 @@ internal sealed class GoogleAuthProvider : IAuthProviderValidator
 
     public async Task<bool> ValidateAsync(SsoEnterRequest request, CancellationToken ct = default)
     {
-        request.ProviderMetadata!.TryGetValue("token", out var token);
+        request.ProviderMetadata.TryGetValue("token", out var token);
 
         try
         {
