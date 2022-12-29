@@ -10,11 +10,13 @@
 4. Run `NetHub.Api` project: \
    `cd ./NetHub.Api` then
    `dotnet run` or `dotnet watch`
-5.
+
 
 ## API Reference
 
 You can find explore API using Swagger UI: https://localhost:7002/swagger
+
+Or alternative documentation ReDoc: https://localhost:7002/docs-v1
 
 
 ## EntityFramework Migrations
