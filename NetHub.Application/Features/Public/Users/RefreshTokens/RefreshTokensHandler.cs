@@ -24,9 +24,6 @@ internal sealed class RefreshTokensHandler : AuthorizedHandler<RefreshTokensRequ
 	public override async Task<AuthResult> Handle(RefreshTokensRequest request,
 		CancellationToken ct)
 	{
-		if (HttpContext.Request.Cookies.TryGetValue(_jwtOptions.RefreshTokenCookieName, out var refreshToken))
-			return await _jwtService.RefreshAsync(refreshToken, ct);
-
-		throw new UnauthorizedException("Refresh token doesn't exist");
+		return await _jwtService.RefreshAsync(request.refreshToken, ct);
 	}
 }

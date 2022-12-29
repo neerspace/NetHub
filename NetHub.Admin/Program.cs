@@ -18,8 +18,8 @@ try
     logger.Debug("Configuring application builder");
     ConfigureBuilder(builder);
     var app = builder.Build();
-    logger.Info("Syncing database migrations");
-    MigrateDatabase(app);
+    // logger.Info("Syncing database migrations");
+    // MigrateDatabase(app);
     logger.Debug("Configuring web application");
     ConfigureWebApp(app);
 

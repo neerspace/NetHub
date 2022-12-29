@@ -33,6 +33,7 @@ public static class JwtAuthenticationExtensions
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = options.Secret,
 
+                ClockSkew = TimeSpan.Zero,
                 ValidateLifetime = true,
             };
         });

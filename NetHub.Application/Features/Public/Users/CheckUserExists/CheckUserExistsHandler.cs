@@ -14,7 +14,7 @@ internal sealed class CheckUserExistsHandler : DbHandler<CheckUserExistsRequest,
         var loginInfo = await Database.Set<AppUserLogin>()
             .SingleOrDefaultAsync(l =>
                 l.ProviderKey == request.Key
-                && l.ProviderDisplayName == request.Provider.ToString().ToLower(), ct);
+                && l.LoginProvider == request.Provider.ToString().ToLower(), ct);
 
         return new(loginInfo is not null);
     }

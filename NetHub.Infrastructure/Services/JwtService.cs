@@ -54,6 +54,7 @@ public class JwtService : IJwtService
             ProfilePhotoUrl = user.ProfilePhotoUrl,
             Token = accessToken,
             TokenExpires = accessTokenExpires,
+            RefreshTokenExpires = refreshTokenExpires
         };
     }
 
@@ -84,7 +85,9 @@ public class JwtService : IJwtService
         {
             HttpOnly = true,
             Secure = true,
+            IsEssential = true,
             SameSite = SameSiteMode.Strict,
+            Domain = "localhost",
             Expires = refreshTokenExpires,
         });
     }
