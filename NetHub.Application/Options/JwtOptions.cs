@@ -11,6 +11,7 @@ public sealed class JwtOptions
     public string? Issuer { get; set; }
     public string[]? Audiences { get; set; }
     public TimeSpan AccessTokenLifetime { get; set; }
+    public TimeSpan AccessTokenClockSkew { get; set; }
     public TimeSpan RefreshTokenLifetime { get; set; }
     public required string RefreshTokenCookieName { get; set; }
 

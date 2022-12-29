@@ -39,6 +39,7 @@ public class JwtService : IJwtService
         _accessTokenGenerator = accessTokenGenerator;
     }
 
+
     public async Task<AuthResult> GenerateAsync(AppUser user, CancellationToken ct)
     {
         (string? accessToken, DateTime accessTokenExpires) = await _accessTokenGenerator.GenerateAsync(user, ct);
@@ -79,8 +80,7 @@ public class JwtService : IJwtService
         return result;
     }
 
-    private void SetRefreshTokenCookie(string refreshToken, DateTime refreshTokenExpires)
-    {
+    private void SetRefreshTokenCookie(string refreshToken, DateTime refreshTokenExpires) =>
         HttpContext.Response.Cookies.Append(_options.RefreshTokenCookieName, refreshToken, new CookieOptions
         {
             HttpOnly = true,
@@ -89,7 +89,5 @@ public class JwtService : IJwtService
             SameSite = SameSiteMode.Strict,
             Domain = "localhost",
             Expires = refreshTokenExpires,
-            Domain = "",
         });
-    }
 }
