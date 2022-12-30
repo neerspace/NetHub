@@ -6,7 +6,7 @@ public static class TagNames
 {
     public const string Users = "Users";
     public const string Roles = "Roles";
-    public const string Auth = "Authorization";
+    public const string Jwt = "JWT";
 }
 
 public static class Versions

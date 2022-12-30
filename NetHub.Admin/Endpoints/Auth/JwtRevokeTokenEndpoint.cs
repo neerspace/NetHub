@@ -5,7 +5,7 @@ using NetHub.Application.Options;
 
 namespace NetHub.Admin.Endpoints.Auth;
 
-[Tags(TagNames.Auth)]
+[Tags(TagNames.Jwt)]
 [ApiVersion(Versions.V1)]
 public class JwtRevokeTokenEndpoint : ActionEndpoint
 {

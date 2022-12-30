@@ -8,7 +8,7 @@ using NetHub.Data.SqlServer.Extensions;
 
 namespace NetHub.Admin.Endpoints.Auth;
 
-[Tags(TagNames.Auth)]
+[Tags(TagNames.Jwt)]
 [ApiVersion(Versions.V1)]
 public class JwtVerifyEndpoint : Endpoint<AuthVerifyRequest, AuthVerificationResult>
 {
