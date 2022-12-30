@@ -15,7 +15,6 @@ internal sealed class ExchangeRateService
     private const string CACHE_KEY = "Monobank";
 
     private readonly HttpClient _client;
-
     private readonly IAppCache _memoryCache;
 
     public ExchangeRateService(IHttpClientFactory clientFactory, IAppCache memoryCache)

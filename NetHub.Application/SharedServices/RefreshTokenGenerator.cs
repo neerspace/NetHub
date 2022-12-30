@@ -26,7 +26,7 @@ public sealed class RefreshTokenGenerator
 
     public async Task<JwtToken> GenerateAsync(AppUser user, CancellationToken cancel = default)
     {
-        DateTime expires = DateTime.UtcNow.Add(_options.RefreshTokenLifetime);
+        var expires = DateTime.UtcNow.Add(_options.RefreshTokenLifetime);
         string token = GenerateRandomToken();
 
         _refreshTokensSet.Add(new RefreshToken
@@ -43,12 +43,12 @@ public sealed class RefreshTokenGenerator
     public bool IsValid(RefreshToken token)
     {
         return !string.IsNullOrEmpty(token.Value)
-               && token.Created.Add(_options.RefreshTokenLifetime) > DateTime.UtcNow;
+            && token.Created.Add(_options.RefreshTokenLifetime) > DateTime.UtcNow;
     }
 
     private static string GenerateRandomToken()
     {
-        var randomNumber = new byte[64];
+        byte[] randomNumber = new byte[64];
         using var rng = RandomNumberGenerator.Create();
         rng.GetBytes(randomNumber);
         // To base64 without ending '=='

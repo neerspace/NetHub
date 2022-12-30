@@ -14,13 +14,13 @@ internal sealed class GetUserDashboardHandler : DbHandler<GetUserDashboardReques
 	public override async Task<DashboardDto> Handle(GetUserDashboardRequest request,
 		CancellationToken ct)
 	{
-		var articlesCount = await Database.Set<ArticleContributor>()
+		int articlesCount = await Database.Set<ArticleContributor>()
 			.Include(ac => ac.User)
 			.Include(ac => ac.Localization)
 			.Where(ac => ac.User.NormalizedUserName == request.UserName.ToUpper() &&
 			             ac.Localization!.Status == ContentStatus.Published)
 			.CountAsync(ct);
-		var articlesViews = await Database.Set<ArticleLocalization>()
+		int articlesViews = await Database.Set<ArticleLocalization>()
 			.Include(ar => ar.Contributors).ThenInclude(ac => ac.User)
 			.Where(ar => ar.Contributors
 				             .FirstOrDefault(c => c.User.NormalizedUserName == request.UserName.ToUpper()) != null &&

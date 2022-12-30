@@ -18,7 +18,7 @@ internal sealed class CreateArticleLocalizationHandler : AuthorizedHandler<Creat
 
     public override async Task<ArticleLocalizationModel> Handle(CreateArticleLocalizationRequest request, CancellationToken ct)
     {
-        var userId = UserProvider.UserId;
+        long userId = UserProvider.UserId;
         var article = await Database.Set<Article>()
             .Include(a => a.Localizations)
             .FirstOr404Async(a => a.Id == request.ArticleId, ct);
@@ -67,7 +67,7 @@ internal sealed class CreateArticleLocalizationHandler : AuthorizedHandler<Creat
 
         foreach (var contributor in contributors)
         {
-            var count = contributors.Count(a => a.UserId == contributor.UserId && a.Role == contributor.Role);
+            int count = contributors.Count(a => a.UserId == contributor.UserId && a.Role == contributor.Role);
             if (count > 1)
                 throw new ApiException("One user can not contribute the same role several times");
 

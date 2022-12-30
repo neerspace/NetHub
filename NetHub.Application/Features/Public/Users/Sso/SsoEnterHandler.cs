@@ -80,7 +80,7 @@ public sealed class SsoEnterHandler : DbHandler<SsoEnterRequest, AuthResult>
 		if (request.ProviderMetadata is not {Count: > 0})
 			throw new ValidationFailedException("Metadata not provided");
 
-		var isValid = await _validator.ValidateAsync(request, ct);
+		bool isValid = await _validator.ValidateAsync(request, ct);
 
 		if (!isValid)
 			throw new ValidationFailedException("Provided invalid data");

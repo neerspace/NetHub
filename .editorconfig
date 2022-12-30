@@ -81,6 +81,14 @@ csharp_prefer_simple_default_expression                                  = true:
 # Style Definitions
 dotnet_naming_style.pascal_case_style.capitalization                     = pascal_case
 
+dotnet_naming_style.camel_case_underscore_style.required_prefix          = _
+dotnet_naming_style.camel_case_underscore_style.capitalization           = camel_case
+
+dotnet_naming_style.camel_case_static_style.required_prefix              = s_
+dotnet_naming_style.camel_case_static_style.capitalization               = camel_case
+
+dotnet_naming_style.upper_camel_case_style.capitalization                = all_upper
+
 # Use PascalCase for constant fields
 dotnet_naming_rule.constant_fields_should_be_pascal_case.severity        = warning
 dotnet_naming_rule.constant_fields_should_be_pascal_case.symbols         = constant_fields
@@ -88,26 +96,21 @@ dotnet_naming_rule.constant_fields_should_be_pascal_case.style           = pasca
 dotnet_naming_symbols.constant_fields.applicable_kinds                   = field
 dotnet_naming_symbols.constant_fields.applicable_accessibilities         = *
 dotnet_naming_symbols.constant_fields.required_modifiers                 = const
-dotnet_naming_style.pascal_case_style.capitalization                     = pascal_case # or all_upper
 
 # static fields should have s_ prefix
 dotnet_naming_rule.static_fields_should_have_prefix.severity             = warning
 dotnet_naming_rule.static_fields_should_have_prefix.symbols              = static_fields
-dotnet_naming_rule.static_fields_should_have_prefix.style                = static_prefix_style
+dotnet_naming_rule.static_fields_should_have_prefix.style                = camel_case_static_style
 dotnet_naming_symbols.static_fields.applicable_kinds                     = field
 dotnet_naming_symbols.static_fields.required_modifiers                   = static
 dotnet_naming_symbols.static_fields.applicable_accessibilities           = private, private_protected
-dotnet_naming_style.static_prefix_style.required_prefix                  = _
-dotnet_naming_style.static_prefix_style.capitalization                   = camel_case
 
 # private fields should be _camelCase
 dotnet_naming_rule.camel_case_for_private_internal_fields.severity       = warning
 dotnet_naming_rule.camel_case_for_private_internal_fields.symbols        = private_internal_fields
 dotnet_naming_rule.camel_case_for_private_internal_fields.style          = camel_case_underscore_style
-dotnet_naming_style.camel_case_underscore_style.required_prefix          = _
 dotnet_naming_symbols.private_internal_fields.applicable_accessibilities = private
 dotnet_naming_symbols.private_internal_fields.applicable_kinds           = field
-dotnet_naming_style.upper_camel_case_style.capitalization                = pascal_case # all_upper
 
 ###############################
 # C# Coding Conventions       #
@@ -220,7 +223,7 @@ resharper_align_linq_query                                               = false
 resharper_csharp_empty_block_style                                       = together_same_line
 resharper_csharp_stick_comment                                           = false
 resharper_keep_existing_embedded_arrangement                             = false
-resharper_keep_existing_initializer_arrangement                          = true
+resharper_keep_existing_initializer_arrangement                          = false # new() { A = 123 }
 resharper_keep_existing_switch_expression_arrangement                    = false
 resharper_max_array_initializer_elements_on_line                         = 10
 resharper_place_accessorholder_attribute_on_same_line                    = false
