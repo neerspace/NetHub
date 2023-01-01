@@ -50,7 +50,10 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
 static void ConfigureWebApp(WebApplication app)
 {
     if (app.Configuration.GetSwaggerSettings().Enabled)
+    {
         app.UseNeerSwagger();
+        app.ForceRedirect("/", "/swagger");
+    }
 
     app.UseCors(CorsPolicies.AcceptAll);
     app.UseHttpsRedirection();

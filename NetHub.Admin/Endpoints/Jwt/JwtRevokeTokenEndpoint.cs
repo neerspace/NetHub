@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using NetHub.Admin.Abstractions;
 using NetHub.Application.Options;
 
-namespace NetHub.Admin.Endpoints.Auth;
+namespace NetHub.Admin.Endpoints.Jwt;
 
 [Tags(TagNames.Jwt)]
 [ApiVersion(Versions.V1)]

@@ -6,7 +6,7 @@ using NetHub.Application.Features.Public.Users.Dto;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Options;
 
-namespace NetHub.Admin.Endpoints.Auth;
+namespace NetHub.Admin.Endpoints.Jwt;
 
 [Tags(TagNames.Jwt)]
 [ApiVersion(Versions.V1)]
