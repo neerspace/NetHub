@@ -1,11 +1,11 @@
 using System.Security.Cryptography;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using NeerCore.DependencyInjection;
+using NetHub.Application.Extensions;
 using NetHub.Application.Models;
 using NetHub.Application.Options;
 using NetHub.Data.SqlServer.Context;
-using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Application.SharedServices;
@@ -15,13 +15,16 @@ public sealed class RefreshTokenGenerator
 {
     private readonly JwtOptions _options;
     private readonly ISqlServerDatabase _database;
-    private readonly DbSet<RefreshToken> _refreshTokensSet;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public RefreshTokenGenerator(IOptions<JwtOptions> optionsAccessor, ISqlServerDatabase database)
+    private HttpContext HttpContext => _httpContextAccessor.HttpContext!;
+
+    public RefreshTokenGenerator(
+        ISqlServerDatabase database, IOptions<JwtOptions> optionsAccessor, IHttpContextAccessor httpContextAccessor)
     {
         _database = database;
+        _httpContextAccessor = httpContextAccessor;
         _options = optionsAccessor.Value;
-        _refreshTokensSet = _database.Set<RefreshToken>();
     }
 
     public async Task<JwtToken> GenerateAsync(AppUser user, CancellationToken cancel = default)
@@ -29,21 +32,21 @@ public sealed class RefreshTokenGenerator
         var expires = DateTime.UtcNow.Add(_options.RefreshTokenLifetime);
         string token = GenerateRandomToken();
 
-        _refreshTokensSet.Add(new RefreshToken
+        var userAgent = HttpContext.GetUserAgent();
+
+        _database.Set<AppToken>().Add(new AppToken
         {
-            Value = token,
-            UserId = user.Id
+            Value = user.Id + ":" + token,
+            UserId = user.Id,
+            Ip = HttpContext.GetIPAddress().ToString(),
+            Device = userAgent.Platform,
+            Browser = userAgent.Browser,
+            BrowserVersion = userAgent.BrowserVersion,
         });
 
         await _database.SaveChangesAsync(cancel: cancel);
 
         return new JwtToken(token, expires);
-    }
-
-    public bool IsValid(RefreshToken token)
-    {
-        return !string.IsNullOrEmpty(token.Value)
-            && token.Created.Add(_options.RefreshTokenLifetime) > DateTime.UtcNow;
     }
 
     private static string GenerateRandomToken()

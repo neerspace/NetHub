@@ -11,7 +11,7 @@ using NetHub.Data.SqlServer.Enums;
 namespace NetHub.Data.SqlServer.Context;
 
 public class SqlServerDbContext : IdentityDbContext<AppUser, AppRole, long, AppUserClaim,
-    AppUserRole, AppUserLogin, AppRoleClaim, AppTokens>, ISqlServerDatabase
+    AppUserRole, AppUserLogin, AppRoleClaim, AppToken>, ISqlServerDatabase
 {
     public SqlServerDbContext(DbContextOptions options) : base(options) { }
 

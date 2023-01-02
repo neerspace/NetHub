@@ -14,6 +14,8 @@ public sealed class JwtOptions
     public TimeSpan AccessTokenClockSkew { get; set; }
     public TimeSpan RefreshTokenLifetime { get; set; }
     public required string RefreshTokenCookieName { get; set; }
+    public bool RequireSameUserAgent { get; set; }
+    public bool RequireSameIPAddress { get; set; }
 
 
     internal sealed class Configurator : IConfigureOptions<JwtOptions>

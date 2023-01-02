@@ -12,9 +12,7 @@ internal sealed class GetArticleLocalizationHandler : DbHandler<GetArticleLocali
 {
     private readonly IUserProvider _userProvider;
 
-    public GetArticleLocalizationHandler(IServiceProvider serviceProvider,
-        IUserProvider userProvider) : base(
-        serviceProvider)
+    public GetArticleLocalizationHandler(IServiceProvider serviceProvider, IUserProvider userProvider) : base(serviceProvider)
     {
         _userProvider = userProvider;
     }

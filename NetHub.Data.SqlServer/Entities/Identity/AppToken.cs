@@ -3,7 +3,7 @@ using NeerCore.Data.Abstractions;
 
 namespace NetHub.Data.SqlServer.Entities.Identity;
 
-public sealed class AppTokens : IdentityUserToken<long>, ICreatableEntity
+public sealed class AppToken : IdentityUserToken<long>, ICreatableEntity, IEntity
 {
     public override string Value { get; set; } = default!;
 
@@ -13,12 +13,14 @@ public sealed class AppTokens : IdentityUserToken<long>, ICreatableEntity
     /// <example>Firefox</example>
     public string Browser { get; init; } = default!;
 
+    public string BrowserVersion { get; init; } = default!;
+
     /// <summary>
     ///   255.255.255.255 => 3*4+3 = 15 length
     ///   0000:0000:0000:0000:0000:0000:0000:0000 => 8*4+7 = 39
     ///   0000:0000:0000:0000:0000:FFFF:192.168.100.228 => (ipv6)+1+(ipv4) = 29+1+15 = 45
     /// </summary>
-    public string IpAddress { get; init; } = default!;
+    public string Ip { get; init; } = default!;
 
     public DateTime Created { get; init; }
 
