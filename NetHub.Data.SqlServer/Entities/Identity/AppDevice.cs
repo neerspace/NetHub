@@ -3,7 +3,7 @@ using NetHub.Core.Enums;
 
 namespace NetHub.Data.SqlServer.Entities.Identity;
 
-public class AppDevice : IEntity<long>
+public sealed class AppDevice : IEntity<long>
 {
     public long Id { get; set; }
 

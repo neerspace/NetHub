@@ -40,7 +40,7 @@ public sealed class JwtOptions
             var config = _configuration.GetRequiredSection("Jwt");
             config.Bind(options);
 
-            var stringToken = config.GetValue<string>(nameof(AccessTokenOptions.Secret))!;
+            var stringToken = config.GetValue<string>("AccessToken:Secret")!;
             options.AccessToken.Secret = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(stringToken));
         }
     }

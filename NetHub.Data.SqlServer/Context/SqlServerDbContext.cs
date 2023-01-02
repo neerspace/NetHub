@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NeerCore.Data.EntityFramework.Design;
 using NeerCore.Data.EntityFramework.Extensions;
+using NetHub.Core.Enums;
 using NetHub.Data.SqlServer.Conversions;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Entities.Views;
@@ -35,8 +36,9 @@ public class SqlServerDbContext : IdentityDbContext<AppUser, AppRole, long, AppU
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)
     {
         builder.Properties<DateTimeOffset>().HaveConversion<DateTimeOffsetConvertor>();
-        builder.Properties<ContentStatus>().HaveConversion<EnumToStringConverter<ContentStatus>>();
-        builder.Properties<Vote>().HaveConversion<EnumToStringConverter<Vote>>();
         builder.Properties<ArticleContributorRole>().HaveConversion<EnumToStringConverter<ArticleContributorRole>>();
+        builder.Properties<ContentStatus>().HaveConversion<EnumToStringConverter<ContentStatus>>();
+        builder.Properties<DeviceStatus>().HaveConversion<EnumToStringConverter<DeviceStatus>>();
+        builder.Properties<Vote>().HaveConversion<EnumToStringConverter<Vote>>();
     }
 }

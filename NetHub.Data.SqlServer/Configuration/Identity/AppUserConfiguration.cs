@@ -9,7 +9,7 @@ internal class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
 {
     public void Configure(EntityTypeBuilder<AppUser> builder)
     {
-        builder.ToTable($"{nameof(AppRole)}s").HasKey(e => e.Id);
+        builder.ToTable($"{nameof(AppUser)}s").HasKey(e => e.Id);
 
         builder.Property(e => e.UserName).AsText();
         builder.Property(e => e.NormalizedUserName).AsText();
