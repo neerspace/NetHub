@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using NeerCore.DependencyInjection;
+using NeerCore.Exceptions;
 using NetHub.Application.Extensions;
 using NetHub.Application.Models;
 using NetHub.Application.Options;
@@ -13,6 +14,8 @@ namespace NetHub.Application.SharedServices;
 [Service]
 public sealed class RefreshTokenGenerator
 {
+    private const string InvalidPlatform = "Unknown Platform";
+
     private readonly JwtOptions _options;
     private readonly ISqlServerDatabase _database;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -33,15 +36,28 @@ public sealed class RefreshTokenGenerator
         string token = GenerateRandomToken();
 
         var userAgent = HttpContext.GetUserAgent();
+        var ip = HttpContext.GetIPAddress();
+
+        if (
+            // hate robots here
+            userAgent.IsRobot
+            // UA platform is invalid
+            || string.Equals(userAgent.Platform, InvalidPlatform, StringComparison.OrdinalIgnoreCase)
+            // UA browser is invalid
+            || string.IsNullOrEmpty(userAgent.Browser)
+            || string.IsNullOrEmpty(userAgent.BrowserVersion))
+            throw new ForbidException("");
 
         _database.Set<AppToken>().Add(new AppToken
         {
             Value = user.Id + ":" + token,
             UserId = user.Id,
-            Ip = HttpContext.GetIPAddress().ToString(),
-            Device = userAgent.Platform,
-            Browser = userAgent.Browser,
-            BrowserVersion = userAgent.BrowserVersion,
+            Device = new AppDevice
+            {
+                IpAddress = ip.ToString(),
+                Browser = userAgent.Browser,
+                BrowserVersion = userAgent.BrowserVersion,
+            },
         });
 
         await _database.SaveChangesAsync(cancel: cancel);

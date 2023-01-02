@@ -5,25 +5,10 @@ namespace NetHub.Data.SqlServer.Entities.Identity;
 
 public sealed class AppToken : IdentityUserToken<long>, ICreatableEntity, IEntity
 {
-    public override string Value { get; set; } = default!;
-
-    /// <example>Windows 11</example>
-    public string Device { get; init; } = default!;
-
-    /// <example>Firefox</example>
-    public string Browser { get; init; } = default!;
-
-    public string BrowserVersion { get; init; } = default!;
-
-    /// <summary>
-    ///   255.255.255.255 => 3*4+3 = 15 length
-    ///   0000:0000:0000:0000:0000:0000:0000:0000 => 8*4+7 = 39
-    ///   0000:0000:0000:0000:0000:FFFF:192.168.100.228 => (ipv6)+1+(ipv4) = 29+1+15 = 45
-    /// </summary>
-    public string Ip { get; init; } = default!;
-
+    public long? DeviceId { get; set; }
     public DateTime Created { get; init; }
 
 
+    public required AppDevice Device { get; set; }
     public AppUser? User { get; set; }
 }

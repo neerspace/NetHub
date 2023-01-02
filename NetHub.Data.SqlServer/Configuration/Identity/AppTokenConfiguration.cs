@@ -14,9 +14,6 @@ internal class AppTokenConfiguration : IEntityTypeConfiguration<AppToken>
 
         builder.Property(e => e.Value).HasMaxLength(128).IsUnicode(false);
         builder.Property(e => e.Device).HasMaxLength(DefaultLimits.Small).IsUnicode(false);
-        builder.Property(e => e.Browser).HasMaxLength(DefaultLimits.Small).IsUnicode(false);
-        builder.Property(e => e.BrowserVersion).HasMaxLength(DefaultLimits.Tiny).IsUnicode(false);
-        builder.Property(e => e.Ip).HasMaxLength(45).IsUnicode(false);
         builder.Property(e => e.Created).HasDefaultValueUtcDateTime();
 
         builder.HasOne(r => r.User).WithMany().HasForeignKey(r => r.UserId);

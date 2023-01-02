@@ -63,7 +63,7 @@ public sealed class JwtService : IJwtService
 
         var token = await refreshTokens
             .Where(rt => rt.Value == refreshToken)
-            .Include(rt => rt.User)
+            .Include(rt => rt.User).Include(rt => rt.Device)
             .FirstOr404Async(ct);
 
         if (!IsRefreshTokenValid(token))
@@ -101,18 +101,18 @@ public sealed class JwtService : IJwtService
         && refreshToken.Name == TokenNames.Refresh
         // token is not expired yet
         && refreshToken.Created.Add(_options.RefreshTokenLifetime) < DateTime.UtcNow
-        // token was provided for current request device and browser
-        && (_options.RequireSameUserAgent || DidTokenProvidedForCurrentUserAgent(refreshToken))
-        // token was provided for current request IP
-        && (_options.RequireSameIPAddress || DidTokenProvidedForCurrentIP(refreshToken));
+        // token was provided for current request device IP and browser
+        && IsDeviceFromCurrentRequest(refreshToken.Device);
 
-    private bool DidTokenProvidedForCurrentUserAgent(AppToken refreshToken)
+    private bool IsDeviceFromCurrentRequest(AppDevice device)
     {
         var userAgent = HttpContext.GetUserAgent();
-        return string.Equals(refreshToken.Device, userAgent.Platform, StringComparison.OrdinalIgnoreCase)
-            && string.Equals(refreshToken.Browser, userAgent.Browser, StringComparison.OrdinalIgnoreCase);
+        return (!_options.RequireSameUserAgent
+                || !userAgent.IsRobot // coz we have robots... jk if you're a robot ;)
+                && string.Equals(device.Platform, userAgent.Platform, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(device.Browser, userAgent.Browser, StringComparison.OrdinalIgnoreCase))
+            // token was provided for current request IP
+            && (!_options.RequireSameIPAddress
+                || string.Equals(HttpContext.GetIPAddress().ToString(), device.IpAddress, StringComparison.OrdinalIgnoreCase));
     }
-
-    private bool DidTokenProvidedForCurrentIP(AppToken refreshToken) =>
-        string.Equals(HttpContext.GetIPAddress().ToString(), refreshToken.Ip, StringComparison.OrdinalIgnoreCase);
 }
