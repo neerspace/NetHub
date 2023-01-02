@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using NetHub.Application.Features.Public.Articles;
+using NetHub.Application.Features.Public.Articles.Localizations;
 using NetHub.Application.Features.Public.Articles.Localizations.Create;
 using NetHub.Application.Features.Public.Articles.Localizations.GetSaving.All;
 using NetHub.Application.Features.Public.Articles.Localizations.Update;
@@ -38,6 +39,9 @@ internal class MappingRegister : IRegister
 		config.NewConfig<ArticleLocalization, ExtendedArticleModel>()
 			.Map(ea => ea.LocalizationId, al => al.Id)
 			.Map(ea => ea.Rate, al => al.Article!.Rate);
+
+		config.NewConfig<ArticleContributor, ArticleContributorModel>()
+			.Map(cm => cm.UserName, ac => ac.User!.UserName);
 	}
 
 	private void MezhaMappings(TypeAdapterConfig config)
