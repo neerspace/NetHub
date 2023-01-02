@@ -1,4 +1,5 @@
 using NeerCore.Data.Abstractions;
+using NetHub.Core.Enums;
 
 namespace NetHub.Data.SqlServer.Entities.Identity;
 
@@ -22,6 +23,7 @@ public class AppDevice : IEntity<long>
     /// <example>42.0.1</example>
     public string BrowserVersion { get; init; } = default!;
 
+    public DeviceStatus Status { get; set; }
     public short AttemptCount { get; set; }
     public DateTime? LastAttempt { get; set; }
 }

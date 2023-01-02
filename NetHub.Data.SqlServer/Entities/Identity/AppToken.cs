@@ -9,6 +9,6 @@ public sealed class AppToken : IdentityUserToken<long>, ICreatableEntity, IEntit
     public DateTime Created { get; init; }
 
 
-    public required AppDevice Device { get; set; }
+    public AppDevice? Device { get; set; }
     public AppUser? User { get; set; }
 }

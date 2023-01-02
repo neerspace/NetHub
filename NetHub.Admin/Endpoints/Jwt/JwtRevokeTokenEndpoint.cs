@@ -20,7 +20,7 @@ public class JwtRevokeTokenEndpoint : ActionEndpoint
     [HttpPost("auth/revoke-token")]
     public override Task HandleAsync(CancellationToken ct = default)
     {
-        Response.Cookies.Delete(_options.RefreshTokenCookieName);
+        Response.Cookies.Delete(_options.RefreshToken.CookieName);
         return Task.CompletedTask;
     }
 }

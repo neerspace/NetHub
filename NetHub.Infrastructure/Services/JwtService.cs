@@ -79,13 +79,13 @@ public sealed class JwtService : IJwtService
     }
 
     private void SetRefreshTokenCookie(string refreshToken, DateTime refreshTokenExpires) =>
-        HttpContext.Response.Cookies.Append(_options.RefreshTokenCookieName, refreshToken, new CookieOptions
+        HttpContext.Response.Cookies.Append(_options.RefreshToken.CookieName, refreshToken, new CookieOptions
         {
             HttpOnly = true,
             Secure = true,
             IsEssential = true,
             SameSite = SameSiteMode.Strict,
-            Domain = "localhost",
+            Domain = _options.RefreshToken.CookieDomain,
             Expires = refreshTokenExpires,
         });
 
@@ -100,19 +100,19 @@ public sealed class JwtService : IJwtService
         // if provided token is a refresh token
         && refreshToken.Name == TokenNames.Refresh
         // token is not expired yet
-        && refreshToken.Created.Add(_options.RefreshTokenLifetime) < DateTime.UtcNow
+        && refreshToken.Created.Add(_options.RefreshToken.Lifetime) < DateTime.UtcNow
         // token was provided for current request device IP and browser
-        && IsDeviceFromCurrentRequest(refreshToken.Device);
+        && IsDeviceFromCurrentRequest(refreshToken.Device!);
 
     private bool IsDeviceFromCurrentRequest(AppDevice device)
     {
         var userAgent = HttpContext.GetUserAgent();
-        return (!_options.RequireSameUserAgent
+        return (!_options.RefreshToken.RequireSameUserAgent
                 || !userAgent.IsRobot // coz we have robots... jk if you're a robot ;)
                 && string.Equals(device.Platform, userAgent.Platform, StringComparison.OrdinalIgnoreCase)
                 && string.Equals(device.Browser, userAgent.Browser, StringComparison.OrdinalIgnoreCase))
             // token was provided for current request IP
-            && (!_options.RequireSameIPAddress
+            && (!_options.RefreshToken.RequireSameIPAddress
                 || string.Equals(HttpContext.GetIPAddress().ToString(), device.IpAddress, StringComparison.OrdinalIgnoreCase));
     }
 }

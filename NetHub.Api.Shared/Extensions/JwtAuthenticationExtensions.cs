@@ -11,7 +11,7 @@ public static class JwtAuthenticationExtensions
 {
     public static AuthenticationBuilder AddJwtAuthentication(this IServiceCollection services)
     {
-        var options = services.BuildServiceProvider().GetRequiredService<IOptions<JwtOptions>>().Value;
+        var options = services.BuildServiceProvider().GetRequiredService<IOptions<JwtOptions>>().Value.AccessToken;
 
         return services.AddAuthentication(authOptions =>
             {
@@ -37,9 +37,9 @@ public static class JwtAuthenticationExtensions
                     // Lifetime
                     ValidateLifetime = true,
                     // Allowed lifetime extra
-                    ClockSkew = options.AccessTokenClockSkew == TimeSpan.Zero
+                    ClockSkew = options.ClockSkew == TimeSpan.Zero
                         ? TimeSpan.FromMinutes(5)
-                        : options.AccessTokenClockSkew,
+                        : options.ClockSkew,
                 };
             });
     }

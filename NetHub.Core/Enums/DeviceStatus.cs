@@ -2,10 +2,7 @@ namespace NetHub.Core.Enums;
 
 public enum DeviceStatus
 {
-    /// <summary>
-    /// Used by any user
-    /// </summary>
-    Used,
+    None,
 
     /// <summary>
     /// Banned due to strange activity,

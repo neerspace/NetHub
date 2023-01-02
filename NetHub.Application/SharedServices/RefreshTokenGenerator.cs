@@ -1,11 +1,13 @@
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NeerCore.DependencyInjection;
 using NeerCore.Exceptions;
 using NetHub.Application.Extensions;
 using NetHub.Application.Models;
 using NetHub.Application.Options;
+using NetHub.Core.Enums;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
 
@@ -30,37 +32,44 @@ public sealed class RefreshTokenGenerator
         _options = optionsAccessor.Value;
     }
 
-    public async Task<JwtToken> GenerateAsync(AppUser user, CancellationToken cancel = default)
+    public async Task<JwtToken> GenerateAsync(AppUser user, CancellationToken ct = default)
     {
-        var expires = DateTime.UtcNow.Add(_options.RefreshTokenLifetime);
+        var expires = DateTime.UtcNow.Add(_options.RefreshToken.Lifetime);
         string token = GenerateRandomToken();
 
         var userAgent = HttpContext.GetUserAgent();
-        var ip = HttpContext.GetIPAddress();
+        var ip = HttpContext.GetIPAddress().ToString();
 
-        if (
-            // hate robots here
-            userAgent.IsRobot
+        if (userAgent.IsRobot // coz we hate robots here
             // UA platform is invalid
             || string.Equals(userAgent.Platform, InvalidPlatform, StringComparison.OrdinalIgnoreCase)
             // UA browser is invalid
             || string.IsNullOrEmpty(userAgent.Browser)
             || string.IsNullOrEmpty(userAgent.BrowserVersion))
-            throw new ForbidException("");
+            throw new ForbidException("You are using a suspicious device.\n"
+                + "Make sure you are using a modern browser and do not use a toaster to surf the web.");
+
+        var device = await _database.Set<AppDevice>().AsNoTracking()
+            .FirstOrDefaultAsync(d => d.Browser == userAgent.Browser && d.IpAddress == ip, ct);
+
+        if (device?.Status == DeviceStatus.Banned)
+            throw new ForbidException("Your IP has been blocked.\n"
+                + "Contact admins to unlock access for your IP.");
 
         _database.Set<AppToken>().Add(new AppToken
         {
-            Value = user.Id + ":" + token,
+            Value = token,
             UserId = user.Id,
-            Device = new AppDevice
-            {
-                IpAddress = ip.ToString(),
-                Browser = userAgent.Browser,
-                BrowserVersion = userAgent.BrowserVersion,
-            },
+            Device = device
+                ?? new AppDevice
+                {
+                    IpAddress = ip,
+                    Browser = userAgent.Browser,
+                    BrowserVersion = userAgent.BrowserVersion,
+                }
         });
 
-        await _database.SaveChangesAsync(cancel: cancel);
+        await _database.SaveChangesAsync(cancel: ct);
 
         return new JwtToken(token, expires);
     }

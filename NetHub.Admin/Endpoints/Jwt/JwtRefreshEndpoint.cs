@@ -26,9 +26,9 @@ public class JwtRefreshEndpoint : ResultEndpoint<AuthResult>
 	[HttpPost("jwt/refresh")]
 	public override async Task<AuthResult> HandleAsync(CancellationToken ct = default)
 	{
-		if (HttpContext.Request.Cookies.TryGetValue(_jwtOptions.RefreshTokenCookieName, out var refreshToken))
+		if (HttpContext.Request.Cookies.TryGetValue(_jwtOptions.RefreshToken.CookieName, out var refreshToken))
 			return await _jwtService.RefreshAsync(refreshToken, ct);
-		
+
 		throw new UnauthorizedException("Refresh token doesn't exist");
 	}
 }
