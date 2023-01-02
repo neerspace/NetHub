@@ -9,7 +9,7 @@ internal class AppRoleConfiguration : IEntityTypeConfiguration<AppRole>
 {
     public void Configure(EntityTypeBuilder<AppRole> builder)
     {
-        builder.HasKey(e => e.Id);
+        builder.ToTable($"{nameof(AppRole)}s").HasKey(e => e.Id);
 
         builder.Property(e => e.Name).AsText();
         builder.Property(e => e.NormalizedName).AsText();
