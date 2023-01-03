@@ -10,6 +10,14 @@ namespace NetHub.Data.SqlServer.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_AppUserRoles_AppRoles_AppRoleId",
+                table: "AppUserRoles");
+
+            migrationBuilder.DropIndex(
+                name: "IX_AppUserRoles_AppRoleId",
+                table: "AppUserRoles");
+
             migrationBuilder.DropPrimaryKey(
                 name: "PK_AppTokens",
                 table: "AppTokens");
@@ -18,6 +26,10 @@ namespace NetHub.Data.SqlServer.Migrations
                 name: "IX_AppTokens_Value",
                 table: "AppTokens");
 
+            migrationBuilder.DropColumn(
+                name: "AppRoleId",
+                table: "AppUserRoles");
+
             migrationBuilder.AlterColumn<string>(
                 name: "Value",
                 table: "AppTokens",
@@ -25,7 +37,6 @@ namespace NetHub.Data.SqlServer.Migrations
                 unicode: false,
                 maxLength: 128,
                 nullable: false,
-                defaultValue: "",
                 oldClrType: typeof(string),
                 oldType: "varchar(128)",
                 oldUnicode: false,
@@ -41,12 +52,6 @@ namespace NetHub.Data.SqlServer.Migrations
                 name: "IX_AppTokens_UserId",
                 table: "AppTokens",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AppTokens_Value",
-                table: "AppTokens",
-                column: "Value",
-                unique: true);
         }
 
         /// <inheritdoc />
@@ -60,9 +65,11 @@ namespace NetHub.Data.SqlServer.Migrations
                 name: "IX_AppTokens_UserId",
                 table: "AppTokens");
 
-            migrationBuilder.DropIndex(
-                name: "IX_AppTokens_Value",
-                table: "AppTokens");
+            migrationBuilder.AddColumn<long>(
+                name: "AppRoleId",
+                table: "AppUserRoles",
+                type: "bigint",
+                nullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "Value",
@@ -82,11 +89,23 @@ namespace NetHub.Data.SqlServer.Migrations
                 columns: new[] { "UserId", "LoginProvider", "Name" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AppUserRoles_AppRoleId",
+                table: "AppUserRoles",
+                column: "AppRoleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AppTokens_Value",
                 table: "AppTokens",
                 column: "Value",
                 unique: true,
                 filter: "[Value] IS NOT NULL");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AppUserRoles_AppRoles_AppRoleId",
+                table: "AppUserRoles",
+                column: "AppRoleId",
+                principalTable: "AppRoles",
+                principalColumn: "Id");
         }
     }
 }

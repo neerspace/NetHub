@@ -12,7 +12,7 @@ using NetHub.Data.SqlServer.Context;
 namespace NetHub.Data.SqlServer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
-    [Migration("20230103103140_SetAppTokenPrimaryKey")]
+    [Migration("20230103111927_SetAppTokenPrimaryKey")]
     partial class SetAppTokenPrimaryKey
     {
         /// <inheritdoc />
@@ -376,9 +376,6 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("Value")
-                        .IsUnique();
-
                     b.ToTable("AppTokens", (string)null);
                 });
 
@@ -541,12 +538,7 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.Property<long>("RoleId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("AppRoleId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("AppRoleId");
 
                     b.HasIndex("RoleId");
 
@@ -904,10 +896,6 @@ namespace NetHub.Data.SqlServer.Migrations
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Identity.AppUserRole", b =>
                 {
-                    b.HasOne("NetHub.Data.SqlServer.Entities.Identity.AppRole", null)
-                        .WithMany("Users")
-                        .HasForeignKey("AppRoleId");
-
                     b.HasOne("NetHub.Data.SqlServer.Entities.Identity.AppRole", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
@@ -963,8 +951,6 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.Navigation("RoleClaims");
 
                     b.Navigation("UserRoles");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Identity.AppUser", b =>

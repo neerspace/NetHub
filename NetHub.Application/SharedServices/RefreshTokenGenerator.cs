@@ -28,11 +28,11 @@ public sealed class RefreshTokenGenerator
 
         _database.Set<AppToken>().Add(new AppToken
         {
-            Value = token,
+            UserId = user.Id,
+            DeviceId = device.Id,
             Name = TokenNames.Refresh,
             LoginProvider = LoginProviders.NetHub,
-            UserId = user.Id,
-            Device = device
+            Value = token,
         });
 
         await _database.SaveChangesAsync(cancel: ct);

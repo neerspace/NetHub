@@ -20,12 +20,9 @@ public class SqlServerDbContext : IdentityDbContext<AppUser, AppRole, long, AppU
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.ConfigureEntities(config =>
-        {
-            config.EngineStrategy = DbEngineStrategy.SqlServer;
-            config.DateTimeKind = DateTimeKind.Utc;
-            config.ApplyDataSeeders = true;
-        });
+        builder.ApplyEntityDating(options => options.DateTimeKind = DateTimeKind.Utc);
+        builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+        builder.ApplyAllDataSeeders();
 
         builder.Entity<ExtendedUserArticle>(config =>
         {

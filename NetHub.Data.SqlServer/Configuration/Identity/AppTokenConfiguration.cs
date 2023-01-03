@@ -10,7 +10,6 @@ internal class AppTokenConfiguration : IEntityTypeConfiguration<AppToken>
     public void Configure(EntityTypeBuilder<AppToken> builder)
     {
         builder.ToTable($"{nameof(AppToken)}s").HasKey(e => e.Value);
-        builder.HasIndex(e => e.Value).IsUnique();
 
         builder.Property(e => e.Value).HasMaxLength(128).IsUnicode(false);
         builder.Property(e => e.Created).HasDefaultValueUtcDateTime();

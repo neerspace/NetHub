@@ -146,10 +146,14 @@ public sealed class JwtService : IJwtService
         device = new AppDevice
         {
             IpAddress = ip,
+            Platform = userAgent.Platform,
             Browser = userAgent.Browser,
             BrowserVersion = userAgent.BrowserVersion,
         };
+
         _database.Set<AppDevice>().Add(device);
+        await _database.SaveChangesAsync(ct);
+
         return device;
     }
 }
