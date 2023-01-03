@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetHub.Application.Options;
+using NetHub.Core.Constants;
 using NetHub.Data.SqlServer.Entities.Identity;
 using Sieve.Models;
 
@@ -35,12 +36,12 @@ public static class DependencyInjection
     private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
     {
         // TODO: use NeerCore Configurator instead
-        services.Configure<MezhaOptions>(configuration.GetSection("Mezha"));
-        services.Configure<TelegramOptions>(configuration.GetSection("Telegram"));
-        services.Configure<FacebookOptions>(configuration.GetSection("Facebook"));
+        services.Configure<MezhaOptions>(configuration.GetSection(ConfigSectionNames.Mezha));
+        services.Configure<TelegramOptions>(configuration.GetSection(ConfigSectionNames.Telegram));
+        services.Configure<FacebookOptions>(configuration.GetSection(ConfigSectionNames.Facebook));
         services.ConfigureOptions<JwtOptions.Configurator>();
-        services.Configure<CurrencyRateOptions>(configuration.GetSection("CurrencyRate"));
-        services.Configure<SieveOptions>(configuration.GetSection("Sieve"));
+        services.Configure<CurrencyRateOptions>(configuration.GetSection(ConfigSectionNames.CurrencyRate));
+        services.Configure<SieveOptions>(configuration.GetSection(ConfigSectionNames.Sieve));
     }
 
     private static void RegisterMappings(this IServiceCollection services)
