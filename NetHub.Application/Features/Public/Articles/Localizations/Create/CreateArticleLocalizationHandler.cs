@@ -67,14 +67,14 @@ internal sealed class CreateArticleLocalizationHandler : AuthorizedHandler<Creat
 
         foreach (var contributor in contributors)
         {
-            int count = contributors.Count(a => a.UserId == contributor.UserId && a.Role == contributor.Role);
+            var count = contributors.Count(a => a.UserName == contributor.UserName && a.Role == contributor.Role);
             if (count > 1)
                 throw new ApiException("One user can not contribute the same role several times");
 
             var dbContributor = await Database.Set<AppUser>()
-                .SingleOrDefaultAsync(p => p.Id == contributor.UserId);
+                .SingleOrDefaultAsync(p => p.NormalizedUserName == contributor.UserName.ToUpper());
             if (dbContributor is null)
-                throw new NotFoundException($"No user with id: {contributor.UserId}");
+                throw new NotFoundException($"No user with username: {contributor.UserName}");
 
             returnContributors.Add(contributor.Adapt<ArticleContributor>());
         }

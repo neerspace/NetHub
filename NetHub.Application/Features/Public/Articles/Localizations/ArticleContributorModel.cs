@@ -5,5 +5,5 @@ namespace NetHub.Application.Features.Public.Articles.Localizations;
 public sealed class ArticleContributorModel
 {
     public ArticleContributorRole Role { get; set; }
-    public long UserId { get; set; }
+    public string UserName { get; set; }
 }
