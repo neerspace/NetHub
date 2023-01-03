@@ -91,14 +91,14 @@ internal sealed class UpdateArticleLocalizationHandler : AuthorizedHandler<Updat
 
         foreach (var contributor in requestContributors)
         {
-            var count = requestContributors.Count(a => a.UserId == contributor.UserId && a.Role == contributor.Role);
+            var count = requestContributors.Count(a => a.UserName == contributor.UserName && a.Role == contributor.Role);
             if (count > 1)
                 throw new ApiException("One user can not contribute the same role several times");
 
             var dbContributor = await Database.Set<AppUser>()
-                .FirstOrDefaultAsync(p => p.Id == contributor.UserId, ct);
+                .FirstOrDefaultAsync(p => p.NormalizedUserName == contributor.UserName.ToUpper(), ct);
             if (dbContributor is null)
-                throw new ApiException($"No user with id: {contributor.UserId}");
+                throw new ApiException($"No user with username: {contributor.UserName}");
 
             newContributors.Add(contributor.Adapt<ArticleContributor>());
         }
