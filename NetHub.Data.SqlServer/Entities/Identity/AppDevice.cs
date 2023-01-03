@@ -25,5 +25,5 @@ public sealed class AppDevice : IEntity<long>
 
     public DeviceStatus Status { get; set; }
     public short AttemptCount { get; set; }
-    public DateTime? LastAttempt { get; set; }
+    public DateTimeOffset? LastAttempt { get; set; }
 }

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using Ng.Services;
 
-namespace NetHub.Application.Extensions;
+namespace NetHub.Infrastructure.Extensions;
 
 public static class HttpContextExtensions
 {

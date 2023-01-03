@@ -13,5 +13,4 @@ public sealed class AppRole : IdentityRole<long>, IEntity
 
     public ICollection<AppUserRole>? UserRoles { get; init; }
     public ICollection<AppRoleClaim>? RoleClaims { get; init; }
-    public ICollection<AppUserRole>? Users { get; set; }
 }

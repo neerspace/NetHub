@@ -37,7 +37,7 @@ internal sealed class TelegramAuthProvider : IAuthProviderValidator
 
     private static bool CheckDate(string epochSeconds)
     {
-        return DateTime.UtcNow - DateTimeOffset.FromUnixTimeSeconds(int.Parse(epochSeconds)) >
+        return DateTimeOffset.UtcNow - DateTimeOffset.FromUnixTimeSeconds(int.Parse(epochSeconds)) >
                TimeSpan.FromHours(2);
     }
 

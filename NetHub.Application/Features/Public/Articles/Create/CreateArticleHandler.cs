@@ -16,7 +16,9 @@ internal sealed class CreateArticleHandler : AuthorizedHandler<CreateArticleRequ
 
         var articleEntity = new Article
         {
-            AuthorId = user.Id, Name = request.Name, Created = DateTime.UtcNow,
+            AuthorId = user.Id,
+            Name = request.Name,
+            Created = DateTimeOffset.UtcNow,
             OriginalArticleLink = request.OriginalArticleLink,
         };
 

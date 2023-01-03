@@ -11,7 +11,7 @@ public sealed record AuthResult
     /// <example>[JWT]</example>
     public string Token { get; init; } = default!;
 
-    public DateTime TokenExpires { get; init; }
-    public DateTime RefreshTokenExpires { get; init; }
+    public DateTimeOffset TokenExpires { get; init; }
+    public DateTimeOffset RefreshTokenExpires { get; init; }
     public string? ProfilePhotoUrl { get; set; }
 }

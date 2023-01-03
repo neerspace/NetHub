@@ -29,10 +29,10 @@ public class ExtendedUserArticle : IEntity
 	public DateTimeOffset? Updated { get; set; }
 
 	[Sieve(CanSort = true)]
-	public DateTime? Published { get; set; }
+	public DateTimeOffset? Published { get; set; }
 
 	[Sieve(CanSort = true)]
-	public DateTime? Banned { get; set; }
+	public DateTimeOffset? Banned { get; set; }
 
 	[Sieve(CanSort = true)]
 	public int Views { get; set; } = 0;

@@ -5,7 +5,7 @@ namespace NetHub.Application.Models.Mezha;
 public class PostModel
 {
     public long Id { get; set; }
-    public DateTime Date { get; set; }
+    public DateTimeOffset Date { get; set; }
     public RenderedModel Guid { get; set; } = default!;
     public string Slug { get; set; } = default!;
     public string Status { get; set; } = default!;

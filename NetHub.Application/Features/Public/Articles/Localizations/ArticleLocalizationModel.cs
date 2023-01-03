@@ -15,10 +15,10 @@ public sealed class ArticleLocalizationModel
     public ContentStatus Status { get; set; }
     public int Views { get; set; }
     public int Rate { get; set; }
-    public DateTime Created { get; set; }
-    public DateTime? Updated { get; set; }
-    public DateTime? Published { get; set; }
-    public DateTime? Banned { get; set; }
+    public DateTimeOffset Created { get; set; }
+    public DateTimeOffset? Updated { get; set; }
+    public DateTimeOffset? Published { get; set; }
+    public DateTimeOffset? Banned { get; set; }
 
     public bool IsSaved { get; set; }
     public DateTimeOffset? SavedDate { get; set; }

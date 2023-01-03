@@ -4,6 +4,7 @@ using NeerCore.DependencyInjection.Extensions;
 using NetHub.Application;
 using NetHub.Application.Options;
 using NetHub.Infrastructure.Services.Internal.Sieve;
+using Ng.Services;
 using Sieve.Services;
 
 namespace NetHub.Infrastructure;
@@ -16,6 +17,7 @@ public static class DependencyInjection
         services.AddLazyCache();
         services.AddCustomSieve();
         services.AddHttpClients(configuration);
+        services.AddUserAgentService();
     }
 
     private static void AddHttpClients(this IServiceCollection services, IConfiguration configuration)
