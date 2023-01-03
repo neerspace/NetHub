@@ -16,17 +16,17 @@ namespace NetHub.Application.SharedServices;
 public sealed class AccessTokenGenerator
 {
     private readonly ISqlServerDatabase _database;
-    private readonly JwtOptions _options;
+    private readonly JwtOptions.AccessTokenOptions _options;
 
     public AccessTokenGenerator(IOptions<JwtOptions> optionsAccessor, ISqlServerDatabase database)
     {
         _database = database;
-        _options = optionsAccessor.Value;
+        _options = optionsAccessor.Value.AccessToken;
     }
 
     public async Task<JwtToken> GenerateAsync(AppUser user, CancellationToken ct = default)
     {
-        DateTime expires = DateTime.UtcNow.Add(_options.AccessTokenLifetime);
+        DateTime expires = DateTime.UtcNow.Add(_options.Lifetime);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -73,7 +73,7 @@ public sealed class AccessTokenGenerator
         claims.AddRange(await _database.Set<AppUserRole>()
             .Where(e => e.UserId == userId)
             .Join(_database.Set<AppRoleClaim>(), ur => ur.RoleId, rc => rc.RoleId, (_, rc) => rc)
-            .Select(e => new Claim(e.ClaimType, e.ClaimValue ?? "null"))
+            .Select(e => new Claim(e.ClaimType!, e.ClaimValue ?? "null"))
             .ToListAsync(ct));
 
         return claims;

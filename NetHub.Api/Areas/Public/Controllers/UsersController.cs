@@ -52,7 +52,7 @@ public class UserController : ApiController
 	[HttpPost("refresh-tokens")]
 	public async Task<AuthResult> RefreshTokens()
 	{
-		if (Request.Cookies.TryGetValue(_jwtOptions.RefreshTokenCookieName, out var cookie))
+		if (Request.Cookies.TryGetValue(_jwtOptions.RefreshToken.CookieName, out var cookie))
 		{
 			Console.WriteLine("Received Cookie: \t" + cookie);
 			// return Ok(new {text = $"[{LastCookie == cookie}] Cookie stored: " + cookie});
@@ -65,7 +65,7 @@ public class UserController : ApiController
 	[HttpDelete("logout")]
 	public IActionResult Logout()
 	{
-		Response.Cookies.Delete(_jwtOptions.RefreshTokenCookieName);
+		Response.Cookies.Delete(_jwtOptions.RefreshToken.CookieName);
 		return NoContent();
 	}
 

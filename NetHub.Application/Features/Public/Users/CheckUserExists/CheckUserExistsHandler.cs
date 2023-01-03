@@ -11,10 +11,11 @@ internal sealed class CheckUserExistsHandler : DbHandler<CheckUserExistsRequest,
 
     public override async Task<CheckUserExistsResult> Handle(CheckUserExistsRequest request, CancellationToken ct)
     {
+        string requestLoginProvider = request.Provider.ToString().ToLower();
         var loginInfo = await Database.Set<AppUserLogin>()
             .SingleOrDefaultAsync(l =>
                 l.ProviderKey == request.Key
-                && l.LoginProvider == request.Provider.ToString().ToLower(), ct);
+                && l.LoginProvider == requestLoginProvider, ct);
 
         return new(loginInfo is not null);
     }

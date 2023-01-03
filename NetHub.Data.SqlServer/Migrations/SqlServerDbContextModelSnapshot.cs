@@ -203,6 +203,53 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.ToTable("ArticleVotes");
                 });
 
+            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Identity.AppDevice", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<short>("AttemptCount")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("Browser")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("BrowserVersion")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasMaxLength(45)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(45)");
+
+                    b.Property<DateTime?>("LastAttempt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Platform")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(10)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppDevices", (string)null);
+                });
+
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Identity.AppRole", b =>
                 {
                     b.Property<long>("Id")
@@ -233,7 +280,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
 
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("AppRoles", (string)null);
 
                     b.HasData(
                         new
@@ -275,7 +322,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims", (string)null);
+                    b.ToTable("AppRoleClaims", (string)null);
 
                     b.HasData(
                         new
@@ -285,6 +332,48 @@ namespace NetHub.Data.SqlServer.Migrations
                             ClaimValue = "mt",
                             RoleId = 2L
                         });
+                });
+
+            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Identity.AppToken", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<long?>("AppUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Created")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<long?>("DeviceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Value")
+                        .HasMaxLength(128)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(128)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("DeviceId");
+
+                    b.HasIndex("Value")
+                        .IsUnique()
+                        .HasFilter("[Value] IS NOT NULL");
+
+                    b.ToTable("AppTokens", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Identity.AppUser", b =>
@@ -385,7 +474,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("PhotoId");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("AppUsers", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Identity.AppUserClaim", b =>
@@ -411,7 +500,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
+                    b.ToTable("AppUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Identity.AppUserLogin", b =>
@@ -435,7 +524,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
+                    b.ToTable("AppUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Identity.AppUserRole", b =>
@@ -455,7 +544,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
+                    b.ToTable("AppUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Language", b =>
@@ -471,38 +560,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasKey("Code");
 
-                    b.ToTable("Languages");
-                });
-
-            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.RefreshToken", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserTokens", (string)null);
+                    b.ToTable("Languages", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Resource", b =>
@@ -766,6 +824,27 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Identity.AppToken", b =>
+                {
+                    b.HasOne("NetHub.Data.SqlServer.Entities.Identity.AppUser", null)
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("NetHub.Data.SqlServer.Entities.Identity.AppDevice", "Device")
+                        .WithMany()
+                        .HasForeignKey("DeviceId");
+
+                    b.HasOne("NetHub.Data.SqlServer.Entities.Identity.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Device");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Identity.AppUser", b =>
                 {
                     b.HasOne("NetHub.Data.SqlServer.Entities.Resource", "Photo")
@@ -785,7 +864,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                             b1.HasKey("AppUserId");
 
-                            b1.ToTable("AspNetUsers");
+                            b1.ToTable("AppUsers");
 
                             b1.WithOwner()
                                 .HasForeignKey("AppUserId");
@@ -840,17 +919,6 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.RefreshToken", b =>
-                {
-                    b.HasOne("NetHub.Data.SqlServer.Entities.Identity.AppUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.SavedArticle", b =>
                 {
                     b.HasOne("NetHub.Data.SqlServer.Entities.Articles.ArticleLocalization", "Localization")
@@ -896,6 +964,8 @@ namespace NetHub.Data.SqlServer.Migrations
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Identity.AppUser", b =>
                 {
                     b.Navigation("Articles");
+
+                    b.Navigation("RefreshTokens");
 
                     b.Navigation("SavedArticles");
 

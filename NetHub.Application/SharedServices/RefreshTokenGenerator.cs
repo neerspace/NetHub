@@ -1,11 +1,14 @@
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NeerCore.DependencyInjection;
+using NeerCore.Exceptions;
+using NetHub.Application.Extensions;
 using NetHub.Application.Models;
 using NetHub.Application.Options;
+using NetHub.Core.Enums;
 using NetHub.Data.SqlServer.Context;
-using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Application.SharedServices;
@@ -13,42 +16,67 @@ namespace NetHub.Application.SharedServices;
 [Service]
 public sealed class RefreshTokenGenerator
 {
+    private const string InvalidPlatform = "Unknown Platform";
+
     private readonly JwtOptions _options;
     private readonly ISqlServerDatabase _database;
-    private readonly DbSet<RefreshToken> _refreshTokensSet;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public RefreshTokenGenerator(IOptions<JwtOptions> optionsAccessor, ISqlServerDatabase database)
+    private HttpContext HttpContext => _httpContextAccessor.HttpContext!;
+
+    public RefreshTokenGenerator(
+        ISqlServerDatabase database, IOptions<JwtOptions> optionsAccessor, IHttpContextAccessor httpContextAccessor)
     {
         _database = database;
+        _httpContextAccessor = httpContextAccessor;
         _options = optionsAccessor.Value;
-        _refreshTokensSet = _database.Set<RefreshToken>();
     }
 
-    public async Task<JwtToken> GenerateAsync(AppUser user, CancellationToken cancel = default)
+    public async Task<JwtToken> GenerateAsync(AppUser user, CancellationToken ct = default)
     {
-        DateTime expires = DateTime.UtcNow.Add(_options.RefreshTokenLifetime);
+        var expires = DateTime.UtcNow.Add(_options.RefreshToken.Lifetime);
         string token = GenerateRandomToken();
 
-        _refreshTokensSet.Add(new RefreshToken
+        var userAgent = HttpContext.GetUserAgent();
+        var ip = HttpContext.GetIPAddress().ToString();
+
+        if (userAgent.IsRobot // coz we hate robots here
+            // UA platform is invalid
+            || string.Equals(userAgent.Platform, InvalidPlatform, StringComparison.OrdinalIgnoreCase)
+            // UA browser is invalid
+            || string.IsNullOrEmpty(userAgent.Browser)
+            || string.IsNullOrEmpty(userAgent.BrowserVersion))
+            throw new ForbidException("You are using a suspicious device.\n"
+                + "Make sure you are using a modern browser and do not use a toaster to surf the web.");
+
+        var device = await _database.Set<AppDevice>().AsNoTracking()
+            .FirstOrDefaultAsync(d => d.Browser == userAgent.Browser && d.IpAddress == ip, ct);
+
+        if (device?.Status == DeviceStatus.Banned)
+            throw new ForbidException("Your IP has been blocked.\n"
+                + "Contact admins to unlock access for your IP.");
+
+        _database.Set<AppToken>().Add(new AppToken
         {
             Value = token,
-            UserId = user.Id
+            UserId = user.Id,
+            Device = device
+                ?? new AppDevice
+                {
+                    IpAddress = ip,
+                    Browser = userAgent.Browser,
+                    BrowserVersion = userAgent.BrowserVersion,
+                }
         });
 
-        await _database.SaveChangesAsync(cancel: cancel);
+        await _database.SaveChangesAsync(cancel: ct);
 
         return new JwtToken(token, expires);
     }
 
-    public bool IsValid(RefreshToken token)
-    {
-        return !string.IsNullOrEmpty(token.Value)
-               && token.Created.Add(_options.RefreshTokenLifetime) > DateTime.UtcNow;
-    }
-
     private static string GenerateRandomToken()
     {
-        var randomNumber = new byte[64];
+        byte[] randomNumber = new byte[64];
         using var rng = RandomNumberGenerator.Create();
         rng.GetBytes(randomNumber);
         // To base64 without ending '=='

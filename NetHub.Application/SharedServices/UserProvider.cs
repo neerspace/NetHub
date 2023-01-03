@@ -15,17 +15,12 @@ namespace NetHub.Application.SharedServices;
 internal sealed class UserProvider : IUserProvider
 {
     private readonly IHttpContextAccessor _accessor;
-
-    private UserManager<AppUser> UserManager =>
-        _accessor.HttpContext!.RequestServices.GetRequiredService<UserManager<AppUser>>();
-
-
     private AppUser? _userProfile;
 
-    public UserProvider(IHttpContextAccessor accessor)
-    {
-        _accessor = accessor;
-    }
+    private UserManager<AppUser> UserManager => _accessor.HttpContext!.RequestServices.GetRequiredService<UserManager<AppUser>>();
+
+    public UserProvider(IHttpContextAccessor accessor) => _accessor = accessor;
+
 
     public ClaimsPrincipal User => _accessor.HttpContext!.User;
 
@@ -33,8 +28,9 @@ internal sealed class UserProvider : IUserProvider
 
     public long? TryGetUserId()
     {
-        var claimResult = User.TryGetClaimWithoutAuthorization(Claims.Id, out Claim? claim);
-        if (!claimResult) return null;
+        var claimResult = User.TryGetClaimWithoutAuthorization(Claims.Id, out var claim);
+        if (!claimResult)
+            return null;
 
         var longResult = long.TryParse(claim?.Value, out long userId);
 
@@ -45,7 +41,8 @@ internal sealed class UserProvider : IUserProvider
     public async Task<AppUser> GetUser()
     {
         var user = await UserManager.FindByIdAsync(UserId.ToString());
-        if (user is null) throw new UnauthorizedException("Authorized used required");
+        if (user is null)
+            throw new UnauthorizedException("Authorized used required");
 
         return _userProfile ??= user;
     }

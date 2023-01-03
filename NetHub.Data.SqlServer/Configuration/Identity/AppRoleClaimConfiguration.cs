@@ -9,7 +9,7 @@ internal class AppRoleClaimConfiguration : IEntityTypeConfiguration<AppRoleClaim
 {
     public void Configure(EntityTypeBuilder<AppRoleClaim> builder)
     {
-        builder.HasKey(e => e.Id);
+        builder.ToTable($"{nameof(AppRoleClaim)}s").HasKey(e => e.Id);
 
         builder.Property(e => e.ClaimType).AsSmallText();
         builder.Property(e => e.ClaimValue).AsLargeText();

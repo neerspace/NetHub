@@ -6,9 +6,9 @@ using NetHub.Application.Features.Public.Users.Dto;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Options;
 
-namespace NetHub.Admin.Endpoints.Auth;
+namespace NetHub.Admin.Endpoints.Jwt;
 
-[Tags(TagNames.Auth)]
+[Tags(TagNames.Jwt)]
 [ApiVersion(Versions.V1)]
 public class JwtRefreshEndpoint : ResultEndpoint<AuthResult>
 {
@@ -26,9 +26,9 @@ public class JwtRefreshEndpoint : ResultEndpoint<AuthResult>
 	[HttpPost("jwt/refresh")]
 	public override async Task<AuthResult> HandleAsync(CancellationToken ct = default)
 	{
-		if (HttpContext.Request.Cookies.TryGetValue(_jwtOptions.RefreshTokenCookieName, out var refreshToken))
+		if (HttpContext.Request.Cookies.TryGetValue(_jwtOptions.RefreshToken.CookieName, out var refreshToken))
 			return await _jwtService.RefreshAsync(refreshToken, ct);
-		
+
 		throw new UnauthorizedException("Refresh token doesn't exist");
 	}
 }

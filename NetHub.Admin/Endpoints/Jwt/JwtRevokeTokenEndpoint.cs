@@ -3,9 +3,9 @@ using Microsoft.Extensions.Options;
 using NetHub.Admin.Abstractions;
 using NetHub.Application.Options;
 
-namespace NetHub.Admin.Endpoints.Auth;
+namespace NetHub.Admin.Endpoints.Jwt;
 
-[Tags(TagNames.Auth)]
+[Tags(TagNames.Jwt)]
 [ApiVersion(Versions.V1)]
 public class JwtRevokeTokenEndpoint : ActionEndpoint
 {
@@ -20,7 +20,7 @@ public class JwtRevokeTokenEndpoint : ActionEndpoint
     [HttpPost("auth/revoke-token")]
     public override Task HandleAsync(CancellationToken ct = default)
     {
-        Response.Cookies.Delete(_options.RefreshTokenCookieName);
+        Response.Cookies.Delete(_options.RefreshToken.CookieName);
         return Task.CompletedTask;
     }
 }

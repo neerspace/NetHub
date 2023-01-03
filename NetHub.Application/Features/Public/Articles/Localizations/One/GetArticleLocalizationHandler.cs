@@ -14,15 +14,12 @@ internal sealed class GetArticleLocalizationHandler : DbHandler<GetArticleLocali
 {
 	private readonly IUserProvider _userProvider;
 
-	public GetArticleLocalizationHandler(IServiceProvider serviceProvider,
-		IUserProvider userProvider) : base(
-		serviceProvider)
+	public GetArticleLocalizationHandler(IServiceProvider serviceProvider, IUserProvider userProvider) : base(serviceProvider)
 	{
 		_userProvider = userProvider;
 	}
 
-	public override async Task<ArticleLocalizationModel> Handle(GetArticleLocalizationRequest request,
-		CancellationToken ct)
+	public override async Task<ArticleLocalizationModel> Handle(GetArticleLocalizationRequest request, CancellationToken ct)
 	{
 		var userId = _userProvider.TryGetUserId();
 

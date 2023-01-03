@@ -1,10 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using NeerCore.Data.Abstractions;
 
 namespace NetHub.Data.SqlServer.Entities.Identity;
 
-[Table($"{nameof(AppUserRole)}s")]
 public sealed class AppUserRole : IdentityUserRole<long>, IEntity
 {
     public override long UserId { get; set; }

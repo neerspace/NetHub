@@ -13,13 +13,13 @@ public static class DependencyInjection
         services.AddDbContext<SqlServerDbContext>(cob => contextFactory.ConfigureContextOptions(cob));
 
         services.AddIdentityCore<AppUser>(o =>
-        {
-            o.Password.RequireUppercase = false;
-            o.Password.RequireNonAlphanumeric = false;
-            o.User.RequireUniqueEmail = true;
-        }).AddEntityFrameworkStores<SqlServerDbContext>();
-
-        services.AddTransient<UserManager<AppUser>>();
+            {
+                o.Password.RequireUppercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<SqlServerDbContext>()
+            .AddUserManager<UserManager<AppUser>>();
 
         services.AddScoped<ISqlServerDatabase, SqlServerDbContext>();
     }

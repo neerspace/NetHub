@@ -12,7 +12,7 @@ internal sealed class GetUserArticlesHandler : AuthorizedHandler<GetUserArticles
 
     public override async Task<ArticleModel[]> Handle(GetUserArticlesRequest request, CancellationToken ct)
     {
-        var userId = UserProvider.UserId;
+        long userId = UserProvider.UserId;
 
         var articles = await Database.Set<Article>()
             .Include(a => a.Localizations)

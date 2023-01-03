@@ -15,7 +15,6 @@ internal sealed class ExchangeRateService
     private const string CACHE_KEY = "Monobank";
 
     private readonly HttpClient _client;
-
     private readonly IAppCache _memoryCache;
 
     public ExchangeRateService(IHttpClientFactory clientFactory, IAppCache memoryCache)
@@ -36,20 +35,27 @@ internal sealed class ExchangeRateService
     {
         var message = await _client.GetAsync("/bank/currency");
 
-        var response = JsonConvert.DeserializeObject<OneExchangeResponse[]>(await message.Content.ReadAsStringAsync())!;
+        var response = JsonConvert.DeserializeObject<OneExchangeResponse[]>(
+            await message.Content.ReadAsStringAsync())!;
 
         var usdResponse = response.First(r =>
-            r.CurrencyCodeA is USD_ISO_CODE &&
-            r.CurrencyCodeB is UAH_ISO_CODE);
+            r.CurrencyCodeA is USD_ISO_CODE && r.CurrencyCodeB is UAH_ISO_CODE);
 
         var euroResponse = response.First(r =>
-            r.CurrencyCodeA is EURO_ISO_CODE &&
-            r.CurrencyCodeB is UAH_ISO_CODE);
+            r.CurrencyCodeA is EURO_ISO_CODE && r.CurrencyCodeB is UAH_ISO_CODE);
 
         return new()
         {
-            Usd = usdResponse.Adapt<OneExchangeDto>() with { CurrencyFrom = "USD", CurrencyTo = "UAH" },
-            Euro = euroResponse.Adapt<OneExchangeDto>() with { CurrencyFrom = "EURO", CurrencyTo = "UAH" },
+            Usd = usdResponse.Adapt<OneExchangeDto>() with
+            {
+                CurrencyFrom = "USD",
+                CurrencyTo = "UAH"
+            },
+            Euro = euroResponse.Adapt<OneExchangeDto>() with
+            {
+                CurrencyFrom = "EURO",
+                CurrencyTo = "UAH"
+            },
         };
     }
 }

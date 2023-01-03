@@ -22,15 +22,16 @@ public static class DependencyInjection
     {
         var currencyOptions = configuration.GetSection("CurrencyRate").Get<CurrencyRateOptions>()!;
 
-        services.AddHttpClient("CoinGeckoClient",
-            config => { config.BaseAddress = new Uri(currencyOptions.CoinGeckoApiUrl); });
+        services.AddHttpClient("CoinGeckoClient", config =>
+        {
+            config.BaseAddress = new Uri(currencyOptions.CoinGeckoApiUrl);
+        });
 
-        services.AddHttpClient("MonobankClient",
-            config =>
-            {
-                config.BaseAddress = new Uri(currencyOptions.MonobankApiUrl);
-                // config.Re
-            });
+        services.AddHttpClient("MonobankClient", config =>
+        {
+            config.BaseAddress = new Uri(currencyOptions.MonobankApiUrl);
+            // config.Re
+        });
     }
 
     private static void AddCustomSieve(this IServiceCollection services)
