@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using NeerCore.DependencyInjection.Extensions;
 using NetHub.Application.Options;
-using NetHub.Application.SharedServices;
 using NetHub.Core.Constants;
 using NetHub.Infrastructure.Services.Internal.Sieve;
 using Ng.Services;
@@ -42,6 +41,6 @@ public static class DependencyInjection
     {
         services.Configure<SieveOptions>(configuration.GetSection(ConfigSectionNames.Sieve));
         services.AddScoped<ISieveCustomFilterMethods, SieveCustomFiltering>();
-        services.AddScoped<ISieveProcessor, NetSieveProcessor>();
+        services.AddTransient<ISieveProcessor, SieveProcessor>();
     }
 }

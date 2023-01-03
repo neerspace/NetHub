@@ -41,7 +41,6 @@ public static class DependencyInjection
         services.Configure<FacebookOptions>(configuration.GetSection(ConfigSectionNames.Facebook));
         services.ConfigureOptions<JwtOptions.Configurator>();
         services.Configure<CurrencyRateOptions>(configuration.GetSection(ConfigSectionNames.CurrencyRate));
-        services.Configure<SieveOptions>(configuration.GetSection(ConfigSectionNames.Sieve));
     }
 
     private static void RegisterMappings(this IServiceCollection services)
