@@ -13,7 +13,7 @@ namespace NetHub.Admin;
 
 public static class DependencyInjection
 {
-    public static void AddWebAdminApi(this IServiceCollection services)
+    public static void AddWebAdminApi(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<SwaggerGenOptions>(options =>
         {
@@ -25,17 +25,22 @@ public static class DependencyInjection
         services.AddNeerApiServices();
         services.AddNeerControllers()
             .AddMvcOptions(options => options.Filters.Add<SuccessStatusCodesFilter>());
+        services.AddCorsPolicy(configuration);
 
         services.ConfigureAllOptions();
 
         services.AddJwtAuthentication();
         services.AddPoliciesAuthorization();
 
+        services.AddFluentValidation();
+    }
+
+    private static void AddFluentValidation(this IServiceCollection services)
+    {
         services.AddFluentValidationAutoValidation(fv =>
             fv.DisableDataAnnotationsValidation = true);
         services.AddFluentValidationClientsideAdapters();
         services.AddValidatorsFromAssemblyContaining<AppUser>(ServiceLifetime.Transient);
-
         services.AddFluentValidationRulesToSwagger();
     }
 }

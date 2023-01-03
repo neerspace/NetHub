@@ -1,4 +1,3 @@
-using NeerCore.Api;
 using NeerCore.Api.Extensions;
 using NeerCore.Api.Swagger.Extensions;
 using NeerCore.Exceptions;
@@ -6,6 +5,7 @@ using NeerCore.Logging;
 using NeerCore.Logging.Extensions;
 using NetHub.Admin;
 using NetHub.Admin.Infrastructure;
+using NetHub.Api.Shared.Extensions;
 using NetHub.Data.SqlServer;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Infrastructure;
@@ -44,7 +44,7 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
     builder.Services.AddSqlServerDatabase();
     builder.Services.AddInfrastructure(builder.Configuration);
     builder.Services.AddAdminInfrastructure();
-    builder.Services.AddWebAdminApi();
+    builder.Services.AddWebAdminApi(builder.Configuration);
 }
 
 static void ConfigureWebApp(WebApplication app)
@@ -55,7 +55,7 @@ static void ConfigureWebApp(WebApplication app)
         app.ForceRedirect("/", "/swagger");
     }
 
-    app.UseCors(CorsPolicies.AcceptAll);
+    app.UseCorsPolicy();
     app.UseHttpsRedirection();
 
     // app.UseRequestLocalization();

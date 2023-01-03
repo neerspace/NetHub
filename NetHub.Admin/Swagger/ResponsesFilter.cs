@@ -34,27 +34,27 @@ public sealed class ResponsesFilter : IDocumentFilter
                 operation.Value.Responses.Add("204", new OpenApiResponse { Description = "No Content" });
             }
 
-            operation.Value.Responses.Add("400", new OpenApiResponse
+            SetResponse(operation.Value.Responses, "400", new OpenApiResponse
             {
                 Description = "Validation Failed",
                 Content = ErrorContent,
             });
-            operation.Value.Responses.Add("401", new OpenApiResponse
+            SetResponse(operation.Value.Responses, "401", new OpenApiResponse
             {
                 Description = "Not Authorized",
                 Content = ValidationErrorContent,
             });
-            operation.Value.Responses.Add("403", new OpenApiResponse
+            SetResponse(operation.Value.Responses, "403", new OpenApiResponse
             {
                 Description = "Permission Denied",
                 Content = ErrorContent,
             });
-            operation.Value.Responses.Add("404", new OpenApiResponse
+            SetResponse(operation.Value.Responses, "404", new OpenApiResponse
             {
                 Description = "Not Found",
                 Content = ErrorContent,
             });
-            operation.Value.Responses.Add("500", new OpenApiResponse
+            SetResponse(operation.Value.Responses, "500", new OpenApiResponse
             {
                 Description = "Internal Server Error",
                 Content = ErrorContent,
@@ -66,6 +66,12 @@ public sealed class ResponsesFilter : IDocumentFilter
         swaggerDoc.Components.Schemas.Add("ValidationError", ErrorSchema(extended: true));
     }
 
+
+    private static void SetResponse(OpenApiResponses responses, string statusCode, OpenApiResponse response)
+    {
+        responses.Remove(statusCode);
+        responses.Add(statusCode, response);
+    }
 
     private static Dictionary<string, OpenApiMediaType> ErrorContent => new()
     {
@@ -115,7 +121,7 @@ public sealed class ResponsesFilter : IDocumentFilter
         }
     };
 
-    private static OpenApiSchema ErrorSchema(bool extended)
+    private static OpenApiSchema ErrorSchema(int statusCode = 418, string? type = null, string? message = null, bool extended = false)
     {
         var schema = new OpenApiSchema
         {
@@ -127,23 +133,21 @@ public sealed class ResponsesFilter : IDocumentFilter
                     {
                         Type = "integer",
                         Format = "int32",
-                        Minimum = 400,
-                        Maximum = 599,
-                        Example = new OpenApiInteger(418)
+                        Example = new OpenApiInteger(statusCode)
                     }
                 },
                 {
                     "type", new OpenApiSchema
                     {
                         Type = "string",
-                        Example = new OpenApiString("I'm a teapot")
+                        Example = new OpenApiString(type ?? "I'm a teapot")
                     }
                 },
                 {
                     "message", new OpenApiSchema
                     {
                         Type = "string",
-                        Example = new OpenApiString("Server refuses to brew coffee because it is a teapot.")
+                        Example = new OpenApiString(message ?? "Server refuses to brew coffee because it is a teapot.")
                     }
                 }
             }

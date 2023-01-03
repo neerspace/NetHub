@@ -4,5 +4,5 @@ namespace NetHub.Admin.Swagger;
 public sealed class ClientSideAttribute : Attribute
 {
     public string? Controller { get; set; }
-    public string? Action { get; set; }
+    public string? ActionName { get; set; }
 }

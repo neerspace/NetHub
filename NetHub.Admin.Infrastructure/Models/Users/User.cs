@@ -6,5 +6,5 @@ public sealed class User
     public string UserName { get; set; } = default!;
     public string Email { get; set; } = default!;
     public string? Description { get; set; }
-    public DateTime Registered { get; set; }
+    public DateTimeOffset Registered { get; set; }
 }

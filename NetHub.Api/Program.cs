@@ -5,7 +5,7 @@ using NeerCore.Exceptions;
 using NeerCore.Logging;
 using NeerCore.Logging.Extensions;
 using NetHub.Api;
-using NetHub.Api.Shared;
+using NetHub.Api.Shared.Extensions;
 using NetHub.Application;
 using NetHub.Data.SqlServer;
 using NetHub.Data.SqlServer.Context;
@@ -64,7 +64,7 @@ static void ConfigureWebApp(WebApplication app)
         app.ForceRedirect(from: "/", to: "/swagger");
     }
 
-    app.UseCors(Cors.ApiDefault);
+    app.UseCorsPolicy();
 
     app.UseHttpsRedirection();
 

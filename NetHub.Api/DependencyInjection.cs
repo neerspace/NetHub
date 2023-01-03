@@ -21,7 +21,7 @@ public static class DependencyInjection
             o.HandleFluentValidationExceptions = true;
         });
 
-        services.AddCorsPolicies(configuration);
+        services.AddCorsPolicy(configuration);
 
         services.AddNeerControllers();
 

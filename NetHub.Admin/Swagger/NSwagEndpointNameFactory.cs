@@ -35,9 +35,9 @@ public static class NSwagEndpointNameFactory
     {
         if (description.ActionDescriptor.EndpointMetadata
                 .FirstOrDefault(em => em is ClientSideAttribute) is ClientSideAttribute clientAttr
-            && !string.IsNullOrEmpty(clientAttr.Action))
+            && !string.IsNullOrEmpty(clientAttr.ActionName))
         {
-            return clientAttr.Action;
+            return clientAttr.ActionName;
         }
 
         if (description.ActionDescriptor.EndpointMetadata
