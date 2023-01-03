@@ -11,7 +11,7 @@ public sealed class UserDto
     public string? ProfilePhotoUrl { get; set; }
     public bool EmailConfirmed { get; set; }
     public string? Description { get; set; }
-    public DateTime Registered { get; set; }
+    public DateTimeOffset Registered { get; set; }
 }
 
 public sealed class PrivateUserDto

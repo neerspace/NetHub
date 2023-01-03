@@ -42,16 +42,16 @@ public record ArticleLocalization : IEntity
 	public InternalStatus InternalStatus { get; set; }
 
 	[Sieve(CanSort = true)]
-	public DateTime Created { get; set; } = DateTime.UtcNow;
+	public DateTimeOffset Created { get; set; } = DateTimeOffset.UtcNow;
 
 	[Sieve(CanSort = true)]
-	public DateTime? Updated { get; set; }
+	public DateTimeOffset? Updated { get; set; }
 
 	[Sieve(CanSort = true)]
-	public DateTime? Published { get; set; }
+	public DateTimeOffset? Published { get; set; }
 
 	[Sieve(CanSort = true)]
-	public DateTime? Banned { get; set; }
+	public DateTimeOffset? Banned { get; set; }
 
 	public long? LastContributorId { get; set; }
 	public AppUser? LastContributor { get; set; }

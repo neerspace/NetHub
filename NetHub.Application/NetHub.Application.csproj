@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ng.UserAgentService" Version="1.1.2" />
     <PackageReference Include="NeerCore.Application.MediatR" Version="2.0.0-alpha3" />
     <PackageReference Include="NeerCore.Mapping.Mapster" Version="2.0.0-alpha3" />
   </ItemGroup>

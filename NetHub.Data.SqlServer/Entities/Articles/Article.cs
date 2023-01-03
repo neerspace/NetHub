@@ -14,11 +14,11 @@ public class Article : IEntity
 	public string? OriginalArticleLink { get; set; }
 	public int Rate { get; set; } = 0;
 
-	public DateTime Created { get; set; } = DateTime.UtcNow;
-	public DateTime? Updated { get; set; }
-	public DateTime? Published { get; set; }
+	public DateTimeOffset Created { get; set; } = DateTimeOffset.UtcNow;
+	public DateTimeOffset? Updated { get; set; }
+	public DateTimeOffset? Published { get; set; }
 
-	public DateTime? Banned { get; set; }
+	public DateTimeOffset? Banned { get; set; }
 
 	#region Author
 

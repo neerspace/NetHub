@@ -19,7 +19,7 @@ public sealed class AppUser : IdentityUser<long>, IEntity
     public string? Description { get; set; }
     public string? ProfilePhotoUrl { get; set; }
 
-    public DateTime Registered { get; set; } = DateTime.UtcNow;
+    public DateTimeOffset Registered { get; set; } = DateTimeOffset.UtcNow;
 
 
     public ICollection<AppUserRole>? UserRoles { get; init; }

@@ -9,22 +9,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetHub.Application.Options;
 using NetHub.Data.SqlServer.Entities.Identity;
-using Ng.Services;
 using Sieve.Models;
 
 namespace NetHub.Application;
 
 public static class DependencyInjection
 {
-    public static void AddApplication(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
         services.RegisterMappings();
         services.AddCustomMediatR();
         services.ConfigureOptions(configuration);
         services.AddTransient<SignInManager<AppUser>>();
-        services.AddUserAgentService();
     }
 
 
@@ -36,9 +32,7 @@ public static class DependencyInjection
         options.ImplicitlyValidateRootCollectionElements = true;
     }
 
-    private static void ConfigureOptions(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
     {
         // TODO: use NeerCore Configurator instead
         services.Configure<MezhaOptions>(configuration.GetSection("Mezha"));

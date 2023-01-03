@@ -51,7 +51,7 @@ internal sealed class UpdateArticleLocalizationHandler : AuthorizedHandler<Updat
         if (request.NewLanguageCode is not null)
             await SetNewLanguageAsync(request, localization, ct);
 
-        localization.Updated = DateTime.UtcNow;
+        localization.Updated = DateTimeOffset.UtcNow;
         localization.LastContributorId = userId;
 
         await Database.SaveChangesAsync(ct);

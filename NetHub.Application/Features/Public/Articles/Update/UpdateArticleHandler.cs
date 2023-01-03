@@ -32,7 +32,7 @@ internal sealed class UpdateArticleHandler : AuthorizedHandler<UpdateArticleRequ
         if (request.Name is not null)
             article.Name = request.Name;
 
-        article.Updated = DateTime.UtcNow;
+        article.Updated = DateTimeOffset.UtcNow;
         article.OriginalArticleLink = request.OriginalArticleLink;
 
         await Database.SaveChangesAsync(ct);

@@ -4,14 +4,15 @@ using Microsoft.Extensions.Options;
 using NeerCore.Data.EntityFramework.Extensions;
 using NeerCore.DependencyInjection;
 using NeerCore.Exceptions;
-using NetHub.Application.Extensions;
 using NetHub.Application.Features.Public.Users.Dto;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Options;
 using NetHub.Application.SharedServices;
 using NetHub.Core.Constants;
+using NetHub.Core.Enums;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Infrastructure.Extensions;
 
 namespace NetHub.Infrastructure.Services;
 
@@ -40,8 +41,10 @@ public sealed class JwtService : IJwtService
 
     public async Task<AuthResult> GenerateAsync(AppUser user, CancellationToken ct)
     {
-        (string? accessToken, DateTime accessTokenExpires) = await _accessTokenGenerator.GenerateAsync(user, ct);
-        (string? refreshToken, DateTime refreshTokenExpires) = await _refreshTokenGenerator.GenerateAsync(user, ct);
+        var device = await GetUserDeviceAsync(ct);
+
+        var (accessToken, accessTokenExpires) = await _accessTokenGenerator.GenerateAsync(user, ct);
+        var (refreshToken, refreshTokenExpires) = await _refreshTokenGenerator.GenerateAsync(user, device, ct);
 
         SetRefreshTokenCookie(refreshToken, refreshTokenExpires);
 
@@ -78,7 +81,7 @@ public sealed class JwtService : IJwtService
         return result;
     }
 
-    private void SetRefreshTokenCookie(string refreshToken, DateTime refreshTokenExpires) =>
+    private void SetRefreshTokenCookie(string refreshToken, DateTimeOffset refreshTokenExpires) =>
         HttpContext.Response.Cookies.Append(_options.RefreshToken.CookieName, refreshToken, new CookieOptions
         {
             HttpOnly = true,
@@ -100,7 +103,7 @@ public sealed class JwtService : IJwtService
         // if provided token is a refresh token
         && refreshToken.Name == TokenNames.Refresh
         // token is not expired yet
-        && refreshToken.Created.Add(_options.RefreshToken.Lifetime) < DateTime.UtcNow
+        && refreshToken.Created.Add(_options.RefreshToken.Lifetime) < DateTimeOffset.UtcNow
         // token was provided for current request device IP and browser
         && IsDeviceFromCurrentRequest(refreshToken.Device!);
 
@@ -114,5 +117,39 @@ public sealed class JwtService : IJwtService
             // token was provided for current request IP
             && (!_options.RefreshToken.RequireSameIPAddress
                 || string.Equals(HttpContext.GetIPAddress().ToString(), device.IpAddress, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private async Task<AppDevice> GetUserDeviceAsync(CancellationToken ct)
+    {
+        var userAgent = HttpContext.GetUserAgent();
+        var ip = HttpContext.GetIPAddress().ToString();
+
+        if (userAgent.IsRobot // coz we hate robots here
+            // UA platform is invalid
+            || string.Equals(userAgent.Platform, "Unknown Platform", StringComparison.OrdinalIgnoreCase)
+            // UA browser is invalid
+            || string.IsNullOrEmpty(userAgent.Browser)
+            || string.IsNullOrEmpty(userAgent.BrowserVersion))
+            throw new ForbidException("You are using a suspicious device.\n"
+                + "Make sure you are using a modern browser and do not use a toaster to surf the web.");
+
+        var device = await _database.Set<AppDevice>().AsNoTracking()
+            .FirstOrDefaultAsync(d => d.Browser == userAgent.Browser && d.IpAddress == ip, ct);
+
+        if (device?.Status == DeviceStatus.Banned)
+            throw new ForbidException("Your IP has been blocked.\n"
+                + "Contact admins to unlock access for your IP.");
+
+        if (device is not null)
+            return device;
+
+        device = new AppDevice
+        {
+            IpAddress = ip,
+            Browser = userAgent.Browser,
+            BrowserVersion = userAgent.BrowserVersion,
+        };
+        _database.Set<AppDevice>().Add(device);
+        return device;
     }
 }

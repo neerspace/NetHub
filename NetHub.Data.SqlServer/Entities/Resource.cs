@@ -10,5 +10,5 @@ public class Resource : IEntity
     public string Filename { get; set; } = default!;
     public string Mimetype { get; set; } = default!;
     public byte[] Bytes { get; set; } = default!;
-    public DateTime Created { get; set; } = DateTime.UtcNow;
+    public DateTimeOffset Created { get; set; } = DateTimeOffset.UtcNow;
 }

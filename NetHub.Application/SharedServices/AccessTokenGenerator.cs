@@ -26,7 +26,7 @@ public sealed class AccessTokenGenerator
 
     public async Task<JwtToken> GenerateAsync(AppUser user, CancellationToken ct = default)
     {
-        DateTime expires = DateTime.UtcNow.Add(_options.Lifetime);
+        var expires = DateTime.UtcNow.Add(_options.Lifetime);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
