@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Application.Tools;
 using NetHub.Data.SqlServer.Entities.Articles;
+using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Application.Features.Public.Articles.One;
 
@@ -14,11 +15,11 @@ internal sealed class GetArticleHandler : DbHandler<GetArticleRequest, (ArticleM
     public override async Task<(ArticleModel, Guid[]?)> Handle(GetArticleRequest request, CancellationToken ct)
     {
         var article = await Database.Set<Article>()
-            .Include(a => a.Localizations)
+            .Include(a => a.Localizations.Where(l => l.Status == ContentStatus.Published))
             .Include(a => a.Tags)!.ThenInclude(at => at.Tag)
             .Include(a => a.Images)
             .FirstOr404Async(a => a.Id == request.Id, ct);
-
+        
         var model = article.Adapt<ArticleModel>();
         var imageIds = article.Images?.Select(i => i.ResourceId).ToArray();
 

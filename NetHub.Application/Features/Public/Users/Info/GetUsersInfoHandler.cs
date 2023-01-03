@@ -17,8 +17,7 @@ internal sealed class GetUsersInfoHandler : DbHandler<GetUsersInfoRequest, UserD
 		CancellationToken ct)
 	{
 		var users = await Database.Set<AppUser>()
-			.Where(u => request.UserNames
-				.Select(u => u.ToUpper())
+			.Where(u => request.UserNames.Select(u => u.ToUpper())
 				.Contains(u.NormalizedUserName))
 			.ToArrayAsync(ct);
 
