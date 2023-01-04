@@ -1,12 +1,15 @@
 ﻿using System.Linq.Expressions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using NeerCore;
 using NeerCore.Data.Abstractions;
 using NeerCore.DependencyInjection;
+using NeerCore.Exceptions;
 using NeerCore.Mapping.Extensions;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Models;
 using NetHub.Data.SqlServer.Context;
+using Sieve.Exceptions;
 using Sieve.Models;
 using Sieve.Services;
 
@@ -45,14 +48,25 @@ internal sealed class SieveFilterService : IFilterService
     public async Task<Filtered<TModel>> FilterWithCountAsync<TEntity, TModel>(FilterRequest request, CancellationToken ct = default)
         where TEntity : class, IEntity
     {
-        var dbSet = _database.Set<TEntity>();
-        var sieve = request.Adapt<SieveModel>();
-        var queryable = _sieveProcessor.Apply(sieve, dbSet.AsNoTracking());
-        var entities = await queryable.ToArrayAsync(ct);
+        try
+        {
+            var dbSet = _database.Set<TEntity>();
+            var sieve = request.Adapt<SieveModel>();
+            var queryable = _sieveProcessor.Apply(sieve, dbSet.AsNoTracking());
+            var entities = await queryable.ToArrayAsync(ct);
 
-        var totalCount = await _sieveProcessor.Apply(sieve, dbSet.AsNoTracking(),
-            applyPagination: false, applySorting: false).CountAsync(ct);
+            var totalCount = await _sieveProcessor.Apply(sieve, dbSet.AsNoTracking(),
+                applyPagination: false, applySorting: false).CountAsync(ct);
 
-        return new Filtered<TModel>(totalCount, entities.AdaptAll<TModel>());
+            return new Filtered<TModel>(totalCount, entities.AdaptAll<TModel>());
+        }
+        catch (SieveMethodNotFoundException e)
+        {
+            throw new ValidationFailedException("One or more filters are not valid.", new[]
+            {
+                // Here will be an invalid field
+                new ErrorDetails(Field: e.MethodName, Message: e.Message),
+            });
+        }
     }
 }
