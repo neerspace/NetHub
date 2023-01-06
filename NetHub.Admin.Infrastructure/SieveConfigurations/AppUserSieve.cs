@@ -8,12 +8,13 @@ public sealed class AppUserSieve : ISieveConfiguration
 {
     public void Configure(SievePropertyMapper mapper)
     {
-        mapper.OpenField<AppUser>(e => e.Id);
-        mapper.OpenField<AppUser>(e => e.FirstName);
-        mapper.OpenField<AppUser>(e => e.MiddleName);
-        mapper.OpenField<AppUser>(e => e.LastName);
-        mapper.OpenField<AppUser>(e => e.NormalizedUserName, nameof(AppUser.UserName));
-        mapper.OpenField<AppUser>(e => e.NormalizedEmail, nameof(AppUser.Email));
-        mapper.OpenField<AppUser>(e => e.Registered);
+        mapper.AllowFilterAndSort<AppUser>(e => e.Id);
+        mapper.AllowFilterAndSort<AppUser>(e => e.FirstName);
+        mapper.AllowFilterAndSort<AppUser>(e => e.MiddleName);
+        mapper.AllowFilterAndSort<AppUser>(e => e.LastName);
+        mapper.AllowFilterAndSort<AppUser>(e => e.NormalizedUserName, nameof(AppUser.UserName));
+        mapper.AllowFilterAndSort<AppUser>(e => e.NormalizedEmail, nameof(AppUser.Email));
+        mapper.AllowFilterAndSort<AppUser>(e => e.EmailConfirmed);
+        mapper.AllowFilterAndSort<AppUser>(e => e.Registered);
     }
 }
