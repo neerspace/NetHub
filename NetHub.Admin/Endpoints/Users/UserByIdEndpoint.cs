@@ -2,10 +2,11 @@ using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NeerCore.Data.EntityFramework.Abstractions;
+using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Admin.Abstractions;
 using NetHub.Admin.Infrastructure.Models.Users;
 using NetHub.Admin.Swagger;
+using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Admin.Endpoints.Users;
@@ -16,17 +17,17 @@ namespace NetHub.Admin.Endpoints.Users;
 [AllowAnonymous]
 public sealed class UserByIdEndpoint : Endpoint<long, User>
 {
-    private readonly IDatabase _database;
-    public UserByIdEndpoint(IDatabase database) => _database = database;
+    private readonly ISqlServerDatabase _database;
+    public UserByIdEndpoint(ISqlServerDatabase database) => _database = database;
 
 
     [HttpGet("users/{id:long}"), ClientSide(ActionName = "getById")]
     public override async Task<User> HandleAsync([FromRoute] long id, CancellationToken ct = default)
     {
-        return await _database.Set<AppUser>()
+        var user = await _database.Set<AppUser>()
             .AsNoTracking()
             .Where(e => e.Id == id)
-            .ProjectToType<User>()
-            .FirstAsync(ct); // TODO: Update NeerCore and use FirstOr404Async here
+            .FirstOr404Async(ct);
+        return user.Adapt<User>();
     }
 }

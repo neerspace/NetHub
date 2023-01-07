@@ -4,11 +4,26 @@ using NetHub.Application.Extensions;
 
 namespace NetHub.Admin.Infrastructure.Models.Users;
 
-public sealed record UserUpdate(
-    [property: FromRoute(Name = "id")] long Id,
-    string UserName,
-    string Email
-);
+public sealed class UserUpdate
+{
+    public long Id { get; init; }
+
+    /// <example>jurilents</example>
+    public required string UserName { get; init; }
+
+    /// <example>jurilents@tacles.net</example>
+    public required string Email { get; init; }
+
+    /// <example>Yurii</example>
+    public required string FirstName { get; init; }
+
+    /// <example>Yer.</example>
+    public required string LastName { get; init; }
+
+    public string? Password { get; init; }
+
+    public string? Description { get; init; }
+}
 
 public sealed class UserUpdateModelValidator : AbstractValidator<UserUpdate>
 {

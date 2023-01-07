@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -28,7 +27,7 @@ public static class NSwagEndpointNameFactory
             return actionDescriptor.ControllerName.ToCamelCase();
 
         return description.ActionDescriptor.RouteValues["controller"]?.ToCamelCase()
-               ?? throw new InternalServerException($"Invalid action controller: '{description.ActionDescriptor.DisplayName}'");
+            ?? throw new InternalServerException($"Invalid action controller: '{description.ActionDescriptor.DisplayName}'");
     }
 
     private static string GetActionName(ApiDescription description)
@@ -45,43 +44,32 @@ public static class NSwagEndpointNameFactory
         {
             string httpMethod = httpAttr.HttpMethods.First().ToLower();
 
-            if (!string.IsNullOrEmpty(httpAttr.Template))
-            {
-                if (httpMethod == "post" && !httpAttr.Template.Contains('/'))
-                    return "create";
-                if (httpMethod == "put" && httpAttr.Template.Contains("/{id}"))
-                    return "update";
-                if (httpMethod == "delete" && httpAttr.Template.Contains("/{id}"))
-                    return "delete";
+            if (string.IsNullOrEmpty(httpAttr.Template))
+                return httpMethod;
 
-                string result = httpAttr.Template.Contains('/')
-                    ? httpAttr.Template.Split('/')
-                          .Skip(1)
-                          .FirstOrDefault(s => !s.Contains('{'))
-                      ?? httpMethod
-                    : httpMethod;
-
-                if (httpAttr.Template.Contains('{'))
+            string result = httpAttr.Template.Contains('/')
+                ? httpAttr.Template.Split('/')
+                    .Skip(1)
+                    .FirstOrDefault(s => !s.Contains('{'))
+                ?? httpMethod
+                : httpMethod switch
                 {
-                    var matches = Regex.Matches(httpAttr.Template, @"\{(.*?)\}");
-                    result += "By"
-                              + string.Join("And", matches.Select(m =>
-                                  m.Value[1].ToString().ToUpper() + m.Value[2..^1]));
-                }
+                    "post"   => "create",
+                    "put"    => "update",
+                    "delete" => "delete",
+                    _        => httpMethod
+                };
 
-                return result;
-            }
-
-            return httpMethod;
+            return result;
         }
 
         if (description.ActionDescriptor is ControllerActionDescriptor actionDescriptor)
             return actionDescriptor.ActionName.ToCamelCase();
 
         return description.HttpMethod?.ToCamelCase()
-               ?? description.ActionDescriptor.RouteValues["action"]?.ToCamelCase()
-               ?? description.HttpMethod?.ToCamelCase()
-               ?? throw new InternalServerException($"Invalid action: '{description.ActionDescriptor.DisplayName}'");
+            ?? description.ActionDescriptor.RouteValues["action"]?.ToCamelCase()
+            ?? description.HttpMethod?.ToCamelCase()
+            ?? throw new InternalServerException($"Invalid action: '{description.ActionDescriptor.DisplayName}'");
     }
 
     private static string ToCamelCase(this string str) =>

@@ -17,6 +17,8 @@ public sealed record UserCreate
     /// <example>Yer.</example>
     public required string LastName { get; init; }
 
+    public string? Password { get; init; }
+
     public string? Description { get; init; }
 }
 

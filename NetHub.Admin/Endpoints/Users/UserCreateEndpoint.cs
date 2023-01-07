@@ -36,7 +36,9 @@ public sealed class UserCreateEndpoint : Endpoint<UserCreate, User>
 
         var user = request.Adapt<AppUser>();
 
-        IdentityResult result = await _userManager.CreateAsync(user, "Test1234");
+        var result = string.IsNullOrEmpty(request.Password)
+            ? await _userManager.CreateAsync(user)
+            : await _userManager.CreateAsync(user, request.Password);
         if (!result.Succeeded)
             throw new ValidationFailedException("User not created.", result.ToErrorDetails());
 

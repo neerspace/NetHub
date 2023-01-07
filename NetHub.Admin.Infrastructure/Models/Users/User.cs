@@ -10,6 +10,7 @@ public sealed class User
     public string Email { get; set; } = default!;
     public string? ProfilePhotoUrl { get; set; }
     public bool EmailConfirmed { get; set; }
+    public bool HasPassword { get; set; }
     public string? Description { get; set; }
     public DateTimeOffset Registered { get; set; }
 }
