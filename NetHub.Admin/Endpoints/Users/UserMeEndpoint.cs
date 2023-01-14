@@ -13,7 +13,7 @@ namespace NetHub.Admin.Endpoints.Users;
 [Authorize]
 [Tags(TagNames.Users)]
 [ApiVersion(Versions.V1)]
-public class UserMeEndpoint : ResultEndpoint<User>
+public class UserMeEndpoint : ResultEndpoint<UserModel>
 {
     private readonly ISqlServerDatabase _database;
     private readonly IUserProvider _userProvider;
@@ -26,10 +26,10 @@ public class UserMeEndpoint : ResultEndpoint<User>
 
 
     [HttpGet("users/me")]
-    public override async Task<User> HandleAsync(CancellationToken ct = default)
+    public override async Task<UserModel> HandleAsync(CancellationToken ct = default)
     {
         var id = _userProvider.UserId;
         var user = await _database.Set<AppUser>().FirstOr404Async(u => u.Id == id, ct);
-        return user.Adapt<User>();
+        return user.Adapt<UserModel>();
     }
 }

@@ -3,8 +3,10 @@ using NetHub.Application.Extensions;
 
 namespace NetHub.Admin.Infrastructure.Models.Users;
 
-public sealed record UserCreate
+public sealed class UserUpdateRequest
 {
+    public long Id { get; init; }
+
     /// <example>jurilents</example>
     public required string UserName { get; init; }
 
@@ -14,6 +16,9 @@ public sealed record UserCreate
     /// <example>Yurii</example>
     public required string FirstName { get; init; }
 
+    /// <example>el</example>
+    public required string MiddleName { get; init; }
+
     /// <example>Yer.</example>
     public required string LastName { get; init; }
 
@@ -22,12 +27,12 @@ public sealed record UserCreate
     public string? Description { get; init; }
 }
 
-public sealed class UserCreateValidator : AbstractValidator<UserCreate>
+public sealed class UserUpdateModelValidator : AbstractValidator<UserUpdateRequest>
 {
-    public UserCreateValidator()
+    public UserUpdateModelValidator()
     {
+        RuleFor(o => o.Id).NotEmpty();
         RuleFor(o => o.UserName).NotEmpty().UserName();
         RuleFor(o => o.Email).NotEmpty().EmailAddress();
-        RuleFor(o => o.Description).MaximumLength(300);
     }
 }

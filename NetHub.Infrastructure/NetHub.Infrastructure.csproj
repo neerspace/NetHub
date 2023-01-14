@@ -16,7 +16,7 @@
     <PackageReference Include="Google.Apis.Core" Version="1.58.0" />
     <PackageReference Include="Google.Cloud.Translation.V2" Version="3.1.0" />
     <PackageReference Include="LazyCache.AspNetCore" Version="2.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.2" />
     <PackageReference Include="Ng.UserAgentService" Version="1.1.2" />
     <PackageReference Include="Sieve" Version="2.5.5" />
   </ItemGroup>

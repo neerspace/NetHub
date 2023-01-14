@@ -14,15 +14,16 @@ namespace NetHub.Admin.Endpoints.Users;
 [Tags(TagNames.Users)]
 // [Authorize(Policy = Policies.HasManageUsersPermission)]
 [AllowAnonymous]
-public sealed class UserUpdateEndpoint : ActionEndpoint<UserUpdate>
+public sealed class UserUpdateEndpoint : ActionEndpoint<UserUpdateRequest>
 {
     private readonly UserManager<AppUser> _userManager;
     public UserUpdateEndpoint(UserManager<AppUser> userManager) => _userManager = userManager;
 
 
     [HttpPut("users")]
-    public override async Task HandleAsync([FromBody] UserUpdate request, CancellationToken ct = default)
+    public override async Task HandleAsync([FromBody] UserUpdateRequest request, CancellationToken ct = default)
     {
+        await Task.Delay(2000, ct);
         var user = await _userManager.FindByIdAsync(request.Id);
         if (user is null)
             throw new NotFoundException($"User with Id '{request.Id}' does not exist.");

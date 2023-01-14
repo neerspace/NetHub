@@ -1,13 +1,10 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
 using NetHub.Application.Extensions;
 
 namespace NetHub.Admin.Infrastructure.Models.Users;
 
-public sealed class UserUpdate
+public sealed record UserCreateRequest
 {
-    public long Id { get; init; }
-
     /// <example>jurilents</example>
     public required string UserName { get; init; }
 
@@ -25,12 +22,12 @@ public sealed class UserUpdate
     public string? Description { get; init; }
 }
 
-public sealed class UserUpdateModelValidator : AbstractValidator<UserUpdate>
+public sealed class UserCreateValidator : AbstractValidator<UserCreateRequest>
 {
-    public UserUpdateModelValidator()
+    public UserCreateValidator()
     {
-        RuleFor(o => o.Id).NotEmpty();
         RuleFor(o => o.UserName).NotEmpty().UserName();
         RuleFor(o => o.Email).NotEmpty().EmailAddress();
+        RuleFor(o => o.Description).MaximumLength(300);
     }
 }

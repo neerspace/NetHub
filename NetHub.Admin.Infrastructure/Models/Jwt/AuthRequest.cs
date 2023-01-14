@@ -5,10 +5,11 @@ using NetHub.Application.Features.Public.Users.Dto;
 
 namespace NetHub.Admin.Infrastructure.Models.Jwt;
 
-public sealed record AuthRequest(
-    string Login,
-    string? Password
-) : ICommand<AuthResult>;
+public sealed class AuthRequest : ICommand<AuthResult>
+{
+    public required string Login { get; init; }
+    public required string? Password { get; init; }
+}
 
 internal sealed class JwtAuthRequestValidator : AbstractValidator<AuthRequest>
 {

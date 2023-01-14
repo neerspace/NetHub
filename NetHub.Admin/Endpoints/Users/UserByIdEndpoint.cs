@@ -15,19 +15,17 @@ namespace NetHub.Admin.Endpoints.Users;
 [Tags(TagNames.Users)]
 // [Authorize(Policy = Policies.HasManageUsersPermission)]
 [AllowAnonymous]
-public sealed class UserByIdEndpoint : Endpoint<long, User>
+public sealed class UserByIdEndpoint : Endpoint<long, UserModel>
 {
     private readonly ISqlServerDatabase _database;
     public UserByIdEndpoint(ISqlServerDatabase database) => _database = database;
 
 
     [HttpGet("users/{id:long}"), ClientSide(ActionName = "getById")]
-    public override async Task<User> HandleAsync([FromRoute] long id, CancellationToken ct = default)
+    public override async Task<UserModel> HandleAsync([FromRoute] long id, CancellationToken ct = default)
     {
-        var user = await _database.Set<AppUser>()
-            .AsNoTracking()
-            .Where(e => e.Id == id)
-            .FirstOr404Async(ct);
-        return user.Adapt<User>();
+        var user = await _database.Set<AppUser>().AsNoTracking()
+            .Where(e => e.Id == id).FirstOr404Async(ct);
+        return user.Adapt<UserModel>();
     }
 }

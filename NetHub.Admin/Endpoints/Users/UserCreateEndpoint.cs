@@ -16,7 +16,7 @@ namespace NetHub.Admin.Endpoints.Users;
 [Tags(TagNames.Users)]
 // [Authorize(Policy = Policies.HasManageUsersPermission)]
 [AllowAnonymous]
-public sealed class UserCreateEndpoint : Endpoint<UserCreate, User>
+public sealed class UserCreateEndpoint : Endpoint<UserCreateRequest, UserModel>
 {
     private readonly ISqlServerDatabase _database;
     private readonly UserManager<AppUser> _userManager;
@@ -29,10 +29,10 @@ public sealed class UserCreateEndpoint : Endpoint<UserCreate, User>
 
 
     [HttpPost("users")]
-    public override async Task<User> HandleAsync([FromBody] UserCreate request, CancellationToken ct = default)
+    public override async Task<UserModel> HandleAsync([FromBody] UserCreateRequest request, CancellationToken ct = default)
     {
         if (await _database.Set<AppUser>().Where(e => e.NormalizedUserName == request.UserName.ToUpper()).AnyAsync(ct))
-            throw new ValidationFailedException($"User with given username '{nameof(UserCreate.UserName)}' already exists.");
+            throw new ValidationFailedException($"User with given username '{nameof(UserCreateRequest.UserName)}' already exists.");
 
         var user = request.Adapt<AppUser>();
 
@@ -46,6 +46,6 @@ public sealed class UserCreateEndpoint : Endpoint<UserCreate, User>
 
         await _database.SaveChangesAsync(ct);
 
-        return user.Adapt<User>();
+        return user.Adapt<UserModel>();
     }
 }

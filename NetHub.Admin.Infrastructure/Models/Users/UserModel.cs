@@ -1,6 +1,6 @@
 namespace NetHub.Admin.Infrastructure.Models.Users;
 
-public sealed class User
+public sealed class UserModel
 {
     public long Id { get; set; }
     public string UserName { get; set; } = default!;

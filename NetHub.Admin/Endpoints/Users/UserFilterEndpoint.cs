@@ -13,15 +13,15 @@ namespace NetHub.Admin.Endpoints.Users;
 [Tags(TagNames.Users)]
 // [Authorize(Policy = Policies.HasManageUsersPermission)]
 [AllowAnonymous]
-public sealed class UserFilterEndpoint : FilterEndpoint<User>
+public sealed class UserFilterEndpoint : FilterEndpoint<UserModel>
 {
     private readonly IFilterService _filterService;
     public UserFilterEndpoint(IFilterService filterService) => _filterService = filterService;
 
 
     [HttpGet("users"), ClientSide(ActionName = "filter")]
-    public override async Task<Filtered<User>> HandleAsync([FromQuery] FilterRequest request, CancellationToken ct = default)
+    public override async Task<Filtered<UserModel>> HandleAsync([FromQuery] FilterRequest request, CancellationToken ct = default)
     {
-        return await _filterService.FilterWithCountAsync<AppUser, User>(request, ct);
+        return await _filterService.FilterWithCountAsync<AppUser, UserModel>(request, ct);
     }
 }
