@@ -25,7 +25,7 @@ public sealed class UserByIdEndpoint : Endpoint<long, UserModel>
     public override async Task<UserModel> HandleAsync([FromRoute] long id, CancellationToken ct = default)
     {
         var user = await _database.Set<AppUser>().AsNoTracking()
-            .Where(e => e.Id == id).FirstOr404Async(ct);
+            .Where(u => u.Id == id).FirstOr404Async(ct);
         return user.Adapt<UserModel>();
     }
 }

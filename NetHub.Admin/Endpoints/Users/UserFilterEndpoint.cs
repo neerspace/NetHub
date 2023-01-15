@@ -13,7 +13,7 @@ namespace NetHub.Admin.Endpoints.Users;
 [Tags(TagNames.Users)]
 // [Authorize(Policy = Policies.HasManageUsersPermission)]
 [AllowAnonymous]
-public sealed class UserFilterEndpoint : FilterEndpoint<UserModel>
+public sealed class UserFilterEndpoint : FilterEndpoint<FilterRequest, UserModel>
 {
     private readonly IFilterService _filterService;
     public UserFilterEndpoint(IFilterService filterService) => _filterService = filterService;

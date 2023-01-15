@@ -26,4 +26,5 @@ public abstract class ResultEndpoint<TResponse> : EndpointBaseAsync
     .WithoutRequest
     .WithResult<TResponse> { }
 
-public abstract class FilterEndpoint<TResponse> : Endpoint<FilterRequest, Filtered<TResponse>> { }
+public abstract class FilterEndpoint<TFilter, TResponse> : Endpoint<TFilter, Filtered<TResponse>>
+    where TFilter : FilterRequest { }

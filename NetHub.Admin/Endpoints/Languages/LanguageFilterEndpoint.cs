@@ -13,14 +13,14 @@ namespace NetHub.Admin.Endpoints.Languages;
 [Tags(TagNames.Languages)]
 // [Authorize(Policy = Policies.HasManageUsersPermission)]
 [AllowAnonymous]
-public sealed class LanguageFilterEndpoint : FilterEndpoint<LanguageModel>
+public sealed class LanguageFilterEndpoint : FilterEndpoint<LanguageFilterRequest, LanguageModel>
 {
     private readonly IFilterService _filterService;
     public LanguageFilterEndpoint(IFilterService filterService) => _filterService = filterService;
 
 
     [HttpGet("languages"), ClientSide(ActionName = "filter")]
-    public override async Task<Filtered<LanguageModel>> HandleAsync([FromQuery] FilterRequest request, CancellationToken ct = default)
+    public override async Task<Filtered<LanguageModel>> HandleAsync([FromQuery] LanguageFilterRequest request, CancellationToken ct = default)
     {
         return await _filterService.FilterWithCountAsync<Language, LanguageModel>(request, ct);
     }

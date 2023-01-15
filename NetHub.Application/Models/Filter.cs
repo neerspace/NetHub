@@ -20,5 +20,3 @@ public sealed class FilterRequestValidator : AbstractValidator<FilterRequest>
         RuleFor(o => o.PageSize).GreaterThan(0).LessThanOrEqualTo(1_000);
     }
 }
-
-public sealed record Filtered<TModel>(int Total, IEnumerable<TModel> Data);

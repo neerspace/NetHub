@@ -25,7 +25,7 @@ public sealed class LanguageByCodeEndpoint : Endpoint<string, LanguageModel>
     public override async Task<LanguageModel> HandleAsync([FromRoute] string code, CancellationToken ct = default)
     {
         var language = await _database.Set<Language>().AsNoTracking()
-            .Where(e => e.Code == code).FirstOr404Async(ct);
+            .Where(l => l.Code == code).FirstOr404Async(ct);
         return language.Adapt<LanguageModel>();
     }
 }
