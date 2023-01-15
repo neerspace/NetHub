@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using NetHub.Application.Options;
 using NetHub.Core.Constants;
 using NetHub.Data.SqlServer.Entities.Identity;
-using Sieve.Models;
 
 namespace NetHub.Application;
 

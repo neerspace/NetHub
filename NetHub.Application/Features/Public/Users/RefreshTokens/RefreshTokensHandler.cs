@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using NeerCore.Exceptions;
 using NetHub.Application.Features.Public.Users.Dto;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Options;

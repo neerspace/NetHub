@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using NeerCore;
 using NeerCore.Data.Abstractions;
 using NeerCore.DependencyInjection;
 using NeerCore.Exceptions;
@@ -62,10 +61,10 @@ internal sealed class SieveFilterService : IFilterService
         }
         catch (SieveMethodNotFoundException e)
         {
-            throw new ValidationFailedException("One or more filters are not valid.", new[]
+            throw new ValidationFailedException("One or more filters are not valid.", new Dictionary<string, object>
             {
                 // Here will be an invalid field
-                new ErrorDetails(Field: e.MethodName, Message: e.Message),
+                { e.MethodName, e.Message }
             });
         }
     }
