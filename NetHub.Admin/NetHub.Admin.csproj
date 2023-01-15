@@ -16,8 +16,8 @@
     <PackageReference Include="Ardalis.ApiEndpoints" Version="4.0.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
     <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.7.0" />
-    <PackageReference Include="NeerCore.Api" Version="2.0.0-alpha4" />
-    <PackageReference Include="NeerCore.Logging.NLog" Version="2.0.0-alpha5" />
+    <PackageReference Include="NeerCore.Api" Version="2.0.0-alpha6" />
+    <PackageReference Include="NeerCore.Logging.NLog" Version="2.0.0-alpha6" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
   </ItemGroup>
 
