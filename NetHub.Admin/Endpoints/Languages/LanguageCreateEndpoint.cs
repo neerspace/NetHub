@@ -23,7 +23,7 @@ public sealed class LanguageCreateEndpoint : Endpoint<LanguageModel, LanguageMod
     [HttpPost("languages")]
     public override async Task<LanguageModel> HandleAsync([FromBody] LanguageModel request, CancellationToken ct = default)
     {
-        if (await _database.Set<Language>().CountAsync(l => l.Code == request.Code, ct) > 0)
+        if (await _database.Set<Language>().AnyAsync(l => l.Code == request.Code, ct))
             throw new ValidationFailedException("code", "Language with given code already exists");
 
         var language = request.Adapt<Language>();

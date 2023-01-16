@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using NeerCore.Data.EntityFramework.Extensions;
 using NeerCore.DependencyInjection;
@@ -21,6 +23,7 @@ public sealed class JwtService : IJwtService
 {
     private readonly JwtOptions _options;
     private readonly ISqlServerDatabase _database;
+    private readonly IWebHostEnvironment _environment;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly AccessTokenGenerator _accessTokenGenerator;
     private readonly RefreshTokenGenerator _refreshTokenGenerator;
@@ -28,10 +31,12 @@ public sealed class JwtService : IJwtService
     private HttpContext HttpContext => _httpContextAccessor.HttpContext!;
 
     public JwtService(
-        ISqlServerDatabase database, IOptions<JwtOptions> jwtOptionsAccessor, IHttpContextAccessor httpContextAccessor,
+        ISqlServerDatabase database, IOptions<JwtOptions> jwtOptionsAccessor,
+        IHttpContextAccessor httpContextAccessor, IWebHostEnvironment environment,
         AccessTokenGenerator accessTokenGenerator, RefreshTokenGenerator refreshTokenGenerator)
     {
         _database = database;
+        _environment = environment;
         _options = jwtOptionsAccessor.Value;
         _httpContextAccessor = httpContextAccessor;
         _accessTokenGenerator = accessTokenGenerator;
@@ -85,9 +90,9 @@ public sealed class JwtService : IJwtService
         HttpContext.Response.Cookies.Append(_options.RefreshToken.CookieName, refreshToken, new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
+            Secure = _environment.IsProduction(),
             IsEssential = true,
-            SameSite = SameSiteMode.Strict,
+            SameSite = _environment.IsProduction() ? SameSiteMode.Strict : SameSiteMode.Lax,
             Domain = _options.RefreshToken.CookieDomain,
             Expires = refreshTokenExpires,
         });

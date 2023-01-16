@@ -32,7 +32,7 @@ public class JwtAuthenticateEndpoint : Endpoint<AuthRequest, AuthResult>
     {
         var user = await _database.Set<AppUser>().GetByLoginAsync(request.Login, ct);
         if (user is null)
-            throw new NotFoundException("User not found");
+            throw new ValidationFailedException("login", "Invalid login or password");
 
         return await PasswordAuthorizeAsync(user, request.Password!, ct);
     }
@@ -41,7 +41,7 @@ public class JwtAuthenticateEndpoint : Endpoint<AuthRequest, AuthResult>
     {
         var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
         if (!result.Succeeded)
-            throw new ValidationFailedException("Invalid login or password");
+            throw new ValidationFailedException("login", "Invalid login or password");
 
         return await _jwtService.GenerateAsync(user, cancel);
     }

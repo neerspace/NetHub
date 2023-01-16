@@ -40,6 +40,8 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
 {
     builder.Logging.ConfigureNLogAsDefault();
     builder.Configuration.AddJsonFile("appsettings.Secrets.json");
+    if (builder.Environment.IsDevelopment())
+        builder.Configuration.AddJsonFile("appsettings.Development.json");
 
     builder.Services.AddSqlServerDatabase();
     builder.Services.AddInfrastructure(builder.Configuration);
@@ -56,7 +58,7 @@ static void ConfigureWebApp(WebApplication app)
     }
 
     app.UseCorsPolicy();
-    app.UseHttpsRedirection();
+    // app.UseHttpsRedirection();
 
     // app.UseRequestLocalization();
     app.UseNeerExceptionHandler();
