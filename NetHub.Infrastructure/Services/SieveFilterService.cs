@@ -61,7 +61,7 @@ internal sealed class SieveFilterService : IFilterService
         }
         catch (SieveMethodNotFoundException e)
         {
-            throw new ValidationFailedException("One or more filters are not valid.", new Dictionary<string, object>
+            throw new ValidationFailedException("One or more filters are not valid", new Dictionary<string, object>
             {
                 // Here will be an invalid field
                 { e.MethodName, e.Message }

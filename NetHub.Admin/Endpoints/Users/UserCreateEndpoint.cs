@@ -32,7 +32,7 @@ public sealed class UserCreateEndpoint : Endpoint<UserCreateRequest, UserModel>
     public override async Task<UserModel> HandleAsync([FromBody] UserCreateRequest request, CancellationToken ct = default)
     {
         if (await _database.Set<AppUser>().Where(e => e.NormalizedUserName == request.UserName.ToUpper()).AnyAsync(ct))
-            throw new ValidationFailedException($"User with given username '{nameof(UserCreateRequest.UserName)}' already exists.");
+            throw new ValidationFailedException($"User with given username '{nameof(UserCreateRequest.UserName)}' already exists");
 
         var user = request.Adapt<AppUser>();
 
@@ -40,7 +40,7 @@ public sealed class UserCreateEndpoint : Endpoint<UserCreateRequest, UserModel>
             ? await _userManager.CreateAsync(user)
             : await _userManager.CreateAsync(user, request.Password);
         if (!result.Succeeded)
-            throw new ValidationFailedException("User not created.", result.ToErrorDetails());
+            throw new ValidationFailedException("User not created", result.ToErrorDetails());
 
         // await _userManager.AddToRoleAsync(user, "Admin");
 

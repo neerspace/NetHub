@@ -147,7 +147,7 @@ public sealed class ResponsesFilter : IDocumentFilter
                     "message", new OpenApiSchema
                     {
                         Type = "string",
-                        Example = new OpenApiString(message ?? "Server refuses to brew coffee because it is a teapot.")
+                        Example = new OpenApiString(message ?? "Server refuses to brew coffee because it is a teapot")
                     }
                 }
             }

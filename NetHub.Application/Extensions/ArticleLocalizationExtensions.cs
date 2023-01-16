@@ -13,7 +13,7 @@ public static class ArticleLocalizationExtensions
     public static long GetAuthorId(this ArticleLocalization localization)
     {
         if (localization.Contributors is not { Count: > 0 })
-            throw new InternalServerException("Unprocessable entity: Localization has no contributors.");
+            throw new InternalServerException("Unprocessable entity: Localization has no contributors");
 
         return localization.Contributors.First(c => c.Role == ArticleContributorRole.Author).UserId;
     }

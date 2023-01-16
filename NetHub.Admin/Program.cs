@@ -71,6 +71,6 @@ static void MigrateDatabase(IHost app)
 {
     using var scope = app.Services.CreateScope();
     if (scope.ServiceProvider.GetRequiredService<ISqlServerDatabase>() is not SqlServerDbContext database)
-        throw new InternalServerException($"{nameof(ISqlServerDatabase)} DB context cannot be resolved.");
+        throw new InternalServerException($"{nameof(ISqlServerDatabase)} DB context cannot be resolved");
     // database.Database.Migrate();
 }

@@ -70,7 +70,7 @@ public sealed class JwtService : IJwtService
             .FirstOr404Async(ct);
 
         if (!IsRefreshTokenValid(token))
-            throw new ForbidException("Provided token is not a valid refresh token.");
+            throw new ForbidException("Provided token is not a valid refresh token");
 
         var result = await GenerateAsync(token.User!, ct);
         token.User = null;
@@ -131,14 +131,14 @@ public sealed class JwtService : IJwtService
             || string.IsNullOrEmpty(userAgent.Browser)
             || string.IsNullOrEmpty(userAgent.BrowserVersion))
             throw new ForbidException("You are using a suspicious device.\n"
-                + "Make sure you are using a modern browser and do not use a toaster to surf the web.");
+                + "Make sure you are using a modern browser and do not use a toaster to surf the web");
 
         var device = await _database.Set<AppDevice>().AsNoTracking()
             .FirstOrDefaultAsync(d => d.Browser == userAgent.Browser && d.IpAddress == ip, ct);
 
         if (device?.Status == DeviceStatus.Banned)
             throw new ForbidException("Your IP has been blocked.\n"
-                + "Contact admins to unlock access for your IP.");
+                + "Contact admins to unlock access for your IP");
 
         if (device is not null)
             return device;

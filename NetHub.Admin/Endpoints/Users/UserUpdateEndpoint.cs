@@ -26,13 +26,13 @@ public sealed class UserUpdateEndpoint : ActionEndpoint<UserUpdateRequest>
         await Task.Delay(2000, ct);
         var user = await _userManager.FindByIdAsync(request.Id);
         if (user is null)
-            throw new NotFoundException($"User with Id '{request.Id}' does not exist.");
+            throw new NotFoundException($"User with Id '{request.Id}' does not exist");
 
         request.Adapt(user);
 
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded)
-            throw new ValidationFailedException("User not updated.", result.ToErrorDetails());
+            throw new ValidationFailedException("User not updated", result.ToErrorDetails());
 
         if (!string.IsNullOrEmpty(request.Password))
             await _userManager.AddPasswordAsync(user, request.Password);
