@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NeerCore.Application.MediatR" Version="2.0.0-alpha6" />
-    <PackageReference Include="NeerCore.Mapping.Mapster" Version="2.0.0-alpha6" />
+    <PackageReference Include="NeerCore.Application.MediatR" Version="2.0.0-alpha7" />
+    <PackageReference Include="NeerCore.Mapping.Mapster" Version="2.0.0-alpha7" />
   </ItemGroup>
 
   <PropertyGroup>

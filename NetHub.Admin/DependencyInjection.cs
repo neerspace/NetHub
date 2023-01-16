@@ -20,6 +20,7 @@ public static class DependencyInjection
             options.CustomOperationIds(NSwagEndpointNameFactory.Create);
             options.DocumentFilter<ResponsesFilter>();
             options.EnableAnnotations();
+            options.SupportNonNullableReferenceTypes();
         });
 
         services.AddNeerApiServices();
