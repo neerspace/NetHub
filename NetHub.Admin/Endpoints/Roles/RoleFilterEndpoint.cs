@@ -20,7 +20,7 @@ public class RoleFilterEndpoint : FilterEndpoint<RoleModel>
 
 
     [HttpGet("roles"), ClientSide(ActionName = "filter")]
-    public override Task<Filtered<RoleModel>> HandleAsync(FilterRequest request, CancellationToken ct = default)
+    public override Task<Filtered<RoleModel>> HandleAsync([FromQuery] FilterRequest request, CancellationToken ct = default)
     {
         return _filterService.FilterWithCountAsync<AppRole, RoleModel>(request, ct);
     }

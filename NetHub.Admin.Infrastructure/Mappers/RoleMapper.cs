@@ -10,7 +10,6 @@ public class RoleMapper : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.NewConfig<AppRole, RoleModel>()
-            .Map(m => m.Name, e => e.NormalizedName)
             .Map(m => m.Permissions, e => (e.RoleClaims ?? Array.Empty<AppRoleClaim>())
                 .Where(rc => rc.ClaimType == Claims.Permissions)
                 .Select(rc => rc.ClaimValue).ToArray());

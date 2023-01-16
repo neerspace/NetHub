@@ -33,7 +33,7 @@ public class RoleUpdateEndpoint : ActionEndpoint<RoleModel>
     [HttpPut("roles")]
     public override async Task<RoleModel> HandleAsync([FromBody] RoleModel request, CancellationToken ct = default)
     {
-        if (await _roles.AnyAsync(r => r.NormalizedName == request.Name, ct))
+        if (await _roles.CountAsync(r => r.NormalizedName == request.Name, ct) > 1)
             throw new ValidationFailedException("name", "Role with the same name already exists");
 
         var role = await _roles.Include(r => r.RoleClaims!.Where(rc => rc.ClaimType == Claims.Permissions))
