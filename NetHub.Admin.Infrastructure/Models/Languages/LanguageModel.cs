@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Localization;
+using NeerCore.Localization;
 
 namespace NetHub.Admin.Infrastructure.Models.Languages;
 
