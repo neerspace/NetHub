@@ -1,5 +1,3 @@
-using System.Runtime.Serialization;
-
 namespace NetHub.Api.Shared;
 
 /// <summary>
@@ -28,18 +26,46 @@ namespace NetHub.Api.Shared;
 /// </summary>
 public enum Permission
 {
-    [EnumMember(Value = "-")] None = 0,
-    [EnumMember(Value = "*")] Master = 1,
-    [EnumMember(Value = "mt")] Admin = 2,
+    [PermissionInfo("*", "Full")]
+    Master = 1,
 
-    [EnumMember(Value = "mt.usr.r")] ReadUsers = 10,
-    [EnumMember(Value = "mt.usr.m")] ManageUsers = 11,
-    [EnumMember(Value = "mt.usr.pem.r")] ReadUserPermissions = 12,
-    [EnumMember(Value = "mt.usr.pem.m")] ManageUserPermissions = 13,
+    [PermissionInfo("mt", "Admin")]
+    Admin = 2,
 
-    [EnumMember(Value = "mt.rol.r")] ReadRoles = 20,
-    [EnumMember(Value = "mt.rol.m")] ManageRoles = 21,
+    [PermissionInfo("mt.usr", "Users")]
+    ReadUsers = 10,
 
-    [EnumMember(Value = "mt.lng.r")] ReadLanguages = 30,
-    [EnumMember(Value = "mt.lng.m")] ManageLanguages = 31,
+    [PermissionInfo("mt.usr+", "Users")]
+    ManageUsers = 11,
+
+    [PermissionInfo("mt.usr.pem", "User Permissions")]
+    ReadUserPermissions = 12,
+
+    [PermissionInfo("mt.usr.pem+", "User Permissions")]
+    ManageUserPermissions = 13,
+
+    [PermissionInfo("mt.rol", "Roles")]
+    ReadRoles = 20,
+
+    [PermissionInfo("mt.rol+", "Roles")]
+    ManageRoles = 21,
+
+    [PermissionInfo("mt.lng", "Languages")]
+    ReadLanguages = 30,
+
+    [PermissionInfo("mt.lng+", "Languages")]
+    ManageLanguages = 31,
+}
+
+[AttributeUsage(AttributeTargets.Field)]
+public sealed class PermissionInfoAttribute : Attribute
+{
+    public string Key { get; set; }
+    public string DisplayName { get; set; }
+
+    public PermissionInfoAttribute(string key, string displayName)
+    {
+        Key = key;
+        DisplayName = displayName;
+    }
 }

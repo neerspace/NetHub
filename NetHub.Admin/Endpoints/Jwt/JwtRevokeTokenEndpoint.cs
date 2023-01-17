@@ -10,11 +10,7 @@ namespace NetHub.Admin.Endpoints.Jwt;
 public class JwtRevokeTokenEndpoint : ActionEndpoint
 {
     private readonly JwtOptions _options;
-
-    public JwtRevokeTokenEndpoint(IOptions<JwtOptions> optionsAccessor)
-    {
-        _options = optionsAccessor.Value;
-    }
+    public JwtRevokeTokenEndpoint(IOptions<JwtOptions> optionsAccessor) => _options = optionsAccessor.Value;
 
 
     [HttpPost("auth/revoke-token")]

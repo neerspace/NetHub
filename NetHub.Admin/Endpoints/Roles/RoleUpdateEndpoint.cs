@@ -36,7 +36,7 @@ public class RoleUpdateEndpoint : ActionEndpoint<RoleModel>
         if (await _roles.CountAsync(r => r.NormalizedName == request.Name, ct) > 1)
             throw new ValidationFailedException("name", "Role with the same name already exists");
 
-        var role = await _roles.Include(r => r.RoleClaims!.Where(rc => rc.ClaimType == Claims.Permissions))
+        var role = await _roles.Include(r => r.RoleClaims!.Where(rc => rc.ClaimType == Claims.Permission))
             .FirstOr404Async(r => r.Id == request.Id, ct);
 
         var prevPermissions = role.RoleClaims!;

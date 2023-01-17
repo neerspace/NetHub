@@ -26,7 +26,7 @@ public static class DependencyInjection
         services.AddNeerControllers();
 
         services.AddJwtAuthentication().WithGoogleAuthProvider(configuration);
-        services.AddPoliciesAuthorization();
+        services.AddPoliciesAuthorization(); // not sure, are u actually need it?
     }
 
     private static void WithGoogleAuthProvider(this AuthenticationBuilder builder, IConfiguration configuration)
