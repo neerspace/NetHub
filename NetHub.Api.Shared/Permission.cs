@@ -15,7 +15,7 @@ namespace NetHub.Api.Shared;
 /// <b>[mod]</b> – group access modifier (read-only or full manage)
 /// <br/>
 /// <br/>
-/// 
+///
 /// Allowed <b>[mod]</b> values:
 /// <list type="bullet">
 /// <item>
@@ -34,10 +34,12 @@ public enum Permission
 
     [EnumMember(Value = "mt.usr.r")] ReadUsers = 10,
     [EnumMember(Value = "mt.usr.m")] ManageUsers = 11,
+    [EnumMember(Value = "mt.usr.pem.r")] ReadUserPermissions = 12,
+    [EnumMember(Value = "mt.usr.pem.m")] ManageUserPermissions = 13,
 
-    [EnumMember(Value = "mt.usr.pem.r")] ReadUserPermissions = 20,
-    [EnumMember(Value = "mt.usr.pem.m")] ManageUserPermissions = 21,
+    [EnumMember(Value = "mt.rol.r")] ReadRoles = 20,
+    [EnumMember(Value = "mt.rol.m")] ManageRoles = 21,
 
-    [EnumMember(Value = "mt.rol.r")] ReadRoles = 30,
-    [EnumMember(Value = "mt.rol.m")] ManageRoles = 31,
+    [EnumMember(Value = "mt.lng.r")] ReadLanguages = 30,
+    [EnumMember(Value = "mt.lng.m")] ManageLanguages = 31,
 }

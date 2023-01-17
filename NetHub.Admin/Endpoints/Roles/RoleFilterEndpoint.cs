@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NetHub.Admin.Abstractions;
 using NetHub.Admin.Infrastructure.Models.Roles;
 using NetHub.Admin.Swagger;
+using NetHub.Api.Shared;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Models;
 using NetHub.Data.SqlServer.Entities.Identity;
@@ -11,8 +12,7 @@ namespace NetHub.Admin.Endpoints.Roles;
 
 [ApiVersion(Versions.V1)]
 [Tags(TagNames.Roles)]
-// [Authorize(Policy = Policies.HasManageUsersPermission)]
-[AllowAnonymous]
+[Authorize(Policy = Policies.HasReadRolesPermission)]
 public class RoleFilterEndpoint : FilterEndpoint<RoleModel>
 {
     private readonly IFilterService _filterService;

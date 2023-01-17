@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Admin.Abstractions;
+using NetHub.Api.Shared;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
 
@@ -9,8 +10,7 @@ namespace NetHub.Admin.Endpoints.Users;
 
 [ApiVersion(Versions.V1)]
 [Tags(TagNames.Users)]
-// [Authorize(Policy = Policies.HasManageUsersPermission)]
-[AllowAnonymous]
+[Authorize(Policy = Policies.HasManageUsersPermission)]
 public sealed class UserDeleteEndpoint : ActionEndpoint<long>
 {
     private readonly ISqlServerDatabase _database;

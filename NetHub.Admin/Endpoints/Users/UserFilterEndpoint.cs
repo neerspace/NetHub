@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NetHub.Admin.Abstractions;
 using NetHub.Admin.Infrastructure.Models.Users;
 using NetHub.Admin.Swagger;
+using NetHub.Api.Shared;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Models;
 using NetHub.Data.SqlServer.Entities.Identity;
@@ -11,8 +12,7 @@ namespace NetHub.Admin.Endpoints.Users;
 
 [ApiVersion(Versions.V1)]
 [Tags(TagNames.Users)]
-// [Authorize(Policy = Policies.HasManageUsersPermission)]
-[AllowAnonymous]
+[Authorize(Policy = Policies.HasReadUsersPermission)]
 public sealed class UserFilterEndpoint : FilterEndpoint<FilterRequest, UserModel>
 {
     private readonly IFilterService _filterService;

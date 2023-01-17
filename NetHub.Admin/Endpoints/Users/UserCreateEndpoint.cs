@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
 using NetHub.Admin.Abstractions;
 using NetHub.Admin.Infrastructure.Models.Users;
+using NetHub.Api.Shared;
 using NetHub.Application.Extensions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
@@ -14,8 +15,7 @@ namespace NetHub.Admin.Endpoints.Users;
 
 [ApiVersion(Versions.V1)]
 [Tags(TagNames.Users)]
-// [Authorize(Policy = Policies.HasManageUsersPermission)]
-[AllowAnonymous]
+[Authorize(Policy = Policies.HasManageUsersPermission)]
 public sealed class UserCreateEndpoint : Endpoint<UserCreateRequest, UserModel>
 {
     private readonly ISqlServerDatabase _database;

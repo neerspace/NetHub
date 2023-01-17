@@ -30,8 +30,8 @@ public static class DependencyInjection
 
         services.ConfigureAllOptions();
 
-        services.AddJwtAuthentication();
         services.AddPoliciesAuthorization();
+        services.AddJwtAuthentication();
 
         services.AddFluentValidation();
     }

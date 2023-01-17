@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
 using NetHub.Admin.Abstractions;
 using NetHub.Admin.Infrastructure.Models.Languages;
+using NetHub.Api.Shared;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
 
@@ -12,8 +13,7 @@ namespace NetHub.Admin.Endpoints.Languages;
 
 [ApiVersion(Versions.V1)]
 [Tags(TagNames.Languages)]
-// [Authorize(Policy = Policies.HasManageUsersPermission)]
-[AllowAnonymous]
+[Authorize(Policy = Policies.HasManageLanguagesPermission)]
 public sealed class LanguageCreateEndpoint : Endpoint<LanguageModel, LanguageModel>
 {
     private readonly ISqlServerDatabase _database;

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
 using NetHub.Admin.Abstractions;
 using NetHub.Admin.Infrastructure.Models.Roles;
+using NetHub.Api.Shared;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
 
@@ -12,8 +13,7 @@ namespace NetHub.Admin.Endpoints.Roles;
 
 [ApiVersion(Versions.V1)]
 [Tags(TagNames.Roles)]
-// [Authorize(Policy = Policies.HasManageUsersPermission)]
-[AllowAnonymous]
+[Authorize(Policy = Policies.HasManageRolesPermission)]
 public class RoleCreateEndpoint : Endpoint<RoleModel, RoleModel>
 {
     private readonly ISqlServerDatabase _database;

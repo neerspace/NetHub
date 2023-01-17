@@ -6,6 +6,7 @@ using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Admin.Abstractions;
 using NetHub.Admin.Infrastructure.Models.Languages;
 using NetHub.Admin.Swagger;
+using NetHub.Api.Shared;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
 
@@ -13,8 +14,7 @@ namespace NetHub.Admin.Endpoints.Languages;
 
 [ApiVersion(Versions.V1)]
 [Tags(TagNames.Languages)]
-// [Authorize(Policy = Policies.HasManageLanguagesPermission)]
-[AllowAnonymous]
+[Authorize(Policy = Policies.HasReadLanguagesPermission)]
 public sealed class LanguageByCodeEndpoint : Endpoint<string, LanguageModel>
 {
     private readonly ISqlServerDatabase _database;

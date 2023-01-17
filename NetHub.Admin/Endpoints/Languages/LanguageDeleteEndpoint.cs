@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Admin.Abstractions;
+using NetHub.Api.Shared;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
 
@@ -9,8 +10,7 @@ namespace NetHub.Admin.Endpoints.Languages;
 
 [ApiVersion(Versions.V1)]
 [Tags(TagNames.Languages)]
-// [Authorize(Policy = Policies.HasManageUsersPermission)]
-[AllowAnonymous]
+[Authorize(Policy = Policies.HasManageLanguagesPermission)]
 public sealed class LanguageDeleteEndpoint : ActionEndpoint<string>
 {
     private readonly ISqlServerDatabase _database;

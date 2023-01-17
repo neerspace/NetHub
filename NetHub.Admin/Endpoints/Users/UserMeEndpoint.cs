@@ -10,9 +10,9 @@ using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Admin.Endpoints.Users;
 
-[Authorize]
 [Tags(TagNames.Users)]
 [ApiVersion(Versions.V1)]
+[Authorize]
 public class UserMeEndpoint : ResultEndpoint<UserModel>
 {
     private readonly ISqlServerDatabase _database;
