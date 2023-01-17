@@ -9,7 +9,7 @@ namespace NetHub.Admin.Endpoints.Permissions;
 
 [ApiVersion(Versions.V1)]
 [Tags(TagNames.Permissions)]
-[Authorize(Policy = Policies.p)]
+[Authorize(Policy = Policies.HasReadRolesPermission)]
 public sealed class PermissionListEndpoint : ResultEndpoint<PermissionModel[]>
 {
     private static PermissionModel[]? s_cached;
