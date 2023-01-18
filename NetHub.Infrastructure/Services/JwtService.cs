@@ -108,7 +108,7 @@ public sealed class JwtService : IJwtService
         // if provided token is a refresh token
         && refreshToken.Name == TokenNames.Refresh
         // token is not expired yet
-        && refreshToken.Created.Add(_options.RefreshToken.Lifetime) < DateTimeOffset.UtcNow
+        && refreshToken.Created.Add(_options.RefreshToken.Lifetime) > DateTimeOffset.UtcNow
         // token was provided for current request device IP and browser
         && IsDeviceFromCurrentRequest(refreshToken.Device!);
 
