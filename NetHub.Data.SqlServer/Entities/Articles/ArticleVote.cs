@@ -20,6 +20,6 @@ public record ArticleVote
 	public virtual AppUser? User { get; set; }
 
 	#endregion
-	
+
 	public Vote Vote { get; set; }
 }

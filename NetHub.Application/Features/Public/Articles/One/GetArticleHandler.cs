@@ -19,7 +19,7 @@ internal sealed class GetArticleHandler : DbHandler<GetArticleRequest, (ArticleM
             .Include(a => a.Tags)!.ThenInclude(at => at.Tag)
             .Include(a => a.Images)
             .FirstOr404Async(a => a.Id == request.Id, ct);
-        
+
         var model = article.Adapt<ArticleModel>();
         var imageIds = article.Images?.Select(i => i.ResourceId).ToArray();
 

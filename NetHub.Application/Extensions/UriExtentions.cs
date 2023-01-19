@@ -18,7 +18,7 @@ public static class UriExtensions
 			query[parameter.Key] = parameter.Value;
 
 		uriBuilder.Query = query.ToString();
-		
+
 		return uriBuilder.Uri;
 	}
 }

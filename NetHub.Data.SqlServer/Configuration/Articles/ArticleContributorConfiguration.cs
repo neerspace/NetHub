@@ -14,12 +14,12 @@ public class ArticleContributorConfiguration : IEntityTypeConfiguration<ArticleC
         builder.HasOne(aa => aa.Localization)
             .WithMany(al => al.Contributors)
             .OnDelete(DeleteBehavior.Cascade);
-            
+
         builder.HasOne(aa => aa.User)
             .WithMany()
             .HasForeignKey(aa => aa.UserId)
             .OnDelete(DeleteBehavior.NoAction);
-        
+
         builder.Property(aa => aa.Role)
             .HasConversion(ar => ar.ToString(),
                 value => Enum.Parse<ArticleContributorRole>(value));

@@ -10,6 +10,6 @@ namespace NetHub.Api.Areas.Public.Controllers;
 public class CurrencyController: ApiController
 {
 	[HttpGet]
-	public async Task<CurrenciesResponse> GetRates() 
+	public async Task<CurrenciesResponse> GetRates()
 		=> await Mediator.Send(new GetCurrenciesRequest());
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NetHub.Admin.Abstractions;
+using NetHub.Admin.Api;
 using NetHub.Admin.Infrastructure.Models.Jwt;
 using NetHub.Core.Enums;
 using NetHub.Data.SqlServer.Context;

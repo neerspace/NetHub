@@ -12,7 +12,7 @@ public class TestController : ApiController
 
 	private static string LastCookie = default!;
 	private const string CookieName = "TestApp-Cookie";
-	
+
 
 	[HttpPost("check-cookie")]
 	public IActionResult CheckCookie()

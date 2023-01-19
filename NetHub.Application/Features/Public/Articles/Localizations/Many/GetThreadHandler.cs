@@ -33,7 +33,7 @@ internal sealed class GetThreadHandler : DbHandler<GetThreadRequest, ExtendedArt
 
     private async Task<ExtendedArticleModel[]> GetSimpleArticles(FilterRequest request, CancellationToken cancel)
     {
-        
+
         if (request.Filters != null && request.Filters.Contains("contributorRole"))
             request.Filters = request.Filters.Replace(",contributorRole==Author", "");
 

@@ -35,7 +35,7 @@ internal sealed class GetArticleLocalizationHandler : DbHandler<GetArticleLocali
 		CheckPermissions(entity, userId);
 
 		var localization = entity.Adapt<ArticleLocalizationModel>();
-		
+
 		if (userId is not null)
 		{
 			var isSaved = await Database.Set<SavedArticle>()
