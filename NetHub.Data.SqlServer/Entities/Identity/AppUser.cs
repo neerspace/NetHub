@@ -24,7 +24,7 @@ public sealed class AppUser : IdentityUser<long>, IEntity
 
     public ICollection<AppUserRole>? UserRoles { get; init; }
     public ICollection<AppUserClaim>? UserClaims { get; init; }
-    public ICollection<AppToken>? RefreshTokens { get; init; }
+    public ICollection<AppToken>? Tokens { get; init; }
     public ICollection<Article>? Articles { get; set; }
     public ICollection<SavedArticle>? SavedArticles { get; set; }
 

@@ -1,0 +1,46 @@
+<app-main-header short="true" [pageTitle]="isCreating ? 'Create Language' : 'Edit Language'">
+  <button app-icon-button icon="la-undo" variant="secondary"
+          (onclick)="backToTable()">
+    Back
+  </button>
+  <button app-icon-button *ngIf="!isCreating" icon="la-ban" variant="danger"
+          [disabled]="ready !== 'ready'" (onclick)="languagesService.delete(code)">
+    Delete
+  </button>
+  <button app-icon-button icon="la-save" variant="success"
+          [disabled]="ready !== 'ready'" (onclick)="submit()">
+    {{isCreating ? 'Create' : 'Save'}}
+  </button>
+</app-main-header>
+
+<app-main-content>
+  <form app-form-layout [formGroup]="languagesService.form" [ready]="ready">
+    <app-form-content>
+      <a class="wiki-link" href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank">
+        List of ISO 639-1 language codes
+      </a>
+    </app-form-content>
+
+    <app-text-field label="Two-letter ISO Code" controlName="code"
+                    [maxLength]="2" [disabled]="!isCreating" [allowCopy]="!isCreating">
+    </app-text-field>
+    <app-form-content *ngIf="isCreating">
+      <div>
+        {{suggestedLanguageName ? 'Suggested language: ' + suggestedLanguageName : 'Language code is invalid'}}
+      </div>
+      <button app-icon-button variant="secondary"
+              [disabled]="!suggestedLanguageName" (onclick)="applySuggestedLanguage()">
+        Apply Suggestion
+      </button>
+    </app-form-content>
+    <hr/>
+
+    <app-text-field label="International Name" controlName="name"
+                    [maxLength]="50" [required]="true">
+    </app-text-field>
+    <app-text-field label="Local Name" controlName="nameLocal"
+                    [maxLength]="50">
+    </app-text-field>
+  </form>
+
+</app-main-content>

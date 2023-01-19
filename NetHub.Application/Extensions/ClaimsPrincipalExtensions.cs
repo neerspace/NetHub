@@ -30,10 +30,10 @@ public static class ClaimsPrincipalExtensions
 	public static Claim GetClaim(this ClaimsPrincipal user, string type)
 	{
 		if (!user.Identity!.IsAuthenticated)
-			throw new UnauthorizedException("Claims principal is not authenticated.");
+			throw new UnauthorizedException("Claims principal is not authenticated");
 
 		return user.Claims.SingleOrDefault(c => string.Equals(c.Type, type, StringComparison.OrdinalIgnoreCase))
-		       ?? throw new ForbidException($"Claims principal doesn't have {type} claim.");
+		       ?? throw new ForbidException($"Claims principal doesn't have {type} claim");
 	}
 
 	/// <summary>
@@ -47,12 +47,12 @@ public static class ClaimsPrincipalExtensions
 	public static bool TryGetClaim(this ClaimsPrincipal user, string type, out Claim? claim)
 	{
 		if (!user.Identity!.IsAuthenticated)
-			throw new UnauthorizedException("Claims principal is not authenticated.");
+			throw new UnauthorizedException("Claims principal is not authenticated");
 
 		claim = user.Claims.SingleOrDefault(c => string.Equals(c.Type, type, StringComparison.OrdinalIgnoreCase));
 		return claim is not null;
 	}
-	
+
 	/// <summary>
 	/// Gets value from the claim with the given type.
 	/// </summary>
@@ -76,11 +76,11 @@ public static class ClaimsPrincipalExtensions
 	public static IReadOnlyList<Claim> ListClaims(this ClaimsPrincipal user, string type)
 	{
 		if (!user.Identity!.IsAuthenticated)
-			throw new UnauthorizedException("Claims principal is not authenticated.");
+			throw new UnauthorizedException("Claims principal is not authenticated");
 
 		var claims = user.Claims.Where(c => string.Equals(c.Type, type, StringComparison.OrdinalIgnoreCase)).ToList();
 		if (!claims.Any())
-			throw new ForbidException($"Claims principal doesn't have any {type} claim.");
+			throw new ForbidException($"Claims principal doesn't have any {type} claim");
 
 		return claims;
 	}
@@ -165,6 +165,6 @@ public static class ClaimsPrincipalExtensions
 
 	private static UnauthorizedException InvalidClaimValueException(string type)
 	{
-		return new UnauthorizedException($"Claims principal's {type} claim contains invalid value.");
+		return new UnauthorizedException($"Claims principal's {type} claim contains invalid value");
 	}
 }

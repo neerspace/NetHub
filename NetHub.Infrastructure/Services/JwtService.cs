@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using NeerCore.Data.EntityFramework.Extensions;
 using NeerCore.DependencyInjection;
@@ -21,6 +23,7 @@ public sealed class JwtService : IJwtService
 {
     private readonly JwtOptions _options;
     private readonly ISqlServerDatabase _database;
+    private readonly IWebHostEnvironment _environment;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly AccessTokenGenerator _accessTokenGenerator;
     private readonly RefreshTokenGenerator _refreshTokenGenerator;
@@ -28,10 +31,12 @@ public sealed class JwtService : IJwtService
     private HttpContext HttpContext => _httpContextAccessor.HttpContext!;
 
     public JwtService(
-        ISqlServerDatabase database, IOptions<JwtOptions> jwtOptionsAccessor, IHttpContextAccessor httpContextAccessor,
+        ISqlServerDatabase database, IOptions<JwtOptions> jwtOptionsAccessor,
+        IHttpContextAccessor httpContextAccessor, IWebHostEnvironment environment,
         AccessTokenGenerator accessTokenGenerator, RefreshTokenGenerator refreshTokenGenerator)
     {
         _database = database;
+        _environment = environment;
         _options = jwtOptionsAccessor.Value;
         _httpContextAccessor = httpContextAccessor;
         _accessTokenGenerator = accessTokenGenerator;
@@ -70,7 +75,7 @@ public sealed class JwtService : IJwtService
             .FirstOr404Async(ct);
 
         if (!IsRefreshTokenValid(token))
-            throw new ForbidException("Provided token is not a valid refresh token.");
+            throw new ForbidException("Provided token is not a valid refresh token");
 
         var result = await GenerateAsync(token.User!, ct);
         token.User = null;
@@ -85,9 +90,9 @@ public sealed class JwtService : IJwtService
         HttpContext.Response.Cookies.Append(_options.RefreshToken.CookieName, refreshToken, new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
+            Secure = _environment.IsProduction(),
             IsEssential = true,
-            SameSite = SameSiteMode.Strict,
+            SameSite = _environment.IsProduction() ? SameSiteMode.Strict : SameSiteMode.Lax,
             Domain = _options.RefreshToken.CookieDomain,
             Expires = refreshTokenExpires,
         });
@@ -103,7 +108,7 @@ public sealed class JwtService : IJwtService
         // if provided token is a refresh token
         && refreshToken.Name == TokenNames.Refresh
         // token is not expired yet
-        && refreshToken.Created.Add(_options.RefreshToken.Lifetime) < DateTimeOffset.UtcNow
+        && refreshToken.Created.Add(_options.RefreshToken.Lifetime) > DateTimeOffset.UtcNow
         // token was provided for current request device IP and browser
         && IsDeviceFromCurrentRequest(refreshToken.Device!);
 
@@ -131,14 +136,14 @@ public sealed class JwtService : IJwtService
             || string.IsNullOrEmpty(userAgent.Browser)
             || string.IsNullOrEmpty(userAgent.BrowserVersion))
             throw new ForbidException("You are using a suspicious device.\n"
-                + "Make sure you are using a modern browser and do not use a toaster to surf the web.");
+                + "Make sure you are using a modern browser and do not use a toaster to surf the web");
 
         var device = await _database.Set<AppDevice>().AsNoTracking()
             .FirstOrDefaultAsync(d => d.Browser == userAgent.Browser && d.IpAddress == ip, ct);
 
         if (device?.Status == DeviceStatus.Banned)
             throw new ForbidException("Your IP has been blocked.\n"
-                + "Contact admins to unlock access for your IP.");
+                + "Contact admins to unlock access for your IP");
 
         if (device is not null)
             return device;

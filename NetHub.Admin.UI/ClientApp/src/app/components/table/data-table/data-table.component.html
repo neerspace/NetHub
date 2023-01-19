@@ -1,0 +1,74 @@
+<!--<pre>{{filtersForm.value | json}}</pre>-->
+
+<table id="users-table" class="table table-hover">
+  <thead>
+  <tr>
+    <th *ngFor="let col of columns">
+      <button *ngIf="col.sortable; else notSortable"
+              class="btn col-header"
+              [class.sortable]="!!col.sortable"
+              (click)="changeSorts(col.key, $event)">
+        {{col.title}}
+        <i class="sort-icon las"
+           [class.la-arrows-alt-v]="sorts !== col.key"
+           [class.la-arrow-down]="sorts === col.key && sortsAsc"
+           [class.asc]="sorts === col.key && sortsAsc"
+           [class.la-arrow-up]="sorts === col.key && !sortsAsc"
+           [class.desc]="sorts === col.key && !sortsAsc"></i>
+      </button>
+      <ng-template #notSortable>
+        <div class="col-header">
+          {{col.title}}
+        </div>
+      </ng-template>
+    </th>
+    <th *ngIf="buttons.length > 0" class="table-buttons">
+      <!--      <button class=" filters-button btn btn-icon btn-outline-danger" title="Reset filters">-->
+      <!--        <i class="las la-filter"></i>-->
+      <!--      </button>-->
+    </th>
+  </tr>
+  <tr>
+    <th *ngFor="let col of columns" [formGroup]="filtersForm">
+      <app-table-filter-field [column]="col"></app-table-filter-field>
+    </th>
+    <th *ngIf="buttons.length > 0" class="table-buttons">
+      <button class="filters-button btn btn-icon btn-outline-danger"
+              title="Reset filters"
+              (click)="setFiltersToDefault()">
+        <i class="las la-times-circle"></i>
+      </button>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of data">
+    <td *ngFor="let col of columns" [class.table-active]="col.key === sorts"
+        [innerHTML]="col.formatter ? col.formatter(item[col.key], item) : item[col.key]">
+    </td>
+    <td *ngIf="buttons.length > 0" class="table-buttons">
+      <button *ngFor="let btn of buttons"
+              class="btn {{btn.button.class}}"
+              (click)="btn.onClick(item)">
+        <span *ngIf="btn.button.text" class="text">{{btn.button.text}}</span>
+        <i *ngIf="btn.button.icon" class="las {{btn.button.icon}}"></i>
+      </button>
+    </td>
+  </tr>
+  <tr *ngIf="data && data.length === 0">
+    <td class="no-data" [attr.colspan]="columns.length + (buttons.length > 0 ? 1 : 0)">
+      No data matching 😔
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div class="table-footer" [class.hidden]="!data || data.length === 0">
+  <app-page-size *ngIf="data && data.length > pageSize"
+                 [pageSize]="pageSize" (pageSizeChange)="changePageSize($event)">
+  </app-page-size>
+  <div class="page-indicator">{{pageIndicatorText}}</div>
+  <app-pagination #pagination [page]="page" [pageSize]="pageSize"
+                  [total]="total" (pageChange)="changePage($event)">
+  </app-pagination>
+</div>

@@ -16,7 +16,11 @@ internal class AppTokenConfiguration : IEntityTypeConfiguration<AppToken>
         builder.Property(e => e.Name).AsText().IsRequired();
         builder.Property(e => e.LoginProvider).AsText().IsRequired();
 
-        builder.HasOne(e => e.Device).WithMany().HasForeignKey(e => e.DeviceId);
-        builder.HasOne(e => e.User).WithMany().HasForeignKey(e => e.UserId);
+        builder.HasOne(e => e.Device)
+            .WithMany()
+            .HasForeignKey(e => e.DeviceId);
+        builder.HasOne(e => e.User)
+            .WithMany(e => e.Tokens)
+            .HasForeignKey(e => e.UserId);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NeerCore.Data.EntityFramework.Design;
 using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Core.Enums;
 using NetHub.Data.SqlServer.Conversions;
@@ -22,6 +21,7 @@ public class SqlServerDbContext : IdentityDbContext<AppUser, AppRole, long, AppU
         base.OnModelCreating(builder);
         builder.ApplyEntityDating(options => options.DateTimeKind = DateTimeKind.Utc);
         builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+        builder.AddLocalizedStrings(GetType().Assembly);
         builder.ApplyAllDataSeeders();
 
         builder.Entity<ExtendedUserArticle>(config =>
@@ -32,6 +32,7 @@ public class SqlServerDbContext : IdentityDbContext<AppUser, AppRole, long, AppU
 
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)
     {
+        builder.ApplyLocalizedStringConversions();
         builder.Properties<DateTimeOffset>().HaveConversion<DateTimeOffsetConvertor>();
         builder.Properties<ArticleContributorRole>().HaveConversion<EnumToStringConverter<ArticleContributorRole>>();
         builder.Properties<ContentStatus>().HaveConversion<EnumToStringConverter<ContentStatus>>();

@@ -1,0 +1,37 @@
+@import '../../../../sass/theme/common';
+
+.page-indicator {
+  font-size: .9rem;
+  align-self: center;
+}
+
+.pagination {
+  margin-bottom: 0;
+}
+
+.dropdown-menu {
+  padding: 0;
+  margin: -2px 0 !important;
+}
+
+.dropdown-button:after {
+  content: '';
+  display: inline-block;
+  width: 1rem;
+  height: 100%;
+  float: right;
+  background-image: #{$arrow-down-icon};
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.dropdown-button, .dropdown-item {
+  height: 2rem;
+  text-align: left;
+  padding: .25rem .5rem .25rem .9rem;
+}
+
+.dropdown-button, .dropdown-menu {
+  width: 4.5rem;
+  min-width: 4.5rem;
+}

@@ -5,7 +5,7 @@ using NeerCore.Exceptions;
 using NeerCore.Logging;
 using NeerCore.Logging.Extensions;
 using NetHub.Api;
-using NetHub.Api.Shared;
+using NetHub.Api.Shared.Extensions;
 using NetHub.Application;
 using NetHub.Data.SqlServer;
 using NetHub.Data.SqlServer.Context;
@@ -64,7 +64,7 @@ static void ConfigureWebApp(WebApplication app)
         app.ForceRedirect(from: "/", to: "/swagger");
     }
 
-    app.UseCors(Cors.ApiDefault);
+    app.UseCorsPolicy();
 
     app.UseHttpsRedirection();
 
@@ -80,6 +80,6 @@ static void MigrateDatabase(IHost app)
 {
     using var scope = app.Services.CreateScope();
     if (scope.ServiceProvider.GetRequiredService<ISqlServerDatabase>() is not SqlServerDbContext database)
-        throw new InternalServerException($"{nameof(ISqlServerDatabase)} DB context cannot be resolved.");
+        throw new InternalServerException($"{nameof(ISqlServerDatabase)} DB context cannot be resolved");
     database.Database.Migrate();
 }

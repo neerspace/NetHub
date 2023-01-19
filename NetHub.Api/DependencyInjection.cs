@@ -2,14 +2,14 @@
 using NeerCore.Api.Extensions;
 using NetHub.Api.Shared.Extensions;
 using NetHub.Application.Options;
+using NetHub.Core.Constants;
 using ExceptionHandlerOptions = NeerCore.Api.ExceptionHandlerOptions;
 
 namespace NetHub.Api;
 
 public static class DependencyInjection
 {
-    public static void AddWebApi(this IServiceCollection services,
-        IConfiguration configuration)
+    public static void AddWebApi(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddHttpClient();
 
@@ -21,17 +21,17 @@ public static class DependencyInjection
             o.HandleFluentValidationExceptions = true;
         });
 
-        services.AddCorsPolicies(configuration);
+        services.AddCorsPolicy(configuration);
 
         services.AddNeerControllers();
 
         services.AddJwtAuthentication().WithGoogleAuthProvider(configuration);
-        services.AddPoliciesAuthorization();
+        services.AddPoliciesAuthorization(); // not sure, are u actually need it?
     }
 
     private static void WithGoogleAuthProvider(this AuthenticationBuilder builder, IConfiguration configuration)
     {
-        var googleOptions = configuration.GetSection("Google").Get<GoogleOptions>()!;
+        var googleOptions = configuration.GetSection(ConfigSectionNames.Google).Get<GoogleOptions>()!;
 
         builder.AddGoogleOpenIdConnect(options =>
         {

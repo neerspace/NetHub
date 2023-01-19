@@ -1,0 +1,126 @@
+th {
+  padding: 0;
+}
+
+.col-header {
+  position: relative;
+  width: 100%;
+  padding: .5rem;
+  color: var(--c-text);
+  font-weight: bold;
+  display: flex;
+  vertical-align: center;
+  justify-content: space-between;
+  border: none;
+
+  &.sortable {
+    &:hover {
+      background-color: var(--c-primary);
+      //cursor: pointer;
+
+      .sort-icon {
+        opacity: 100%;
+      }
+    }
+  }
+
+  .sort-icon {
+    position: absolute;
+    right: .66rem;
+    top: 0;
+    padding: .75rem .5rem;
+    transition: padding .05s ease-in-out;
+    font-size: 1rem;
+    opacity: 25%;
+
+    &.asc, &.desc {
+      opacity: 100%;
+    }
+  }
+}
+
+
+thead tr {
+  background-color: var(--c-bg-3);
+}
+
+tr {
+  border-color: var(--c-bg-1);
+
+  &:hover button {
+    opacity: 1;
+    //transition: opacity .1s ease;
+  }
+
+  &:hover .no-data {
+    --bs-table-accent-bg: inherit;
+  }
+
+  .no-data {
+    text-align: center;
+    height: 8rem;
+    padding-top: 3rem;
+  }
+}
+
+.table-buttons {
+  padding: 0 .5rem;
+  text-align: center;
+  vertical-align: middle;
+  width: 5rem;
+
+  button {
+    border: none;
+    padding: 0 .3rem;
+    color: var(--c-text);
+    font-size: 1.25rem;
+    opacity: 0;
+    white-space: nowrap;
+
+    .text {
+      font-size: .9rem;
+      margin-right: .5rem;
+      padding: .15rem .3rem;
+    }
+
+    &.edit:hover, &.success:hover {
+      background-color: var(--c-success);
+    }
+
+    &.delete:hover {
+      background-color: var(--c-danger);
+    }
+  }
+
+  .filters-button {
+    display: inline-flex;
+    height: 1.75rem;
+    width: 2rem;
+    justify-content: center;
+    vertical-align: middle;
+    align-items: center;
+
+    i {
+      margin: 0;
+    }
+  }
+}
+
+.table-footer {
+  height: 2rem;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  vertical-align: middle;
+
+  > * {
+    margin-right: 2rem;
+  }
+
+  &.hidden {
+    display: none;
+  }
+}
+

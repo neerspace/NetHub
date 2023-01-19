@@ -1,0 +1,49 @@
+@import 'theme/dark';
+@import 'theme/common';
+@import 'lib/datepicker-custom';
+@import 'themes';
+@import 'fonts';
+@import 'global';
+
+html, body, app-admin-layout {
+  height: 100vh;
+  width: 100%;
+  font-size: 15px;
+}
+
+body, app-admin-layout {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+button.btn, a {
+  color: var(--c-text);
+  transition-duration: .075s;
+}
+
+.btn-icon {
+  padding-right: 1.5rem;
+
+  i {
+    font-size: 1.5rem;
+    margin-right: .5rem;
+  }
+}
+
+.btn:focus, .page-link:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+::placeholder {
+  color: var(--c-text) !important;
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: var(--c-text) !important;
+}
+
+@import 'bootstrap/scss/bootstrap';

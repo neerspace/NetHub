@@ -23,7 +23,7 @@ public sealed class RefreshTokenGenerator
 
     public async Task<JwtToken> GenerateAsync(AppUser user, AppDevice device, CancellationToken ct = default)
     {
-        var expires = DateTime.UtcNow.Add(_options.RefreshToken.Lifetime);
+        var timeCreated = DateTime.UtcNow;
         string token = GenerateRandomToken();
 
         _database.Set<AppToken>().Add(new AppToken
@@ -33,10 +33,12 @@ public sealed class RefreshTokenGenerator
             Name = TokenNames.Refresh,
             LoginProvider = LoginProviders.NetHub,
             Value = token,
+            Created = timeCreated
         });
 
         await _database.SaveChangesAsync(cancel: ct);
 
+        var expires = timeCreated.Add(_options.RefreshToken.Lifetime);
         return new JwtToken(token, expires);
     }
 

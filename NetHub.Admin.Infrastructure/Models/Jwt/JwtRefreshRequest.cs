@@ -2,9 +2,10 @@
 
 namespace NetHub.Admin.Infrastructure.Models.Jwt;
 
-public sealed record JwtRefreshRequest(
-    string RefreshToken
-);
+public sealed class JwtRefreshRequest
+{
+    public required string RefreshToken { get; init; }
+}
 
 internal sealed class JwtRefreshRequestValidator : AbstractValidator<JwtRefreshRequest>
 {

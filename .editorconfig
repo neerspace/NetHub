@@ -227,7 +227,8 @@ resharper_keep_existing_initializer_arrangement                          = false
 resharper_keep_existing_switch_expression_arrangement                    = false
 resharper_max_array_initializer_elements_on_line                         = 10
 resharper_place_accessorholder_attribute_on_same_line                    = false
-resharper_place_accessor_attribute_on_same_line                          = true
+resharper_place_field_attribute_on_same_line                             = false
+resharper_place_accessor_attribute_on_same_line                          = false
 resharper_place_linq_into_on_new_line                                    = false
 resharper_place_simple_case_statement_on_same_line                       = if_owner_is_single_line
 resharper_place_simple_embedded_statement_on_same_line                   = false
@@ -248,6 +249,17 @@ resharper_redundant_base_qualifier_highlighting                          = warni
 # but almost we use reflection to create instances,
 # so this highlighting is redundant for us
 resharper_class_never_instantiated_global_highlighting                   = none
+
+
+# ###############################
+# # JavaScript / TypeScript     #
+# ###############################
+
+[*.{ts,js}]
+indent_size                 = 2
+tab_width                   = 2
+ij_continuation_indent_size = 2
+quote_type = single
 
 
 # ###############################
@@ -350,6 +362,8 @@ ij_yaml_spaces_within_braces        = true
 ij_yaml_spaces_within_brackets      = true
 
 [{*.markdown,*.md}]
+max_line_length                                     = off
+trim_trailing_whitespace                            = false
 ij_markdown_force_one_space_after_blockquote_symbol = true
 ij_markdown_force_one_space_after_header_symbol     = true
 ij_markdown_force_one_space_after_list_bullet       = true
@@ -366,3 +380,4 @@ ij_markdown_min_lines_around_header                 = 0
 ij_markdown_min_lines_between_paragraphs            = 0
 ij_markdown_wrap_text_if_long                       = false
 ij_markdown_wrap_text_inside_blockquotes            = true
+
