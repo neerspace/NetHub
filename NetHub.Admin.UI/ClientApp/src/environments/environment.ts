@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://localhost:9100',
+  apiBaseUrl: 'https://localhost:9110',
 };
 
 export const logger = {
