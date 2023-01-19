@@ -1,0 +1,27 @@
+<app-main-header pageTitle="Roles">
+  <button app-icon-button icon="la-sync" variant="primary"
+          [disabled]="table.loading" (click)="table.loadData()">
+    Refresh
+  </button>
+  <button app-icon-button icon="la-download" variant="primary"
+          [disabled]="table.loading" (click)="downloadJson()">
+    JSON
+  </button>
+  <button app-icon-button *ngIf="roleService.lastFormId"
+          icon="la-undo" variant="secondary" (click)="roleService.showForm()">
+    Back to Editor
+  </button>
+  <button app-icon-button icon="la-plus" variant="success" (click)="showForm('create')">
+    Create
+  </button>
+</app-main-header>
+
+<app-main-content>
+  <app-data-table
+    #table
+    defaultSorting="-id"
+    [columns]="columns"
+    [buttons]="buttons"
+    [onFilter]="fetchFilter.bind(this)">
+  </app-data-table>
+</app-main-content>

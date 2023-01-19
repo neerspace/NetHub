@@ -26,7 +26,6 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup />
   <ItemGroup>
     <Content Update="appsettings.Development.json">
       <DependentUpon>appsettings.json</DependentUpon>
@@ -34,9 +33,6 @@
     <Content Update="appsettings.Secrets.json">
       <DependentUpon>appsettings.json</DependentUpon>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Endpoints\Jwt\JwtVerifyEndpoint.cs" />
   </ItemGroup>
 
 </Project>

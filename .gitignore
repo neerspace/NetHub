@@ -6,9 +6,12 @@
 riderModule.iml
 /_ReSharper.Caches/
 #.idea/
+*.dotCover
+_TeamCity*
 
 # Visual Studio cahche
 .vs/
+*.[Cc]ache
 
 # VS Code cahche
 .vscode/
@@ -31,14 +34,12 @@ logs/
 # Node.JS dependencies
 node_modules/
 
-# testing
-/coverage
-
 # production
 /build
 
-# Mac OS cahce
+# System Files
 .DS_Store
+Thumbs.db
 
 # Local environments
 .env.local

@@ -3,7 +3,20 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiBaseUrl: 'https://localhost:9100',
+};
+
+export const logger = {
+  debug: (m: string, ...optionalParams: any[]) => {
+    console.log(m, ...optionalParams);
+  },
+  warn: (m: string, ...optionalParams: any[]) => {
+    console.warn(m, ...optionalParams);
+  },
+  error: (m: string, ...optionalParams: any[]) => {
+    console.error(m, ...optionalParams);
+  },
 };
 
 /*
