@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Infrastructure", "Ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Data.SqlServer", "NetHub.Data.SqlServer\NetHub.Data.SqlServer.csproj", "{927A610F-4848-4466-92BA-56A6F7367E0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Admin", "NetHub.Admin\NetHub.Admin.csproj", "{59872DEE-1E31-4646-A65C-53D48B642B1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Admin.Api", "NetHub.Admin.Api\NetHub.Admin.Api.csproj", "{59872DEE-1E31-4646-A65C-53D48B642B1F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Api.Shared", "NetHub.Api.Shared\NetHub.Api.Shared.csproj", "{D3216987-D157-4205-AF1C-FAE3EDB3C571}"
 EndProject
@@ -27,6 +27,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Tests", "tests\NetHub.Tests\NetHub.Tests.csproj", "{FF0A8289-923B-4941-AB2B-BA816E339910}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Tests.ConsoleApp", "tests\NetHub.Tests.ConsoleApp\NetHub.Tests.ConsoleApp.csproj", "{A31ED86A-D9E8-4BD3-857A-703060B14F12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Admin.UI", "NetHub.Admin.UI\NetHub.Admin.UI.csproj", "{0BB230B5-E9A2-473C-BD84-3CCE09F228AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,7 @@ Global
 		{325747A5-7DA2-4702-9477-219AC12E37B4} = {2CE22278-093D-4DA3-BA91-82D3846938D6}
 		{927A610F-4848-4466-92BA-56A6F7367E0E} = {2CE22278-093D-4DA3-BA91-82D3846938D6}
 		{A31ED86A-D9E8-4BD3-857A-703060B14F12} = {AAF91661-610D-4DEB-B1E8-33D8F7E60D93}
+		{0BB230B5-E9A2-473C-BD84-3CCE09F228AD} = {B7671843-A620-4CFE-9B73-025406572523}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{1C80F12B-696C-4E0D-95DD-0C7D3E4CB2C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -86,5 +89,9 @@ Global
 		{A31ED86A-D9E8-4BD3-857A-703060B14F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A31ED86A-D9E8-4BD3-857A-703060B14F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A31ED86A-D9E8-4BD3-857A-703060B14F12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BB230B5-E9A2-473C-BD84-3CCE09F228AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BB230B5-E9A2-473C-BD84-3CCE09F228AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BB230B5-E9A2-473C-BD84-3CCE09F228AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BB230B5-E9A2-473C-BD84-3CCE09F228AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
