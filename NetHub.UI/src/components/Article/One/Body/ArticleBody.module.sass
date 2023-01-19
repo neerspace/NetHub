@@ -1,0 +1,86 @@
+.articleWrapper
+  height: fit-content
+
+.articleTitle
+  margin-bottom: 15px
+
+.articleDescription
+  font-size: 12px
+
+.line
+  border: 1px solid white
+  margin: 10px 0
+
+.articleBody
+  font-size: 12px
+  line-height: 150%
+  margin-bottom: 20px
+  pre
+    white-space: -moz-pre-wrap
+    white-space: -o-pre-wrap
+    white-space: pre-wrap
+    word-wrap: break-word
+  li
+    list-style-position: inside
+
+  img
+    max-width: 100%
+    height: auto
+
+.articleTags
+  display: flex
+  margin-bottom: 15px
+  flex-wrap: wrap
+  gap: 14px
+
+  .tag
+    font-weight: 700
+    font-size: 12px
+    line-height: 15px
+    cursor: pointer
+
+.actions
+  display: flex
+  justify-content: space-between
+  margin-bottom: 27px
+
+  .actionsLeft
+    display: flex
+
+    .views
+      display: flex
+      align-items: center
+
+      .viewsCount
+        margin-right: 5px
+
+.creationInfo
+  display: flex
+  justify-content: space-between
+
+  .author
+    font-weight: 600
+    font-size: 14px
+
+    p
+      display: flex
+      margin-right: 5px
+
+    a
+      cursor: pointer
+
+  .dates
+    color: #757575
+    font-size: 14px
+    display: flex
+
+    .updated
+      margin-left: 25px
+
+
+//=========Skeletons=========
+.articleBodySkeleton
+  width: 100%
+
+  div:first-child
+    margin-bottom: 10px

@@ -1,0 +1,89 @@
+.menuItems
+  transition: 0.2s
+  transition-duration: 0.2s
+  box-sizing: border-box
+
+
+.menuPointContainer
+  width: 100%
+  display: flex
+  flex-direction: column
+  margin-bottom: 10%
+
+
+.menuPoint
+  display: flex
+  flex-direction: row
+  align-items: center
+  height: 48px
+  border-radius: 12px
+
+  svg
+    flex: 30%
+    display: grid
+    place-items: center
+
+  p
+    flex: 70%
+    font-weight: 700
+    font-size: 14px
+    line-height: 150%
+    -webkit-touch-callout: none
+    /* iOS Safari */
+    -webkit-user-select: none
+    /* Chrome/Safari/Opera */
+    -khtml-user-select: none
+    /* Konqueror */
+    -moz-user-select: none
+    /* Firefox */
+    -ms-user-select: none
+    /* Internet Explorer/Edge */
+    user-select: none
+
+
+.menuPointContainer > p
+  margin-left: 9%
+  font-weight: 400
+  font-size: 12px
+  line-height: 158%
+  color: #818181
+  letter-spacing: 0.15em
+  text-transform: uppercase
+  /*margin-top: 10%*/
+  margin-bottom: 7%
+
+
+.menuPoint:hover
+  cursor: pointer
+  transition: 0.2s
+
+  svg
+    transition: 0.2s
+    fill: white
+
+  p
+    color: white
+    transition: 0.2s
+
+
+.menuPoint.disabled
+  cursor: initial
+  svg
+    fill: #8B8B8B
+
+  p
+    color: #8B8B8B
+
+.menuPointActive
+  color: white
+
+  p
+    color: white
+
+  svg
+    fill: white
+
+/*.menuPoint:active*/
+/*    background-color: #896DC8*/
+/*    color: white*/
+/**/
