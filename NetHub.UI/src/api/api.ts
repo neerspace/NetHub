@@ -25,7 +25,7 @@ import {SsoRequest} from "../types/schemas/Sso/SsoSchema";
 //   : import.meta.env.VITE_GENERAL_BACK_POINT;
 
 
-export const baseApiUrl = 'https://localhost:7002/v1';
+export const baseApiUrl = 'https://localhost:9010/v1';
 export const _api = axios.create({
   baseURL: baseApiUrl,
 });
