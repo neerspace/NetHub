@@ -1,8 +1,8 @@
-import {auth, facebookProvider, googleProvider} from "../api/firebase";
-import {signInWithPopup} from "firebase/auth";
-import IProviderTokenResponse from "../types/IProviderTokenResponse";
-import {ProviderType} from "../types/ProviderType";
-import {SsoRequest} from "../types/schemas/Sso/SsoSchema";
+import { auth, facebookProvider, googleProvider } from '../api/firebase';
+import { signInWithPopup } from 'firebase/auth';
+import IProviderTokenResponse from '../types/IProviderTokenResponse';
+import { ProviderType } from '../types/ProviderType';
+import { SsoRequest } from '../types/schemas/Sso/SsoSchema';
 
 
 export default class LoginService {
@@ -11,22 +11,22 @@ export default class LoginService {
       case ProviderType.GOOGLE:
         return await LoginService.googleHandle();
       case ProviderType.TELEGRAM:
-        return await LoginService.telegramHandle()
+        return await LoginService.telegramHandle();
       case ProviderType.FACEBOOK:
-        return await LoginService.facebookHandle()
+        return await LoginService.facebookHandle();
     }
   }
 
   private static async googleHandle(): Promise<SsoRequest> {
-    googleProvider.addScope('profile')
-    googleProvider.addScope('email')
+    googleProvider.addScope('profile');
+    googleProvider.addScope('email');
     const credential = await signInWithPopup(auth, googleProvider);
     //@ts-ignore
     const tokenResponse: IProviderTokenResponse = credential._tokenResponse;
     console.log('token', tokenResponse.photoUrl);
 
     return {
-      username: tokenResponse.email.replace(/@.*$/, ""),
+      username: tokenResponse.email.replace(/@.*$/, ''),
       firstName: tokenResponse.firstName ?? '',
       lastName: tokenResponse.lastName ?? '',
       profilePhotoUrl: tokenResponse.photoUrl,
@@ -44,12 +44,12 @@ export default class LoginService {
 
     return new Promise((resolve, reject) => {
       window.Telegram.Login.auth(
-        {bot_id: import.meta.env.VITE_TELEGRAM_BOT_ID, request_access: true},
+        { bot_id: import.meta.env.VITE_TELEGRAM_BOT_ID, request_access: true },
         (data: any) => {
-          console.log(data)
+          console.log(data);
           if (!data) {
-            console.log('error')
-            reject('Telegram login failed')
+            console.log('error');
+            reject('Telegram login failed');
           }
 
           setTimeout(() => {
@@ -71,13 +71,13 @@ export default class LoginService {
               provider: ProviderType.TELEGRAM,
               providerKey: data.id.toString()
             };
-            resolve(request)
-          }, 100)
+            resolve(request);
+          }, 100);
 
           // resolve({username: data.username ?? data.first_name ?? data.last_name, profilePhoto: data.photo_url});
         }
       );
-    })
+    });
   }
 
   private static async facebookHandle(): Promise<SsoRequest> {
@@ -86,7 +86,7 @@ export default class LoginService {
     //@ts-ignore
     const tokenResponse: IProviderTokenResponse = credential._tokenResponse;
     return {
-      username: tokenResponse.email?.replace(/@.*$/, "") ?? '',
+      username: tokenResponse.email?.replace(/@.*$/, '') ?? '',
       firstName: tokenResponse.firstName ?? '',
       lastName: tokenResponse.lastName ?? '',
       profilePhotoUrl: tokenResponse.photoUrl,
