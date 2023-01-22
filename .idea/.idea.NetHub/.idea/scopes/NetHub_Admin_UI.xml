@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="NetHub.Admin.UI" pattern="file[rider.module]:NetHub.Admin.UI//*&amp;&amp;!file[rider.module]:NetHub.Admin.UI/node_modules//*&amp;&amp;!file[rider.module]:NetHub.Admin.UI/.angular//*&amp;&amp;!file:NetHub.Admin.UI/yarn.lock&amp;&amp;!file:NetHub.Admin.UI/package-lock.json" />
+</component>

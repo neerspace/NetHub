@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
+using NetHub.Application.Extensions;
 using NetHub.Application.Features.Public.Users.Dto;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Tools;
@@ -37,7 +38,7 @@ public sealed class SsoEnterHandler : DbHandler<SsoEnterRequest, AuthResult>
         if (user is null)
             //is user is null - register
             user = await RegisterUserAsync(request, ct);
-        else if (user is not null)
+        else
             //else - just validate
             await ValidateUserAsync(request, ct);
 
@@ -63,7 +64,7 @@ public sealed class SsoEnterHandler : DbHandler<SsoEnterRequest, AuthResult>
 
         var result = await _userManager.CreateAsync(user);
         if (!result.Succeeded)
-            throw new ValidationFailedException(result.Errors.First().Description);
+            throw new ValidationFailedException("User not created", result.ToErrorDetails());
 
         await _userManager.AddLoginAsync(user,
             new UserLoginInfo(request.Provider.ToString().ToLower(),

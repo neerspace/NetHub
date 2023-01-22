@@ -1,14 +1,14 @@
-import {userApi} from "../../api/api";
-import React, {useCallback, useMemo, useState} from "react";
-import {ExtendedRequest, useProfileContext} from "./ProfileSpace.Provider";
-import {usernameDebounce} from "../../utils/debounceHelper";
-import {useDebounce} from "../../hooks/useDebounce";
-import useCustomSnackbar from "../../hooks/useCustomSnackbar";
-import {ProfileSchema} from "../../types/schemas/Profile/ProfileSchema";
-import {JWTStorage} from "../../utils/localStorageProvider";
-import {useAppStore} from "../../store/config";
-import {useQueryClient} from "react-query";
-import {QueryClientConstants} from "../../constants/queryClientConstants";
+import React, { useCallback } from 'react';
+import { useQueryClient } from 'react-query';
+import { jwtApi, userApi } from '../../api/api';
+import { QueryClientConstants } from '../../constants/queryClientConstants';
+import useCustomSnackbar from '../../hooks/useCustomSnackbar';
+import { useDebounce } from '../../hooks/useDebounce';
+import { useAppStore } from '../../store/config';
+import { ProfileSchema } from '../../types/schemas/Profile/ProfileSchema';
+import { usernameDebounce } from '../../utils/debounceHelper';
+import { JWTStorage } from '../../utils/localStorageProvider';
+import { ExtendedRequest, useProfileContext } from './ProfileSpace.Provider';
 
 export async function getUserDashboard(username?: string) {
   return username ?
@@ -22,7 +22,7 @@ export async function getUserInfo(username?: string) {
 
 export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSettingsButton: () => void) => {
 
-  const {enqueueError, enqueueSuccess, enqueueSnackBar} = useCustomSnackbar('info');
+  const { enqueueError, enqueueSuccess, enqueueSnackBar } = useCustomSnackbar('info');
   const debounceLogic = async (username: string | null) => await usernameDebounce(username, setErrors, errors);
   const debounce = useDebounce(debounceLogic, 1000);
   const {
@@ -35,23 +35,23 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
     userAccessor
   } = useProfileContext();
   const queryClient = useQueryClient();
-  const {updateProfile: updateProfileAction, user: reduxUser} = useAppStore();
+  const { updateProfile: updateProfileAction, user: reduxUser } = useAppStore();
   const oldUserInfo = userAccessor.data!;
 
   const handleUpdateUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newUsername = event.target.value.toLowerCase();
 
-    setChangeRequest({...changeRequest, username: newUsername});
+    setChangeRequest({ ...changeRequest, username: newUsername });
 
     if (newUsername === reduxUser.username) {
-      removeChanges('username')
-      setErrors({...errors, username: undefined})
+      removeChanges('username');
+      setErrors({ ...errors, username: undefined });
       return;
     }
 
     addChanges('username');
     debounce(newUsername, true);
-  }
+  };
 
   const handleUpdateProfileInfo = useCallback((newUserInfo: ExtendedRequest) => {
     setChangeRequest(newUserInfo);
@@ -59,7 +59,7 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
       oldUserInfo.lastName === newUserInfo.lastName &&
       oldUserInfo.middleName === newUserInfo.middleName &&
       oldUserInfo.description === newUserInfo.description) {
-      removeChanges('profile')
+      removeChanges('profile');
       return;
     }
     addChanges('profile');
@@ -69,7 +69,7 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
     const validationResult = await ProfileSchema.safeParseAsync(changeRequest);
 
     if (!validationResult.success) {
-      const errors = validationResult.error.format()
+      const errors = validationResult.error.format();
       setErrors(errors);
       return validationResult.success;
     }
@@ -77,24 +77,24 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
     if (reduxUser.username !== changeRequest.username) {
       const isUsernameValid = await debounceLogic(changeRequest.username);
       if (!isUsernameValid) {
-        setErrors({...errors, username: {_errors: ['Ім\'я користувача вже використовується']}});
+        setErrors({ ...errors, username: { _errors: ['Ім\'я користувача вже використовується'] } });
         return isUsernameValid;
       }
     }
 
-    setErrors({_errors: []});
+    setErrors({ _errors: [] });
 
     return validationResult.success;
-  }
+  };
 
   const updateProfile = async () => {
     if (changes.length === 0) return;
 
-    enqueueSnackBar('Завантаження...')
+    enqueueSnackBar('Завантаження...');
     const isProfileValid = await handleValidateUpdate();
 
     if (!isProfileValid) {
-      enqueueError('Перевірте дані, та спробуйте ще раз')
+      enqueueError('Перевірте дані, та спробуйте ще раз');
       return;
     }
 
@@ -102,13 +102,13 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
     try {
       for (const change of changes) {
         switch (change) {
-          case "profile":
+          case 'profile':
             await userApi.updateUserProfile(changeRequest);
             break;
-          case "photo":
+          case 'photo':
             newProfileImage = await userApi.setUserImage(changeRequest.image);
             break;
-          case "username":
+          case 'username':
             await userApi.updateUserName(changeRequest.username);
             break;
         }
@@ -120,22 +120,22 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
         profilePhotoUrl: newProfileImage === '' ? reduxUser.profilePhotoUrl : newProfileImage
       });
 
-      const jwt = await userApi.refresh();
-      JWTStorage.setTokensData(jwt)
+      const jwt = await jwtApi.refresh();
+      JWTStorage.setTokensData(jwt);
     } catch (e) {
-      enqueueError('Помилка оновлення')
-      return
+      enqueueError('Помилка оновлення');
+      return;
     }
 
     await queryClient.invalidateQueries([QueryClientConstants.user, oldUserInfo.userName]);
-    setChanges([])
+    setChanges([]);
     handleSettingsButton();
-    enqueueSuccess('Зміни застосовані')
-  }
+    enqueueSuccess('Зміни застосовані');
+  };
 
   return {
     handleUpdateUsername,
     handleUpdateProfileInfo,
     updateProfile
-  }
-}
+  };
+};
