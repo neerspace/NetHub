@@ -55,7 +55,7 @@ async function refreshToken(): Promise<string | null> {
   } catch (e) {
     console.log('token did not refresh', e);
     JWTStorage.clearTokensData();
-    // window.location.href = '/login';
+    window.location.href = '/login';
     return null;
   } finally {
     window.isRefreshing = false;
