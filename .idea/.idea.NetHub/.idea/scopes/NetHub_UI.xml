@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="NetHub.UI" pattern="file[rider.module]:NetHub.UI//*&amp;&amp;!file[rider.module]:NetHub.UI/node_modules//*" />
+</component>

@@ -1,4 +1,4 @@
-import {DateTime} from "luxon";
+import { DateTime } from 'luxon';
 
 export function getTimeFrom(date: string) {
   const a = DateTime.fromISO(date);

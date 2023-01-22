@@ -6,4 +6,4 @@ export const QueryClientConstants = {
   contributors: 'contributors',
   authorization: 'authorization',
   user: 'user'
-}
+};

@@ -1,6 +1,6 @@
-import {extendTheme, StyleFunctionProps} from "@chakra-ui/react";
-import {mode} from '@chakra-ui/theme-tools';
-import {FilledDivConfig} from "../components/UI/FilledDiv";
+import { extendTheme, StyleFunctionProps } from '@chakra-ui/react';
+import { mode } from '@chakra-ui/theme-tools';
+import { FilledDivConfig } from '../components/UI/FilledDiv';
 
 const styles = {
   global: (props: StyleFunctionProps) => ({
@@ -12,10 +12,10 @@ const styles = {
       color: mode('#838383', '#EFEFEF')(props)
     },
     p: {
-      color: mode('#323232', "#EFEFEF")(props)
+      color: mode('#323232', '#EFEFEF')(props)
     },
     a: {
-      color: mode('#323232', "#EFEFEF")(props)
+      color: mode('#323232', '#EFEFEF')(props)
     }
   })
 };
@@ -51,7 +51,7 @@ const components = {
       },
     })
   },
-  FormError:{
+  FormError: {
     baseStyle: {
       text: {
         color: 'red'
@@ -60,7 +60,7 @@ const components = {
   },
   Button: {
     baseStyle: (props: StyleFunctionProps) => ({
-      background: mode('#896DC8', "#835ADF")(props),
+      background: mode('#896DC8', '#835ADF')(props),
       py: '5px',
       px: '15px',
       color: mode('#FFFFFF', '#EFEFEF')(props),

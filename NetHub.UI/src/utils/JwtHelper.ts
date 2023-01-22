@@ -1,4 +1,4 @@
-import {JWTStorage} from "./localStorageProvider";
+import { JWTStorage } from './localStorageProvider';
 
 export function isAccessTokenValid() {
   return JWTStorage.getAccessToken() && new Date(JWTStorage.getAccessTokenExpires()!) > new Date();
