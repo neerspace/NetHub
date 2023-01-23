@@ -45,9 +45,15 @@ export async function waitOrRefreshToken(): Promise<string | null> {
 }
 
 async function refreshToken(): Promise<string | null> {
+  if (window.isRefreshing) {
+    console.log('[JWT] attempt to refresh while another refresh is running!');
+    await waitIfIsRefreshing();
+    return JWTStorage.getAccessToken() || null;
+  }
+  console.log('refreshing:', window.isRefreshing);
+  window.isRefreshing = true;
   console.log('[JWT] refreshing...');
   try {
-    window.isRefreshing = true;
     const jwt = await jwtApi.refresh();
     JWTStorage.setTokensData(jwt);
     console.log('[JWT] token refreshed');
@@ -58,7 +64,7 @@ async function refreshToken(): Promise<string | null> {
     window.location.href = '/login';
     return null;
   } finally {
-    window.isRefreshing = false;
+    setTimeout(() => window.isRefreshing = false, 300);
   }
 }
 
