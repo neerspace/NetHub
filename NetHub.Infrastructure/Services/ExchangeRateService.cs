@@ -1,18 +1,20 @@
 ﻿using LazyCache;
 using Mapster;
 using NeerCore.DependencyInjection;
+using NetHub.Application.Constants;
+using NetHub.Application.Interfaces;
 using NetHub.Application.Models.Currency;
 using Newtonsoft.Json;
 
-namespace NetHub.Infrastructure.Services.Internal.Currency;
+namespace NetHub.Infrastructure.Services;
 
-[Service]
-internal sealed class ExchangeRateService
+[Service(Lifetime = Lifetime.Singleton)]
+internal sealed class ExchangeRateService : IExchangeRateService
 {
-    private const short USD_ISO_CODE = 840;
-    private const short EURO_ISO_CODE = 978;
-    private const short UAH_ISO_CODE = 980;
-    private const string CACHE_KEY = "Monobank";
+    private const short UsdIsoCode = 840;
+    private const short EuroIsoCode = 978;
+    private const short UahIsoCode = 980;
+    private const string CacheKey = "Monobank";
 
     private readonly HttpClient _client;
     private readonly IAppCache _memoryCache;
@@ -20,12 +22,13 @@ internal sealed class ExchangeRateService
     public ExchangeRateService(IHttpClientFactory clientFactory, IAppCache memoryCache)
     {
         _memoryCache = memoryCache;
-        _client = clientFactory.CreateClient("MonobankClient");
+        _client = clientFactory.CreateClient(HttpClientNames.MonobankClient);
     }
 
-    public async Task<ExchangeResponseDto> GetExchangeCurrencies() =>
+
+    public async Task<ExchangeResponseDto> GetExchangeCurrenciesAsync(CancellationToken ct = default) =>
         await _memoryCache
-            .GetOrAddAsync(CACHE_KEY, async entry =>
+            .GetOrAddAsync(CacheKey, async entry =>
             {
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(6);
                 return await UpdateExchangeRatesCache();
@@ -39,10 +42,10 @@ internal sealed class ExchangeRateService
             await message.Content.ReadAsStringAsync())!;
 
         var usdResponse = response.First(r =>
-            r.CurrencyCodeA is USD_ISO_CODE && r.CurrencyCodeB is UAH_ISO_CODE);
+            r.CurrencyCodeA is UsdIsoCode && r.CurrencyCodeB is UahIsoCode);
 
         var euroResponse = response.First(r =>
-            r.CurrencyCodeA is EURO_ISO_CODE && r.CurrencyCodeB is UAH_ISO_CODE);
+            r.CurrencyCodeA is EuroIsoCode && r.CurrencyCodeB is UahIsoCode);
 
         return new()
         {

@@ -27,4 +27,9 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models" />
+    <Folder Include="Services\Internal\Currency" />
+  </ItemGroup>
+
 </Project>

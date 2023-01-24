@@ -7,11 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ardalis.ApiEndpoints" Version="4.0.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
     <PackageReference Include="Google.Apis.Auth.AspNetCore3" Version="1.58.0" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="7.0.1" />
+    <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="7.0.1" />
     <PackageReference Include="NeerCore.Api" Version="2.0.0-alpha7" />
     <PackageReference Include="NeerCore.Logging.NLog" Version="2.0.0-alpha7" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NeerCore.DependencyInjection.Extensions;
+using NetHub.Application.Constants;
 using NetHub.Application.Options;
 using NetHub.Core.Constants;
 using NetHub.Infrastructure.Services.Internal.Sieve;
@@ -25,15 +26,14 @@ public static class DependencyInjection
     {
         var currencyOptions = configuration.GetSection(ConfigSectionNames.CurrencyRate).Get<CurrencyRateOptions>()!;
 
-        services.AddHttpClient("CoinGeckoClient", config =>
+        services.AddHttpClient(HttpClientNames.CoinGeckoClient, config =>
         {
             config.BaseAddress = new Uri(currencyOptions.CoinGeckoApiUrl);
         });
 
-        services.AddHttpClient("MonobankClient", config =>
+        services.AddHttpClient(HttpClientNames.MonobankClient, config =>
         {
             config.BaseAddress = new Uri(currencyOptions.MonobankApiUrl);
-            // config.Re
         });
     }
 
