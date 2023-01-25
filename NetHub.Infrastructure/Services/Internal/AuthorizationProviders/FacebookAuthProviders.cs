@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
 using NeerCore.DependencyInjection;
 using NeerCore.Exceptions;
-using NetHub.Application.Features.Public.Users.Sso;
 using NetHub.Application.Interfaces;
+using NetHub.Application.Models.Jwt;
 using NetHub.Application.Options;
 
 namespace NetHub.Infrastructure.Services.Internal.AuthorizationProviders;

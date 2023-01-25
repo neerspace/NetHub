@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NeerCore.Exceptions;
 using NetHub.Api.Shared.Abstractions;
-using NetHub.Application.Features.Public.Users.Dto;
 using NetHub.Application.Features.Public.Users.RefreshTokens;
-using NetHub.Application.Features.Public.Users.Sso;
+using NetHub.Application.Models.Jwt;
 using NetHub.Application.Options;
 
 namespace NetHub.Api.Areas.Public.Controllers;

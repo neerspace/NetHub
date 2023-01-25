@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using Microsoft.Extensions.Options;
 using NeerCore.DependencyInjection;
 using NetHub.Application.Models;
+using NetHub.Application.Models.Jwt;
 using NetHub.Application.Options;
 using NetHub.Core.Constants;
 using NetHub.Data.SqlServer.Context;

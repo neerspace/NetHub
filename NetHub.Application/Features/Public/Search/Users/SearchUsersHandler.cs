@@ -1,6 +1,5 @@
 ﻿using Mapster;
 using Microsoft.EntityFrameworkCore;
-using NetHub.Application.Features.Public.Users.Dto;
 using NetHub.Application.Tools;
 using NetHub.Data.SqlServer.Entities.Identity;
 

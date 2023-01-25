@@ -1,8 +1,8 @@
 ﻿using Google.Apis.Auth;
 using NeerCore.DependencyInjection;
 using NeerCore.Exceptions;
-using NetHub.Application.Features.Public.Users.Sso;
 using NetHub.Application.Interfaces;
+using NetHub.Application.Models.Jwt;
 
 namespace NetHub.Infrastructure.Services.Internal.AuthorizationProviders;
 

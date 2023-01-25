@@ -1,4 +1,4 @@
-﻿using NetHub.Application.Features.Public.Users.Dto;
+﻿using NetHub.Application.Models.Jwt;
 using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Application.Interfaces;

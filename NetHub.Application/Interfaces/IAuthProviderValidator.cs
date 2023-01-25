@@ -1,4 +1,4 @@
-﻿using NetHub.Application.Features.Public.Users.Sso;
+﻿using NetHub.Application.Models.Jwt;
 
 namespace NetHub.Application.Interfaces;
 

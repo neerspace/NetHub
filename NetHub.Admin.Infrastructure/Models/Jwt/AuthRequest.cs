@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using NeerCore.Application.Abstractions;
 using NetHub.Application.Extensions;
-using NetHub.Application.Features.Public.Users.Dto;
+using NetHub.Application.Models.Jwt;
 
 namespace NetHub.Admin.Infrastructure.Models.Jwt;
 
