@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NetHub.Api.Shared;
 
-namespace NetHub.Api.Shared.Abstractions;
+namespace NetHub.Api.Abstractions;
 
 /// <summary>
 /// Base API controller

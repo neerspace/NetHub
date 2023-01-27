@@ -2,8 +2,8 @@
 using Mapster;
 using NeerCore.DependencyInjection;
 using NetHub.Application.Constants;
-using NetHub.Application.Interfaces;
 using NetHub.Application.Models.Currency;
+using NetHub.Application.Services;
 using Newtonsoft.Json;
 
 namespace NetHub.Infrastructure.Services;

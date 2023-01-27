@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
-using MediatR;
-using NetHub.Application.Interfaces;
+using NetHub.Application.Services;
 using NetHub.Core.Extensions;
 
 namespace NetHub.Application.Models.Jwt;
 
-public sealed class SsoEnterRequest : IRequest<AuthResult>
+public sealed class SsoEnterRequest
 {
     public string Username { get; set; } = default!;
     public string? Email { get; set; } = default!;

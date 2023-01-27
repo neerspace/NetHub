@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NetHub.Api.Shared.Abstractions;
+using NetHub.Api.Abstractions;
 using NetHub.Application.Features.Public.Search.Users;
-using NetHub.Application.Features.Public.Users.Dto;
+using NetHub.Application.Models.Users;
 
 namespace NetHub.Api.Areas.Public.Controllers;
 

@@ -1,6 +1,6 @@
 ﻿using NeerCore.DependencyInjection;
-using NetHub.Application.Interfaces;
 using NetHub.Application.Models.Jwt;
+using NetHub.Application.Services;
 
 namespace NetHub.Infrastructure.Services;
 

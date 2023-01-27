@@ -3,9 +3,9 @@ using Microsoft.Extensions.Options;
 using NeerCore.Exceptions;
 using NetHub.Admin.Api.Abstractions;
 using NetHub.Api.Shared;
-using NetHub.Application.Interfaces;
 using NetHub.Application.Models.Jwt;
 using NetHub.Application.Options;
+using NetHub.Application.Services;
 
 namespace NetHub.Api.Endpoints.Jwt;
 

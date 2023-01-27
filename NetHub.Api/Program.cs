@@ -47,7 +47,7 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
     builder.Services.AddSqlServerDatabase();
     builder.Services.AddInfrastructure(builder.Configuration);
     builder.Services.AddApplication(builder.Configuration);
-    builder.Services.AddWebApi(builder.Configuration);
+    builder.Services.AddWebApi(builder.Configuration, builder.Environment);
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();

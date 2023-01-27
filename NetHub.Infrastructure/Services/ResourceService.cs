@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using NeerCore.DependencyInjection;
 using NetHub.Application.Extensions;
-using NetHub.Application.Interfaces;
+using NetHub.Application.Services;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;

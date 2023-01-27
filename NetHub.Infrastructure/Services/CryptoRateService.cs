@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Primitives;
 using NeerCore.DependencyInjection;
 using NetHub.Application.Constants;
-using NetHub.Application.Interfaces;
 using NetHub.Application.Models.Currency;
+using NetHub.Application.Services;
 
 namespace NetHub.Infrastructure.Services;
 

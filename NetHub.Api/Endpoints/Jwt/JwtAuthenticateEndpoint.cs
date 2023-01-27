@@ -5,8 +5,8 @@ using NeerCore.Exceptions;
 using NetHub.Admin.Api.Abstractions;
 using NetHub.Api.Shared;
 using NetHub.Application.Extensions;
-using NetHub.Application.Interfaces;
 using NetHub.Application.Models.Jwt;
+using NetHub.Application.Services;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
 
@@ -31,8 +31,9 @@ public class JwtAuthenticateEndpoint : Endpoint<SsoEnterRequest, AuthResult>
         _jwtService = jwtService;
     }
 
+
     [HttpPost("jwt/authenticate")]
-    public override async Task<AuthResult> HandleAsync([FromBody] SsoEnterRequest request, CancellationToken ct = default)
+    public override async Task<AuthResult> HandleAsync([FromBody] SsoEnterRequest request, CancellationToken ct)
     {
         // try to get provider login info
         var loginInfo = await GetUserLoginInfoAsync(request.ProviderKey, request.Provider, ct);
