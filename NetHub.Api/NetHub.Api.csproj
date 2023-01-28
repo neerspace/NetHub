@@ -25,6 +25,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Endpoints\ArticleLocalizations" />
+    <Folder Include="Endpoints\Articles\Rate" />
     <Folder Include="wwwroot" />
   </ItemGroup>
 

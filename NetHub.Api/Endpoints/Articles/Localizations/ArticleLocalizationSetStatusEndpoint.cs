@@ -1,29 +1,28 @@
-﻿using MediatR;
+﻿using Microsoft.EntityFrameworkCore;
+using NeerCore.Data.EntityFramework.Extensions;
+using NetHub.Admin.Api.Abstractions;
 using NetHub.Application.Extensions;
+using NetHub.Application.Models.Articles.Localizations;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Enums;
 
-namespace NetHub.Application.Models.Articles.Localizations.Status.Publish;
+namespace NetHub.Api.Endpoints.Articles.Localizations;
 
-internal sealed class SetArticleStatusHandler : AuthorizedHandler<SetArticleStatusRequest>
+internal sealed class ArticleLocalizationSetStatusEndpoint : ActionEndpoint<SetArticleStatusRequest>
 {
-    public SetArticleStatusHandler(IServiceProvider serviceProvider) : base(serviceProvider) { }
-
-
-    public override async Task<Unit> Handle(SetArticleStatusRequest statusRequest, CancellationToken ct)
+    public override async Task HandleAsync(SetArticleStatusRequest statusRequest, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
 
         var localization = await Database.Set<ArticleLocalization>()
             .Include(al => al.Contributors)
-            .FirstOr404Async(al => al.ArticleId == statusRequest.Id && al.LanguageCode == statusRequest.LanguageCode, ct);
+            .FirstOr404Async(al => al.ArticleId == statusRequest.Id
+                && al.LanguageCode == statusRequest.LanguageCode, ct);
 
         CheckStatuses(statusRequest, localization, userId);
 
         await Database.SaveChangesAsync(ct);
-
-        return Unit.Value;
     }
 
     private static void CheckStatuses(SetArticleStatusRequest request, ArticleLocalization localization, long userId)
@@ -33,8 +32,8 @@ internal sealed class SetArticleStatusHandler : AuthorizedHandler<SetArticleStat
             if (localization.Status == ContentStatus.Published)
                 return;
 
-            if (localization.GetAuthorId() != userId ||
-                localization.Status is not
+            if (localization.GetAuthorId() != userId
+                || localization.Status is not
                     (ContentStatus.Draft or ContentStatus.Pending))
                 throw new PermissionsException();
             localization.Status = ContentStatus.Pending;
@@ -42,8 +41,8 @@ internal sealed class SetArticleStatusHandler : AuthorizedHandler<SetArticleStat
 
         if (request.Status == ArticleStatusRequest.UnPublish)
         {
-            if (localization.GetAuthorId() != userId ||
-                localization.Status is not
+            if (localization.GetAuthorId() != userId
+                || localization.Status is not
                     (ContentStatus.Draft or ContentStatus.Published or ContentStatus.Pending))
                 throw new PermissionsException();
             localization.Status = ContentStatus.Draft;

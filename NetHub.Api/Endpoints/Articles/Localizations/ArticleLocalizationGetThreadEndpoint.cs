@@ -1,24 +1,21 @@
-﻿using NetHub.Application.Services;
+﻿using NetHub.Admin.Api.Abstractions;
+using NetHub.Application.Models;
+using NetHub.Application.Models.Articles.Localizations;
+using NetHub.Application.Services;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Entities.Views;
 
-namespace NetHub.Application.Models.Articles.Localizations.Many;
+namespace NetHub.Api.Endpoints.Articles.Localizations;
 
-internal sealed class GetThreadHandler : DbHandler<GetThreadRequest, ExtendedArticleModel[]>
+internal sealed class ArticleLocalizationGetThreadEndpoint : Endpoint<GetThreadRequest, ExtendedArticleModel[]>
 {
-    private readonly IUserProvider _userProvider;
     private readonly IFilterService _filterService;
+    public ArticleLocalizationGetThreadEndpoint(IFilterService filterService) => _filterService = filterService;
 
-    public GetThreadHandler(IServiceProvider serviceProvider, IFilterService filterService) : base(serviceProvider)
+
+    public override async Task<ExtendedArticleModel[]> HandleAsync(GetThreadRequest request, CancellationToken ct)
     {
-        _filterService = filterService;
-        _userProvider = serviceProvider.GetRequiredService<IUserProvider>();
-    }
-
-
-    public override async Task<ExtendedArticleModel[]> Handle(GetThreadRequest request, CancellationToken ct)
-    {
-        var userId = _userProvider.TryGetUserId();
+        var userId = UserProvider.TryGetUserId();
 
         var result = userId != null
             ? GetExtendedArticles(request, ct, userId.Value)
@@ -29,7 +26,6 @@ internal sealed class GetThreadHandler : DbHandler<GetThreadRequest, ExtendedArt
 
     private async Task<ExtendedArticleModel[]> GetSimpleArticles(FilterRequest request, CancellationToken cancel)
     {
-
         if (request.Filters != null && request.Filters.Contains("contributorRole"))
             request.Filters = request.Filters.Replace(",contributorRole==Author", "");
 

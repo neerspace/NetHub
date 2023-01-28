@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NetHub.Admin.Api.Abstractions;
 using NetHub.Api.Shared;
 using NetHub.Application.Models.Articles.Localizations;
+using NetHub.Application.Models.Articles.Rating;
 using NetHub.Data.SqlServer.Entities.Articles;
 
 namespace NetHub.Api.Endpoints.Articles;
@@ -12,7 +13,7 @@ namespace NetHub.Api.Endpoints.Articles;
 public sealed class ArticleRateGetEndpoint : Endpoint<GetArticleRateRequest, RatingModel>
 {
     [HttpGet("articles/{id:long}/rate")]
-    public override async Task<RatingModel> HandleAsync(GetArticleRateRequest request, CancellationToken ct)
+    public override async Task<RatingModel> HandleAsync([FromQuery] GetArticleRateRequest request, CancellationToken ct)
     {
         var rating = await Database.Set<ArticleVote>()
             .Include(ar => ar.Article)

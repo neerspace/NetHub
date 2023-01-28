@@ -1,16 +1,16 @@
-﻿using MediatR;
+﻿using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
+using NetHub.Admin.Api.Abstractions;
+using NetHub.Application.Models.Articles.Localizations;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Enums;
 
-namespace NetHub.Application.Models.Articles.Localizations.Delete;
+namespace NetHub.Api.Endpoints.Articles.Localizations;
 
-internal sealed class DeleteArticleLocalizationHandler : AuthorizedHandler<DeleteArticleLocalizationRequest>
+internal sealed class ArticleLocalizationDeleteEndpoint : ActionEndpoint<DeleteArticleLocalizationRequest>
 {
-    public DeleteArticleLocalizationHandler(IServiceProvider serviceProvider) : base(serviceProvider) { }
-
-    public override async Task<Unit> Handle(DeleteArticleLocalizationRequest request, CancellationToken ct)
+    public override async Task HandleAsync(DeleteArticleLocalizationRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
 
@@ -27,7 +27,5 @@ internal sealed class DeleteArticleLocalizationHandler : AuthorizedHandler<Delet
         Database.Set<ArticleLocalization>().Remove(localization);
 
         await Database.SaveChangesAsync(ct);
-
-        return Unit.Value;
     }
 }

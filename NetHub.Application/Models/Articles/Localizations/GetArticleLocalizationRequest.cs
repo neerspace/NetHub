@@ -1,5 +1,3 @@
-﻿using MediatR;
+﻿namespace NetHub.Application.Models.Articles.Localizations;
 
-namespace NetHub.Application.Models.Articles.Localizations;
-
-public record GetArticleLocalizationRequest(long ArticleId, string LanguageCode) : IRequest<ArticleLocalizationModel>;
+public record GetArticleLocalizationRequest(long ArticleId, string LanguageCode);

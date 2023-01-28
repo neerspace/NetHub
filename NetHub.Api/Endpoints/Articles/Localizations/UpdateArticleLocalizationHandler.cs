@@ -1,7 +1,9 @@
 ﻿using Mapster;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
+using NetHub.Admin.Api.Abstractions;
+using NetHub.Application;
+using NetHub.Application.Models.Articles.Localizations;
 using NetHub.Core.Constants;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities;
@@ -9,21 +11,14 @@ using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Enums;
 
-namespace NetHub.Application.Models.Articles.Localizations.Update;
+namespace NetHub.Api.Endpoints.Articles.Localizations;
 
-internal sealed class UpdateArticleLocalizationHandler : AuthorizedHandler<UpdateArticleLocalizationRequest>
+internal sealed class UpdateArticleLocalizationHandler : ActionEndpoint<UpdateArticleLocalizationRequest>
 {
-    private readonly DbSet<ArticleLocalization> _localizations;
-
-    public UpdateArticleLocalizationHandler(IServiceProvider serviceProvider) : base(serviceProvider)
-    {
-        _localizations = Database.Set<ArticleLocalization>();
-    }
-
-    public override async Task<Unit> Handle(UpdateArticleLocalizationRequest request, CancellationToken ct)
+    public override async Task HandleAsync(UpdateArticleLocalizationRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
-        var localization = await _localizations
+        var localization = await Database.Set<ArticleLocalization>()
             .Include(al => al.Contributors)
             .SingleOrDefaultAsync(al =>
                 al.ArticleId == request.ArticleId && al.LanguageCode == request.OldLanguageCode, ct);
@@ -54,15 +49,14 @@ internal sealed class UpdateArticleLocalizationHandler : AuthorizedHandler<Updat
         localization.LastContributorId = userId;
 
         await Database.SaveChangesAsync(ct);
-
-        return Unit.Value;
     }
 
-    private async Task SetNewLanguageAsync(UpdateArticleLocalizationRequest request, ArticleLocalization localization, CancellationToken ct = default)
+    private async Task SetNewLanguageAsync(UpdateArticleLocalizationRequest request, ArticleLocalization localization, CancellationToken ct)
     {
-        if (_localizations.Count(l =>
+        if (Database.Set<ArticleLocalization>().Count(l =>
                 l.ArticleId == request.ArticleId
-                && l.LanguageCode == request.NewLanguageCode) == 1)
+                && l.LanguageCode == request.NewLanguageCode)
+            == 1)
             throw new ValidationFailedException("NewLanguageCode",
                 "Article Localization with such language already exists");
 
@@ -75,10 +69,7 @@ internal sealed class UpdateArticleLocalizationHandler : AuthorizedHandler<Updat
         localization.LanguageCode = request.NewLanguageCode!;
     }
 
-    private async Task SetContributors(
-        ArticleLocalization localization,
-        IReadOnlyCollection<ArticleContributorModel> requestContributors,
-        CancellationToken ct = default)
+    private async Task SetContributors(ArticleLocalization localization, IReadOnlyCollection<ArticleContributorModel> requestContributors, CancellationToken ct)
     {
         if (requestContributors.FirstOrDefault(a => a.Role == ArticleContributorRole.Author) is not null)
             throw new ApiException("You can not set authors");

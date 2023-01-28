@@ -16,16 +16,16 @@ namespace NetHub.Api.Endpoints.Articles;
 public sealed class ArticleRateSetVoteEndpoint : ActionEndpoint<RateArticleRequest>
 {
     [HttpPost("articles/{id:long}/rate")]
-    public override async Task HandleAsync(RateArticleRequest request, CancellationToken ct)
+    public override async Task HandleAsync([FromQuery] RateArticleRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
 
         var actualVote = await Database.Set<ArticleVote>()
             .Include(av => av.Article)
-            .Where(av => av.ArticleId == request.ArticleId && av.UserId == userId)
+            .Where(av => av.ArticleId == request.Id && av.UserId == userId)
             .FirstOrDefaultAsync(ct);
 
-        var article = await Database.Set<Article>().FirstOr404Async(a => a.Id == request.ArticleId, ct);
+        var article = await Database.Set<Article>().FirstOr404Async(a => a.Id == request.Id, ct);
 
         if (actualVote is null)
         {

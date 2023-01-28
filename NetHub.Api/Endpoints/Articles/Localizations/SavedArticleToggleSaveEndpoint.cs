@@ -1,29 +1,31 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
+using NeerCore.Data.EntityFramework.Extensions;
+using NetHub.Admin.Api.Abstractions;
+using NetHub.Application.Models.Articles.Localizations;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.Articles;
 
-namespace NetHub.Application.Models.Articles.Localizations.ToggleSaving;
+namespace NetHub.Api.Endpoints.Articles.Localizations;
 
-internal sealed class ToggleArticleSaveHandler : AuthorizedHandler<ToggleArticleSaveRequest>
+internal sealed class SavedArticleToggleSaveEndpoint : ActionEndpoint<ToggleArticleSaveRequest>
 {
-    public ToggleArticleSaveHandler(IServiceProvider serviceProvider) : base(serviceProvider) { }
-
-    public override async Task<Unit> Handle(ToggleArticleSaveRequest request, CancellationToken ct)
+    public override async Task<Unit> HandleAsync(ToggleArticleSaveRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
 
         var savedArticleEntity = await Database.Set<SavedArticle>()
             .Include(sa => sa.Localization)
-            .Where(sa => sa.Localization != null &&
-                         sa.Localization.ArticleId == request.ArticleId &&
-                         sa.Localization.LanguageCode == request.LanguageCode)
+            .Where(sa => sa.Localization != null
+                && sa.Localization.ArticleId == request.ArticleId
+                && sa.Localization.LanguageCode == request.LanguageCode)
             .FirstOrDefaultAsync(ct);
 
         if (savedArticleEntity is null)
         {
             var localization = await Database.Set<ArticleLocalization>()
-                .Where(al => al.ArticleId == request.ArticleId &&
-                             al.LanguageCode == request.LanguageCode)
+                .Where(al => al.ArticleId == request.ArticleId
+                    && al.LanguageCode == request.LanguageCode)
                 .FirstOr404Async(ct);
 
             await Database.Set<SavedArticle>().AddAsync(new SavedArticle

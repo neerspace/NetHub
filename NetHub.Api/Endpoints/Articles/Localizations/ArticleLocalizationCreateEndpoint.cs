@@ -14,7 +14,7 @@ using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Enums;
 
-namespace NetHub.Api.Endpoints.ArticleLocalizations;
+namespace NetHub.Api.Endpoints.Articles.Localizations;
 
 [Authorize]
 [Tags(TagNames.ArticleLocalizations)]
