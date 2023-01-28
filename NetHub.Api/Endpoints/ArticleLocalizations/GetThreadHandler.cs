@@ -1,5 +1,4 @@
-﻿using NetHub.Application.Models.Articles.Localizations.GetSaving.All;
-using NetHub.Application.Services;
+﻿using NetHub.Application.Services;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Entities.Views;
 

@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities.Articles;

@@ -1,6 +1,4 @@
-﻿using Mapster;
-using Microsoft.EntityFrameworkCore;
-using NetHub.Data.SqlServer.Entities.Views;
+﻿using NetHub.Data.SqlServer.Entities.Views;
 
 namespace NetHub.Application.Models.Articles.Localizations.GetSaving.All;
 

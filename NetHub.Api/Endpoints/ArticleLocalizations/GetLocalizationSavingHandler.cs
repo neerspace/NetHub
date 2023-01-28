@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NetHub.Data.SqlServer.Entities;
+﻿using NetHub.Data.SqlServer.Entities;
 
 namespace NetHub.Application.Models.Articles.Localizations.GetSaving.One;
 

@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using NeerCore.Exceptions;
 using NetHub.Api.Abstractions;
-using NetHub.Application.Models.Jwt;
-using NetHub.Application.Options;
 
 namespace NetHub.Api.Areas.Public.Controllers;
 

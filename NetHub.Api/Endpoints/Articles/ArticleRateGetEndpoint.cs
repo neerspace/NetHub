@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetHub.Admin.Api.Abstractions;
-using NetHub.Api.Endpoints.Articles.Ratings.Get;
 using NetHub.Api.Shared;
 using NetHub.Application.Models.Articles.Localizations;
 using NetHub.Data.SqlServer.Entities.Articles;

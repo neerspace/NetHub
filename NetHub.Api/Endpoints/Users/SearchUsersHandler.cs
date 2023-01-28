@@ -1,6 +1,4 @@
-﻿using Mapster;
-using Microsoft.EntityFrameworkCore;
-using NetHub.Application.Models.Users;
+﻿using NetHub.Application.Models.Users;
 using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Application.Features.Public.Search.Users;

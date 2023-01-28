@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using NetHub.Api.Abstractions;
-using NetHub.Application.Models.Me;
-using NetHub.Application.Models.Users;
+﻿using NetHub.Api.Abstractions;
 
 namespace NetHub.Api.Areas.Public.Controllers;
 

@@ -8,7 +8,6 @@ using NeerCore.Exceptions;
 using NetHub.Admin.Api.Abstractions;
 using NetHub.Api.Shared;
 using NetHub.Application.Models.Articles.Localizations;
-using NetHub.Application.Models.Articles.Localizations.Create;
 using NetHub.Core.Constants;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities.Articles;

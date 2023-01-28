@@ -1,6 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
-using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Application.Extensions;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities.Articles;

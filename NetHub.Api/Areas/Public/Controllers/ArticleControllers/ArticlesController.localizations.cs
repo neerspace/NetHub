@@ -3,14 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using NetHub.Api.Abstractions;
 using NetHub.Api.Shared;
 using NetHub.Application.Models.Articles.Localizations;
-using NetHub.Application.Models.Articles.Localizations.Create;
-using NetHub.Application.Models.Articles.Localizations.Delete;
-using NetHub.Application.Models.Articles.Localizations.GetSaving.All;
-using NetHub.Application.Models.Articles.Localizations.GetSaving.One;
-using NetHub.Application.Models.Articles.Localizations.Many;
-using NetHub.Application.Models.Articles.Localizations.One;
-using NetHub.Application.Models.Articles.Localizations.ToggleSaving;
-using NetHub.Application.Models.Articles.Localizations.Update;
 
 namespace NetHub.Api.Areas.Public.Controllers.ArticleControllers;
 

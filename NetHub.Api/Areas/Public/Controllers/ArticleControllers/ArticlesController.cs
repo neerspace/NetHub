@@ -4,7 +4,6 @@ using NetHub.Api.Abstractions;
 using NetHub.Application.Extensions;
 using NetHub.Application.Models.Articles;
 using NetHub.Application.Models.Articles.Localizations;
-using NetHub.Application.Models.Articles.Localizations.GetSaving.All;
 using NetHub.Application.Models.Articles.Rating;
 using NetHub.Application.Models.Users;
 using NetHub.Data.SqlServer.Enums;
