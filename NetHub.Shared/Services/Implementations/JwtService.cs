@@ -13,9 +13,8 @@ using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Shared.Extensions;
 using NetHub.Shared.Models.Jwt;
 using NetHub.Shared.Options;
-using NetHub.Shared.Services;
 
-namespace NetHub.Shared.Implementations;
+namespace NetHub.Shared.Services.Implementations;
 
 [Service]
 public sealed class JwtService : IJwtService

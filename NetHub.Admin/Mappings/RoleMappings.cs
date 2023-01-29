@@ -2,10 +2,11 @@ using Mapster;
 using NetHub.Admin.Models.Roles;
 using NetHub.Core.Constants;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Shared.Abstractions;
 
-namespace NetHub.Admin.Mappers;
+namespace NetHub.Admin.Mappings;
 
-public class RoleMapper : IRegister
+public class RoleMappings : IModelMappings
 {
     public void Register(TypeAdapterConfig config)
     {

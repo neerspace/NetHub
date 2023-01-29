@@ -3,7 +3,7 @@ using NetHub.Shared.Api.Extensions;
 
 namespace NetHub.Shared.Api;
 
-public class PermissionsMetadata
+public static class PermissionsMetadata
 {
     public static readonly PermissionInfoAttribute[] AllPermissions = Enum.GetValues<Permission>()
         .Select(p => p.GetPermissionInfo()).ToArray();

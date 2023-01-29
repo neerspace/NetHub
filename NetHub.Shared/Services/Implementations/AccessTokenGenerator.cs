@@ -10,7 +10,7 @@ using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Shared.Models.Jwt;
 using NetHub.Shared.Options;
 
-namespace NetHub.Shared.Implementations;
+namespace NetHub.Shared.Services.Implementations;
 
 [Service]
 public sealed class AccessTokenGenerator
