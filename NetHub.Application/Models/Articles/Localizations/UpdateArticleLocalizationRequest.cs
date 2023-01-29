@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿namespace NetHub.Application.Models.Articles.Localizations;
 
-namespace NetHub.Application.Models.Articles.Localizations;
-
-public record UpdateArticleLocalizationRequest
+public record UpdateArticleLocalizationRequest : ArticleLocalizationQuery
 {
-    [FromRoute] public long ArticleId { get; set; }
-    [FromRoute(Name = "lang")] public string OldLanguageCode { get; set; } = default!;
     public string? NewLanguageCode { get; set; }
     public string? Title { get; set; }
     public string? Description { get; set; }

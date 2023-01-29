@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Routing;
 using NeerCore.Exceptions;
 
-namespace NetHub.Admin.Api.Swagger;
+namespace NetHub.Api.Shared.Swagger;
 
 public static class NSwagEndpointNameFactory
 {

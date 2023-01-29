@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
-using NetHub.Admin.Api.Abstractions;
 using NetHub.Api.Shared;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Models.Articles.Localizations;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities.Articles;
@@ -14,16 +14,16 @@ namespace NetHub.Api.Endpoints.Articles.Localizations;
 [Authorize]
 [Tags(TagNames.ArticleLocalizations)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleLocalizationDeleteEndpoint : ActionEndpoint<DeleteArticleLocalizationRequest>
+public sealed class ArticleLocalizationDeleteEndpoint : ActionEndpoint<ArticleLocalizationQuery>
 {
     [HttpDelete("articles/{id:long}/{lang:alpha:length(2)}")]
-    public override async Task HandleAsync(DeleteArticleLocalizationRequest request, CancellationToken ct)
+    public override async Task HandleAsync(ArticleLocalizationQuery request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
 
         var localization = await Database.Set<ArticleLocalization>()
             .Include(al => al.Contributors)
-            .SingleOrDefaultAsync(al => al.ArticleId == request.ArticleId && al.LanguageCode == request.LanguageCode, ct);
+            .SingleOrDefaultAsync(al => al.ArticleId == request.Id && al.LanguageCode == request.LanguageCode, ct);
 
         if (localization is null)
             throw new NotFoundException("No such article localization");

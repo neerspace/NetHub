@@ -5,7 +5,7 @@ using NetHub.Application.Models;
 using NetHub.Application.Services;
 using NetHub.Data.SqlServer.Context;
 
-namespace NetHub.Admin.Api.Abstractions;
+namespace NetHub.Api.Shared.Abstractions;
 
 [Route("v{version:apiVersion}")]
 [Produces("application/json")]

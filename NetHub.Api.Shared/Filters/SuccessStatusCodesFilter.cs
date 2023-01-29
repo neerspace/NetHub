@@ -1,7 +1,8 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace NetHub.Admin.Api.Filters;
+namespace NetHub.Api.Shared.Filters;
 
 public class SuccessStatusCodesFilter : IResultFilter
 {

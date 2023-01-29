@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NeerCore.Exceptions;
-using NetHub.Admin.Api.Abstractions;
 using NetHub.Admin.Infrastructure.Models.Jwt;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Models.Jwt;
 using NetHub.Data.SqlServer.Context;

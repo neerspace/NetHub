@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using NetHub.Admin.Api.Abstractions;
 using NetHub.Api.Shared;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Models.Currency;
 using NetHub.Application.Services;
 
@@ -21,7 +21,7 @@ public class CurrencyRatesGetEndpoint : ResultEndpoint<CurrenciesResponse>
 
 
     [HttpGet("currency-rates")]
-    public override async Task<CurrenciesResponse> HandleAsync(CancellationToken ct = default)
+    public override async Task<CurrenciesResponse> HandleAsync(CancellationToken ct)
     {
         return new CurrenciesResponse
         {

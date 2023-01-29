@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NeerCore.Exceptions;
-using NetHub.Admin.Api.Abstractions;
 using NetHub.Api.Shared;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Models.Jwt;
 using NetHub.Application.Options;
 using NetHub.Application.Services;
@@ -24,7 +24,7 @@ public class JwtRefreshTokenEndpoint : ResultEndpoint<AuthResult>
 
 
     [HttpPost("jwt/refresh")]
-    public override async Task<AuthResult> HandleAsync(CancellationToken ct = default)
+    public override async Task<AuthResult> HandleAsync(CancellationToken ct)
     {
         if (HttpContext.Request.Cookies.TryGetValue(_jwtOptions.RefreshToken.CookieName, out var refreshToken))
             return await _jwtService.RefreshAsync(refreshToken, ct);

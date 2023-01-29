@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NeerCore.Exceptions;
-using NetHub.Admin.Api.Abstractions;
 using NetHub.Api.Shared;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Extensions;
 using NetHub.Application.Models.Users;
 using NetHub.Application.Services;

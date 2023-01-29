@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NeerCore.Data.EntityFramework.Extensions;
-using NetHub.Admin.Api.Abstractions;
 using NetHub.Api.Shared;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
 

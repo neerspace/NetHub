@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NetHub.Admin.Api.Abstractions;
 using NetHub.Api.Shared;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Models;
 using NetHub.Application.Models.Articles.Localizations;
 using NetHub.Application.Services;
@@ -11,13 +11,13 @@ namespace NetHub.Api.Endpoints.Articles.Localizations;
 
 [Tags(TagNames.ArticleLocalizations)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleLocalizationGetThreadEndpoint : Endpoint<ArticlesFilterRequest, ExtendedArticleModel[]>
+public sealed class ArticleLocalizationGetThreadEndpoint : Endpoint<ArticleLocalizationFilter, ExtendedArticleModel[]>
 {
     private readonly IFilterService _filterService;
     public ArticleLocalizationGetThreadEndpoint(IFilterService filterService) => _filterService = filterService;
 
     [HttpGet("articles/{lang:alpha:length(2)}/search")]
-    public override async Task<ExtendedArticleModel[]> HandleAsync(ArticlesFilterRequest request, CancellationToken ct)
+    public override async Task<ExtendedArticleModel[]> HandleAsync(ArticleLocalizationFilter request, CancellationToken ct)
     {
         var userId = UserProvider.TryGetUserId();
 

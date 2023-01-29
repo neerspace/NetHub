@@ -1,16 +1,9 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
 
 namespace NetHub.Application.Models.Articles.Localizations;
 
-public sealed record CreateArticleLocalizationRequest
+public sealed record CreateArticleLocalizationRequest : ArticleLocalizationQuery
 {
-    [FromRoute]
-    public long ArticleId { get; set; }
-
-    [FromRoute(Name = "lang")]
-    public string LanguageCode { get; set; } = default!;
-
     public string Title { get; set; } = default!;
     public string Description { get; set; } = default!;
     public string Html { get; set; } = default!;

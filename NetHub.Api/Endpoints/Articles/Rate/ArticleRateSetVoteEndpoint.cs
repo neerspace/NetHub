@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.EntityFramework.Extensions;
-using NetHub.Admin.Api.Abstractions;
 using NetHub.Api.Shared;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Models.Articles.Rating;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Enums;
 
-namespace NetHub.Api.Endpoints.Articles;
+namespace NetHub.Api.Endpoints.Articles.Rate;
 
 [Authorize]
 [Tags(TagNames.Articles)]

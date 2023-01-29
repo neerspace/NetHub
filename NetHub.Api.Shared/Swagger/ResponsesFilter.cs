@@ -2,7 +2,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace NetHub.Admin.Api.Swagger;
+namespace NetHub.Api.Shared.Swagger;
 
 public sealed class ResponsesFilter : IDocumentFilter
 {

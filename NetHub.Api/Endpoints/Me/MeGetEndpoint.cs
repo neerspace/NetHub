@@ -2,8 +2,8 @@ using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NetHub.Admin.Api.Abstractions;
 using NetHub.Api.Shared;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Extensions;
 using NetHub.Application.Models.Users;
 using NetHub.Data.SqlServer.Entities.Identity;
@@ -20,7 +20,7 @@ public class MeGetEndpoint : ResultEndpoint<UserDto>
 
 
     [HttpGet("me")]
-    public override async Task<UserDto> HandleAsync(CancellationToken ct = default)
+    public override async Task<UserDto> HandleAsync(CancellationToken ct)
     {
         var userId = UserProvider.UserId;
         var user = await _userManager.FindByIdAsync(userId);

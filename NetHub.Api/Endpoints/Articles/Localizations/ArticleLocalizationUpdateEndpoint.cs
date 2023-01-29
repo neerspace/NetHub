@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
-using NetHub.Admin.Api.Abstractions;
 using NetHub.Api.Shared;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application;
 using NetHub.Application.Models.Articles.Localizations;
 using NetHub.Core.Constants;
@@ -28,7 +28,7 @@ public sealed class ArticleLocalizationUpdateEndpoint : ActionEndpoint<UpdateArt
         var localization = await Database.Set<ArticleLocalization>()
             .Include(al => al.Contributors)
             .SingleOrDefaultAsync(al =>
-                al.ArticleId == request.ArticleId && al.LanguageCode == request.OldLanguageCode, ct);
+                al.ArticleId == request.Id && al.LanguageCode == request.LanguageCode, ct);
         if (localization is null)
             throw new NotFoundException("No such article localization");
 
@@ -43,7 +43,7 @@ public sealed class ArticleLocalizationUpdateEndpoint : ActionEndpoint<UpdateArt
         if (request.Html is not null)
         {
             localization.Html = request.Html;
-            await HtmlUtility.CheckLinks(Database, request.ArticleId, request.Html);
+            await HtmlUtility.CheckLinks(Database, request.Id, request.Html);
         }
 
         if (request.Contributors is not null)
@@ -60,14 +60,14 @@ public sealed class ArticleLocalizationUpdateEndpoint : ActionEndpoint<UpdateArt
 
     private async Task SetNewLanguageAsync(UpdateArticleLocalizationRequest request, ArticleLocalization localization, CancellationToken ct)
     {
-        if (Database.Set<ArticleLocalization>().Count(l =>
-                l.ArticleId == request.ArticleId
-                && l.LanguageCode == request.NewLanguageCode)
+        if (await Database.Set<ArticleLocalization>().CountAsync(l =>
+                l.ArticleId == request.Id
+                && l.LanguageCode == request.NewLanguageCode, ct)
             == 1)
             throw new ValidationFailedException("NewLanguageCode",
                 "Article Localization with such language already exists");
 
-        if (request.OldLanguageCode == ProjectConstants.UA)
+        if (request.LanguageCode == ProjectConstants.UA)
             throw new ValidationFailedException("NewLanguageCode", "There are must be one localization in ukrainian");
 
         if (await Database.Set<Language>().FirstOrDefaultAsync(l => l.Code == request.NewLanguageCode, ct) is null)
@@ -81,10 +81,8 @@ public sealed class ArticleLocalizationUpdateEndpoint : ActionEndpoint<UpdateArt
         if (requestContributors.FirstOrDefault(a => a.Role == ArticleContributorRole.Author) is not null)
             throw new ApiException("You can not set authors");
 
-        var newContributors =
-            localization.Contributors
-                .Where(c => c.Role == ArticleContributorRole.Author)
-                .ToList();
+        var newContributors = localization.Contributors
+            .Where(c => c.Role == ArticleContributorRole.Author).ToList();
 
         foreach (var contributor in requestContributors)
         {

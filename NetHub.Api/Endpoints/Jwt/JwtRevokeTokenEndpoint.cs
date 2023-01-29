@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using NetHub.Admin.Api.Abstractions;
 using NetHub.Api.Shared;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Options;
 
 namespace NetHub.Api.Endpoints.Jwt;
@@ -15,7 +15,7 @@ public class JwtRevokeTokenEndpoint : ActionEndpoint
 
 
     [HttpDelete("auth/revoke-token")]
-    public override Task HandleAsync(CancellationToken ct = default)
+    public override Task HandleAsync(CancellationToken ct)
     {
         Response.Cookies.Delete(_options.RefreshToken.CookieName);
         return Task.CompletedTask;

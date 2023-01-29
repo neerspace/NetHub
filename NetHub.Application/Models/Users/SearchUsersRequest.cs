@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
-using MediatR;
 
 namespace NetHub.Application.Models.Users;
 
-public sealed record SearchUsersRequest(string Username) : IRequest<PrivateUserDto[]>;
+public sealed record SearchUsersRequest(string Username);
 
 internal sealed class SearchUserValidator : AbstractValidator<SearchUsersRequest>
 {

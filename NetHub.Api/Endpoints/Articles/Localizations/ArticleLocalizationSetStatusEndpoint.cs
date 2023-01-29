@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.EntityFramework.Extensions;
-using NetHub.Admin.Api.Abstractions;
 using NetHub.Api.Shared;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Extensions;
 using NetHub.Application.Models.Articles.Localizations;
 using NetHub.Core.Exceptions;

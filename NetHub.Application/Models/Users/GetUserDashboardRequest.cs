@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
-using MediatR;
 
 namespace NetHub.Application.Models.Users;
 
-public sealed record GetUserDashboardRequest(string UserName) : IRequest<DashboardDto>;
+public sealed record GetUserDashboardRequest(string UserName);
 
 internal sealed class GetUserDashboardValidator : AbstractValidator<GetUserDashboardRequest>
 {

@@ -2,7 +2,6 @@
 
 namespace NetHub.Application.Models.Articles.Localizations;
 
-// TODO: I prefer to use classes instead of records for types where we have a lot of props
 public sealed class ArticleLocalizationModel
 {
     public long Id { get; set; }

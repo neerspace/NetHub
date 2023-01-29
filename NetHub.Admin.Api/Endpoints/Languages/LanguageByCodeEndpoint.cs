@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.EntityFramework.Extensions;
-using NetHub.Admin.Api.Abstractions;
-using NetHub.Admin.Api.Swagger;
 using NetHub.Admin.Infrastructure.Models.Languages;
 using NetHub.Api.Shared;
+using NetHub.Api.Shared.Abstractions;
+using NetHub.Api.Shared.Swagger;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
 

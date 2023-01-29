@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using MediatR;
 
 namespace NetHub.Application.Models.Articles;
 
@@ -7,7 +6,7 @@ public sealed record CreateArticleRequest(
     string Name,
     string[]? Tags,
     string? OriginalArticleLink
-) : IRequest<ArticleModel>;
+);
 
 internal sealed class CreateArticleValidator : AbstractValidator<CreateArticleRequest>
 {

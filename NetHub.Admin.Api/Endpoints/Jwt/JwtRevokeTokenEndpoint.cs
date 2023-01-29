@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using NetHub.Admin.Api.Abstractions;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Options;
 
 namespace NetHub.Admin.Api.Endpoints.Jwt;

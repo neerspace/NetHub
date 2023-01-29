@@ -1,4 +1,4 @@
-namespace NetHub.Admin.Api.Swagger;
+namespace NetHub.Api.Shared.Swagger;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public sealed class ClientSideAttribute : Attribute

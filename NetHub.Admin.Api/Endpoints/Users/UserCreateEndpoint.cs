@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
-using NetHub.Admin.Api.Abstractions;
 using NetHub.Admin.Infrastructure.Models.Users;
 using NetHub.Api.Shared;
+using NetHub.Api.Shared.Abstractions;
 using NetHub.Application.Extensions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
@@ -29,7 +29,7 @@ public sealed class UserCreateEndpoint : Endpoint<UserCreateRequest, UserModel>
 
 
     [HttpPost("users")]
-    public override async Task<UserModel> HandleAsync([FromBody] UserCreateRequest request, CancellationToken ct = default)
+    public override async Task<UserModel> HandleAsync([FromBody] UserCreateRequest request, CancellationToken ct)
     {
         if (await _database.Set<AppUser>().Where(e => e.NormalizedUserName == request.UserName.ToUpper()).AnyAsync(ct))
             throw new ValidationFailedException($"User with given username '{nameof(UserCreateRequest.UserName)}' already exists");
