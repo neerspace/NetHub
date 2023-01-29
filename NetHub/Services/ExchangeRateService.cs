@@ -1,7 +1,7 @@
 ﻿using LazyCache;
 using Mapster;
 using NeerCore.DependencyInjection;
-using NetHub.Shared.Constants;
+using NetHub.Constants;
 using NetHub.Shared.Models.Currency;
 using NetHub.Shared.Services;
 using Newtonsoft.Json;

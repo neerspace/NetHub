@@ -1,4 +1,4 @@
-namespace NetHub.Shared.Constants;
+namespace NetHub.Constants;
 
 public class HttpClientNames
 {

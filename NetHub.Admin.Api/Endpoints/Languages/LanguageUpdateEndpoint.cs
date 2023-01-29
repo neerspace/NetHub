@@ -7,6 +7,7 @@ using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
+using NetHub.Shared.Api.Constants;
 
 namespace NetHub.Admin.Api.Endpoints.Languages;
 
@@ -20,7 +21,7 @@ public sealed class LanguageUpdateEndpoint : ActionEndpoint<LanguageModel>
 
 
     [HttpPut("languages")]
-    public override async Task HandleAsync([FromBody] LanguageModel request, CancellationToken ct = default)
+    public override async Task HandleAsync([FromBody] LanguageModel request, CancellationToken ct)
     {
         var language = await _database.Set<Language>().FirstOr404Async(l => l.Code == request.Code, ct);
         request.Adapt(language);

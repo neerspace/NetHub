@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Api.Options;
 
 namespace NetHub.Shared.Api.Extensions;

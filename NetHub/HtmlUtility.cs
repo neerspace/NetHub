@@ -4,7 +4,7 @@ using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.Articles;
 
-namespace NetHub.Shared;
+namespace NetHub;
 
 public static class HtmlUtility
 {

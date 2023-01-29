@@ -7,9 +7,10 @@ using NeerCore.Exceptions;
 using NetHub.Admin.Models.Users;
 using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
-using NetHub.Application.Extensions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Extensions;
 
 namespace NetHub.Admin.Api.Endpoints.Users;
 

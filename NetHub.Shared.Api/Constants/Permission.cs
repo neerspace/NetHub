@@ -1,4 +1,4 @@
-namespace NetHub.Shared.Api;
+namespace NetHub.Shared.Api.Constants;
 
 /// <summary>
 /// Required permission value pattern:

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
+using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Models.Currency;
 using NetHub.Shared.Services;
 

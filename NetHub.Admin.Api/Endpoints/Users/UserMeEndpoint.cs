@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Admin.Models.Users;
 using NetHub.Shared.Api.Abstractions;
-using NetHub.Application.Interfaces;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Shared.Services;
 
 namespace NetHub.Admin.Api.Endpoints.Users;
 
@@ -26,7 +26,7 @@ public class UserMeEndpoint : ResultEndpoint<UserModel>
 
 
     [HttpGet("users/me")]
-    public override async Task<UserModel> HandleAsync(CancellationToken ct = default)
+    public override async Task<UserModel> HandleAsync(CancellationToken ct)
     {
         var id = _userProvider.UserId;
         var user = await _database.Set<AppUser>().FirstOr404Async(u => u.Id == id, ct);

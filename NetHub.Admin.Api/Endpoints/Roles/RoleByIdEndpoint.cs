@@ -10,6 +10,7 @@ using NetHub.Shared.Api.Swagger;
 using NetHub.Core.Constants;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Shared.Api.Constants;
 
 namespace NetHub.Admin.Api.Endpoints.Roles;
 
@@ -23,7 +24,7 @@ public class RoleByIdEndpoint : Endpoint<long, RoleModel>
 
 
     [HttpGet("roles/{id:long}"), ClientSide(ActionName = "getById")]
-    public override async Task<RoleModel> HandleAsync([FromRoute] long id, CancellationToken ct = default)
+    public override async Task<RoleModel> HandleAsync([FromRoute] long id, CancellationToken ct)
     {
         var role = await _database.Set<AppRole>()
             .Include(r => r.RoleClaims!.Where(rc => rc.ClaimType == Claims.Permission))

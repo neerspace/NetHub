@@ -6,16 +6,16 @@ using Microsoft.Extensions.Options;
 using NeerCore.Data.EntityFramework.Extensions;
 using NeerCore.DependencyInjection;
 using NeerCore.Exceptions;
-using NetHub.Shared.Models.Jwt;
-using NetHub.Shared.Options;
-using NetHub.Shared.Services;
 using NetHub.Core.Constants;
 using NetHub.Core.Enums;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
-using NetHub.Extensions;
+using NetHub.Shared.Extensions;
+using NetHub.Shared.Models.Jwt;
+using NetHub.Shared.Options;
+using NetHub.Shared.Services;
 
-namespace NetHub.Services;
+namespace NetHub.Shared.Implementations;
 
 [Service]
 public sealed class JwtService : IJwtService

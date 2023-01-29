@@ -6,8 +6,9 @@ using NeerCore.Exceptions;
 using NetHub.Admin.Models.Users;
 using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
-using NetHub.Application.Extensions;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Extensions;
 
 namespace NetHub.Admin.Api.Endpoints.Users;
 
@@ -21,10 +22,10 @@ public sealed class UserUpdateEndpoint : ActionEndpoint<UserUpdateRequest>
 
 
     [HttpPut("users")]
-    public override async Task HandleAsync([FromBody] UserUpdateRequest request, CancellationToken ct = default)
+    public override async Task HandleAsync([FromBody] UserUpdateRequest request, CancellationToken ct)
     {
         await Task.Delay(2000, ct);
-        var user = await _userManager.FindByIdAsync(request.Id);
+        var user = await _userManager.GetByIdAsync(request.Id);
         if (user is null)
             throw new NotFoundException($"User with Id '{request.Id}' does not exist");
 

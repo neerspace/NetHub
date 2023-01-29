@@ -3,7 +3,7 @@ using Mapster;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Primitives;
 using NeerCore.DependencyInjection;
-using NetHub.Shared.Constants;
+using NetHub.Constants;
 using NetHub.Shared.Models.Currency;
 using NetHub.Shared.Services;
 

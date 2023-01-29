@@ -5,6 +5,7 @@ using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
+using NetHub.Shared.Api.Constants;
 
 namespace NetHub.Admin.Api.Endpoints.Languages;
 
@@ -18,7 +19,7 @@ public sealed class LanguageDeleteEndpoint : ActionEndpoint<string>
 
 
     [HttpDelete("languages/{code:alpha}")]
-    public override async Task HandleAsync([FromRoute] string code, CancellationToken ct = default)
+    public override async Task HandleAsync([FromRoute] string code, CancellationToken ct)
     {
         var language = await _database.Set<Language>().FirstOr404Async(l => l.Code == code, ct);
         _database.Set<Language>().Remove(language);

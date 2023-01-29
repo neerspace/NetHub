@@ -5,6 +5,7 @@ using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Shared.Api.Constants;
 
 namespace NetHub.Admin.Api.Endpoints.Roles;
 
@@ -18,7 +19,7 @@ public class RoleDeleteEndpoint : ActionEndpoint<long>
 
 
     [HttpDelete("roles/{id:long}")]
-    public override async Task HandleAsync([FromRoute] long id, CancellationToken ct = default)
+    public override async Task HandleAsync([FromRoute] long id, CancellationToken ct)
     {
         var role = await _database.Set<AppRole>().FirstOr404Async(r => r.Id == id, ct);
         _database.Set<AppRole>().Remove(role);

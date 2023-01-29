@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using NetHub.Admin.Models.Languages;
 using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
+using NetHub.Shared.Api.Constants;
 
 namespace NetHub.Api.Endpoints.Languages;
 

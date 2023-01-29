@@ -4,9 +4,10 @@ using NetHub.Admin.Models.Users;
 using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Swagger;
-using NetHub.Application.Interfaces;
-using NetHub.Application.Models;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Models;
+using NetHub.Shared.Services;
 
 namespace NetHub.Admin.Api.Endpoints.Users;
 
@@ -20,7 +21,7 @@ public sealed class UserFilterEndpoint : FilterEndpoint<FilterRequest, UserModel
 
 
     [HttpGet("users"), ClientSide(ActionName = "filter")]
-    public override async Task<Filtered<UserModel>> HandleAsync([FromQuery] FilterRequest request, CancellationToken ct = default)
+    public override async Task<Filtered<UserModel>> HandleAsync([FromQuery] FilterRequest request, CancellationToken ct)
     {
         return await _filterService.FilterWithCountAsync<AppUser, UserModel>(request, ct);
     }

@@ -6,6 +6,7 @@ using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Models.Articles;
 using NetHub.Models.Users;
+using NetHub.Shared.Api.Constants;
 
 namespace NetHub.Api.Endpoints.Users;
 

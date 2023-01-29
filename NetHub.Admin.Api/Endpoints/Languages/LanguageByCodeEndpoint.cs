@@ -9,6 +9,7 @@ using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Swagger;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
+using NetHub.Shared.Api.Constants;
 
 namespace NetHub.Admin.Api.Endpoints.Languages;
 
@@ -22,7 +23,7 @@ public sealed class LanguageByCodeEndpoint : Endpoint<string, LanguageModel>
 
 
     [HttpGet("languages/{code:alpha}"), ClientSide(ActionName = "getByCode")]
-    public override async Task<LanguageModel> HandleAsync([FromRoute] string code, CancellationToken ct = default)
+    public override async Task<LanguageModel> HandleAsync([FromRoute] string code, CancellationToken ct)
     {
         var language = await _database.Set<Language>().AsNoTracking().FirstOr404Async(l => l.Code == code, ct);
         return language.Adapt<LanguageModel>();

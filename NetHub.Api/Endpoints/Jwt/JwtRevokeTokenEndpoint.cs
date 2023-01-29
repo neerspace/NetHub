@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
+using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Options;
 
 namespace NetHub.Api.Endpoints.Jwt;

@@ -6,6 +6,7 @@ using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Models.Users;
 using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
+using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Extensions;
 
 namespace NetHub.Api.Endpoints.Me;

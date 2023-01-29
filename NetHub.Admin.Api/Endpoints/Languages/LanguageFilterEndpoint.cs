@@ -4,9 +4,10 @@ using NetHub.Admin.Models.Languages;
 using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Swagger;
-using NetHub.Application.Interfaces;
-using NetHub.Application.Models;
 using NetHub.Data.SqlServer.Entities;
+using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Models;
+using NetHub.Shared.Services;
 
 namespace NetHub.Admin.Api.Endpoints.Languages;
 
@@ -20,7 +21,7 @@ public sealed class LanguageFilterEndpoint : FilterEndpoint<LanguageFilterReques
 
 
     [HttpGet("languages"), ClientSide(ActionName = "filter")]
-    public override async Task<Filtered<LanguageModel>> HandleAsync([FromQuery] LanguageFilterRequest request, CancellationToken ct = default)
+    public override async Task<Filtered<LanguageModel>> HandleAsync([FromQuery] LanguageFilterRequest request, CancellationToken ct)
     {
         return await _filterService.FilterWithCountAsync<Language, LanguageModel>(request, ct);
     }

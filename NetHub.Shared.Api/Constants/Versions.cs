@@ -1,4 +1,4 @@
-﻿namespace NetHub.Shared.Api;
+﻿namespace NetHub.Shared.Api.Constants;
 
 public static class Versions
 {

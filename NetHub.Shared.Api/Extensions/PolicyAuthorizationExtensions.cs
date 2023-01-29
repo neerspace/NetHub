@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using NetHub.Shared.Api.Constants;
 
 namespace NetHub.Shared.Api.Extensions;
 

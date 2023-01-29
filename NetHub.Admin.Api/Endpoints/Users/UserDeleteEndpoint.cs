@@ -5,6 +5,7 @@ using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Shared.Api.Constants;
 
 namespace NetHub.Admin.Api.Endpoints.Users;
 
@@ -18,7 +19,7 @@ public sealed class UserDeleteEndpoint : ActionEndpoint<long>
 
 
     [HttpDelete("users/{id:long}")]
-    public override async Task HandleAsync([FromRoute] long id, CancellationToken ct = default)
+    public override async Task HandleAsync([FromRoute] long id, CancellationToken ct)
     {
         var user = await _database.Set<AppUser>().FirstOr404Async(u => u.Id == id, ct);
         _database.Set<AppUser>().Remove(user);

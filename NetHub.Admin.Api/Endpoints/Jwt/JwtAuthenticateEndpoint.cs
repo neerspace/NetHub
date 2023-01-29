@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using NeerCore.Exceptions;
 using NetHub.Admin.Models.Jwt;
 using NetHub.Shared.Api.Abstractions;
-using NetHub.Application.Interfaces;
-using NetHub.Application.Models.Jwt;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Extensions;
+using NetHub.Shared.Models.Jwt;
+using NetHub.Shared.Services;
 
 namespace NetHub.Admin.Api.Endpoints.Jwt;
 
@@ -28,7 +28,7 @@ public class JwtAuthenticateEndpoint : Endpoint<AuthRequest, AuthResult>
 
 
     [HttpPost("jwt/authenticate")]
-    public override async Task<AuthResult> HandleAsync([FromBody] AuthRequest request, CancellationToken ct = default)
+    public override async Task<AuthResult> HandleAsync([FromBody] AuthRequest request, CancellationToken ct)
     {
         var user = await _database.Set<AppUser>().GetByLoginAsync(request.Login, ct);
         if (user is null)

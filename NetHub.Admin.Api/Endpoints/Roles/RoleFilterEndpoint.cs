@@ -4,9 +4,10 @@ using NetHub.Admin.Models.Roles;
 using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Swagger;
-using NetHub.Application.Interfaces;
-using NetHub.Application.Models;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Models;
+using NetHub.Shared.Services;
 
 namespace NetHub.Admin.Api.Endpoints.Roles;
 
@@ -20,7 +21,7 @@ public class RoleFilterEndpoint : FilterEndpoint<RoleModel>
 
 
     [HttpGet("roles"), ClientSide(ActionName = "filter")]
-    public override Task<Filtered<RoleModel>> HandleAsync([FromQuery] FilterRequest request, CancellationToken ct = default)
+    public override Task<Filtered<RoleModel>> HandleAsync([FromQuery] FilterRequest request, CancellationToken ct)
     {
         return _filterService.FilterWithCountAsync<AppRole, RoleModel>(request, ct);
     }

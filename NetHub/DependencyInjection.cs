@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NeerCore.DependencyInjection.Extensions;
-using NetHub.Shared.Constants;
+using NetHub.Constants;
 using NetHub.Shared.Options;
 using NetHub.Core.Constants;
 using NetHub.Services.Internal.Sieve;
@@ -13,9 +13,11 @@ namespace NetHub;
 
 public static class DependencyInjection
 {
-    public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAllServices(options => options.ResolveInternalImplementations = true);
+        services.ConfigureAllOptions();
+
         services.AddLazyCache();
         services.AddCustomSieve(configuration);
         services.AddHttpClients(configuration);
