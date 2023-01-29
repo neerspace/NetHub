@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Admin.Api.Abstractions;
+using NetHub.Api.Shared;
 using NetHub.Application.Extensions;
 using NetHub.Application.Models.Articles.Localizations;
 using NetHub.Core.Exceptions;
@@ -9,8 +12,12 @@ using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Api.Endpoints.Articles.Localizations;
 
-internal sealed class ArticleLocalizationSetStatusEndpoint : ActionEndpoint<SetArticleStatusRequest>
+[Authorize]
+[Tags(TagNames.ArticleLocalizations)]
+[ApiVersion(Versions.V1)]
+public sealed class ArticleLocalizationSetStatusEndpoint : ActionEndpoint<SetArticleStatusRequest>
 {
+    [HttpPatch("articles/{id:long}/{lang:alpha:length(2)}/status")]
     public override async Task HandleAsync(SetArticleStatusRequest statusRequest, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
@@ -33,8 +40,7 @@ internal sealed class ArticleLocalizationSetStatusEndpoint : ActionEndpoint<SetA
                 return;
 
             if (localization.GetAuthorId() != userId
-                || localization.Status is not
-                    (ContentStatus.Draft or ContentStatus.Pending))
+                || localization.Status is not (ContentStatus.Draft or ContentStatus.Pending))
                 throw new PermissionsException();
             localization.Status = ContentStatus.Pending;
         }
@@ -42,8 +48,7 @@ internal sealed class ArticleLocalizationSetStatusEndpoint : ActionEndpoint<SetA
         if (request.Status == ArticleStatusRequest.UnPublish)
         {
             if (localization.GetAuthorId() != userId
-                || localization.Status is not
-                    (ContentStatus.Draft or ContentStatus.Published or ContentStatus.Pending))
+                || localization.Status is not (ContentStatus.Draft or ContentStatus.Published or ContentStatus.Pending))
                 throw new PermissionsException();
             localization.Status = ContentStatus.Draft;
         }

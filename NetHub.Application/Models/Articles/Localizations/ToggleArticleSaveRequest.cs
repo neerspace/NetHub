@@ -1,9 +1,12 @@
 ﻿using FluentValidation;
-using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace NetHub.Application.Models.Articles.Localizations;
 
-public sealed record ToggleArticleSaveRequest(long ArticleId, string LanguageCode) : IRequest;
+public sealed record ToggleArticleSaveRequest(
+    [FromRoute] long ArticleId,
+    [FromRoute(Name = "lang")] string LanguageCode
+);
 
 internal sealed class ToggleArticleSaveValidator : AbstractValidator<ToggleArticleSaveRequest>
 {

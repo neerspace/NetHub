@@ -44,9 +44,9 @@ public static class DependencyInjection
 
     private static void RegisterMappings(this IServiceCollection services)
     {
-        var register = new MappingRegister();
+        // var register = new MappingRegister();
 
-        register.Register(TypeAdapterConfig.GlobalSettings);
+        // register.Register(TypeAdapterConfig.GlobalSettings);
     }
 
     private static void AddCustomMediatR(this IServiceCollection services)

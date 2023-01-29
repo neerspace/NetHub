@@ -1,13 +1,20 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetHub.Admin.Api.Abstractions;
+using NetHub.Api.Shared;
 using NetHub.Application.Models.Articles.Localizations;
 using NetHub.Data.SqlServer.Entities.Views;
 
-namespace NetHub.Api.Endpoints.Articles.Localizations;
+namespace NetHub.Api.Endpoints.Me.SavedArticles;
 
-internal sealed class ArticleGetSavedEndpoint : Endpoint<GetSavedArticlesRequest, ExtendedArticleModel[]>
+[Authorize]
+[Tags(TagNames.MySavedArticles)]
+[ApiVersion(Versions.V1)]
+public sealed class SavedArticleListEndpoint : Endpoint<GetSavedArticlesRequest, ExtendedArticleModel[]>
 {
+    [HttpGet("me/saved-articles")]
     public override async Task<ExtendedArticleModel[]> HandleAsync(GetSavedArticlesRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;

@@ -1,3 +1,8 @@
-﻿namespace NetHub.Application.Models.Articles.Localizations;
+﻿using Microsoft.AspNetCore.Mvc;
 
-public record GetArticleLocalizationRequest(long ArticleId, string LanguageCode);
+namespace NetHub.Application.Models.Articles.Localizations;
+
+public record GetArticleLocalizationRequest(
+    [FromRoute] long Id,
+    [FromRoute(Name = "lang")] string LanguageCode
+);

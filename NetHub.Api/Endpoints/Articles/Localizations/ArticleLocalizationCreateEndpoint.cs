@@ -21,7 +21,7 @@ namespace NetHub.Api.Endpoints.Articles.Localizations;
 [ApiVersion(Versions.V1)]
 public sealed class ArticleLocalizationCreateEndpoint : Endpoint<CreateArticleLocalizationRequest, ArticleLocalizationModel>
 {
-    [HttpPost("{id:long}/{languageCode:alpha}")]
+    [HttpPost("articles/{id:long}/{lang:alpha:length(2)}")]
     public override async Task<ArticleLocalizationModel> HandleAsync([FromBody] CreateArticleLocalizationRequest request, CancellationToken ct)
     {
         long userId = UserProvider.UserId;

@@ -8,13 +8,13 @@ using NetHub.Application.Models.Articles;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.Articles;
 
-namespace NetHub.Api.Endpoints.Articles;
+namespace NetHub.Api.Endpoints.Articles.Localizations;
 
-[Tags(TagNames.Articles)]
+[Tags(TagNames.ArticleLocalizations)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleListEndpoint : Endpoint<GetArticlesRequest, ArticleModel[]>
+public sealed class ArticleLocalizationListEndpoint : Endpoint<GetArticlesRequest, ArticleModel[]>
 {
-    [HttpGet("articles/{languageCode:alpha}")]
+    [HttpGet("articles/{lang:alpha:length(2)}")]
     public override async Task<ArticleModel[]> HandleAsync([FromQuery] GetArticlesRequest request, CancellationToken ct)
     {
         await Database.Set<Language>().FirstOr404Async(l => l.Code == request.LanguageCode, ct);

@@ -8,7 +8,7 @@ public sealed record CreateArticleLocalizationRequest
     [FromRoute]
     public long ArticleId { get; set; }
 
-    [FromRoute]
+    [FromRoute(Name = "lang")]
     public string LanguageCode { get; set; } = default!;
 
     public string Title { get; set; } = default!;

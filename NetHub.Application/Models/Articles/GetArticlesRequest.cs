@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace NetHub.Application.Models.Articles;
 
-public sealed record GetArticlesRequest([FromRoute] string LanguageCode, int Page = 1, int PerPage = 20);
+public sealed record GetArticlesRequest([FromRoute(Name = "lang")] string LanguageCode, int Page = 1, int PerPage = 20);
 
 internal sealed class GetArticlesValidator : AbstractValidator<GetArticlesRequest>
 {

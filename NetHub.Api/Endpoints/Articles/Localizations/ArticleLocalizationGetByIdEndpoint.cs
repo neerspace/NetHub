@@ -1,7 +1,9 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
 using NetHub.Admin.Api.Abstractions;
+using NetHub.Api.Shared;
 using NetHub.Application.Models.Articles.Localizations;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities;
@@ -10,8 +12,11 @@ using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Api.Endpoints.Articles.Localizations;
 
-internal sealed class ArticleLocalizationGetByIdEndpoint : Endpoint<GetArticleLocalizationRequest, ArticleLocalizationModel>
+[Tags(TagNames.ArticleLocalizations)]
+[ApiVersion(Versions.V1)]
+public sealed class ArticleLocalizationGetByIdEndpoint : Endpoint<GetArticleLocalizationRequest, ArticleLocalizationModel>
 {
+    [HttpGet("articles/{id:long}/{lang:alpha:length(2)}")]
     public override async Task<ArticleLocalizationModel> HandleAsync(GetArticleLocalizationRequest request, CancellationToken ct)
     {
         var userId = UserProvider.TryGetUserId();
@@ -19,7 +24,7 @@ internal sealed class ArticleLocalizationGetByIdEndpoint : Endpoint<GetArticleLo
         var entity = await Database.Set<ArticleLocalization>()
             .Include(l => l.Contributors).ThenInclude(c => c.User)
             .FirstOrDefaultAsync(l =>
-                l.ArticleId == request.ArticleId
+                l.ArticleId == request.Id
                 && l.LanguageCode == request.LanguageCode, ct);
 
         if (entity is null)

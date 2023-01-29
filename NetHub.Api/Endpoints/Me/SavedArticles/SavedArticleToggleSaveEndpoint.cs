@@ -1,16 +1,22 @@
-﻿using MediatR;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Admin.Api.Abstractions;
+using NetHub.Api.Shared;
 using NetHub.Application.Models.Articles.Localizations;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.Articles;
 
-namespace NetHub.Api.Endpoints.Articles.Localizations;
+namespace NetHub.Api.Endpoints.Me.SavedArticles;
 
-internal sealed class SavedArticleToggleSaveEndpoint : ActionEndpoint<ToggleArticleSaveRequest>
+[Authorize]
+[Tags(TagNames.MySavedArticles)]
+[ApiVersion(Versions.V1)]
+public sealed class SavedArticleToggleSaveEndpoint : ActionEndpoint<ToggleArticleSaveRequest>
 {
-    public override async Task<Unit> HandleAsync(ToggleArticleSaveRequest request, CancellationToken ct)
+    [HttpPatch("me/saved-articles/{id:long}/{lang:alpha:length(2)}")]
+    public override async Task HandleAsync(ToggleArticleSaveRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
 
@@ -36,12 +42,10 @@ internal sealed class SavedArticleToggleSaveEndpoint : ActionEndpoint<ToggleArti
 
             await Database.SaveChangesAsync(ct);
 
-            return Unit.Value;
+            return;
         }
 
         Database.Set<SavedArticle>().Remove(savedArticleEntity);
         await Database.SaveChangesAsync(ct);
-
-        return Unit.Value;
     }
 }

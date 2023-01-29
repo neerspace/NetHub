@@ -1,7 +1,10 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
 using NetHub.Admin.Api.Abstractions;
+using NetHub.Api.Shared;
 using NetHub.Application;
 using NetHub.Application.Models.Articles.Localizations;
 using NetHub.Core.Constants;
@@ -13,9 +16,13 @@ using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Api.Endpoints.Articles.Localizations;
 
-internal sealed class UpdateArticleLocalizationHandler : ActionEndpoint<UpdateArticleLocalizationRequest>
+[Authorize]
+[Tags(TagNames.ArticleLocalizations)]
+[ApiVersion(Versions.V1)]
+public sealed class ArticleLocalizationUpdateEndpoint : ActionEndpoint<UpdateArticleLocalizationRequest>
 {
-    public override async Task HandleAsync(UpdateArticleLocalizationRequest request, CancellationToken ct)
+    [HttpPut("articles/{id:long}/{lang:alpha:length(2)}")]
+    public override async Task HandleAsync([FromBody] UpdateArticleLocalizationRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
         var localization = await Database.Set<ArticleLocalization>()
