@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NeerCore.Mapping.Extensions;
-using NetHub.Admin.Api.Abstractions;
-using NetHub.Admin.Infrastructure.Models.Permissions;
-using NetHub.Api.Shared;
+using NetHub.Admin.Models.Permissions;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
+using NetHub.Shared.Api.Constants;
 
 namespace NetHub.Admin.Api.Endpoints.Permissions;
 
@@ -15,7 +16,7 @@ public sealed class PermissionListEndpoint : ResultEndpoint<PermissionModel[]>
     private static PermissionModel[]? s_cached;
 
     [HttpGet("permissions")]
-    public override Task<PermissionModel[]> HandleAsync(CancellationToken ct = default) =>
+    public override Task<PermissionModel[]> HandleAsync(CancellationToken ct) =>
         Task.FromResult(s_cached ??= GetPermissionsTree());
 
     private static PermissionModel[] GetPermissionsTree()

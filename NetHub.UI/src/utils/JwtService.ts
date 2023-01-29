@@ -1,6 +1,7 @@
 import { jwtApi } from '../api/api';
 import { JWTStorage } from './localStorageProvider';
 
+const refreshTokenCookie = 'NetHub-Refresh-Token';
 
 async function waitIfIsRefreshing() {
   if (window.isRefreshing) {
@@ -16,14 +17,16 @@ export async function getOrRefreshAccessToken(url?: string): Promise<string | nu
     await waitIfIsRefreshing();
 
     const accessToken = JWTStorage.getAccessToken();
-    if (!accessToken) {
-      console.log('[JWT] no access token');
-      return null;
-    }
+    if (!isRefreshTokenCookieExist()) {
+      if (!accessToken) {
+        console.log('[JWT] no access token');
+        return null;
+      }
 
-    if (!isAccessTokenExpired()) {
-      // console.log('[JWT] access token is valid');
-      return accessToken;
+      if (!isAccessTokenExpired()) {
+        // console.log('[JWT] access token is valid');
+        return accessToken;
+      }
     }
 
     return await refreshToken();
@@ -31,17 +34,6 @@ export async function getOrRefreshAccessToken(url?: string): Promise<string | nu
 
   console.log('[JWT] access token skipped');
   return null;
-}
-
-// use this to force the refresh
-export async function waitOrRefreshToken(): Promise<string | null> {
-  await waitIfIsRefreshing();
-
-  if (!isAccessTokenExpired()) {
-    return JWTStorage.getAccessToken();
-  }
-
-  return await refreshToken();
 }
 
 async function refreshToken(): Promise<string | null> {
@@ -60,8 +52,8 @@ async function refreshToken(): Promise<string | null> {
     return jwt.token;
   } catch (e) {
     console.log('token did not refresh', e);
-    JWTStorage.clearTokensData();
-    window.location.href = '/login';
+    // JWTStorage.clearTokensData();
+    // window.location.href = '/login';
     return null;
   } finally {
     setTimeout(() => window.isRefreshing = false, 300);
@@ -75,4 +67,13 @@ function isAccessTokenExpired() {
 
 function isAuthorizedUrl(url: string): boolean {
   return !url.startsWith('/jwt/');
+}
+
+function isRefreshTokenCookieExist() {
+  const d = new Date();
+  d.setTime(d.getTime() + (1000));
+  const expires = 'expires=' + d.toUTCString();
+
+  document.cookie = refreshTokenCookie + '=check;path=/;' + expires;
+  return document.cookie.indexOf(refreshTokenCookie + '=') == -1;
 }

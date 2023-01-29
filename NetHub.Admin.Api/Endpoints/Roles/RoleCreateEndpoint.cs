@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
-using NetHub.Admin.Api.Abstractions;
-using NetHub.Admin.Infrastructure.Models.Roles;
-using NetHub.Api.Shared;
+using NetHub.Admin.Models.Roles;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Shared.Api.Constants;
 
 namespace NetHub.Admin.Api.Endpoints.Roles;
 
@@ -21,7 +22,7 @@ public class RoleCreateEndpoint : Endpoint<RoleModel, RoleModel>
 
 
     [HttpPost("roles")]
-    public override async Task<RoleModel> HandleAsync([FromBody] RoleModel request, CancellationToken ct = default)
+    public override async Task<RoleModel> HandleAsync([FromBody] RoleModel request, CancellationToken ct)
     {
         if (await _database.Set<AppRole>().AnyAsync(r => r.NormalizedName == request.Name, ct))
             throw new ValidationFailedException("name", "Role with the same name already exists");

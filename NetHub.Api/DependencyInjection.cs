@@ -1,32 +1,21 @@
 ﻿using Microsoft.AspNetCore.Authentication;
-using NeerCore.Api.Extensions;
-using NetHub.Api.Shared.Extensions;
-using NetHub.Application.Options;
 using NetHub.Core.Constants;
-using ExceptionHandlerOptions = NeerCore.Api.ExceptionHandlerOptions;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Extensions;
+using NetHub.Shared.Options;
 
 namespace NetHub.Api;
 
 public static class DependencyInjection
 {
-    public static void AddWebApi(this IServiceCollection services, IConfiguration configuration)
+    public static void AddWebApi(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
     {
         services.AddHttpClient();
 
-        services.AddNeerApiServices();
-
-        services.Configure<ExceptionHandlerOptions>(o =>
-        {
-            o.Extended500ExceptionMessage = true;
-            o.HandleFluentValidationExceptions = true;
-        });
-
-        services.AddCorsPolicy(configuration);
-
-        services.AddNeerControllers();
+        services.AddSharedApi(configuration, environment);
 
         services.AddJwtAuthentication().WithGoogleAuthProvider(configuration);
-        services.AddPoliciesAuthorization(); // not sure, are u actually need it?
+        services.AddAuthorization();
     }
 
     private static void WithGoogleAuthProvider(this AuthenticationBuilder builder, IConfiguration configuration)

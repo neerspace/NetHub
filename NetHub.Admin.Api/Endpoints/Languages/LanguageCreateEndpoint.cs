@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
-using NetHub.Admin.Api.Abstractions;
-using NetHub.Admin.Infrastructure.Models.Languages;
-using NetHub.Api.Shared;
+using NetHub.Admin.Models.Languages;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
+using NetHub.Shared.Api.Constants;
 
 namespace NetHub.Admin.Api.Endpoints.Languages;
 
@@ -21,7 +22,7 @@ public sealed class LanguageCreateEndpoint : Endpoint<LanguageModel, LanguageMod
 
 
     [HttpPost("languages")]
-    public override async Task<LanguageModel> HandleAsync([FromBody] LanguageModel request, CancellationToken ct = default)
+    public override async Task<LanguageModel> HandleAsync([FromBody] LanguageModel request, CancellationToken ct)
     {
         if (await _database.Set<Language>().AnyAsync(l => l.Code == request.Code, ct))
             throw new ValidationFailedException("code", "Language with given code already exists");

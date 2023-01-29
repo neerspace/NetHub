@@ -1,15 +1,12 @@
-using Microsoft.EntityFrameworkCore;
 using NeerCore.Api.Extensions;
 using NeerCore.Api.Swagger.Extensions;
-using NeerCore.Exceptions;
 using NeerCore.Logging;
 using NeerCore.Logging.Extensions;
+using NetHub;
 using NetHub.Api;
-using NetHub.Api.Shared.Extensions;
-using NetHub.Application;
 using NetHub.Data.SqlServer;
-using NetHub.Data.SqlServer.Context;
-using NetHub.Infrastructure;
+using NetHub.Shared;
+using NetHub.Shared.Api.Extensions;
 
 var logger = LoggerInstaller.InitFromCurrentEnvironment();
 
@@ -45,9 +42,9 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
     builder.Configuration.AddJsonFile("appsettings.Secrets.json");
     builder.Configuration.AddJsonFile("appsettings.Development.json");
     builder.Services.AddSqlServerDatabase();
-    builder.Services.AddInfrastructure(builder.Configuration);
     builder.Services.AddApplication(builder.Configuration);
-    builder.Services.AddWebApi(builder.Configuration);
+    builder.Services.AddSharedApplication(builder.Configuration);
+    builder.Services.AddWebApi(builder.Configuration, builder.Environment);
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
@@ -78,8 +75,8 @@ static void ConfigureWebApp(WebApplication app)
 
 static void MigrateDatabase(IHost app)
 {
-    using var scope = app.Services.CreateScope();
-    if (scope.ServiceProvider.GetRequiredService<ISqlServerDatabase>() is not SqlServerDbContext database)
-        throw new InternalServerException($"{nameof(ISqlServerDatabase)} DB context cannot be resolved");
-    database.Database.Migrate();
+    // using var scope = app.Services.CreateScope();
+    // if (scope.ServiceProvider.GetRequiredService<ISqlServerDatabase>() is not SqlServerDbContext database)
+    //     throw new InternalServerException($"{nameof(ISqlServerDatabase)} DB context cannot be resolved");
+    // database.Database.Migrate();
 }

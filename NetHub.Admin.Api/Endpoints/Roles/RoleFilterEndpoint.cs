@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NetHub.Admin.Api.Abstractions;
-using NetHub.Admin.Api.Swagger;
-using NetHub.Admin.Infrastructure.Models.Roles;
-using NetHub.Api.Shared;
-using NetHub.Application.Interfaces;
-using NetHub.Application.Models;
+using NetHub.Admin.Models.Roles;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
+using NetHub.Shared.Api.Swagger;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Models;
+using NetHub.Shared.Services;
 
 namespace NetHub.Admin.Api.Endpoints.Roles;
 
@@ -20,7 +21,7 @@ public class RoleFilterEndpoint : FilterEndpoint<RoleModel>
 
 
     [HttpGet("roles"), ClientSide(ActionName = "filter")]
-    public override Task<Filtered<RoleModel>> HandleAsync([FromQuery] FilterRequest request, CancellationToken ct = default)
+    public override Task<Filtered<RoleModel>> HandleAsync([FromQuery] FilterRequest request, CancellationToken ct)
     {
         return _filterService.FilterWithCountAsync<AppRole, RoleModel>(request, ct);
     }
