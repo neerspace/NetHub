@@ -25,7 +25,7 @@ public sealed class MeUpdateProfileEndpoint : Endpoint<SetUserPhotoRequest, SetU
     }
 
 
-    [HttpPost("me/profile-photo")]
+    [HttpPost("me/profile-picture")]
     public override async Task<SetUserPhotoResult> HandleAsync([FromForm] SetUserPhotoRequest request, CancellationToken ct)
     {
         var user = await UserProvider.GetUserAsync();
