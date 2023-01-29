@@ -69,7 +69,7 @@ public sealed class JwtService : IJwtService
     {
         var refreshTokens = _database.Set<AppToken>();
 
-        var token = await refreshTokens
+        var token = await refreshTokens.AsNoTracking()
             .Where(rt => rt.Value == refreshToken)
             .Include(rt => rt.User).Include(rt => rt.Device)
             .FirstOr404Async(ct);

@@ -1,16 +1,16 @@
-import 'moment/locale/uk';
+import { ChakraProvider } from '@chakra-ui/react';
 import 'moment/locale/en-gb';
-import React, {useEffect, useState} from 'react';
-import {switchLocal} from "./utils/localization";
-import AppRouter from './components/AppRouter';
+import 'moment/locale/uk';
 // import './i18n'
-import {SnackbarProvider} from 'notistack';
-import {QueryClient, QueryClientProvider} from 'react-query';
-import {ReactQueryDevtools} from "react-query/devtools";
-import {useAppStore} from "./store/config";
-import {BrowserRouter} from "react-router-dom";
-import theme from "./constants/themes";
-import {ChakraProvider} from "@chakra-ui/react";
+import { SnackbarProvider } from 'notistack';
+import React, { useEffect, useState } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { BrowserRouter } from 'react-router-dom';
+import AppRouter from './components/AppRouter';
+import theme from './constants/themes';
+import { useAppStore } from './store/config';
+import { switchLocal } from './utils/localization';
 
 function App() {
   const language = useAppStore(state => state.language);
@@ -29,20 +29,20 @@ function App() {
       },
     }
   }));
-  const isTest = import.meta.env.VITE_IS_DEVELOPMENT === 'true'
+  const isTest = import.meta.env.VITE_IS_DEVELOPMENT === 'true';
 
   return (
-    <SnackbarProvider
-      maxSnack={5} autoHideDuration={3000} preventDuplicate
-      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-    >
+    <SnackbarProvider maxSnack={5}
+                      autoHideDuration={3000}
+                      preventDuplicate
+                      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
       <ChakraProvider theme={theme}>
         <QueryClientProvider client={client}>
           <BrowserRouter>
-            <AppRouter/>
+            <AppRouter />
           </BrowserRouter>
           {
-            isTest && <ReactQueryDevtools initialIsOpen={false}/>
+            isTest && <ReactQueryDevtools initialIsOpen={false} />
           }
         </QueryClientProvider>
       </ChakraProvider>

@@ -66,7 +66,7 @@ static void ConfigureWebApp(WebApplication app)
 
     app.UseCorsPolicy();
 
-    app.UseHttpsRedirection();
+    // app.UseHttpsRedirection();
 
     app.UseNeerExceptionHandler();
 
