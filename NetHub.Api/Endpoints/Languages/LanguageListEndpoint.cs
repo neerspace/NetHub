@@ -2,9 +2,9 @@ using Google.Cloud.Translation.V2;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NetHub.Admin.Infrastructure.Models.Languages;
-using NetHub.Api.Shared;
-using NetHub.Api.Shared.Abstractions;
+using NetHub.Admin.Models.Languages;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
 
 namespace NetHub.Api.Endpoints.Languages;
 

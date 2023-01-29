@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NetHub.Api.Shared;
-using NetHub.Api.Shared.Abstractions;
-using NetHub.Application.Models.Articles.Localizations;
-using NetHub.Application.Models.Me.SavedArticles;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Entities;
+using NetHub.Models.Articles.Localizations;
+using NetHub.Models.Me.SavedArticles;
 
 namespace NetHub.Api.Endpoints.Me.SavedArticles;
 

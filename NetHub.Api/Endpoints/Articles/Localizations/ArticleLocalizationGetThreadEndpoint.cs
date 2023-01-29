@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NetHub.Api.Shared;
-using NetHub.Api.Shared.Abstractions;
-using NetHub.Application.Models;
-using NetHub.Application.Models.Articles.Localizations;
-using NetHub.Application.Services;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Entities.Views;
+using NetHub.Models.Articles.Localizations;
+using NetHub.Shared.Models;
+using NetHub.Shared.Services;
 
 namespace NetHub.Api.Endpoints.Articles.Localizations;
 

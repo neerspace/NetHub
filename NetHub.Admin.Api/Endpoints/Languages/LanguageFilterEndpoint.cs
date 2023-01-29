@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NetHub.Admin.Infrastructure.Models.Languages;
-using NetHub.Api.Shared;
-using NetHub.Api.Shared.Abstractions;
-using NetHub.Api.Shared.Swagger;
+using NetHub.Admin.Models.Languages;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
+using NetHub.Shared.Api.Swagger;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Models;
 using NetHub.Data.SqlServer.Entities;

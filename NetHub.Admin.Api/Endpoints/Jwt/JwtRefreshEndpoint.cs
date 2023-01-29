@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NeerCore.Exceptions;
-using NetHub.Api.Shared.Abstractions;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Application.Interfaces;
 using NetHub.Application.Models.Jwt;
 using NetHub.Application.Options;

@@ -1,8 +1,8 @@
 ﻿// using Microsoft.AspNetCore.Authorization;
 // using Microsoft.AspNetCore.Mvc;
 // using NetHub.Api.Abstractions;
-// using NetHub.Api.Shared;
-// using NetHub.Application.Models.Articles.Localizations;
+// using NetHub.Shared.Api;
+// using NetHub.Shared.Models.Articles.Localizations;
 //
 // namespace NetHub.Api.Areas.Public.Controllers.ArticleControllers;
 //

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using NeerCore.Api.Extensions;
 using NeerCore.DependencyInjection.Extensions;
-using NetHub.Api.Shared.Extensions;
-using NetHub.Api.Shared.Filters;
-using NetHub.Application.Options;
 using NetHub.Core.Constants;
+using NetHub.Shared.Api.Extensions;
+using NetHub.Shared.Api.Filters;
+using NetHub.Shared.Options;
 using ExceptionHandlerOptions = NeerCore.Api.ExceptionHandlerOptions;
 
 namespace NetHub.Api;

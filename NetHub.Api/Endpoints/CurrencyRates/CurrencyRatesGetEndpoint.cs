@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using NetHub.Api.Shared;
-using NetHub.Api.Shared.Abstractions;
-using NetHub.Application.Models.Currency;
-using NetHub.Application.Services;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
+using NetHub.Shared.Models.Currency;
+using NetHub.Shared.Services;
 
 namespace NetHub.Api.Endpoints.CurrencyRates;
 

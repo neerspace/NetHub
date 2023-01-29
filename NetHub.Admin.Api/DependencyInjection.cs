@@ -1,7 +1,7 @@
 using NeerCore.Api.Extensions;
 using NeerCore.DependencyInjection.Extensions;
-using NetHub.Api.Shared.Extensions;
-using NetHub.Api.Shared.Filters;
+using NetHub.Shared.Api.Extensions;
+using NetHub.Shared.Api.Filters;
 
 namespace NetHub.Admin.Api;
 

@@ -1,11 +1,11 @@
 ﻿// using Microsoft.AspNetCore.Authorization;
 // using Microsoft.AspNetCore.Mvc;
 // using NetHub.Api.Abstractions;
-// using NetHub.Application.Extensions;
-// using NetHub.Application.Models.Articles;
-// using NetHub.Application.Models.Articles.Localizations;
-// using NetHub.Application.Models.Articles.Rating;
-// using NetHub.Application.Models.Users;
+// using NetHub.Shared.Extensions;
+// using NetHub.Shared.Models.Articles;
+// using NetHub.Shared.Models.Articles.Localizations;
+// using NetHub.Shared.Models.Articles.Rating;
+// using NetHub.Shared.Models.Users;
 // using NetHub.Data.SqlServer.Enums;
 //
 // namespace NetHub.Api.Areas.Public.Controllers.ArticleControllers;

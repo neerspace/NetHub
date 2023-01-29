@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NeerCore.Exceptions;
-using NetHub.Api.Shared;
-using NetHub.Api.Shared.Abstractions;
-using NetHub.Application.Extensions;
-using NetHub.Application.Models.Users;
-using NetHub.Application.Services;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Context;
+using NetHub.Models.Users;
+using NetHub.Shared.Extensions;
+using NetHub.Shared.Services;
 
 namespace NetHub.Api.Endpoints.Me;
 

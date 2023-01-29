@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NeerCore.Exceptions;
-using NetHub.Api.Shared;
-using NetHub.Api.Shared.Abstractions;
-using NetHub.Application.Models.Jwt;
-using NetHub.Application.Options;
-using NetHub.Application.Services;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
+using NetHub.Shared.Models.Jwt;
+using NetHub.Shared.Options;
+using NetHub.Shared.Services;
 
 namespace NetHub.Api.Endpoints.Jwt;
 

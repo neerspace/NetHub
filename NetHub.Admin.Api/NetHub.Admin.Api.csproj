@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NetHub.Api.Shared\NetHub.Api.Shared.csproj" />
-    <ProjectReference Include="..\NetHub.Admin.Infrastructure\NetHub.Admin.Infrastructure.csproj" />
-    <ProjectReference Include="..\NetHub.Infrastructure\NetHub.Infrastructure.csproj" />
+    <ProjectReference Include="..\NetHub.Shared.Api\NetHub.Shared.Api.csproj" />
+    <ProjectReference Include="..\NetHub.Admin\NetHub.Admin.csproj" />
+    <ProjectReference Include="..\NetHub\NetHub.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

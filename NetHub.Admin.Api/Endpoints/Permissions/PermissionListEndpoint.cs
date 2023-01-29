@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NeerCore.Mapping.Extensions;
-using NetHub.Admin.Infrastructure.Models.Permissions;
-using NetHub.Api.Shared;
-using NetHub.Api.Shared.Abstractions;
+using NetHub.Admin.Models.Permissions;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
 
 namespace NetHub.Admin.Api.Endpoints.Permissions;
 
