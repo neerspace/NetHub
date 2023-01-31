@@ -6,6 +6,7 @@
 riderModule.iml
 /_ReSharper.Caches/
 #.idea/
+.fleet/
 *.dotCover
 _TeamCity*
 

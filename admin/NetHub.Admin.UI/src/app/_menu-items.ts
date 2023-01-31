@@ -19,6 +19,7 @@ export const items: MenuItems = [
     icon: 'la-tools',
     children: [
       //
+      { routerLink: '/articles', text: 'Articles', icon: 'la-book' },
       { routerLink: '/languages', text: 'Languages', icon: 'la-globe-africa' },
     ],
   },

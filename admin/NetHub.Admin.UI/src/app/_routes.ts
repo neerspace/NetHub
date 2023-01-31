@@ -25,6 +25,12 @@ const adminRouters: Routes = [
     title: buildTitle('Languages'),
   },
   {
+    path: 'articles',
+    loadChildren: () =>
+      import('./pages/administration/articles/articles.module').then(m => m.ArticlesModule),
+    title: buildTitle('Articles')
+  },
+  {
     path: 'profile',
     loadChildren: () => import('./pages/manage/profile/profile.module').then(m => m.ProfileModule),
     title: buildTitle('Profile'),

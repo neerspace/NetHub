@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NetHub.Shared\NetHub.Shared.csproj" />
+    <ProjectReference Include="..\..\shared\NetHub.Shared\NetHub.Shared.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
