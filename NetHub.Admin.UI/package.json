@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 9100",
+    "start": "ng serve --host admin.nethub.local --port 9100",
     "build": "ng build",
     "build:ssr": "ng run NetHub.Admin.UI:server:dev",
     "watch": "ng build --watch --configuration development",

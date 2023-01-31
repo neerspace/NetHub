@@ -25,7 +25,7 @@ import { JWTStorage } from '../utils/localStorageProvider';
 //   : import.meta.env.VITE_GENERAL_BACK_POINT;
 
 
-export const baseApiUrl = 'http://127.0.0.1:9011/v1';
+export const baseApiUrl = 'https://admin-api.nethub.local:9110/v1';
 export const _api = axios.create({
   baseURL: baseApiUrl,
 });
