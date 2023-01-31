@@ -1,11 +1,10 @@
 using Mapster;
 using NetHub.Admin.Models.Users;
 using NetHub.Data.SqlServer.Entities.Identity;
-using NetHub.Shared.Abstractions;
 
 namespace NetHub.Admin.Mappings;
 
-public sealed class UserMappings : IModelMappings
+public sealed class UserMappings : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {

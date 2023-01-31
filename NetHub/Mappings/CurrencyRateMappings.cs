@@ -1,11 +1,9 @@
 using Mapster;
-using NetHub.Shared;
-using NetHub.Shared.Abstractions;
 using NetHub.Shared.Models.Currency;
 
 namespace NetHub.Mappings;
 
-public class CurrencyRateMappings : IModelMappings
+public class CurrencyRateMappings : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {

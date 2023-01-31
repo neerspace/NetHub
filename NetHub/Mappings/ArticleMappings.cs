@@ -2,12 +2,10 @@ using Mapster;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Models.Articles;
 using NetHub.Models.Articles.Localizations;
-using NetHub.Shared;
-using NetHub.Shared.Abstractions;
 
 namespace NetHub.Mappings;
 
-public class ArticleMappings : IModelMappings
+public class ArticleMappings : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
