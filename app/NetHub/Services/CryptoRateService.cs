@@ -1,7 +1,7 @@
-﻿using System.Text.Json;
+﻿using System.Dynamic;
+using System.Text.Json;
 using Mapster;
 using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.Extensions.Primitives;
 using NeerCore.DependencyInjection;
 using NetHub.Constants;
 using NetHub.Shared.Models.Currency;
@@ -18,23 +18,34 @@ internal sealed class CryptoRateService : ICryptoRateService
     public CryptoRateService(IHttpClientFactory clientFactory)
     {
         _client = clientFactory.CreateClient(HttpClientNames.CoinGeckoClient);
-        _apiUri = new UriBuilder
-        {
-            Path = "/api/v3/simple/price",
-            Query = new QueryBuilder(new KeyValuePair<string, StringValues>[]
+        _apiUri = "/api/v3/simple/price"
+            + new QueryBuilder(new KeyValuePair<string, string>[]
             {
-                new("ids", new[] { "the-open-network", "bitcoin" }),
-                new("vs_currencies", new[] { "usd", "uah" }),
+                new("ids", "the-open-network,bitcoin"),
+                new("vs_currencies", "usd,uah"),
                 new("include_24hr_change", "true")
-            }).ToString()
-        }.ToString();
+            });
     }
 
 
     public async Task<CryptoResponseDto> GetCryptoCurrenciesAsync(CancellationToken ct = default)
     {
-        var message = await _client.GetAsync(_apiUri, ct);
-        var response = await message.Content.ReadAsStringAsync(ct);
-        return JsonSerializer.Deserialize<CryptoResponse>(response)!.Adapt<CryptoResponseDto>();
+        var response = await _client.GetAsync(_apiUri, ct);
+        if (response.IsSuccessStatusCode)
+        {
+            var message = await response.Content.ReadAsStringAsync(ct);
+            return JsonSerializer.Deserialize<CryptoResponse>(message)!.Adapt<CryptoResponseDto>();
+        }
+
+        try
+        {
+            var message = await response.Content.ReadAsStringAsync(ct);
+            dynamic json = JsonSerializer.Deserialize<ExpandoObject>(message)!;
+            return new CryptoResponseDto { Error = json.message };
+        }
+        catch (Exception)
+        {
+            return new CryptoResponseDto { Error = "Unknown Error" };
+        }
     }
 }

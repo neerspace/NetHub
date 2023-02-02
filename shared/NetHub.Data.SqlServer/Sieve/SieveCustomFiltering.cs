@@ -3,7 +3,7 @@ using NetHub.Data.SqlServer.Entities.Articles;
 using Sieve.Services;
 using static System.Int32;
 
-namespace NetHub.Services.Internal.Sieve;
+namespace NetHub.Data.SqlServer.Sieve;
 
 [Service(Lifetime = Lifetime.Scoped)]
 internal sealed class SieveCustomFiltering : ISieveCustomFilterMethods

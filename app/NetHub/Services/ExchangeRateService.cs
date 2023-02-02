@@ -26,39 +26,52 @@ internal sealed class ExchangeRateService : IExchangeRateService
     }
 
 
-    public async Task<ExchangeResponseModel> GetExchangeCurrenciesAsync(CancellationToken ct = default) =>
-        await _memoryCache
-            .GetOrAddAsync(CacheKey, async entry =>
-            {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(6);
-                return await UpdateExchangeRatesCache();
-            });
-
-    private async Task<ExchangeResponseModel> UpdateExchangeRatesCache()
+    public async Task<ExchangeResponseModel> GetExchangeCurrenciesAsync(CancellationToken ct = default)
     {
-        var message = await _client.GetAsync("/bank/currency");
-
-        var response = JsonConvert.DeserializeObject<OneExchangeResponseModel[]>(
-            await message.Content.ReadAsStringAsync())!;
-
-        var usdResponse = response.First(r =>
-            r.CurrencyCodeA is UsdIsoCode && r.CurrencyCodeB is UahIsoCode);
-
-        var euroResponse = response.First(r =>
-            r.CurrencyCodeA is EuroIsoCode && r.CurrencyCodeB is UahIsoCode);
-
-        return new()
+        return await _memoryCache.GetOrAddAsync(CacheKey, async entry =>
         {
-            Usd = usdResponse.Adapt<OneExchangeModel>() with
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(6);
+            return await UpdateExchangeRatesCacheAsync(ct);
+        });
+    }
+
+    private async Task<ExchangeResponseModel> UpdateExchangeRatesCacheAsync(CancellationToken ct = default)
+    {
+        var response = await _client.GetAsync("/bank/currency", ct);
+        if (response.IsSuccessStatusCode)
+        {
+            var message = await response.Content.ReadAsStringAsync(ct);
+            var json = JsonConvert.DeserializeObject<OneExchangeResponseModel[]>(message)!;
+
+            var usdResponse = json.First(r =>
+                r.CurrencyCodeA is UsdIsoCode && r.CurrencyCodeB is UahIsoCode);
+
+            var euroResponse = json.First(r =>
+                r.CurrencyCodeA is EuroIsoCode && r.CurrencyCodeB is UahIsoCode);
+
+            return new()
             {
-                CurrencyFrom = "USD",
-                CurrencyTo = "UAH"
-            },
-            Euro = euroResponse.Adapt<OneExchangeModel>() with
-            {
-                CurrencyFrom = "EURO",
-                CurrencyTo = "UAH"
-            },
-        };
+                Usd = usdResponse.Adapt<OneExchangeModel>() with
+                {
+                    CurrencyFrom = "USD",
+                    CurrencyTo = "UAH"
+                },
+                Euro = euroResponse.Adapt<OneExchangeModel>() with
+                {
+                    CurrencyFrom = "EURO",
+                    CurrencyTo = "UAH"
+                },
+            };
+        }
+
+        try
+        {
+            var message = await response.Content.ReadAsStringAsync(ct);
+            return new ExchangeResponseModel { Error = message };
+        }
+        catch (Exception)
+        {
+            return new ExchangeResponseModel { Error = "Unknown Error" };
+        }
     }
 }

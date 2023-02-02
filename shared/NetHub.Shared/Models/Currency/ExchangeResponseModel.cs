@@ -4,6 +4,7 @@ public record ExchangeResponseModel
 {
     public OneExchangeModel Usd { get; init; } = default!;
     public OneExchangeModel Euro { get; init; } = default!;
+    public string? Error { get; set; }
 }
 
 public record OneExchangeModel

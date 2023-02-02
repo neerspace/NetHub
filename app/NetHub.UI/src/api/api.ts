@@ -24,8 +24,7 @@ import { JWTStorage } from '../utils/localStorageProvider';
 //   ? import.meta.env.VITE_TEST_BACK_POINT
 //   : import.meta.env.VITE_GENERAL_BACK_POINT;
 
-
-export const baseApiUrl = 'https://admin-api.nethub.local:9110/v1';
+export const baseApiUrl = 'http://api.nethub.local/v1';
 export const _api = axios.create({
   baseURL: baseApiUrl,
 });
@@ -201,7 +200,7 @@ export const jwtApi = {
 
 export const infoApi = {
   getCurrenciesRate: async () => {
-    const response: AxiosResponse<ICurrencyResponse> = await _api.get('/currency');
+    const response: AxiosResponse<ICurrencyResponse> = await _api.get('/currency-rates');
     return response.data;
   }
 };

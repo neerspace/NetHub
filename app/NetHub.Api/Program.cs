@@ -41,7 +41,8 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
     builder.Logging.ConfigureNLogAsDefault();
     builder.Configuration.AddJsonFile("appsettings.Secrets.json");
     builder.Configuration.AddJsonFile("appsettings.Development.json");
-    builder.Services.AddSqlServerDatabase();
+
+    builder.Services.AddSqlServerDatabase(builder.Configuration);
     builder.Services.AddApplication(builder.Configuration);
     builder.Services.AddSharedApplication(builder.Configuration);
     builder.Services.AddWebApi(builder.Configuration, builder.Environment);

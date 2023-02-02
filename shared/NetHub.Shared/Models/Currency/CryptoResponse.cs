@@ -2,30 +2,41 @@
 
 namespace NetHub.Shared.Models.Currency;
 
-public record CryptoResponse
+public class CryptoResponse
 {
-	[JsonPropertyName("bitcoin")] public OneCrypto Btc { get; init; }
-	[JsonPropertyName("the-open-network")] public OneCrypto Ton { get; init; }
+    [JsonPropertyName("bitcoin")]
+    public required OneCrypto Btc { get; init; }
+
+    [JsonPropertyName("the-open-network")]
+    public required OneCrypto Ton { get; init; }
 }
 
-public record CryptoResponseDto
+public class CryptoResponseDto
 {
-	public OneCryptoDto Btc { get; init; } = default!;
-	public OneCryptoDto Ton { get; init; } = default!;
+    public OneCryptoDto? Btc { get; init; }
+    public OneCryptoDto? Ton { get; init; }
+    public string? Error { get; set; }
 }
 
-public record OneCrypto
+public class OneCrypto
 {
-	[JsonPropertyName("usd")] public decimal Usd { get; init; } = default!;
-	[JsonPropertyName("usd_24h_change")] public decimal Usd24Change { get; init; } = default!;
-	[JsonPropertyName("uah")] public decimal Uah { get; init; } = default!;
-	[JsonPropertyName("uah_24h_change")] public decimal Uah24Change { get; init; } = default!;
+    [JsonPropertyName("usd")]
+    public required decimal Usd { get; init; }
+
+    [JsonPropertyName("usd_24h_change")]
+    public required decimal Usd24Change { get; init; }
+
+    [JsonPropertyName("uah")]
+    public required decimal Uah { get; init; }
+
+    [JsonPropertyName("uah_24h_change")]
+    public required decimal Uah24Change { get; init; }
 }
 
-public record OneCryptoDto
+public class OneCryptoDto
 {
-	public decimal Usd { get; init; } = default!;
-	public decimal Usd24Change { get; init; } = default!;
-	public decimal Uah { get; init; } = default!;
-	public decimal Uah24Change { get; init; } = default!;
+    public required decimal Usd { get; init; }
+    public required decimal Usd24Change { get; init; }
+    public required decimal Uah { get; init; }
+    public required decimal Uah24Change { get; init; }
 }
