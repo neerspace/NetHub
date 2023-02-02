@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{D6A6349D-3155-44DB-9A2D-FD26A580BBCA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{D6A6349D-3155-44DB-9A2D-FD26A580BBCA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetHub.Api", "app\NetHub.Api\NetHub.Api.csproj", "{1C80F12B-696C-4E0D-95DD-0C7D3E4CB2C9}"
 EndProject
