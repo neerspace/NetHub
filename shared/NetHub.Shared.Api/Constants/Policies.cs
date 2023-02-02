@@ -14,4 +14,7 @@ public static class Policies
 
     public const string HasReadLanguagesPermission = "ReadLanguages";
     public const string HasManageLanguagesPermission = "ManageLanguages";
+
+    public const string HasReadArticlesPermission = "ReadArticles";
+    public const string HasManageArticlesPermission = "ManageArticles";
 }

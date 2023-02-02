@@ -2,6 +2,7 @@ using Mapster;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Models.Articles;
 using NetHub.Models.Articles.Localizations;
+using NetHub.Shared.Models.Localizations;
 
 namespace NetHub.Mappings;
 
@@ -10,7 +11,7 @@ public class ArticleMappings : IRegister
     public void Register(TypeAdapterConfig config)
     {
         // Article
-        config.NewConfig<Article, ArticleModel>()
+        config.NewConfig<Article, ArticleModelExtended>()
             .Map(am => am.Tags, a => a.Tags!.Select(at => at.Tag!.Name));
 
         config.NewConfig<CreateArticleLocalizationRequest, ArticleLocalization>()
@@ -23,7 +24,7 @@ public class ArticleMappings : IRegister
             .Ignore(ua => ua.Contributors)
             .IgnoreNullValues(true);
 
-        config.NewConfig<ArticleLocalization, ExtendedArticleModel>()
+        config.NewConfig<ArticleLocalization, ViewLocalizationModel>()
             .Map(ea => ea.LocalizationId, al => al.Id)
             .Map(ea => ea.Rate, al => al.Article!.Rate);
 

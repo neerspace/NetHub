@@ -4,7 +4,7 @@ using Sieve.Attributes;
 
 namespace NetHub.Data.SqlServer.Entities.Views;
 
-public class ExtendedUserArticle : IEntity
+public class ViewUserArticle : IEntity
 {
 	[Sieve(CanFilter = true, CanSort = true)]
 	public long UserId { get; set; }

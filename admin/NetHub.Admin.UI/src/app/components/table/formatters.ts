@@ -1,5 +1,5 @@
-import { DateTime } from 'luxon';
-import { FormatterFunc } from './types';
+import {DateTime} from 'luxon';
+import {getDomain} from "../../shared/utilities";
 
 const maxStringLength = 28;
 
@@ -12,6 +12,29 @@ export function formatCheckmark(value: string | undefined): string {
     return '<span class="check check-true">yes</span>';
   } else {
     return '<span class="check check-false">no</span>';
+  }
+}
+
+export function formatCounter(value: number){
+  if (value > 0){
+    return `<span class="counter counter-positive">💚 ${value}</span>`;
+  }
+  else if (value < 0){
+    return `<span class="counter counter-negative">❤️ ${-value}</span>`;
+
+  }
+  else {
+    return `<span class="counter">🤍 ${value}</span>`;
+  }
+}
+
+export function formatLink(link: string | null) {
+
+  if (link) {
+    const display = getDomain(link);
+    return `<a href=\"${link}\" title=\"${link}\">${display}</a>`;
+  } else {
+    return '-'
   }
 }
 

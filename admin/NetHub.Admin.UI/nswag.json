@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "https://admin-api.nethub.local:9110/swagger/$(ApiVersion)/swagger.json",
+      "url": "https://localhost:9110/swagger/$(ApiVersion)/swagger.json",
       "output": null
     }
   },

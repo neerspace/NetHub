@@ -90,7 +90,8 @@ public sealed class JwtService : IJwtService
             HttpOnly = true,
             Secure = _environment.IsProduction(),
             IsEssential = true,
-            SameSite = _environment.IsProduction() ? SameSiteMode.Strict : SameSiteMode.Lax,
+            SameSite = SameSiteMode.Strict,
+            // SameSite = _environment.IsProduction() ? SameSiteMode.Strict : SameSiteMode.Lax,
             Domain = _options.RefreshToken.CookieDomain,
             Expires = refreshTokenExpires,
         });

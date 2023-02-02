@@ -13,20 +13,20 @@ namespace NetHub.Api.Endpoints.Me.SavedArticles;
 [Authorize]
 [Tags(TagNames.MySavedArticles)]
 [ApiVersion(Versions.V1)]
-public sealed class SavedArticleListEndpoint : Endpoint<ArticleLocalizationQuery, ExtendedArticleModel[]>
+public sealed class SavedArticleListEndpoint : Endpoint<ArticleLocalizationQuery, ViewLocalizationModel[]>
 {
     [HttpGet("me/saved-articles")]
-    public override async Task<ExtendedArticleModel[]> HandleAsync(ArticleLocalizationQuery request, CancellationToken ct)
+    public override async Task<ViewLocalizationModel[]> HandleAsync(ArticleLocalizationQuery request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
 
-        var saved = await Database.Set<ExtendedUserArticle>()
+        var saved = await Database.Set<ViewUserArticle>()
             .Where(ea => ea.UserId == userId
                     && ea.IsSaved == true
                 //TODO: Remove comments in release (please...)
                 // && ea.Status == ContentStatus.Published
             )
-            .ProjectToType<ExtendedArticleModel>()
+            .ProjectToType<ViewLocalizationModel>()
             .ToArrayAsync(ct);
 
         return saved.DistinctBy(s => s.LocalizationId).ToArray();

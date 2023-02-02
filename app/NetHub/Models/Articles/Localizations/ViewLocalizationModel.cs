@@ -2,7 +2,7 @@
 
 namespace NetHub.Models.Articles.Localizations;
 
-public sealed class ExtendedArticleModel
+public sealed class ViewLocalizationModel
 {
     public long? UserId { get; set; }
     public bool? IsSaved { get; set; }

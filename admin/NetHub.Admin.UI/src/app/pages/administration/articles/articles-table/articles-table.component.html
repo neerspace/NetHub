@@ -14,11 +14,30 @@
 </app-main-header>
 
 <app-main-content>
-  <app-data-table
-    #table
-    defaultSorting="-id"
-    [columns]="columns"
-    [buttons]="buttons">
-    <!--[onFilter]="fetchFilter.bind(this)">-->
-  </app-data-table>
+
+  <as-split class="split-view" unit="percent" direction="vertical" [gutterSize]="4" (dragEnd)="resize($event.sizes)">
+    <as-split-area [size]="firstComponentSize">
+      <div class="split-area-content">
+        <app-data-table
+          #table
+          defaultSorting="-created"
+          [columns]="columns"
+          [buttons]="buttons"
+          [onFilter]="fetchFilter.bind(this)">
+        </app-data-table>
+      </div>
+    </as-split-area>
+    <as-split-area [size]="secondComponentSize">
+      <div class="split-area-content">
+        <!--<app-tabs>-->
+        <!--  <app-tab tabTitle="First tab">Hello</app-tab>-->
+        <!--  <app-tab tabTitle="Second tab">World!</app-tab>-->
+        <!--</app-tabs>-->
+
+        <!--<ng-template #localization>-->
+        <!--  I'm localization-->
+        <!--</ng-template>-->
+      </div>
+    </as-split-area>
+  </as-split>
 </app-main-content>

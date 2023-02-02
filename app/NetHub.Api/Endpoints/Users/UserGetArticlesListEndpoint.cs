@@ -12,10 +12,10 @@ namespace NetHub.Api.Endpoints.Users;
 
 [Tags(TagNames.Users)]
 [ApiVersion(Versions.V1)]
-public class UserGetArticlesListEndpoint : Endpoint<GetUserArticlesRequest, ArticleModel[]>
+public class UserGetArticlesListEndpoint : Endpoint<GetUserArticlesRequest, ArticleModelExtended[]>
 {
     [HttpGet("users/{username}/articles")]
-    public override async Task<ArticleModel[]> HandleAsync(GetUserArticlesRequest request, CancellationToken ct)
+    public override async Task<ArticleModelExtended[]> HandleAsync(GetUserArticlesRequest request, CancellationToken ct)
     {
         var username = string.IsNullOrEmpty(request.UserName)
             ? UserProvider.UserName
@@ -26,7 +26,7 @@ public class UserGetArticlesListEndpoint : Endpoint<GetUserArticlesRequest, Arti
             .Where(a => a.Author!.NormalizedUserName == username)
             .Skip((request.Page - 1) * request.PerPage)
             .Take(request.PerPage)
-            .ProjectToType<ArticleModel>()
+            .ProjectToType<ArticleModelExtended>()
             .ToArrayAsync(ct);
 
         return articles;

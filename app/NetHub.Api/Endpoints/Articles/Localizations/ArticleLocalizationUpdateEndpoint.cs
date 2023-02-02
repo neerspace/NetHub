@@ -13,6 +13,7 @@ using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Enums;
 using NetHub.Models.Articles.Localizations;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Models.Localizations;
 
 namespace NetHub.Api.Endpoints.Articles.Localizations;
 

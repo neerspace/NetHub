@@ -14,10 +14,10 @@ namespace NetHub.Api.Endpoints.Articles;
 [Authorize]
 [Tags(TagNames.Articles)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleCreateEndpoint : Endpoint<CreateArticleRequest, ArticleModel>
+public sealed class ArticleCreateEndpoint : Endpoint<CreateArticleRequest, ArticleModelExtended>
 {
     [HttpPost("articles")]
-    public override async Task<ArticleModel> HandleAsync([FromBody] CreateArticleRequest request, CancellationToken ct)
+    public override async Task<ArticleModelExtended> HandleAsync([FromBody] CreateArticleRequest request, CancellationToken ct)
     {
         var user = await UserProvider.GetUserAsync();
 
@@ -57,6 +57,6 @@ public sealed class ArticleCreateEndpoint : Endpoint<CreateArticleRequest, Artic
 
         await Database.SaveChangesAsync(ct);
 
-        return createdEntity.Entity.Adapt<ArticleModel>();
+        return createdEntity.Entity.Adapt<ArticleModelExtended>();
     }
 }

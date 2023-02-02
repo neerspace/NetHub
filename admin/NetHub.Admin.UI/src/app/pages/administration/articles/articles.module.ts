@@ -5,6 +5,7 @@ import { ArticlesTableComponent } from './articles-table/articles-table.componen
 import {LayoutComponentsModule} from "../../../components/layout/layout-components.module";
 import {TableComponentsModule} from "../../../components/table/table-components.module";
 import {CoreComponentsModule} from "../../../components/core/core-components.module";
+import {AngularSplitModule} from "angular-split";
 
 const routes: Routes = [
   { path: '', component: ArticlesTableComponent },
@@ -14,13 +15,14 @@ const routes: Routes = [
   declarations: [
     ArticlesTableComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    LayoutComponentsModule,
-    TableComponentsModule,
-    CoreComponentsModule,
-  ]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        LayoutComponentsModule,
+        TableComponentsModule,
+        CoreComponentsModule,
+        AngularSplitModule,
+    ]
 })
 export class ArticlesModule {
 }

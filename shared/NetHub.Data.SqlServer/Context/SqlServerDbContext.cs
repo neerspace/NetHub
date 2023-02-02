@@ -24,7 +24,7 @@ public class SqlServerDbContext : IdentityDbContext<AppUser, AppRole, long, AppU
         builder.AddLocalizedStrings(GetType().Assembly);
         builder.ApplyAllDataSeeders();
 
-        builder.Entity<ExtendedUserArticle>(config =>
+        builder.Entity<ViewUserArticle>(config =>
         {
             config.ToView("v_ExtendedUserArticle").HasKey(ea => new { ea.UserId, ea.LocalizationId });
         });
