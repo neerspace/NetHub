@@ -1,6 +1,6 @@
 import {Component, Injector, TemplateRef, ViewChild} from '@angular/core';
 import {ColumnInfo, IFiltered, IFilterInfo, ITableAction} from "../../../../components/table/types";
-import {Observable} from "rxjs";
+import {combineLatest, concat, merge, mergeAll, Observable} from "rxjs";
 import {deleteButton} from "../../../../components/table/buttons";
 import {ArticlesService} from "../services/article.service";
 import {ArticleModel} from "../../../../api";
@@ -15,8 +15,9 @@ import {DomSanitizer} from "@angular/platform-browser";
   templateUrl: './articles-table.component.html',
   styleUrls: ['./articles-table.component.scss']
 })
-export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel>{
+export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> {
   @ViewChild(TabsComponent) tabsComponent!: TabsComponent;
+  @ViewChild('article') articleTemplate!: TemplateRef<any>;
   @ViewChild('localization') localizationTemplate!: TemplateRef<any>;
 
   additionColumns: ITableAction<ArticleModel>[] = [
@@ -25,14 +26,15 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel>{
         class: 'details-button',
         text: 'Details'
       },
-      onClick: this.onLocalizationClick.bind(this)
+      onClick: this.onDetailsClick.bind(this)
     }
 
   ];
   columns: ColumnInfo[] = articleColumns;
   buttons: ITableAction<ArticleModel>[] = [
-    { button: deleteButton, onClick: this.fetchDelete.bind(this) }
+    {button: deleteButton, onClick: this.fetchDelete.bind(this)}
   ];
+
   constructor(injector: Injector,
               public articlesService: ArticlesService,
               private sanitized: DomSanitizer) {
@@ -43,18 +45,37 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel>{
     this.articlesService.delete(model.id)
   }
 
-  downloadJson(){}
+  downloadJson() {
+  }
 
   fetchFilter(params: IFilterInfo): Observable<IFiltered<ArticleModel>> {
     return this.articlesService.filter(params);
   }
 
-  onLocalizationClick(){
-    this.tabsComponent.openTab(
-      'New Tab',
-      this.localizationTemplate,
-      'aoa',
-      true,
-    );
+  onDetailsClick() {
+    const id = 20037;
+
+    const article$ = this.articlesService.getById(id);
+    const localizations$ = this.articlesService.getLocalizations(id);
+
+    combineLatest([article$, localizations$])
+      .subscribe(([article, localizations]) => {
+
+        this.tabsComponent.closeAllTabs();
+
+        this.tabsComponent.openTab(
+          'General',
+          this.articleTemplate,
+          article
+        );
+
+        for (let localization of localizations) {
+          this.tabsComponent.openTab(
+            localization.languageCode,
+            this.localizationTemplate,
+            localization,
+            true);
+        }
+    })
   }
 }
