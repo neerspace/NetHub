@@ -21,22 +21,23 @@
         <app-data-table
           #table
           defaultSorting="-created"
+          [additionColumns]="additionColumns"
           [columns]="columns"
           [buttons]="buttons"
           [onFilter]="fetchFilter.bind(this)">
         </app-data-table>
+        <button (click)="onLocalizationClick()">Add Tab</button>
       </div>
     </as-split-area>
     <as-split-area [size]="secondComponentSize">
       <div class="split-area-content">
-        <!--<app-tabs>-->
-        <!--  <app-tab tabTitle="First tab">Hello</app-tab>-->
-        <!--  <app-tab tabTitle="Second tab">World!</app-tab>-->
-        <!--</app-tabs>-->
+        <app-tabs>
+          <app-tab tabTitle="First tab">Hello</app-tab>
+        </app-tabs>
 
-        <!--<ng-template #localization>-->
-        <!--  I'm localization-->
-        <!--</ng-template>-->
+        <ng-template #localization>
+          I'm localization
+        </ng-template>
       </div>
     </as-split-area>
   </as-split>

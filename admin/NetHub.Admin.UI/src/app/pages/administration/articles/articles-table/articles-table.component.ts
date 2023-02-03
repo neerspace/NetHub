@@ -8,6 +8,7 @@ import {articleColumns} from "../article-columns";
 import {SettingsKey} from "../../../../services/storage/types";
 import {SplitBaseComponent} from "../../../../components/split/split-base.component";
 import {TabsComponent} from "../../../../components/core/tabs/tabs.component";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-articles-table',
@@ -18,11 +19,23 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel>{
   @ViewChild(TabsComponent) tabsComponent!: TabsComponent;
   @ViewChild('localization') localizationTemplate!: TemplateRef<any>;
 
+  additionColumns: ITableAction<ArticleModel>[] = [
+    {
+      button: {
+        class: 'details-button',
+        text: 'Details'
+      },
+      onClick: this.onLocalizationClick.bind(this)
+    }
+
+  ];
   columns: ColumnInfo[] = articleColumns;
   buttons: ITableAction<ArticleModel>[] = [
     { button: deleteButton, onClick: this.fetchDelete.bind(this) }
   ];
-  constructor(injector: Injector, public articlesService: ArticlesService) {
+  constructor(injector: Injector,
+              public articlesService: ArticlesService,
+              private sanitized: DomSanitizer) {
     super(injector, SettingsKey.UsersSplitSizes);
   }
 
@@ -41,6 +54,7 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel>{
       'New Tab',
       this.localizationTemplate,
       'aoa',
+      true,
     );
   }
 }
