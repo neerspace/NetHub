@@ -51,7 +51,7 @@ export class TabsComponent implements AfterContentInit {
     instance.active = true;
 
     this.dynamicTabs.push(componentRef.instance as TabComponent);
-    this.selectTab(this.dynamicTabs[this.dynamicTabs.length - 1]);
+    this.selectTab(this.dynamicTabs[0]);
   }
 
   closeTab(tab: TabComponent) {
@@ -74,5 +74,6 @@ export class TabsComponent implements AfterContentInit {
 
   closeAllTabs() {
     this.dynamicTabs = [];
+    this.dynamicTabsContainer.clear()
   }
 }

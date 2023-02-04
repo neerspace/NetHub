@@ -1,5 +1,8 @@
-.nav-tabs{
+
+.nav-tabs {
     gap: 10px;
+    display: flex;
+    align-items: end;
 }
 
 .tab {
@@ -10,12 +13,18 @@
         outline: 0;
         border: 0;
     }
-
-    gap: 5px;
 }
 
 .tab-close {
     color: var(--c-text);
     text-align: right;
     cursor: pointer;
+}
+
+li.active {
+    button {
+        background-color: var(--c-text-dim);
+        color: var(--c-text-alt);
+        padding: 13px
+    }
 }

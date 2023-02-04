@@ -26,17 +26,17 @@
           [buttons]="buttons"
           [onFilter]="fetchFilter.bind(this)">
         </app-data-table>
-        <button (click)="onDetailsClick()">Add Tab</button>
       </div>
     </as-split-area>
     <as-split-area [size]="secondComponentSize">
       <div class="split-area-content">
         <app-tabs>
         </app-tabs>
-        <ng-template let-data="article" #article>
-          I'm article
+        <ng-template let-data="data" #article>
+          <app-article-view [article]="data"></app-article-view>
         </ng-template>
-        <ng-template let-data="localization" #localization>
+        <ng-template let-data="data" #localization>
+          <app-localization-view [localization]="data"></app-localization-view>
         </ng-template>
       </div>
     </as-split-area>

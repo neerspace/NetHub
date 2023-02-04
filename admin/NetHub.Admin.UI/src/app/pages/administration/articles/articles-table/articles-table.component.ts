@@ -1,14 +1,17 @@
 import {Component, Injector, TemplateRef, ViewChild} from '@angular/core';
 import {ColumnInfo, IFiltered, IFilterInfo, ITableAction} from "../../../../components/table/types";
-import {combineLatest, concat, merge, mergeAll, Observable} from "rxjs";
+import {combineLatest, Observable} from "rxjs";
 import {deleteButton} from "../../../../components/table/buttons";
 import {ArticlesService} from "../services/article.service";
-import {ArticleModel} from "../../../../api";
+import {ArticleLocalizationModel, ArticleModel} from "../../../../api";
 import {articleColumns} from "../article-columns";
 import {SettingsKey} from "../../../../services/storage/types";
 import {SplitBaseComponent} from "../../../../components/split/split-base.component";
 import {TabsComponent} from "../../../../components/core/tabs/tabs.component";
-import {DomSanitizer} from "@angular/platform-browser";
+import {LoaderService} from "../../../../services/viewport";
+import {
+  TypeScriptAstHost
+} from "@angular/compiler-cli/linker/src/ast/typescript/typescript_ast_host";
 
 @Component({
   selector: 'app-articles-table',
@@ -37,7 +40,7 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> {
 
   constructor(injector: Injector,
               public articlesService: ArticlesService,
-              private sanitized: DomSanitizer) {
+              private loaderService: LoaderService) {
     super(injector, SettingsKey.UsersSplitSizes);
   }
 
@@ -52,11 +55,10 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> {
     return this.articlesService.filter(params);
   }
 
-  onDetailsClick() {
-    const id = 20037;
+  onDetailsClick(model: ArticleModel) {
 
-    const article$ = this.articlesService.getById(id);
-    const localizations$ = this.articlesService.getLocalizations(id);
+    const article$ = this.articlesService.getById(model.id);
+    const localizations$ = this.articlesService.getLocalizations(model.id);
 
     combineLatest([article$, localizations$])
       .subscribe(([article, localizations]) => {
@@ -64,18 +66,29 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> {
         this.tabsComponent.closeAllTabs();
 
         this.tabsComponent.openTab(
-          'General',
+          this.generateTabName(article),
           this.articleTemplate,
           article
         );
 
         for (let localization of localizations) {
           this.tabsComponent.openTab(
-            localization.languageCode,
+            this.generateTabName(localization),
             this.localizationTemplate,
             localization,
             true);
         }
-    })
+
+        this.loaderService.hide();
+      })
+  }
+
+  private generateTabName(data: ArticleModel | ArticleLocalizationModel): string {
+    if (data instanceof ArticleModel) {
+      return `${data.id}: General`;
+    } else {
+      const code = data.languageCode.charAt(0).toUpperCase() + data.languageCode.slice(1);
+      return `${data.articleId}: ${code}`;
+    }
   }
 }
