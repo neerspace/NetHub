@@ -3,7 +3,7 @@ import {
   Component, ComponentFactoryResolver,
   ContentChildren,
   OnInit,
-  QueryList, TemplateRef,
+  QueryList, TemplateRef, Type,
   ViewChild, ViewContainerRef
 } from '@angular/core';
 import {TabComponent} from "./tab/tab.component";
@@ -17,9 +17,6 @@ export class TabsComponent implements AfterContentInit {
   @ContentChildren(TabComponent) tabs: QueryList<TabComponent> = new QueryList<TabComponent>();
   @ViewChild('container', {read: ViewContainerRef}) dynamicTabsContainer!: ViewContainerRef;
   dynamicTabs: TabComponent[] = [];
-
-  constructor(private _componentFactoryResolver: ComponentFactoryResolver) {
-  }
 
   ngAfterContentInit(): void {
 
@@ -39,9 +36,8 @@ export class TabsComponent implements AfterContentInit {
 
   openTab(title: string, template: TemplateRef<any>, data: any, isCloseable = false) {
 
-    const componentFactory = this._componentFactoryResolver.resolveComponentFactory(TabComponent);
-
-    const componentRef = this.dynamicTabsContainer.createComponent(componentFactory);
+    const tabType: Type<TabComponent> = TabComponent;
+    const componentRef = this.dynamicTabsContainer.createComponent<TabComponent>(tabType);
     const instance: TabComponent = componentRef.instance as TabComponent;
 
     instance.title = title;
