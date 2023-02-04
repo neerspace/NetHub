@@ -1,7 +1,7 @@
 import {Component, Injector, TemplateRef, ViewChild} from '@angular/core';
 import {ColumnInfo, IFiltered, IFilterInfo, ITableAction} from "../../../../components/table/types";
 import {combineLatest, Observable} from "rxjs";
-import {deleteButton} from "../../../../components/table/buttons";
+import {deleteButton, detailsButton} from "../../../../components/table/buttons";
 import {ArticlesService} from "../services/article.service";
 import {ArticleLocalizationModel, ArticleModel} from "../../../../api";
 import {articleColumns} from "../article-columns";
@@ -24,14 +24,7 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> {
   @ViewChild('localization') localizationTemplate!: TemplateRef<any>;
 
   additionColumns: ITableAction<ArticleModel>[] = [
-    {
-      button: {
-        class: 'details-button',
-        text: 'Details'
-      },
-      onClick: this.onDetailsClick.bind(this)
-    }
-
+    {button: detailsButton, onClick: this.onDetailsClick.bind(this)}
   ];
   columns: ColumnInfo[] = articleColumns;
   buttons: ITableAction<ArticleModel>[] = [
