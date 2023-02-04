@@ -4,7 +4,6 @@ import {Router} from "@angular/router";
 import {ArticleLocalizationModel, ErrorDto, LocalizationsApi} from "../../../../api";
 import {ModalsService} from "../../../../services/modals.service";
 import {LoaderService, ToasterService} from "../../../../services/viewport";
-import {FormReady} from "../../../../components/form/types";
 
 @Injectable({providedIn: 'root'})
 export class LocalizationsService{

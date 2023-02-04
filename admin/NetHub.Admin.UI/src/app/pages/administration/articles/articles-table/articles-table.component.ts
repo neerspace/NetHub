@@ -9,9 +9,6 @@ import {SettingsKey} from "../../../../services/storage/types";
 import {SplitBaseComponent} from "../../../../components/split/split-base.component";
 import {TabsComponent} from "../../../../components/core/tabs/tabs.component";
 import {LoaderService} from "../../../../services/viewport";
-import {
-  TypeScriptAstHost
-} from "@angular/compiler-cli/linker/src/ast/typescript/typescript_ast_host";
 
 @Component({
   selector: 'app-articles-table',
