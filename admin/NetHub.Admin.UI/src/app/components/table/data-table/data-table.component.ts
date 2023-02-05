@@ -1,13 +1,13 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { logger } from 'src/environments/environment';
-import { ErrorDto } from '../../../api';
-import { LoaderService, ToasterService } from '../../../services/viewport';
-import { TablePaginationComponent } from '../pagination/table-pagination.component';
-import { buildFiltersQuery, defaultNumberOperator, defaultTextOperator, postfixes } from '../sieve';
-import { ColumnInfo, FetchApiEvent, FilterType, IFilterParams, ITableAction } from '../types';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {debounceTime, distinctUntilChanged} from 'rxjs';
+import {logger} from 'src/environments/environment';
+import {ErrorDto} from '../../../api';
+import {LoaderService, ToasterService} from '../../../services/viewport';
+import {TablePaginationComponent} from '../pagination/table-pagination.component';
+import {buildFiltersQuery, defaultNumberOperator, defaultTextOperator, postfixes} from '../sieve';
+import {ColumnInfo, FetchApiEvent, FilterType, IFilterParams, ITableAction} from '../types';
 
 @Component({
   selector: 'app-data-table',
@@ -18,6 +18,7 @@ export class DataTableComponent<T> implements OnInit {
   @ViewChild('pagination') pagination!: TablePaginationComponent;
 
   @Input() defaultSorting: string | null = 'id';
+  @Input() additionColumns: ITableAction<T>[] = [];
   @Input() columns: ColumnInfo[] = [];
   @Input() buttons: ITableAction<T>[] = [];
   @Input() onFilter!: FetchApiEvent<T>;
@@ -239,3 +240,6 @@ export class DataTableComponent<T> implements OnInit {
     // }
   }
 }
+
+
+type A = {};

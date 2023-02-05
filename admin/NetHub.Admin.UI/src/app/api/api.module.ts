@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { JWTApi, LanguagesApi, PermissionsApi, RolesApi, UsersApi } from './index';
+import {ArticlesApi, JWTApi, LanguagesApi, PermissionsApi, RolesApi, UsersApi} from './index';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 
 @NgModule({
@@ -16,6 +16,7 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
     RolesApi,
     PermissionsApi,
     LanguagesApi,
+    ArticlesApi
   ],
 })
 export class ApiModule {}

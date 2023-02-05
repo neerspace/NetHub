@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using NetHub.Shared.Models.Localizations;
 
 namespace NetHub.Models.Articles.Localizations;
 

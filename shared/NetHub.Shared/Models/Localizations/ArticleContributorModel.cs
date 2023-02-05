@@ -1,6 +1,6 @@
 ﻿using NetHub.Data.SqlServer.Enums;
 
-namespace NetHub.Models.Articles.Localizations;
+namespace NetHub.Shared.Models.Localizations;
 
 public sealed class ArticleContributorModel
 {

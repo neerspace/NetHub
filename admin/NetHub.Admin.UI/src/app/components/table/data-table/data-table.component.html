@@ -3,6 +3,8 @@
 <table id="users-table" class="table table-hover">
   <thead>
   <tr>
+    <th *ngFor="let additionColumn of additionColumns">
+    </th>
     <th *ngFor="let col of columns">
       <button *ngIf="col.sortable; else notSortable"
               class="btn col-header"
@@ -29,6 +31,8 @@
     </th>
   </tr>
   <tr>
+    <th *ngFor="let _ of additionColumns">
+    </th>
     <th *ngFor="let col of columns" [formGroup]="filtersForm">
       <app-table-filter-field [column]="col"></app-table-filter-field>
     </th>
@@ -43,6 +47,14 @@
   </thead>
   <tbody>
   <tr *ngFor="let item of data">
+    <td *ngFor="let additionColumn of additionColumns"
+    >
+      <button class="btn {{additionColumn.button.class}}"
+              (click)="additionColumn.onClick(item)">
+        <span *ngIf="additionColumn.button.text" class="text">{{additionColumn.button.text}}</span>
+        <i *ngIf="additionColumn.button.icon" class="las {{additionColumn.button.icon}}"></i>
+      </button>
+    </td>
     <td *ngFor="let col of columns" [class.table-active]="col.key === sorts"
         [innerHTML]="col.formatter ? col.formatter(item[col.key], item) : item[col.key]">
     </td>

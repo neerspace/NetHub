@@ -18,6 +18,389 @@ import { DateTime, Duration } from "luxon";
 export const API_URL = new InjectionToken<string>('API_URL');
 
 @Injectable()
+export class ArticlesApi {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getById(id: number): Observable<ArticleModel> {
+        let url_ = this.baseUrl + "/v1/articles/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            withCredentials: true,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ArticleModel>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ArticleModel>;
+        }));
+    }
+
+    protected processGetById(response: HttpResponseBase): Observable<ArticleModel> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ArticleModel.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return No Content
+     */
+    delete(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/v1/articles/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            withCredentials: true,
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param filters (optional) 
+     * @param sorts (optional) 
+     * @param page (optional) 
+     * @param pageSize (optional) 
+     * @return Success
+     */
+    filter(filters: string | undefined, sorts: string | undefined, page: number | undefined, pageSize: number | undefined): Observable<ArticleModelFiltered> {
+        let url_ = this.baseUrl + "/v1/articles?";
+        if (filters === null)
+            throw new Error("The parameter 'filters' cannot be null.");
+        else if (filters !== undefined)
+            url_ += "Filters=" + encodeURIComponent("" + filters) + "&";
+        if (sorts === null)
+            throw new Error("The parameter 'sorts' cannot be null.");
+        else if (sorts !== undefined)
+            url_ += "Sorts=" + encodeURIComponent("" + sorts) + "&";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "Page=" + encodeURIComponent("" + page) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            withCredentials: true,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processFilter(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processFilter(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ArticleModelFiltered>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ArticleModelFiltered>;
+        }));
+    }
+
+    protected processFilter(response: HttpResponseBase): Observable<ArticleModelFiltered> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ArticleModelFiltered.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return No Content
+     */
+    update(body: ArticleModel | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/v1/articles";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            withCredentials: true,
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class JWTApi {
     private http: HttpClient;
     private baseUrl: string;
@@ -1886,6 +2269,335 @@ export class UsersApi {
     }
 }
 
+export class ArticleContributorModel implements IArticleContributorModel {
+    role!: ArticleContributorRole;
+    userName!: string;
+
+    constructor(data?: IArticleContributorModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.role = _data["role"] !== undefined ? _data["role"] : <any>null;
+            this.userName = _data["userName"] !== undefined ? _data["userName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ArticleContributorModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new ArticleContributorModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["role"] = this.role !== undefined ? this.role : <any>null;
+        data["userName"] = this.userName !== undefined ? this.userName : <any>null;
+        return data;
+    }
+}
+
+export interface IArticleContributorModel {
+    role: ArticleContributorRole;
+    userName: string;
+}
+
+export enum ArticleContributorRole {
+    Author = "Author",
+    Editor = "Editor",
+    Test = "Test",
+    Copyrighter = "Copyrighter",
+    Translator = "Translator",
+}
+
+export class ArticleLocalizationModel implements IArticleLocalizationModel {
+    id!: number;
+    articleId!: number;
+    languageCode!: string;
+    contributors!: ArticleContributorModel[];
+    title!: string;
+    description!: string;
+    html!: string;
+    status!: ContentStatus;
+    views!: number;
+    rate!: number;
+    created!: DateTime;
+    updated!: DateTime | null;
+    published!: DateTime | null;
+    banned!: DateTime | null;
+    isSaved!: boolean;
+    savedDate!: DateTime | null;
+    vote!: Vote;
+
+    constructor(data?: IArticleLocalizationModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.contributors) {
+                this.contributors = [];
+                for (let i = 0; i < data.contributors.length; i++) {
+                    let item = data.contributors[i];
+                    this.contributors[i] = item && !(<any>item).toJSON ? new ArticleContributorModel(item) : <ArticleContributorModel>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.articleId = _data["articleId"] !== undefined ? _data["articleId"] : <any>null;
+            this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
+            if (Array.isArray(_data["contributors"])) {
+                this.contributors = [] as any;
+                for (let item of _data["contributors"])
+                    this.contributors!.push(ArticleContributorModel.fromJS(item));
+            }
+            else {
+                this.contributors = <any>null;
+            }
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.html = _data["html"] !== undefined ? _data["html"] : <any>null;
+            this.status = _data["status"] !== undefined ? _data["status"] : <any>null;
+            this.views = _data["views"] !== undefined ? _data["views"] : <any>null;
+            this.rate = _data["rate"] !== undefined ? _data["rate"] : <any>null;
+            this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>null;
+            this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>null;
+            this.published = _data["published"] ? DateTime.fromISO(_data["published"].toString()) : <any>null;
+            this.banned = _data["banned"] ? DateTime.fromISO(_data["banned"].toString()) : <any>null;
+            this.isSaved = _data["isSaved"] !== undefined ? _data["isSaved"] : <any>null;
+            this.savedDate = _data["savedDate"] ? DateTime.fromISO(_data["savedDate"].toString()) : <any>null;
+            this.vote = _data["vote"] !== undefined ? _data["vote"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ArticleLocalizationModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new ArticleLocalizationModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["articleId"] = this.articleId !== undefined ? this.articleId : <any>null;
+        data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
+        if (Array.isArray(this.contributors)) {
+            data["contributors"] = [];
+            for (let item of this.contributors)
+                data["contributors"].push(item.toJSON());
+        }
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["html"] = this.html !== undefined ? this.html : <any>null;
+        data["status"] = this.status !== undefined ? this.status : <any>null;
+        data["views"] = this.views !== undefined ? this.views : <any>null;
+        data["rate"] = this.rate !== undefined ? this.rate : <any>null;
+        data["created"] = this.created ? this.created.toString() : <any>null;
+        data["updated"] = this.updated ? this.updated.toString() : <any>null;
+        data["published"] = this.published ? this.published.toString() : <any>null;
+        data["banned"] = this.banned ? this.banned.toString() : <any>null;
+        data["isSaved"] = this.isSaved !== undefined ? this.isSaved : <any>null;
+        data["savedDate"] = this.savedDate ? this.savedDate.toString() : <any>null;
+        data["vote"] = this.vote !== undefined ? this.vote : <any>null;
+        return data;
+    }
+}
+
+export interface IArticleLocalizationModel {
+    id: number;
+    articleId: number;
+    languageCode: string;
+    contributors: IArticleContributorModel[];
+    title: string;
+    description: string;
+    html: string;
+    status: ContentStatus;
+    views: number;
+    rate: number;
+    created: DateTime;
+    updated: DateTime | null;
+    published: DateTime | null;
+    banned: DateTime | null;
+    isSaved: boolean;
+    savedDate: DateTime | null;
+    vote: Vote;
+}
+
+export class ArticleModel implements IArticleModel {
+    id!: number;
+    name!: string;
+    authorId!: number;
+    created!: DateTime;
+    updated!: DateTime | null;
+    published!: DateTime | null;
+    banned!: DateTime | null;
+    originalArticleLink!: string | null;
+    rate!: number;
+    localizations!: ArticleLocalizationModel[] | null;
+    tags!: string[];
+
+    constructor(data?: IArticleModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.localizations) {
+                this.localizations = [];
+                for (let i = 0; i < data.localizations.length; i++) {
+                    let item = data.localizations[i];
+                    this.localizations[i] = item && !(<any>item).toJSON ? new ArticleLocalizationModel(item) : <ArticleLocalizationModel>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.authorId = _data["authorId"] !== undefined ? _data["authorId"] : <any>null;
+            this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>null;
+            this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>null;
+            this.published = _data["published"] ? DateTime.fromISO(_data["published"].toString()) : <any>null;
+            this.banned = _data["banned"] ? DateTime.fromISO(_data["banned"].toString()) : <any>null;
+            this.originalArticleLink = _data["originalArticleLink"] !== undefined ? _data["originalArticleLink"] : <any>null;
+            this.rate = _data["rate"] !== undefined ? _data["rate"] : <any>null;
+            if (Array.isArray(_data["localizations"])) {
+                this.localizations = [] as any;
+                for (let item of _data["localizations"])
+                    this.localizations!.push(ArticleLocalizationModel.fromJS(item));
+            }
+            else {
+                this.localizations = <any>null;
+            }
+            if (Array.isArray(_data["tags"])) {
+                this.tags = [] as any;
+                for (let item of _data["tags"])
+                    this.tags!.push(item);
+            }
+            else {
+                this.tags = <any>null;
+            }
+        }
+    }
+
+    static fromJS(data: any): ArticleModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new ArticleModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["authorId"] = this.authorId !== undefined ? this.authorId : <any>null;
+        data["created"] = this.created ? this.created.toString() : <any>null;
+        data["updated"] = this.updated ? this.updated.toString() : <any>null;
+        data["published"] = this.published ? this.published.toString() : <any>null;
+        data["banned"] = this.banned ? this.banned.toString() : <any>null;
+        data["originalArticleLink"] = this.originalArticleLink !== undefined ? this.originalArticleLink : <any>null;
+        data["rate"] = this.rate !== undefined ? this.rate : <any>null;
+        if (Array.isArray(this.localizations)) {
+            data["localizations"] = [];
+            for (let item of this.localizations)
+                data["localizations"].push(item.toJSON());
+        }
+        if (Array.isArray(this.tags)) {
+            data["tags"] = [];
+            for (let item of this.tags)
+                data["tags"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IArticleModel {
+    id: number;
+    name: string;
+    authorId: number;
+    created: DateTime;
+    updated: DateTime | null;
+    published: DateTime | null;
+    banned: DateTime | null;
+    originalArticleLink: string | null;
+    rate: number;
+    localizations: IArticleLocalizationModel[] | null;
+    tags: string[];
+}
+
+export class ArticleModelFiltered implements IArticleModelFiltered {
+    total!: number;
+    data!: ArticleModel[];
+
+    constructor(data?: IArticleModelFiltered) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.data) {
+                this.data = [];
+                for (let i = 0; i < data.data.length; i++) {
+                    let item = data.data[i];
+                    this.data[i] = item && !(<any>item).toJSON ? new ArticleModel(item) : <ArticleModel>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"] !== undefined ? _data["total"] : <any>null;
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(ArticleModel.fromJS(item));
+            }
+            else {
+                this.data = <any>null;
+            }
+        }
+    }
+
+    static fromJS(data: any): ArticleModelFiltered {
+        data = typeof data === 'object' ? data : {};
+        let result = new ArticleModelFiltered();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total !== undefined ? this.total : <any>null;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IArticleModelFiltered {
+    total: number;
+    data: IArticleModel[];
+}
+
 export class AuthRequest implements IAuthRequest {
     login!: string;
     password!: string | null;
@@ -1984,6 +2696,13 @@ export interface IAuthResult {
     tokenExpires: DateTime;
     refreshTokenExpires: DateTime;
     profilePhotoUrl: string | null;
+}
+
+export enum ContentStatus {
+    Draft = "Draft",
+    Pending = "Pending",
+    Published = "Published",
+    Banned = "Banned",
 }
 
 export class ErrorDto implements IErrorDto {
@@ -2684,6 +3403,11 @@ export interface IValidationError {
     errors: IErrorDetails;
 
     [key: string]: any;
+}
+
+export enum Vote {
+    Up = "Up",
+    Down = "Down",
 }
 
 export class ApiException extends Error {

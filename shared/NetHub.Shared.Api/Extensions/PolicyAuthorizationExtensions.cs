@@ -35,5 +35,12 @@ public static class PolicyAuthorizationExtensions
                 readPermission: Permission.ReadLanguages,
                 managePolicy: Policies.HasManageLanguagesPermission,
                 managePermission: Permission.ManageLanguages);
+
+            // /articles
+            options.AddReadManagePolicy(
+                readPolicy: Policies.HasReadArticlesPermission,
+                readPermission: Permission.ReadArticles,
+                managePolicy: Policies.HasManageArticlesPermission,
+                managePermission: Permission.ManageArticles);
         });
 }

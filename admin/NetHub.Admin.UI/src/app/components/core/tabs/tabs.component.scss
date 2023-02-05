@@ -1,0 +1,21 @@
+.nav-tabs{
+    gap: 10px;
+}
+
+.tab {
+    button {
+        background-color: var(--c-bg-3);
+        padding: 10px;
+        color: var(--c-text);
+        outline: 0;
+        border: 0;
+    }
+
+    gap: 5px;
+}
+
+.tab-close {
+    color: var(--c-text);
+    text-align: right;
+    cursor: pointer;
+}

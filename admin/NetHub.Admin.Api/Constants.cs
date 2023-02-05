@@ -9,6 +9,7 @@ public static class TagNames
     public const string Permissions = "Permissions";
     public const string Jwt = "JWT";
     public const string Languages = "Languages";
+    public const string Articles = "Articles";
 }
 
 public static class Versions

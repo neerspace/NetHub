@@ -12,13 +12,13 @@ namespace NetHub.Api.Endpoints.Articles.Localizations;
 
 [Tags(TagNames.ArticleLocalizations)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleLocalizationGetThreadEndpoint : Endpoint<ArticleLocalizationFilter, ExtendedArticleModel[]>
+public sealed class ArticleLocalizationGetThreadEndpoint : Endpoint<ArticleLocalizationFilter, ViewLocalizationModel[]>
 {
     private readonly IFilterService _filterService;
     public ArticleLocalizationGetThreadEndpoint(IFilterService filterService) => _filterService = filterService;
 
     [HttpGet("articles/{lang:alpha:length(2)}/search")]
-    public override async Task<ExtendedArticleModel[]> HandleAsync(ArticleLocalizationFilter request, CancellationToken ct)
+    public override async Task<ViewLocalizationModel[]> HandleAsync(ArticleLocalizationFilter request, CancellationToken ct)
     {
         var userId = UserProvider.TryGetUserId();
 
@@ -29,7 +29,7 @@ public sealed class ArticleLocalizationGetThreadEndpoint : Endpoint<ArticleLocal
         return await result;
     }
 
-    private async Task<ExtendedArticleModel[]> GetSimpleArticles(FilterRequest request, CancellationToken cancel)
+    private async Task<ViewLocalizationModel[]> GetSimpleArticles(FilterRequest request, CancellationToken cancel)
     {
         if (request.Filters != null && request.Filters.Contains("contributorRole"))
             request.Filters = request.Filters.Replace(",contributorRole==Author", "");
@@ -41,12 +41,12 @@ public sealed class ArticleLocalizationGetThreadEndpoint : Endpoint<ArticleLocal
         request.Sorts = "published";
 
         var result = await _filterService
-            .FilterAsync<ArticleLocalization, ExtendedArticleModel>(request, cancel, al => al.Contributors);
+            .FilterAsync<ArticleLocalization, ViewLocalizationModel>(request, cancel, al => al.Contributors);
 
         return result;
     }
 
-    private async Task<ExtendedArticleModel[]> GetExtendedArticles(FilterRequest request, CancellationToken cancel,
+    private async Task<ViewLocalizationModel[]> GetExtendedArticles(FilterRequest request, CancellationToken cancel,
         long userId)
     {
         request.Filters += $",userId=={userId}";
@@ -54,7 +54,7 @@ public sealed class ArticleLocalizationGetThreadEndpoint : Endpoint<ArticleLocal
         request.Sorts = "published";
 
         var result =
-            await _filterService.FilterAsync<ExtendedUserArticle, ExtendedArticleModel>(request, ct: cancel);
+            await _filterService.FilterAsync<ViewUserArticle, ViewLocalizationModel>(request, ct: cancel);
         return result;
     }
 }

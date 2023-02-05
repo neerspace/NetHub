@@ -1,6 +1,6 @@
 ﻿using NetHub.Data.SqlServer.Enums;
 
-namespace NetHub.Models.Articles.Localizations;
+namespace NetHub.Shared.Models.Localizations;
 
 public sealed class ArticleLocalizationModel
 {
@@ -14,6 +14,7 @@ public sealed class ArticleLocalizationModel
     public ContentStatus Status { get; set; }
     public int Views { get; set; }
     public int Rate { get; set; }
+
     public DateTimeOffset Created { get; set; }
     public DateTimeOffset? Updated { get; set; }
     public DateTimeOffset? Published { get; set; }

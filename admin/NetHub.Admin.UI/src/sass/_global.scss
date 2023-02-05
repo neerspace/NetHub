@@ -46,6 +46,16 @@ select:-webkit-autofill {
   }
 }
 
+.counter{
+    &.counter-positive{
+        color: var(--c-success);
+    }
+
+    &.counter-negative{
+        color: var(--c-danger);
+    }
+}
+
 .toast {
   .icon {
     display: inline-block;

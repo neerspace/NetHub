@@ -1,4 +1,6 @@
-﻿namespace NetHub.Models.Articles.Localizations;
+﻿using NetHub.Shared.Models.Localizations;
+
+namespace NetHub.Models.Articles.Localizations;
 
 public record UpdateArticleLocalizationRequest : ArticleLocalizationQuery
 {

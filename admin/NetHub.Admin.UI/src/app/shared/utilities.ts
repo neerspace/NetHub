@@ -24,6 +24,14 @@ export function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+export const getDomain = (link: string | null) => {
+  if (link === null) return undefined;
+
+  const url = new URL(link);
+  const domain = url.hostname.replace('www.', '');
+  return domain;
+}
+
 /* eslint-disable prettier/prettier */
 /* eslint-disable */
 const sanEmojis = [

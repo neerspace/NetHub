@@ -55,6 +55,12 @@ public enum Permission
 
     [PermissionInfo("mt.lng+", "Languages")]
     ManageLanguages = 31,
+
+    [PermissionInfo("mt.art", "Articles")]
+    ReadArticles = 40,
+
+    [PermissionInfo("mt.art+", "Articles")]
+    ManageArticles = 41
 }
 
 [AttributeUsage(AttributeTargets.Field)]
