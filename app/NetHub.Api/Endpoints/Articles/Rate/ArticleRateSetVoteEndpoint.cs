@@ -17,7 +17,7 @@ namespace NetHub.Api.Endpoints.Articles.Rate;
 public sealed class ArticleRateSetVoteEndpoint : ActionEndpoint<RateArticleRequest>
 {
     [HttpPost("articles/{id:long}/rate")]
-    public override async Task HandleAsync([FromQuery] RateArticleRequest request, CancellationToken ct)
+    public override async Task HandleAsync(RateArticleRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
 
