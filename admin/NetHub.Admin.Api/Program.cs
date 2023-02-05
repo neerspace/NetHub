@@ -44,9 +44,8 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
     if (builder.Environment.IsDevelopment())
         builder.Configuration.AddJsonFile("appsettings.Development.json");
 
-    builder.Services.AddSqlServerDatabase();
-    builder.Services.AddApplication(builder.Configuration);
-    builder.Services.AddAdminInfrastructure();
+    builder.Services.AddSqlServerDatabase(builder.Configuration);
+    builder.Services.AddAdminApplication();
     builder.Services.AddWebAdminApi(builder.Configuration);
 }
 
