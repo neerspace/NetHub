@@ -27,8 +27,7 @@ public sealed class MeProfilePhotoUpdateEndpoint : Endpoint<MeProfilePhotoUpdate
     }
 
 
-    [HttpPost("me/profile-picture"), ClientSide(ActionName = "updateProfilePhoto")]
-    //TODO: Add Profile Put
+    [HttpPut("me/profile-picture"), ClientSide(ActionName = "updateProfilePhoto")]
     public override async Task<MeProfilePhotoUpdateResult> HandleAsync(MeProfilePhotoUpdateRequest updateRequest, CancellationToken ct)
     {
         var user = await UserProvider.GetUserAsync();

@@ -30,7 +30,7 @@ export class ArticleLocalizationsApi {
      * @param body (optional) 
      * @return Created
      */
-    create(id: string, lang: string, body: CreateArticleLocalizationRequest | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel> {
+    create(id: string, lang: string, body: ArticleLocalizationCreateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel> {
         let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -124,27 +124,22 @@ export class ArticleLocalizationsApi {
     }
 
     /**
-     * @param body (optional) 
      * @return No Content
      */
-    delete(id: string, lang: string, body: ArticleLocalizationQuery | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    delete(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
         if (lang === undefined || lang === null)
             throw new Error("The parameter 'lang' must be defined.");
         url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_: AxiosRequestConfig = {
-            data: content_,
             method: "DELETE",
             url: url_,
             headers: {
-                "Content-Type": "application/json",
             },
             cancelToken
         };
@@ -217,27 +212,22 @@ export class ArticleLocalizationsApi {
     }
 
     /**
-     * @param body (optional) 
      * @return Success
      */
-    getByIdAndCode(id: string, lang: string, body: ArticleLocalizationQuery | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel> {
+    getByIdAndCode(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel> {
         let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
         if (lang === undefined || lang === null)
             throw new Error("The parameter 'lang' must be defined.");
         url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_: AxiosRequestConfig = {
-            data: content_,
             method: "GET",
             url: url_,
             headers: {
-                "Content-Type": "application/json",
                 "Accept": "application/json"
             },
             cancelToken
@@ -317,7 +307,7 @@ export class ArticleLocalizationsApi {
      * @param body (optional) 
      * @return No Content
      */
-    put(id: string, lang: string, body: UpdateArticleLocalizationRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    put(id: string, lang: string, body: ArticleLocalizationUpdateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -407,24 +397,44 @@ export class ArticleLocalizationsApi {
     }
 
     /**
-     * @param body (optional) 
+     * @param languageCode (optional) 
+     * @param filters (optional) 
+     * @param sorts (optional) 
+     * @param page (optional) 
+     * @param pageSize (optional) 
      * @return Success
      */
-    search(lang: string, body: ArticleLocalizationFilter | undefined , cancelToken?: CancelToken | undefined): Promise<ViewLocalizationModel[]> {
-        let url_ = this.baseUrl + "/v1/articles/{lang}/search";
+    search(languageCode: string | undefined, filters: string | undefined, sorts: string | undefined, page: number | undefined, pageSize: number | undefined, lang: string , cancelToken?: CancelToken | undefined): Promise<ViewLocalizationModel[]> {
+        let url_ = this.baseUrl + "/v1/articles/{lang}/search?";
         if (lang === undefined || lang === null)
             throw new Error("The parameter 'lang' must be defined.");
         url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
+        if (languageCode === null)
+            throw new Error("The parameter 'languageCode' cannot be null.");
+        else if (languageCode !== undefined)
+            url_ += "LanguageCode=" + encodeURIComponent("" + languageCode) + "&";
+        if (filters === null)
+            throw new Error("The parameter 'filters' cannot be null.");
+        else if (filters !== undefined)
+            url_ += "Filters=" + encodeURIComponent("" + filters) + "&";
+        if (sorts === null)
+            throw new Error("The parameter 'sorts' cannot be null.");
+        else if (sorts !== undefined)
+            url_ += "Sorts=" + encodeURIComponent("" + sorts) + "&";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "Page=" + encodeURIComponent("" + page) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_: AxiosRequestConfig = {
-            data: content_,
             method: "GET",
             url: url_,
             headers: {
-                "Content-Type": "application/json",
                 "Accept": "application/json"
             },
             cancelToken
@@ -509,12 +519,14 @@ export class ArticleLocalizationsApi {
 
     /**
      * @param languageCode (optional) 
-     * @param page (optional) 
-     * @param perPage (optional) 
-     * @return Success
+     * @param status (optional) 
+     * @return No Content
      */
-    get(languageCode: string | undefined, page: number | undefined, perPage: number | undefined, lang: string , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtended[]> {
-        let url_ = this.baseUrl + "/v1/articles/{lang}?";
+    updateStatus(id: number, languageCode: string | undefined, status: ArticleStatusActions | undefined, lang: string , cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/v1/articles/{id}/{lang}/status?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
         if (lang === undefined || lang === null)
             throw new Error("The parameter 'lang' must be defined.");
         url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
@@ -522,124 +534,16 @@ export class ArticleLocalizationsApi {
             throw new Error("The parameter 'languageCode' cannot be null.");
         else if (languageCode !== undefined)
             url_ += "LanguageCode=" + encodeURIComponent("" + languageCode) + "&";
-        if (page === null)
-            throw new Error("The parameter 'page' cannot be null.");
-        else if (page !== undefined)
-            url_ += "Page=" + encodeURIComponent("" + page) + "&";
-        if (perPage === null)
-            throw new Error("The parameter 'perPage' cannot be null.");
-        else if (perPage !== undefined)
-            url_ += "PerPage=" + encodeURIComponent("" + perPage) + "&";
+        if (status === null)
+            throw new Error("The parameter 'status' cannot be null.");
+        else if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processGet(_response);
-        });
-    }
-
-    protected processGet(response: AxiosResponse): Promise<ArticleModelExtended[]> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(ArticleModelExtended.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<ArticleModelExtended[]>(result200);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
-
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401  = _responseText;
-            result401 = ValidationError.fromJS(resultData401);
-            return throwException("Not Authorized", status, _responseText, _headers, result401);
-
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403  = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException("Permission Denied", status, _responseText, _headers, result403);
-
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException("Not Found", status, _responseText, _headers, result404);
-
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500  = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<ArticleModelExtended[]>(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return No Content
-     */
-    updateStatus(id: string, lang: string, body: SetArticleStatusRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/v1/articles/{id}/{lang}/status";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (lang === undefined || lang === null)
-            throw new Error("The parameter 'lang' must be defined.");
-        url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_: AxiosRequestConfig = {
-            data: content_,
             method: "PATCH",
             url: url_,
             headers: {
-                "Content-Type": "application/json",
             },
             cancelToken
         };
@@ -729,7 +633,7 @@ export class ArticlesApi {
      * @param body (optional) 
      * @return Created
      */
-    create(body: CreateArticleRequest | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtended> {
+    create(body: ArticleCreateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtended> {
         let url_ = this.baseUrl + "/v1/articles";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -820,7 +724,7 @@ export class ArticlesApi {
      * @param body (optional) 
      * @return No Content
      */
-    update(body: UpdateArticleRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    update(body: ArticleUpdateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/articles";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -991,7 +895,7 @@ export class ArticlesApi {
     /**
      * @return Success
      */
-    getById(id: number , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtendedGuidArrayValueTuple> {
+    getById(id: number , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtended> {
         let url_ = this.baseUrl + "/v1/articles/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1018,7 +922,7 @@ export class ArticlesApi {
         });
     }
 
-    protected processGetById(response: AxiosResponse): Promise<ArticleModelExtendedGuidArrayValueTuple> {
+    protected processGetById(response: AxiosResponse): Promise<ArticleModelExtended> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1032,8 +936,8 @@ export class ArticlesApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = ArticleModelExtendedGuidArrayValueTuple.fromJS(resultData200);
-            return Promise.resolve<ArticleModelExtendedGuidArrayValueTuple>(result200);
+            result200 = ArticleModelExtended.fromJS(resultData200);
+            return Promise.resolve<ArticleModelExtended>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -1074,28 +978,31 @@ export class ArticlesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ArticleModelExtendedGuidArrayValueTuple>(null as any);
+        return Promise.resolve<ArticleModelExtended>(null as any);
     }
 
     /**
-     * @param body (optional) 
+     * @param file (optional) 
      * @return Created
      */
-    uploadImage(id: string, body: AddArticleImageRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    uploadImage(id: number, file: FileParameter | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/articles/{id}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = new FormData();
+        if (file === null || file === undefined)
+            throw new Error("The parameter 'file' cannot be null.");
+        else
+            content_.append("File", file.data, file.fileName ? file.fileName : "File");
 
         let options_: AxiosRequestConfig = {
             data: content_,
             method: "POST",
             url: url_,
             headers: {
-                "Content-Type": "application/json",
             },
             cancelToken
         };
@@ -1284,7 +1191,7 @@ export class CurrentUserApi {
     /**
      * @return Success
      */
-    dashboard(  cancelToken?: CancelToken | undefined): Promise<DashboardDto> {
+    dashboard(  cancelToken?: CancelToken | undefined): Promise<DashboardResult> {
         let url_ = this.baseUrl + "/v1/me/dashboard";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1308,7 +1215,7 @@ export class CurrentUserApi {
         });
     }
 
-    protected processDashboard(response: AxiosResponse): Promise<DashboardDto> {
+    protected processDashboard(response: AxiosResponse): Promise<DashboardResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1322,8 +1229,8 @@ export class CurrentUserApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = DashboardDto.fromJS(resultData200);
-            return Promise.resolve<DashboardDto>(result200);
+            result200 = DashboardResult.fromJS(resultData200);
+            return Promise.resolve<DashboardResult>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -1364,13 +1271,13 @@ export class CurrentUserApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<DashboardDto>(null as any);
+        return Promise.resolve<DashboardResult>(null as any);
     }
 
     /**
      * @return Success
      */
-    me(  cancelToken?: CancelToken | undefined): Promise<UserDto> {
+    me(  cancelToken?: CancelToken | undefined): Promise<UserResult> {
         let url_ = this.baseUrl + "/v1/me";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1394,7 +1301,7 @@ export class CurrentUserApi {
         });
     }
 
-    protected processMe(response: AxiosResponse): Promise<UserDto> {
+    protected processMe(response: AxiosResponse): Promise<UserResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1408,8 +1315,8 @@ export class CurrentUserApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = UserDto.fromJS(resultData200);
-            return Promise.resolve<UserDto>(result200);
+            result200 = UserResult.fromJS(resultData200);
+            return Promise.resolve<UserResult>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -1450,16 +1357,20 @@ export class CurrentUserApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<UserDto>(null as any);
+        return Promise.resolve<UserResult>(null as any);
     }
 
     /**
-     * @param file (optional) 
      * @param link (optional) 
-     * @return Created
+     * @param file (optional) 
+     * @return Success
      */
-    updateProfilePhoto(file: FileParameter | undefined, link: string | undefined , cancelToken?: CancelToken | undefined): Promise<SetUserPhotoResult> {
-        let url_ = this.baseUrl + "/v1/me/profile-picture";
+    updateProfilePhoto(link: string | undefined, file: FileParameter | undefined , cancelToken?: CancelToken | undefined): Promise<MeProfilePhotoUpdateResult> {
+        let url_ = this.baseUrl + "/v1/me/profile-picture?";
+        if (link === null)
+            throw new Error("The parameter 'link' cannot be null.");
+        else if (link !== undefined)
+            url_ += "Link=" + encodeURIComponent("" + link) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = new FormData();
@@ -1467,14 +1378,10 @@ export class CurrentUserApi {
             throw new Error("The parameter 'file' cannot be null.");
         else
             content_.append("File", file.data, file.fileName ? file.fileName : "File");
-        if (link === null || link === undefined)
-            throw new Error("The parameter 'link' cannot be null.");
-        else
-            content_.append("Link", link.toString());
 
         let options_: AxiosRequestConfig = {
             data: content_,
-            method: "POST",
+            method: "PUT",
             url: url_,
             headers: {
                 "Accept": "application/json"
@@ -1493,7 +1400,7 @@ export class CurrentUserApi {
         });
     }
 
-    protected processUpdateProfilePhoto(response: AxiosResponse): Promise<SetUserPhotoResult> {
+    protected processUpdateProfilePhoto(response: AxiosResponse): Promise<MeProfilePhotoUpdateResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1503,53 +1410,26 @@ export class CurrentUserApi {
                 }
             }
         }
-        if (status === 201) {
+        if (status === 200) {
             const _responseText = response.data;
-            let result201: any = null;
-            let resultData201  = _responseText;
-            result201 = SetUserPhotoResult.fromJS(resultData201);
-            return Promise.resolve<SetUserPhotoResult>(result201);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = MeProfilePhotoUpdateResult.fromJS(resultData200);
+            return Promise.resolve<MeProfilePhotoUpdateResult>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
-            let result401: any = null;
-            let resultData401  = _responseText;
-            result401 = ValidationError.fromJS(resultData401);
-            return throwException("Not Authorized", status, _responseText, _headers, result401);
+            return throwException("Unauthorized", status, _responseText, _headers);
 
         } else if (status === 403) {
             const _responseText = response.data;
-            let result403: any = null;
-            let resultData403  = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException("Permission Denied", status, _responseText, _headers, result403);
-
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException("Not Found", status, _responseText, _headers, result404);
-
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500  = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            return throwException("Forbidden", status, _responseText, _headers);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<SetUserPhotoResult>(null as any);
+        return Promise.resolve<MeProfilePhotoUpdateResult>(null as any);
     }
 }
 
@@ -1570,7 +1450,7 @@ export class JwtApi {
      * @param body (optional) 
      * @return Created
      */
-    authenticate(body: SsoEnterRequest | undefined , cancelToken?: CancelToken | undefined): Promise<AuthResult> {
+    authenticate(body: JwtAuthenticateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<JwtResult> {
         let url_ = this.baseUrl + "/v1/jwt/authenticate";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1598,7 +1478,7 @@ export class JwtApi {
         });
     }
 
-    protected processAuthenticate(response: AxiosResponse): Promise<AuthResult> {
+    protected processAuthenticate(response: AxiosResponse): Promise<JwtResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1612,8 +1492,8 @@ export class JwtApi {
             const _responseText = response.data;
             let result201: any = null;
             let resultData201  = _responseText;
-            result201 = AuthResult.fromJS(resultData201);
-            return Promise.resolve<AuthResult>(result201);
+            result201 = JwtResult.fromJS(resultData201);
+            return Promise.resolve<JwtResult>(result201);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -1654,13 +1534,13 @@ export class JwtApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<AuthResult>(null as any);
+        return Promise.resolve<JwtResult>(null as any);
     }
 
     /**
      * @return Created
      */
-    refresh(  cancelToken?: CancelToken | undefined): Promise<AuthResult> {
+    refresh(  cancelToken?: CancelToken | undefined): Promise<JwtResult> {
         let url_ = this.baseUrl + "/v1/jwt/refresh";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1684,7 +1564,7 @@ export class JwtApi {
         });
     }
 
-    protected processRefresh(response: AxiosResponse): Promise<AuthResult> {
+    protected processRefresh(response: AxiosResponse): Promise<JwtResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1698,8 +1578,8 @@ export class JwtApi {
             const _responseText = response.data;
             let result201: any = null;
             let resultData201  = _responseText;
-            result201 = AuthResult.fromJS(resultData201);
-            return Promise.resolve<AuthResult>(result201);
+            result201 = JwtResult.fromJS(resultData201);
+            return Promise.resolve<JwtResult>(result201);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -1740,7 +1620,7 @@ export class JwtApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<AuthResult>(null as any);
+        return Promise.resolve<JwtResult>(null as any);
     }
 
     /**
@@ -1933,6 +1813,127 @@ export class LanguagesApi {
     }
 }
 
+export class MeProfileUpdateEndpointApi {
+    private instance: AxiosInstance;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, instance?: AxiosInstance) {
+
+        this.instance = instance ? instance : axios.create();
+
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+
+    }
+
+    /**
+     * @param username (optional) 
+     * @param firstName (optional) 
+     * @param lastName (optional) 
+     * @param middleName (optional) 
+     * @param description (optional) 
+     * @return No Content
+     */
+    updateProfile(username: string | undefined, firstName: string | undefined, lastName: string | undefined, middleName: string | undefined, description: string | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/v1/me/profile?";
+        if (username === null)
+            throw new Error("The parameter 'username' cannot be null.");
+        else if (username !== undefined)
+            url_ += "Username=" + encodeURIComponent("" + username) + "&";
+        if (firstName === null)
+            throw new Error("The parameter 'firstName' cannot be null.");
+        else if (firstName !== undefined)
+            url_ += "FirstName=" + encodeURIComponent("" + firstName) + "&";
+        if (lastName === null)
+            throw new Error("The parameter 'lastName' cannot be null.");
+        else if (lastName !== undefined)
+            url_ += "LastName=" + encodeURIComponent("" + lastName) + "&";
+        if (middleName === null)
+            throw new Error("The parameter 'middleName' cannot be null.");
+        else if (middleName !== undefined)
+            url_ += "MiddleName=" + encodeURIComponent("" + middleName) + "&";
+        if (description === null)
+            throw new Error("The parameter 'description' cannot be null.");
+        else if (description !== undefined)
+            url_ += "Description=" + encodeURIComponent("" + description) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "PUT",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUpdateProfile(_response);
+        });
+    }
+
+    protected processUpdateProfile(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 204) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500  = _responseText;
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+}
+
 export class MyArticlesApi {
     private instance: AxiosInstance;
     private baseUrl: string;
@@ -1947,27 +1948,22 @@ export class MyArticlesApi {
     }
 
     /**
-     * @param body (optional) 
      * @return Success
      */
-    isSaved(id: string, lang: string, body: ArticleLocalizationQuery | undefined , cancelToken?: CancelToken | undefined): Promise<IsSavedLocalizationResult> {
+    isSaved(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<IsSavedLocalizationResult> {
         let url_ = this.baseUrl + "/v1/me/saved-articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
         if (lang === undefined || lang === null)
             throw new Error("The parameter 'lang' must be defined.");
         url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_: AxiosRequestConfig = {
-            data: content_,
             method: "GET",
             url: url_,
             headers: {
-                "Content-Type": "application/json",
                 "Accept": "application/json"
             },
             cancelToken
@@ -2044,27 +2040,22 @@ export class MyArticlesApi {
     }
 
     /**
-     * @param body (optional) 
      * @return No Content
      */
-    toggleSave(id: string, lang: string, body: ArticleLocalizationQuery | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    toggleSave(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/me/saved-articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
         if (lang === undefined || lang === null)
             throw new Error("The parameter 'lang' must be defined.");
         url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_: AxiosRequestConfig = {
-            data: content_,
             method: "PATCH",
             url: url_,
             headers: {
-                "Content-Type": "application/json",
             },
             cancelToken
         };
@@ -2137,21 +2128,16 @@ export class MyArticlesApi {
     }
 
     /**
-     * @param body (optional) 
      * @return Success
      */
-    savedArticles(body: ArticleLocalizationQuery | undefined , cancelToken?: CancelToken | undefined): Promise<ViewLocalizationModel[]> {
+    savedArticles(  cancelToken?: CancelToken | undefined): Promise<ViewLocalizationModel[]> {
         let url_ = this.baseUrl + "/v1/me/saved-articles";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_: AxiosRequestConfig = {
-            data: content_,
             method: "GET",
             url: url_,
             headers: {
-                "Content-Type": "application/json",
                 "Accept": "application/json"
             },
             cancelToken
@@ -2327,24 +2313,24 @@ export class MyArticlesApi {
     }
 
     /**
-     * @param body (optional) 
+     * @param vote (optional) 
      * @return Created
      */
-    updateVote(id: string, body: RateArticleRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/v1/me/articles/{id}/vote";
+    updateVote(id: number, vote: Vote | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/v1/me/articles/{id}/vote?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
+        if (vote === null)
+            throw new Error("The parameter 'vote' cannot be null.");
+        else if (vote !== undefined)
+            url_ += "Vote=" + encodeURIComponent("" + vote) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_: AxiosRequestConfig = {
-            data: content_,
             method: "POST",
             url: url_,
             headers: {
-                "Content-Type": "application/json",
             },
             cancelToken
         };
@@ -2534,7 +2520,7 @@ export class UsersApi {
      * @param provider (optional) 
      * @return Success
      */
-    checkIfExists(key: string | undefined, provider: ProviderType | undefined , cancelToken?: CancelToken | undefined): Promise<CheckUserIfExistsResult> {
+    checkIfExists(key: string | undefined, provider: ProviderType | undefined , cancelToken?: CancelToken | undefined): Promise<UserCheckIfExistsResult> {
         let url_ = this.baseUrl + "/v1/users/check-if-exists?";
         if (key === null)
             throw new Error("The parameter 'key' cannot be null.");
@@ -2566,7 +2552,7 @@ export class UsersApi {
         });
     }
 
-    protected processCheckIfExists(response: AxiosResponse): Promise<CheckUserIfExistsResult> {
+    protected processCheckIfExists(response: AxiosResponse): Promise<UserCheckIfExistsResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2580,8 +2566,8 @@ export class UsersApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = CheckUserIfExistsResult.fromJS(resultData200);
-            return Promise.resolve<CheckUserIfExistsResult>(result200);
+            result200 = UserCheckIfExistsResult.fromJS(resultData200);
+            return Promise.resolve<UserCheckIfExistsResult>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2622,7 +2608,7 @@ export class UsersApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<CheckUserIfExistsResult>(null as any);
+        return Promise.resolve<UserCheckIfExistsResult>(null as any);
     }
 
     /**
@@ -2717,7 +2703,7 @@ export class UsersApi {
     /**
      * @return Success
      */
-    dashboard(username: string , cancelToken?: CancelToken | undefined): Promise<DashboardDto> {
+    dashboard(username: string , cancelToken?: CancelToken | undefined): Promise<DashboardResult> {
         let url_ = this.baseUrl + "/v1/users/{username}/dashboard";
         if (username === undefined || username === null)
             throw new Error("The parameter 'username' must be defined.");
@@ -2744,7 +2730,7 @@ export class UsersApi {
         });
     }
 
-    protected processDashboard(response: AxiosResponse): Promise<DashboardDto> {
+    protected processDashboard(response: AxiosResponse): Promise<DashboardResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2758,8 +2744,8 @@ export class UsersApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = DashboardDto.fromJS(resultData200);
-            return Promise.resolve<DashboardDto>(result200);
+            result200 = DashboardResult.fromJS(resultData200);
+            return Promise.resolve<DashboardResult>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2800,28 +2786,33 @@ export class UsersApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<DashboardDto>(null as any);
+        return Promise.resolve<DashboardResult>(null as any);
     }
 
     /**
-     * @param body (optional) 
+     * @param page (optional) 
+     * @param perPage (optional) 
      * @return Success
      */
-    userArticles(username: string, body: GetUserArticlesRequest | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtended[]> {
-        let url_ = this.baseUrl + "/v1/users/{username}/articles";
-        if (username === undefined || username === null)
-            throw new Error("The parameter 'username' must be defined.");
-        url_ = url_.replace("{username}", encodeURIComponent("" + username));
+    userArticles(userName: string, page: number | undefined, perPage: number | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleModel[]> {
+        let url_ = this.baseUrl + "/v1/users/{username}/articles?";
+        if (userName === undefined || userName === null)
+            throw new Error("The parameter 'userName' must be defined.");
+        url_ = url_.replace("{UserName}", encodeURIComponent("" + userName));
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "Page=" + encodeURIComponent("" + page) + "&";
+        if (perPage === null)
+            throw new Error("The parameter 'perPage' cannot be null.");
+        else if (perPage !== undefined)
+            url_ += "PerPage=" + encodeURIComponent("" + perPage) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_: AxiosRequestConfig = {
-            data: content_,
             method: "GET",
             url: url_,
             headers: {
-                "Content-Type": "application/json",
                 "Accept": "application/json"
             },
             cancelToken
@@ -2838,7 +2829,7 @@ export class UsersApi {
         });
     }
 
-    protected processUserArticles(response: AxiosResponse): Promise<ArticleModelExtended[]> {
+    protected processUserArticles(response: AxiosResponse): Promise<ArticleModel[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2855,12 +2846,12 @@ export class UsersApi {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(ArticleModelExtended.fromJS(item));
+                    result200!.push(ArticleModel.fromJS(item));
             }
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<ArticleModelExtended[]>(result200);
+            return Promise.resolve<ArticleModel[]>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2901,19 +2892,19 @@ export class UsersApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ArticleModelExtended[]>(null as any);
+        return Promise.resolve<ArticleModel[]>(null as any);
     }
 
     /**
-     * @param userNames (optional) 
+     * @param usernames (optional) 
      * @return Success
      */
-    usersInfo(userNames: string[] | undefined , cancelToken?: CancelToken | undefined): Promise<UserDto[]> {
-        let url_ = this.baseUrl + "/v1/users?";
-        if (userNames === null)
-            throw new Error("The parameter 'userNames' cannot be null.");
-        else if (userNames !== undefined)
-            userNames && userNames.forEach(item => { url_ += "UserNames=" + encodeURIComponent("" + item) + "&"; });
+    usersInfo(usernames: string[] | undefined , cancelToken?: CancelToken | undefined): Promise<PrivateUserResult[]> {
+        let url_ = this.baseUrl + "/v1/users/search?";
+        if (usernames === null)
+            throw new Error("The parameter 'usernames' cannot be null.");
+        else if (usernames !== undefined)
+            usernames && usernames.forEach(item => { url_ += "Usernames=" + encodeURIComponent("" + item) + "&"; });
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -2936,7 +2927,7 @@ export class UsersApi {
         });
     }
 
-    protected processUsersInfo(response: AxiosResponse): Promise<UserDto[]> {
+    protected processUsersInfo(response: AxiosResponse): Promise<PrivateUserResult[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2953,12 +2944,12 @@ export class UsersApi {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(UserDto.fromJS(item));
+                    result200!.push(PrivateUserResult.fromJS(item));
             }
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<UserDto[]>(result200);
+            return Promise.resolve<PrivateUserResult[]>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2999,146 +2990,8 @@ export class UsersApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<UserDto[]>(null as any);
+        return Promise.resolve<PrivateUserResult[]>(null as any);
     }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    privateUsersInfo(body: SearchUsersRequest | undefined , cancelToken?: CancelToken | undefined): Promise<PrivateUserDto[]> {
-        let url_ = this.baseUrl + "/v1/users/search";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_: AxiosRequestConfig = {
-            data: content_,
-            method: "GET",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processPrivateUsersInfo(_response);
-        });
-    }
-
-    protected processPrivateUsersInfo(response: AxiosResponse): Promise<PrivateUserDto[]> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(PrivateUserDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<PrivateUserDto[]>(result200);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
-
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401  = _responseText;
-            result401 = ValidationError.fromJS(resultData401);
-            return throwException("Not Authorized", status, _responseText, _headers, result401);
-
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403  = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException("Permission Denied", status, _responseText, _headers, result403);
-
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException("Not Found", status, _responseText, _headers, result404);
-
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500  = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<PrivateUserDto[]>(null as any);
-    }
-}
-
-export class AddArticleImageRequest implements IAddArticleImageRequest {
-    file!: string;
-    id!: number;
-
-    constructor(data?: IAddArticleImageRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.file = _data["file"] !== undefined ? _data["file"] : <any>null;
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): AddArticleImageRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new AddArticleImageRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["file"] = this.file !== undefined ? this.file : <any>null;
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        return data;
-    }
-}
-
-export interface IAddArticleImageRequest {
-    file: string;
-    id: number;
 }
 
 export class ArticleContributorModel implements IArticleContributorModel {
@@ -3189,14 +3042,12 @@ export enum ArticleContributorRole {
     Translator = "Translator",
 }
 
-export class ArticleLocalizationFilter implements IArticleLocalizationFilter {
-    filters!: string | null;
-    sorts!: string;
-    page!: number;
-    pageSize!: number;
-    languageCode!: string;
+export class ArticleCreateRequest implements IArticleCreateRequest {
+    name!: string;
+    tags!: string[] | null;
+    originalArticleLink!: string | null;
 
-    constructor(data?: IArticleLocalizationFilter) {
+    constructor(data?: IArticleCreateRequest) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -3207,38 +3058,117 @@ export class ArticleLocalizationFilter implements IArticleLocalizationFilter {
 
     init(_data?: any) {
         if (_data) {
-            this.filters = _data["filters"] !== undefined ? _data["filters"] : <any>null;
-            this.sorts = _data["sorts"] !== undefined ? _data["sorts"] : <any>null;
-            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
-            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
-            this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            if (Array.isArray(_data["tags"])) {
+                this.tags = [] as any;
+                for (let item of _data["tags"])
+                    this.tags!.push(item);
+            }
+            else {
+                this.tags = <any>null;
+            }
+            this.originalArticleLink = _data["originalArticleLink"] !== undefined ? _data["originalArticleLink"] : <any>null;
         }
     }
 
-    static fromJS(data: any): ArticleLocalizationFilter {
+    static fromJS(data: any): ArticleCreateRequest {
         data = typeof data === 'object' ? data : {};
-        let result = new ArticleLocalizationFilter();
+        let result = new ArticleCreateRequest();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["filters"] = this.filters !== undefined ? this.filters : <any>null;
-        data["sorts"] = this.sorts !== undefined ? this.sorts : <any>null;
-        data["page"] = this.page !== undefined ? this.page : <any>null;
-        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
-        data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        if (Array.isArray(this.tags)) {
+            data["tags"] = [];
+            for (let item of this.tags)
+                data["tags"].push(item);
+        }
+        data["originalArticleLink"] = this.originalArticleLink !== undefined ? this.originalArticleLink : <any>null;
         return data;
     }
 }
 
-export interface IArticleLocalizationFilter {
-    filters: string | null;
-    sorts: string;
-    page: number;
-    pageSize: number;
+export interface IArticleCreateRequest {
+    name: string;
+    tags: string[] | null;
+    originalArticleLink: string | null;
+}
+
+export class ArticleLocalizationCreateRequest implements IArticleLocalizationCreateRequest {
+    id!: number;
+    languageCode!: string;
+    title!: string;
+    description!: string;
+    html!: string;
+    contributors!: ArticleContributorModel[] | null;
+
+    constructor(data?: IArticleLocalizationCreateRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.contributors) {
+                this.contributors = [];
+                for (let i = 0; i < data.contributors.length; i++) {
+                    let item = data.contributors[i];
+                    this.contributors[i] = item && !(<any>item).toJSON ? new ArticleContributorModel(item) : <ArticleContributorModel>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.html = _data["html"] !== undefined ? _data["html"] : <any>null;
+            if (Array.isArray(_data["contributors"])) {
+                this.contributors = [] as any;
+                for (let item of _data["contributors"])
+                    this.contributors!.push(ArticleContributorModel.fromJS(item));
+            }
+            else {
+                this.contributors = <any>null;
+            }
+        }
+    }
+
+    static fromJS(data: any): ArticleLocalizationCreateRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new ArticleLocalizationCreateRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["html"] = this.html !== undefined ? this.html : <any>null;
+        if (Array.isArray(this.contributors)) {
+            data["contributors"] = [];
+            for (let item of this.contributors)
+                data["contributors"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IArticleLocalizationCreateRequest {
+    id: number;
     languageCode: string;
+    title: string;
+    description: string;
+    html: string;
+    contributors: IArticleContributorModel[] | null;
 }
 
 export class ArticleLocalizationModel implements IArticleLocalizationModel {
@@ -3359,15 +3289,27 @@ export interface IArticleLocalizationModel {
     vote: Vote;
 }
 
-export class ArticleLocalizationQuery implements IArticleLocalizationQuery {
+export class ArticleLocalizationUpdateRequest implements IArticleLocalizationUpdateRequest {
     id!: number;
     languageCode!: string;
+    newLanguageCode!: string | null;
+    title!: string | null;
+    description!: string | null;
+    html!: string | null;
+    contributors!: ArticleContributorModel[] | null;
 
-    constructor(data?: IArticleLocalizationQuery) {
+    constructor(data?: IArticleLocalizationUpdateRequest) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
                     (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.contributors) {
+                this.contributors = [];
+                for (let i = 0; i < data.contributors.length; i++) {
+                    let item = data.contributors[i];
+                    this.contributors[i] = item && !(<any>item).toJSON ? new ArticleContributorModel(item) : <ArticleContributorModel>item;
+                }
             }
         }
     }
@@ -3376,12 +3318,24 @@ export class ArticleLocalizationQuery implements IArticleLocalizationQuery {
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
             this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
+            this.newLanguageCode = _data["newLanguageCode"] !== undefined ? _data["newLanguageCode"] : <any>null;
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.html = _data["html"] !== undefined ? _data["html"] : <any>null;
+            if (Array.isArray(_data["contributors"])) {
+                this.contributors = [] as any;
+                for (let item of _data["contributors"])
+                    this.contributors!.push(ArticleContributorModel.fromJS(item));
+            }
+            else {
+                this.contributors = <any>null;
+            }
         }
     }
 
-    static fromJS(data: any): ArticleLocalizationQuery {
+    static fromJS(data: any): ArticleLocalizationUpdateRequest {
         data = typeof data === 'object' ? data : {};
-        let result = new ArticleLocalizationQuery();
+        let result = new ArticleLocalizationUpdateRequest();
         result.init(data);
         return result;
     }
@@ -3390,13 +3344,132 @@ export class ArticleLocalizationQuery implements IArticleLocalizationQuery {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
         data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
+        data["newLanguageCode"] = this.newLanguageCode !== undefined ? this.newLanguageCode : <any>null;
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["html"] = this.html !== undefined ? this.html : <any>null;
+        if (Array.isArray(this.contributors)) {
+            data["contributors"] = [];
+            for (let item of this.contributors)
+                data["contributors"].push(item.toJSON());
+        }
         return data;
     }
 }
 
-export interface IArticleLocalizationQuery {
+export interface IArticleLocalizationUpdateRequest {
     id: number;
     languageCode: string;
+    newLanguageCode: string | null;
+    title: string | null;
+    description: string | null;
+    html: string | null;
+    contributors: IArticleContributorModel[] | null;
+}
+
+export class ArticleModel implements IArticleModel {
+    id!: number;
+    name!: string;
+    authorId!: number;
+    created!: DateTime;
+    updated!: DateTime | null;
+    published!: DateTime | null;
+    banned!: DateTime | null;
+    originalArticleLink!: string | null;
+    rate!: number;
+    localizations!: ArticleLocalizationModel[] | null;
+    tags!: string[];
+
+    constructor(data?: IArticleModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.localizations) {
+                this.localizations = [];
+                for (let i = 0; i < data.localizations.length; i++) {
+                    let item = data.localizations[i];
+                    this.localizations[i] = item && !(<any>item).toJSON ? new ArticleLocalizationModel(item) : <ArticleLocalizationModel>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.authorId = _data["authorId"] !== undefined ? _data["authorId"] : <any>null;
+            this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>null;
+            this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>null;
+            this.published = _data["published"] ? DateTime.fromISO(_data["published"].toString()) : <any>null;
+            this.banned = _data["banned"] ? DateTime.fromISO(_data["banned"].toString()) : <any>null;
+            this.originalArticleLink = _data["originalArticleLink"] !== undefined ? _data["originalArticleLink"] : <any>null;
+            this.rate = _data["rate"] !== undefined ? _data["rate"] : <any>null;
+            if (Array.isArray(_data["localizations"])) {
+                this.localizations = [] as any;
+                for (let item of _data["localizations"])
+                    this.localizations!.push(ArticleLocalizationModel.fromJS(item));
+            }
+            else {
+                this.localizations = <any>null;
+            }
+            if (Array.isArray(_data["tags"])) {
+                this.tags = [] as any;
+                for (let item of _data["tags"])
+                    this.tags!.push(item);
+            }
+            else {
+                this.tags = <any>null;
+            }
+        }
+    }
+
+    static fromJS(data: any): ArticleModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new ArticleModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["authorId"] = this.authorId !== undefined ? this.authorId : <any>null;
+        data["created"] = this.created ? this.created.toString() : <any>null;
+        data["updated"] = this.updated ? this.updated.toString() : <any>null;
+        data["published"] = this.published ? this.published.toString() : <any>null;
+        data["banned"] = this.banned ? this.banned.toString() : <any>null;
+        data["originalArticleLink"] = this.originalArticleLink !== undefined ? this.originalArticleLink : <any>null;
+        data["rate"] = this.rate !== undefined ? this.rate : <any>null;
+        if (Array.isArray(this.localizations)) {
+            data["localizations"] = [];
+            for (let item of this.localizations)
+                data["localizations"].push(item.toJSON());
+        }
+        if (Array.isArray(this.tags)) {
+            data["tags"] = [];
+            for (let item of this.tags)
+                data["tags"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IArticleModel {
+    id: number;
+    name: string;
+    authorId: number;
+    created: DateTime;
+    updated: DateTime | null;
+    published: DateTime | null;
+    banned: DateTime | null;
+    originalArticleLink: string | null;
+    rate: number;
+    localizations: IArticleLocalizationModel[] | null;
+    tags: string[];
 }
 
 export class ArticleModelExtended implements IArticleModelExtended {
@@ -3519,51 +3592,18 @@ export interface IArticleModelExtended {
     imagesLinks: string[] | null;
 }
 
-export class ArticleModelExtendedGuidArrayValueTuple implements IArticleModelExtendedGuidArrayValueTuple {
-
-    constructor(data?: IArticleModelExtendedGuidArrayValueTuple) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-    }
-
-    static fromJS(data: any): ArticleModelExtendedGuidArrayValueTuple {
-        data = typeof data === 'object' ? data : {};
-        let result = new ArticleModelExtendedGuidArrayValueTuple();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        return data;
-    }
-}
-
-export interface IArticleModelExtendedGuidArrayValueTuple {
-}
-
-export enum ArticleStatusRequest {
+export enum ArticleStatusActions {
     Publish = "Publish",
     UnPublish = "UnPublish",
 }
 
-export class AuthResult implements IAuthResult {
-    username!: string;
-    firstName!: string;
-    lastName!: string | null;
-    token!: string;
-    tokenExpires!: DateTime;
-    refreshTokenExpires!: DateTime;
-    profilePhotoUrl!: string | null;
+export class ArticleUpdateRequest implements IArticleUpdateRequest {
+    id!: number;
+    name!: string | null;
+    authorId!: number | null;
+    originalArticleLink!: string | null;
 
-    constructor(data?: IAuthResult) {
+    constructor(data?: IArticleUpdateRequest) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -3574,80 +3614,35 @@ export class AuthResult implements IAuthResult {
 
     init(_data?: any) {
         if (_data) {
-            this.username = _data["username"] !== undefined ? _data["username"] : <any>null;
-            this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
-            this.lastName = _data["lastName"] !== undefined ? _data["lastName"] : <any>null;
-            this.token = _data["token"] !== undefined ? _data["token"] : <any>null;
-            this.tokenExpires = _data["tokenExpires"] ? DateTime.fromISO(_data["tokenExpires"].toString()) : <any>null;
-            this.refreshTokenExpires = _data["refreshTokenExpires"] ? DateTime.fromISO(_data["refreshTokenExpires"].toString()) : <any>null;
-            this.profilePhotoUrl = _data["profilePhotoUrl"] !== undefined ? _data["profilePhotoUrl"] : <any>null;
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.authorId = _data["authorId"] !== undefined ? _data["authorId"] : <any>null;
+            this.originalArticleLink = _data["originalArticleLink"] !== undefined ? _data["originalArticleLink"] : <any>null;
         }
     }
 
-    static fromJS(data: any): AuthResult {
+    static fromJS(data: any): ArticleUpdateRequest {
         data = typeof data === 'object' ? data : {};
-        let result = new AuthResult();
+        let result = new ArticleUpdateRequest();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["username"] = this.username !== undefined ? this.username : <any>null;
-        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
-        data["lastName"] = this.lastName !== undefined ? this.lastName : <any>null;
-        data["token"] = this.token !== undefined ? this.token : <any>null;
-        data["tokenExpires"] = this.tokenExpires ? this.tokenExpires.toString() : <any>null;
-        data["refreshTokenExpires"] = this.refreshTokenExpires ? this.refreshTokenExpires.toString() : <any>null;
-        data["profilePhotoUrl"] = this.profilePhotoUrl !== undefined ? this.profilePhotoUrl : <any>null;
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["authorId"] = this.authorId !== undefined ? this.authorId : <any>null;
+        data["originalArticleLink"] = this.originalArticleLink !== undefined ? this.originalArticleLink : <any>null;
         return data;
     }
 }
 
-export interface IAuthResult {
-    username: string;
-    firstName: string;
-    lastName: string | null;
-    token: string;
-    tokenExpires: DateTime;
-    refreshTokenExpires: DateTime;
-    profilePhotoUrl: string | null;
-}
-
-export class CheckUserIfExistsResult implements ICheckUserIfExistsResult {
-    isProviderRegistered!: boolean;
-
-    constructor(data?: ICheckUserIfExistsResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.isProviderRegistered = _data["isProviderRegistered"] !== undefined ? _data["isProviderRegistered"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): CheckUserIfExistsResult {
-        data = typeof data === 'object' ? data : {};
-        let result = new CheckUserIfExistsResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["isProviderRegistered"] = this.isProviderRegistered !== undefined ? this.isProviderRegistered : <any>null;
-        return data;
-    }
-}
-
-export interface ICheckUserIfExistsResult {
-    isProviderRegistered: boolean;
+export interface IArticleUpdateRequest {
+    id: number;
+    name: string | null;
+    authorId: number | null;
+    originalArticleLink: string | null;
 }
 
 export class CheckUsernameResult implements ICheckUsernameResult {
@@ -3691,135 +3686,6 @@ export enum ContentStatus {
     Pending = "Pending",
     Published = "Published",
     Banned = "Banned",
-}
-
-export class CreateArticleLocalizationRequest implements ICreateArticleLocalizationRequest {
-    id!: number;
-    languageCode!: string;
-    title!: string;
-    description!: string;
-    html!: string;
-    contributors!: ArticleContributorModel[] | null;
-
-    constructor(data?: ICreateArticleLocalizationRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            if (data.contributors) {
-                this.contributors = [];
-                for (let i = 0; i < data.contributors.length; i++) {
-                    let item = data.contributors[i];
-                    this.contributors[i] = item && !(<any>item).toJSON ? new ArticleContributorModel(item) : <ArticleContributorModel>item;
-                }
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
-            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
-            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
-            this.html = _data["html"] !== undefined ? _data["html"] : <any>null;
-            if (Array.isArray(_data["contributors"])) {
-                this.contributors = [] as any;
-                for (let item of _data["contributors"])
-                    this.contributors!.push(ArticleContributorModel.fromJS(item));
-            }
-            else {
-                this.contributors = <any>null;
-            }
-        }
-    }
-
-    static fromJS(data: any): CreateArticleLocalizationRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateArticleLocalizationRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
-        data["title"] = this.title !== undefined ? this.title : <any>null;
-        data["description"] = this.description !== undefined ? this.description : <any>null;
-        data["html"] = this.html !== undefined ? this.html : <any>null;
-        if (Array.isArray(this.contributors)) {
-            data["contributors"] = [];
-            for (let item of this.contributors)
-                data["contributors"].push(item.toJSON());
-        }
-        return data;
-    }
-}
-
-export interface ICreateArticleLocalizationRequest {
-    id: number;
-    languageCode: string;
-    title: string;
-    description: string;
-    html: string;
-    contributors: IArticleContributorModel[] | null;
-}
-
-export class CreateArticleRequest implements ICreateArticleRequest {
-    name!: string;
-    tags!: string[] | null;
-    originalArticleLink!: string | null;
-
-    constructor(data?: ICreateArticleRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
-            if (Array.isArray(_data["tags"])) {
-                this.tags = [] as any;
-                for (let item of _data["tags"])
-                    this.tags!.push(item);
-            }
-            else {
-                this.tags = <any>null;
-            }
-            this.originalArticleLink = _data["originalArticleLink"] !== undefined ? _data["originalArticleLink"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): CreateArticleRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateArticleRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name !== undefined ? this.name : <any>null;
-        if (Array.isArray(this.tags)) {
-            data["tags"] = [];
-            for (let item of this.tags)
-                data["tags"].push(item);
-        }
-        data["originalArticleLink"] = this.originalArticleLink !== undefined ? this.originalArticleLink : <any>null;
-        return data;
-    }
-}
-
-export interface ICreateArticleRequest {
-    name: string;
-    tags: string[] | null;
-    originalArticleLink: string | null;
 }
 
 export class CryptoResponseDto implements ICryptoResponseDto {
@@ -3914,11 +3780,11 @@ export interface ICurrenciesResponse {
     updated: DateTime;
 }
 
-export class DashboardDto implements IDashboardDto {
+export class DashboardResult implements IDashboardResult {
     articlesCount!: number;
     articlesViews!: number;
 
-    constructor(data?: IDashboardDto) {
+    constructor(data?: IDashboardResult) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -3934,9 +3800,9 @@ export class DashboardDto implements IDashboardDto {
         }
     }
 
-    static fromJS(data: any): DashboardDto {
+    static fromJS(data: any): DashboardResult {
         data = typeof data === 'object' ? data : {};
-        let result = new DashboardDto();
+        let result = new DashboardResult();
         result.init(data);
         return result;
     }
@@ -3949,7 +3815,7 @@ export class DashboardDto implements IDashboardDto {
     }
 }
 
-export interface IDashboardDto {
+export interface IDashboardResult {
     articlesCount: number;
     articlesViews: number;
 }
@@ -4108,50 +3974,6 @@ export interface IExchangeResponseModel {
     error: string | null;
 }
 
-export class GetUserArticlesRequest implements IGetUserArticlesRequest {
-    userName!: string | null;
-    page!: number;
-    perPage!: number;
-
-    constructor(data?: IGetUserArticlesRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userName = _data["userName"] !== undefined ? _data["userName"] : <any>null;
-            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
-            this.perPage = _data["perPage"] !== undefined ? _data["perPage"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): GetUserArticlesRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetUserArticlesRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userName"] = this.userName !== undefined ? this.userName : <any>null;
-        data["page"] = this.page !== undefined ? this.page : <any>null;
-        data["perPage"] = this.perPage !== undefined ? this.perPage : <any>null;
-        return data;
-    }
-}
-
-export interface IGetUserArticlesRequest {
-    userName: string | null;
-    page: number;
-    perPage: number;
-}
-
 export class IsSavedLocalizationResult implements IIsSavedLocalizationResult {
     isSaved!: boolean;
 
@@ -4186,6 +4008,153 @@ export class IsSavedLocalizationResult implements IIsSavedLocalizationResult {
 
 export interface IIsSavedLocalizationResult {
     isSaved: boolean;
+}
+
+export class JwtAuthenticateRequest implements IJwtAuthenticateRequest {
+    username!: string;
+    email!: string | null;
+    firstName!: string | null;
+    lastName!: string | null;
+    middleName!: string | null;
+    profilePhotoUrl!: string | null;
+    providerMetadata!: { [key: string]: string; };
+    provider!: ProviderType;
+    providerKey!: string;
+    type!: SsoType;
+
+    constructor(data?: IJwtAuthenticateRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.username = _data["username"] !== undefined ? _data["username"] : <any>null;
+            this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
+            this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
+            this.lastName = _data["lastName"] !== undefined ? _data["lastName"] : <any>null;
+            this.middleName = _data["middleName"] !== undefined ? _data["middleName"] : <any>null;
+            this.profilePhotoUrl = _data["profilePhotoUrl"] !== undefined ? _data["profilePhotoUrl"] : <any>null;
+            if (_data["providerMetadata"]) {
+                this.providerMetadata = {} as any;
+                for (let key in _data["providerMetadata"]) {
+                    if (_data["providerMetadata"].hasOwnProperty(key))
+                        (<any>this.providerMetadata)![key] = _data["providerMetadata"][key] !== undefined ? _data["providerMetadata"][key] : <any>null;
+                }
+            }
+            else {
+                this.providerMetadata = <any>null;
+            }
+            this.provider = _data["provider"] !== undefined ? _data["provider"] : <any>null;
+            this.providerKey = _data["providerKey"] !== undefined ? _data["providerKey"] : <any>null;
+            this.type = _data["type"] !== undefined ? _data["type"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): JwtAuthenticateRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new JwtAuthenticateRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["username"] = this.username !== undefined ? this.username : <any>null;
+        data["email"] = this.email !== undefined ? this.email : <any>null;
+        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
+        data["lastName"] = this.lastName !== undefined ? this.lastName : <any>null;
+        data["middleName"] = this.middleName !== undefined ? this.middleName : <any>null;
+        data["profilePhotoUrl"] = this.profilePhotoUrl !== undefined ? this.profilePhotoUrl : <any>null;
+        if (this.providerMetadata) {
+            data["providerMetadata"] = {};
+            for (let key in this.providerMetadata) {
+                if (this.providerMetadata.hasOwnProperty(key))
+                    (<any>data["providerMetadata"])[key] = this.providerMetadata[key] !== undefined ? this.providerMetadata[key] : <any>null;
+            }
+        }
+        data["provider"] = this.provider !== undefined ? this.provider : <any>null;
+        data["providerKey"] = this.providerKey !== undefined ? this.providerKey : <any>null;
+        data["type"] = this.type !== undefined ? this.type : <any>null;
+        return data;
+    }
+}
+
+export interface IJwtAuthenticateRequest {
+    username: string;
+    email: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    middleName: string | null;
+    profilePhotoUrl: string | null;
+    providerMetadata: { [key: string]: string; };
+    provider: ProviderType;
+    providerKey: string;
+    type: SsoType;
+}
+
+export class JwtResult implements IJwtResult {
+    username!: string;
+    firstName!: string;
+    lastName!: string | null;
+    token!: string;
+    tokenExpires!: DateTime;
+    refreshTokenExpires!: DateTime;
+    profilePhotoUrl!: string | null;
+
+    constructor(data?: IJwtResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.username = _data["username"] !== undefined ? _data["username"] : <any>null;
+            this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
+            this.lastName = _data["lastName"] !== undefined ? _data["lastName"] : <any>null;
+            this.token = _data["token"] !== undefined ? _data["token"] : <any>null;
+            this.tokenExpires = _data["tokenExpires"] ? DateTime.fromISO(_data["tokenExpires"].toString()) : <any>null;
+            this.refreshTokenExpires = _data["refreshTokenExpires"] ? DateTime.fromISO(_data["refreshTokenExpires"].toString()) : <any>null;
+            this.profilePhotoUrl = _data["profilePhotoUrl"] !== undefined ? _data["profilePhotoUrl"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): JwtResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new JwtResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["username"] = this.username !== undefined ? this.username : <any>null;
+        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
+        data["lastName"] = this.lastName !== undefined ? this.lastName : <any>null;
+        data["token"] = this.token !== undefined ? this.token : <any>null;
+        data["tokenExpires"] = this.tokenExpires ? this.tokenExpires.toString() : <any>null;
+        data["refreshTokenExpires"] = this.refreshTokenExpires ? this.refreshTokenExpires.toString() : <any>null;
+        data["profilePhotoUrl"] = this.profilePhotoUrl !== undefined ? this.profilePhotoUrl : <any>null;
+        return data;
+    }
+}
+
+export interface IJwtResult {
+    username: string;
+    firstName: string;
+    lastName: string | null;
+    token: string;
+    tokenExpires: DateTime;
+    refreshTokenExpires: DateTime;
+    profilePhotoUrl: string | null;
 }
 
 export class LanguageModel implements ILanguageModel {
@@ -4226,6 +4195,42 @@ export class LanguageModel implements ILanguageModel {
 export interface ILanguageModel {
     code: string;
     name: string;
+}
+
+export class MeProfilePhotoUpdateResult implements IMeProfilePhotoUpdateResult {
+    link!: string;
+
+    constructor(data?: IMeProfilePhotoUpdateResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.link = _data["link"] !== undefined ? _data["link"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): MeProfilePhotoUpdateResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new MeProfilePhotoUpdateResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["link"] = this.link !== undefined ? this.link : <any>null;
+        return data;
+    }
+}
+
+export interface IMeProfilePhotoUpdateResult {
+    link: string;
 }
 
 export class OneCryptoDto implements IOneCryptoDto {
@@ -4328,12 +4333,13 @@ export interface IOneExchangeModel {
     rateSell: number;
 }
 
-export class PrivateUserDto implements IPrivateUserDto {
+export class PrivateUserResult implements IPrivateUserResult {
     id!: number;
     userName!: string;
+    description!: string | null;
     profilePhotoUrl!: string | null;
 
-    constructor(data?: IPrivateUserDto) {
+    constructor(data?: IPrivateUserResult) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -4346,13 +4352,14 @@ export class PrivateUserDto implements IPrivateUserDto {
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
             this.userName = _data["userName"] !== undefined ? _data["userName"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
             this.profilePhotoUrl = _data["profilePhotoUrl"] !== undefined ? _data["profilePhotoUrl"] : <any>null;
         }
     }
 
-    static fromJS(data: any): PrivateUserDto {
+    static fromJS(data: any): PrivateUserResult {
         data = typeof data === 'object' ? data : {};
-        let result = new PrivateUserDto();
+        let result = new PrivateUserResult();
         result.init(data);
         return result;
     }
@@ -4361,14 +4368,16 @@ export class PrivateUserDto implements IPrivateUserDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
         data["userName"] = this.userName !== undefined ? this.userName : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
         data["profilePhotoUrl"] = this.profilePhotoUrl !== undefined ? this.profilePhotoUrl : <any>null;
         return data;
     }
 }
 
-export interface IPrivateUserDto {
+export interface IPrivateUserResult {
     id: number;
     userName: string;
+    description: string | null;
     profilePhotoUrl: string | null;
 }
 
@@ -4378,46 +4387,6 @@ export enum ProviderType {
     GitHub = "GitHub",
     LinkedIn = "LinkedIn",
     Facebook = "Facebook",
-}
-
-export class RateArticleRequest implements IRateArticleRequest {
-    id!: number;
-    vote!: Vote;
-
-    constructor(data?: IRateArticleRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.vote = _data["vote"] !== undefined ? _data["vote"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): RateArticleRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new RateArticleRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["vote"] = this.vote !== undefined ? this.vote : <any>null;
-        return data;
-    }
-}
-
-export interface IRateArticleRequest {
-    id: number;
-    vote: Vote;
 }
 
 export class RatingModel implements IRatingModel {
@@ -4456,299 +4425,15 @@ export interface IRatingModel {
     vote: Vote;
 }
 
-export class SearchUsersRequest implements ISearchUsersRequest {
-    username!: string;
-
-    constructor(data?: ISearchUsersRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.username = _data["username"] !== undefined ? _data["username"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): SearchUsersRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new SearchUsersRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["username"] = this.username !== undefined ? this.username : <any>null;
-        return data;
-    }
-}
-
-export interface ISearchUsersRequest {
-    username: string;
-}
-
-export class SetArticleStatusRequest implements ISetArticleStatusRequest {
-    id!: number;
-    languageCode!: string;
-    status!: ArticleStatusRequest;
-
-    constructor(data?: ISetArticleStatusRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
-            this.status = _data["status"] !== undefined ? _data["status"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): SetArticleStatusRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new SetArticleStatusRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
-        data["status"] = this.status !== undefined ? this.status : <any>null;
-        return data;
-    }
-}
-
-export interface ISetArticleStatusRequest {
-    id: number;
-    languageCode: string;
-    status: ArticleStatusRequest;
-}
-
-export class SetUserPhotoResult implements ISetUserPhotoResult {
-    link!: string;
-
-    constructor(data?: ISetUserPhotoResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.link = _data["link"] !== undefined ? _data["link"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): SetUserPhotoResult {
-        data = typeof data === 'object' ? data : {};
-        let result = new SetUserPhotoResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["link"] = this.link !== undefined ? this.link : <any>null;
-        return data;
-    }
-}
-
-export interface ISetUserPhotoResult {
-    link: string;
-}
-
-export class SsoEnterRequest implements ISsoEnterRequest {
-    username!: string;
-    email!: string | null;
-    firstName!: string | null;
-    lastName!: string | null;
-    middleName!: string | null;
-    profilePhotoUrl!: string | null;
-    providerMetadata!: { [key: string]: string; };
-    provider!: ProviderType;
-    providerKey!: string;
-    type!: SsoType;
-
-    constructor(data?: ISsoEnterRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.username = _data["username"] !== undefined ? _data["username"] : <any>null;
-            this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
-            this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
-            this.lastName = _data["lastName"] !== undefined ? _data["lastName"] : <any>null;
-            this.middleName = _data["middleName"] !== undefined ? _data["middleName"] : <any>null;
-            this.profilePhotoUrl = _data["profilePhotoUrl"] !== undefined ? _data["profilePhotoUrl"] : <any>null;
-            if (_data["providerMetadata"]) {
-                this.providerMetadata = {} as any;
-                for (let key in _data["providerMetadata"]) {
-                    if (_data["providerMetadata"].hasOwnProperty(key))
-                        (<any>this.providerMetadata)![key] = _data["providerMetadata"][key] !== undefined ? _data["providerMetadata"][key] : <any>null;
-                }
-            }
-            else {
-                this.providerMetadata = <any>null;
-            }
-            this.provider = _data["provider"] !== undefined ? _data["provider"] : <any>null;
-            this.providerKey = _data["providerKey"] !== undefined ? _data["providerKey"] : <any>null;
-            this.type = _data["type"] !== undefined ? _data["type"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): SsoEnterRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new SsoEnterRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["username"] = this.username !== undefined ? this.username : <any>null;
-        data["email"] = this.email !== undefined ? this.email : <any>null;
-        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
-        data["lastName"] = this.lastName !== undefined ? this.lastName : <any>null;
-        data["middleName"] = this.middleName !== undefined ? this.middleName : <any>null;
-        data["profilePhotoUrl"] = this.profilePhotoUrl !== undefined ? this.profilePhotoUrl : <any>null;
-        if (this.providerMetadata) {
-            data["providerMetadata"] = {};
-            for (let key in this.providerMetadata) {
-                if (this.providerMetadata.hasOwnProperty(key))
-                    (<any>data["providerMetadata"])[key] = this.providerMetadata[key] !== undefined ? this.providerMetadata[key] : <any>null;
-            }
-        }
-        data["provider"] = this.provider !== undefined ? this.provider : <any>null;
-        data["providerKey"] = this.providerKey !== undefined ? this.providerKey : <any>null;
-        data["type"] = this.type !== undefined ? this.type : <any>null;
-        return data;
-    }
-}
-
-export interface ISsoEnterRequest {
-    username: string;
-    email: string | null;
-    firstName: string | null;
-    lastName: string | null;
-    middleName: string | null;
-    profilePhotoUrl: string | null;
-    providerMetadata: { [key: string]: string; };
-    provider: ProviderType;
-    providerKey: string;
-    type: SsoType;
-}
-
 export enum SsoType {
     Register = "Register",
     Login = "Login",
 }
 
-export class UpdateArticleLocalizationRequest implements IUpdateArticleLocalizationRequest {
-    id!: number;
-    languageCode!: string;
-    newLanguageCode!: string | null;
-    title!: string | null;
-    description!: string | null;
-    html!: string | null;
-    contributors!: ArticleContributorModel[] | null;
+export class UserCheckIfExistsResult implements IUserCheckIfExistsResult {
+    isProviderRegistered!: boolean;
 
-    constructor(data?: IUpdateArticleLocalizationRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            if (data.contributors) {
-                this.contributors = [];
-                for (let i = 0; i < data.contributors.length; i++) {
-                    let item = data.contributors[i];
-                    this.contributors[i] = item && !(<any>item).toJSON ? new ArticleContributorModel(item) : <ArticleContributorModel>item;
-                }
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
-            this.newLanguageCode = _data["newLanguageCode"] !== undefined ? _data["newLanguageCode"] : <any>null;
-            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
-            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
-            this.html = _data["html"] !== undefined ? _data["html"] : <any>null;
-            if (Array.isArray(_data["contributors"])) {
-                this.contributors = [] as any;
-                for (let item of _data["contributors"])
-                    this.contributors!.push(ArticleContributorModel.fromJS(item));
-            }
-            else {
-                this.contributors = <any>null;
-            }
-        }
-    }
-
-    static fromJS(data: any): UpdateArticleLocalizationRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new UpdateArticleLocalizationRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
-        data["newLanguageCode"] = this.newLanguageCode !== undefined ? this.newLanguageCode : <any>null;
-        data["title"] = this.title !== undefined ? this.title : <any>null;
-        data["description"] = this.description !== undefined ? this.description : <any>null;
-        data["html"] = this.html !== undefined ? this.html : <any>null;
-        if (Array.isArray(this.contributors)) {
-            data["contributors"] = [];
-            for (let item of this.contributors)
-                data["contributors"].push(item.toJSON());
-        }
-        return data;
-    }
-}
-
-export interface IUpdateArticleLocalizationRequest {
-    id: number;
-    languageCode: string;
-    newLanguageCode: string | null;
-    title: string | null;
-    description: string | null;
-    html: string | null;
-    contributors: IArticleContributorModel[] | null;
-}
-
-export class UpdateArticleRequest implements IUpdateArticleRequest {
-    id!: number;
-    name!: string | null;
-    authorId!: number | null;
-    originalArticleLink!: string | null;
-
-    constructor(data?: IUpdateArticleRequest) {
+    constructor(data?: IUserCheckIfExistsResult) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -4759,38 +4444,29 @@ export class UpdateArticleRequest implements IUpdateArticleRequest {
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
-            this.authorId = _data["authorId"] !== undefined ? _data["authorId"] : <any>null;
-            this.originalArticleLink = _data["originalArticleLink"] !== undefined ? _data["originalArticleLink"] : <any>null;
+            this.isProviderRegistered = _data["isProviderRegistered"] !== undefined ? _data["isProviderRegistered"] : <any>null;
         }
     }
 
-    static fromJS(data: any): UpdateArticleRequest {
+    static fromJS(data: any): UserCheckIfExistsResult {
         data = typeof data === 'object' ? data : {};
-        let result = new UpdateArticleRequest();
+        let result = new UserCheckIfExistsResult();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["name"] = this.name !== undefined ? this.name : <any>null;
-        data["authorId"] = this.authorId !== undefined ? this.authorId : <any>null;
-        data["originalArticleLink"] = this.originalArticleLink !== undefined ? this.originalArticleLink : <any>null;
+        data["isProviderRegistered"] = this.isProviderRegistered !== undefined ? this.isProviderRegistered : <any>null;
         return data;
     }
 }
 
-export interface IUpdateArticleRequest {
-    id: number;
-    name: string | null;
-    authorId: number | null;
-    originalArticleLink: string | null;
+export interface IUserCheckIfExistsResult {
+    isProviderRegistered: boolean;
 }
 
-export class UserDto implements IUserDto {
+export class UserResult implements IUserResult {
     id!: number;
     userName!: string;
     firstName!: string;
@@ -4802,7 +4478,7 @@ export class UserDto implements IUserDto {
     description!: string | null;
     registered!: DateTime;
 
-    constructor(data?: IUserDto) {
+    constructor(data?: IUserResult) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -4826,9 +4502,9 @@ export class UserDto implements IUserDto {
         }
     }
 
-    static fromJS(data: any): UserDto {
+    static fromJS(data: any): UserResult {
         data = typeof data === 'object' ? data : {};
-        let result = new UserDto();
+        let result = new UserResult();
         result.init(data);
         return result;
     }
@@ -4849,7 +4525,7 @@ export class UserDto implements IUserDto {
     }
 }
 
-export interface IUserDto {
+export interface IUserResult {
     id: number;
     userName: string;
     firstName: string;

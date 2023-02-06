@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.EntityFramework.Extensions;
 using NeerCore.Exceptions;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Models.Me;
 using NetHub.Shared.Api.Abstractions;
+using NetHub.Shared.Api.Swagger;
 
 namespace NetHub.Api.Endpoints.Me;
 
@@ -13,6 +15,8 @@ public class MeProfileUpdateEndpoint : ActionEndpoint<MeProfileUpdateRequest>
     private readonly UserManager<AppUser> _userManager;
 
     public MeProfileUpdateEndpoint(UserManager<AppUser> userManager) => _userManager = userManager;
+
+    [HttpPut("me/profile"), ClientSide(ActionName = "updateProfile")]
 
     public override async Task HandleAsync(MeProfileUpdateRequest request, CancellationToken ct)
     {
