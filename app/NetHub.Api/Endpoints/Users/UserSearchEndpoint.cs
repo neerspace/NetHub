@@ -12,15 +12,14 @@ namespace NetHub.Api.Endpoints.Users;
 
 [Tags(TagNames.Users)]
 [ApiVersion(Versions.V1)]
-public sealed class UserSearchEndpoint : Endpoint<SearchUsersRequest, PrivateUserDto[]>
+public sealed class UserSearchEndpoint : Endpoint<UserSearchRequest, PrivateUserResult[]>
 {
-    [HttpGet("users/search"), ClientSide(ActionName = "privateUsersInfo")]
-    //TODO: Fix
-    public override Task<PrivateUserDto[]> HandleAsync(SearchUsersRequest request, CancellationToken ct)
+    [HttpGet("users/search"), ClientSide(ActionName = "usersInfo")]
+    public override Task<PrivateUserResult[]> HandleAsync(UserSearchRequest request, CancellationToken ct)
     {
         var result = Database.Set<AppUser>()
-            .Where(u => u.NormalizedUserName.Contains(request.Username.ToUpper()))
-            .ProjectToType<PrivateUserDto>()
+            .Where(u => request.Usernames.Select(u => u.ToUpper()).Contains(u.NormalizedUserName))
+            .ProjectToType<PrivateUserResult>()
             .ToArrayAsync(ct);
 
         return result;

@@ -15,18 +15,18 @@ namespace NetHub.Api.Endpoints.Me;
 [Authorize]
 [Tags(TagNames.Me)]
 [ApiVersion(Versions.V1)]
-public class MeGetEndpoint : ResultEndpoint<UserDto>
+public class MeGetEndpoint : ResultEndpoint<UserResult>
 {
     private readonly UserManager<AppUser> _userManager;
     public MeGetEndpoint(UserManager<AppUser> userManager) => _userManager = userManager;
 
 
     [HttpGet("me"), ClientSide(ActionName = "me")]
-    public override async Task<UserDto> HandleAsync(CancellationToken ct)
+    public override async Task<UserResult> HandleAsync(CancellationToken ct)
     {
         var userId = UserProvider.UserId;
         var user = await _userManager.GetByIdAsync(userId);
 
-        return user!.Adapt<UserDto>();
+        return user!.Adapt<UserResult>();
     }
 }

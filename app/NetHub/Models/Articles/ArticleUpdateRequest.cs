@@ -2,7 +2,7 @@
 
 namespace NetHub.Models.Articles;
 
-public sealed record UpdateArticleRequest(
+public sealed record ArticleUpdateRequest(
     [FromRoute] long Id,
     string? Name,
     long? AuthorId,

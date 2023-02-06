@@ -21,10 +21,10 @@ namespace NetHub.Api.Endpoints.Articles.Localizations;
 [Authorize]
 [Tags(TagNames.ArticleLocalizations)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleLocalizationCreateEndpoint : Endpoint<CreateArticleLocalizationRequest, ArticleLocalizationModel>
+public sealed class ArticleLocalizationCreateEndpoint : Endpoint<ArticleLocalizationCreateRequest, ArticleLocalizationModel>
 {
     [HttpPost("articles/{id:long}/{lang:alpha:length(2)}"), ClientSide(ActionName = "create")]
-    public override async Task<ArticleLocalizationModel> HandleAsync([FromBody] CreateArticleLocalizationRequest request, CancellationToken ct)
+    public override async Task<ArticleLocalizationModel> HandleAsync([FromBody] ArticleLocalizationCreateRequest request, CancellationToken ct)
     {
         long userId = UserProvider.UserId;
         var article = await Database.Set<Article>()

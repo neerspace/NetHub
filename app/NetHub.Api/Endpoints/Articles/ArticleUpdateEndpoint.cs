@@ -16,10 +16,10 @@ namespace NetHub.Api.Endpoints.Articles;
 [Authorize]
 [Tags(TagNames.Articles)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleUpdateEndpoint : ActionEndpoint<UpdateArticleRequest>
+public sealed class ArticleUpdateEndpoint : ActionEndpoint<ArticleUpdateRequest>
 {
     [HttpPut("articles")]
-    public override async Task HandleAsync([FromBody] UpdateArticleRequest request, CancellationToken ct)
+    public override async Task HandleAsync([FromBody] ArticleUpdateRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
 

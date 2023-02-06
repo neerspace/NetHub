@@ -11,14 +11,14 @@ namespace NetHub.Api.Endpoints.Users;
 
 [Tags(TagNames.Users)]
 [ApiVersion(Versions.V1)]
-public sealed class UserCheckIfExistEndpoint : Endpoint<CheckUserIfExistsRequest, CheckUserIfExistsResult>
+public sealed class UserCheckIfExistEndpoint : Endpoint<UserCheckIfExistsRequest, UserCheckIfExistsResult>
 {
     private readonly ISqlServerDatabase _database;
     public UserCheckIfExistEndpoint(ISqlServerDatabase database) => _database = database;
 
 
     [HttpGet("users/check-if-exists")]
-    public override async Task<CheckUserIfExistsResult> HandleAsync([FromQuery] CheckUserIfExistsRequest request, CancellationToken ct)
+    public override async Task<UserCheckIfExistsResult> HandleAsync([FromQuery] UserCheckIfExistsRequest request, CancellationToken ct)
     {
         string requestLoginProvider = request.Provider.ToString().ToLower();
         var loginInfo = await _database.Set<AppUserLogin>()

@@ -22,7 +22,7 @@ internal sealed class TelegramAuthProvider : IAuthProviderValidator
     }
 
 
-    public Task<bool> ValidateAsync(SsoEnterRequest request, CancellationToken ct = default)
+    public Task<bool> ValidateAsync(JwtAuthenticateRequest request, CancellationToken ct = default)
     {
         var metadata = request.ProviderMetadata;
 

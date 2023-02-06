@@ -4,7 +4,7 @@ using NetHub.Shared.Services;
 
 namespace NetHub.Shared.Models.Jwt;
 
-public sealed class SsoEnterRequest
+public sealed class JwtAuthenticateRequest
 {
     public string Username { get; set; } = default!;
     public string? Email { get; set; } = default!;
@@ -18,7 +18,7 @@ public sealed class SsoEnterRequest
     public SsoType Type { get; set; }
 }
 
-internal sealed class SsoEnterValidator : AbstractValidator<SsoEnterRequest>
+internal sealed class SsoEnterValidator : AbstractValidator<JwtAuthenticateRequest>
 {
     public SsoEnterValidator()
     {

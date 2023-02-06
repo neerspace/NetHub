@@ -1,6 +1,6 @@
 ﻿namespace NetHub.Models.Users;
 
-public sealed class UserDto
+public sealed class UserResult
 {
     public long Id { get; set; }
     public string UserName { get; set; } = default!;

@@ -14,7 +14,7 @@ namespace NetHub.Api.Endpoints.Jwt;
 
 [Tags(TagNames.Jwt)]
 [ApiVersion(Versions.V1)]
-public class JwtAuthenticateEndpoint : Endpoint<SsoEnterRequest, AuthResult>
+public class JwtAuthenticateEndpoint : Endpoint<JwtAuthenticateRequest, JwtResult>
 {
     private readonly ISqlServerDatabase _database;
     private readonly UserManager<AppUser> _userManager;
@@ -33,7 +33,7 @@ public class JwtAuthenticateEndpoint : Endpoint<SsoEnterRequest, AuthResult>
 
 
     [HttpPost("jwt/authenticate")]
-    public override async Task<AuthResult> HandleAsync([FromBody] SsoEnterRequest request, CancellationToken ct)
+    public override async Task<JwtResult> HandleAsync([FromBody] JwtAuthenticateRequest request, CancellationToken ct)
     {
         // try to get provider login info
         var loginInfo = await GetUserLoginInfoAsync(request.ProviderKey, request.Provider, ct);
@@ -52,7 +52,7 @@ public class JwtAuthenticateEndpoint : Endpoint<SsoEnterRequest, AuthResult>
         return await _jwtService.GenerateAsync(user, ct);
     }
 
-    private async Task<AppUser> RegisterUserAsync(SsoEnterRequest request, CancellationToken ct)
+    private async Task<AppUser> RegisterUserAsync(JwtAuthenticateRequest request, CancellationToken ct)
     {
         await ValidateUserAsync(request, ct);
 
@@ -80,7 +80,7 @@ public class JwtAuthenticateEndpoint : Endpoint<SsoEnterRequest, AuthResult>
         return user;
     }
 
-    private async Task ValidateUserAsync(SsoEnterRequest request, CancellationToken ct)
+    private async Task ValidateUserAsync(JwtAuthenticateRequest request, CancellationToken ct)
     {
         if (request.ProviderMetadata is not { Count: > 0 })
             throw new ValidationFailedException("Metadata not provided");

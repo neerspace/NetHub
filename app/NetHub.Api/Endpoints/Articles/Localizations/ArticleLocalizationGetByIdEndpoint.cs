@@ -48,10 +48,10 @@ public sealed class ArticleLocalizationGetByIdEndpoint : Endpoint<ArticleLocaliz
             localization.Vote = articleVote?.Vote;
         }
 
-        localization.Views++;
+        entity.Views++;
         await Database.SaveChangesAsync(ct);
 
-        return localization.Adapt<ArticleLocalizationModel>();
+        return localization;
     }
 
     private static void GuardPermissions(ArticleLocalization localization, long? userId)

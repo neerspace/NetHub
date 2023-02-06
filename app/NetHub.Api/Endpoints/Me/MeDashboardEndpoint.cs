@@ -14,14 +14,14 @@ namespace NetHub.Api.Endpoints.Me;
 [Authorize]
 [Tags(TagNames.Me)]
 [ApiVersion(Versions.V1)]
-public class MeDashboardEndpoint : ResultEndpoint<DashboardDto>
+public class MeDashboardEndpoint : ResultEndpoint<DashboardResult>
 {
     private readonly ISqlServerDatabase _database;
     public MeDashboardEndpoint(ISqlServerDatabase database) => _database = database;
 
 
     [HttpGet("me/dashboard")]
-    public override async Task<DashboardDto> HandleAsync(CancellationToken ct)
+    public override async Task<DashboardResult> HandleAsync(CancellationToken ct)
     {
         var userId = UserProvider.UserId;
 

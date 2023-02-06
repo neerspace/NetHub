@@ -3,7 +3,7 @@ using NetHub.Shared.Models.Localizations;
 
 namespace NetHub.Models.Articles.Localizations;
 
-public sealed record CreateArticleLocalizationRequest : ArticleLocalizationQuery
+public sealed record ArticleLocalizationCreateRequest : ArticleLocalizationQuery
 {
     public string Title { get; set; } = default!;
     public string Description { get; set; } = default!;
@@ -11,7 +11,7 @@ public sealed record CreateArticleLocalizationRequest : ArticleLocalizationQuery
     public ArticleContributorModel[]? Contributors { get; set; }
 }
 
-internal sealed class CreateArticleLocalizationValidator : AbstractValidator<CreateArticleLocalizationRequest>
+internal sealed class CreateArticleLocalizationValidator : AbstractValidator<ArticleLocalizationCreateRequest>
 {
     public CreateArticleLocalizationValidator()
     {

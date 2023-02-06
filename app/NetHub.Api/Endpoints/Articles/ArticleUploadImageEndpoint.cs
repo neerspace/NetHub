@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NeerCore.Data.EntityFramework.Extensions;
-using NetHub.Shared.Api;
-using NetHub.Shared.Api.Abstractions;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Models.Articles;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Api.Swagger;
 using NetHub.Shared.Extensions;
@@ -23,7 +22,7 @@ public class ArticleUploadImageEndpoint : Endpoint<AddArticleImageRequest, Creat
 
 
     [HttpPost("articles/{id:long}/images"), ClientSide(ActionName = "uploadImage")]
-    //TODO: Fix
+    [Consumes("multipart/form-data")]
     public override async Task<CreatedResult> HandleAsync(AddArticleImageRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;

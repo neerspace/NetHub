@@ -13,7 +13,7 @@ namespace NetHub.Admin.Api.Endpoints.Jwt;
 
 [Tags(TagNames.Jwt)]
 [ApiVersion(Versions.V1)]
-public class JwtAuthenticateEndpoint : Endpoint<AuthRequest, AuthResult>
+public class JwtAuthenticateEndpoint : Endpoint<AuthRequest, JwtResult>
 {
     private readonly IJwtService _jwtService;
     private readonly ISqlServerDatabase _database;
@@ -28,7 +28,7 @@ public class JwtAuthenticateEndpoint : Endpoint<AuthRequest, AuthResult>
 
 
     [HttpPost("jwt/authenticate")]
-    public override async Task<AuthResult> HandleAsync([FromBody] AuthRequest request, CancellationToken ct)
+    public override async Task<JwtResult> HandleAsync([FromBody] AuthRequest request, CancellationToken ct)
     {
         var user = await _database.Set<AppUser>().GetByLoginAsync(request.Login, ct);
         if (user is null)
@@ -37,7 +37,7 @@ public class JwtAuthenticateEndpoint : Endpoint<AuthRequest, AuthResult>
         return await PasswordAuthorizeAsync(user, request.Password!, ct);
     }
 
-    private async Task<AuthResult> PasswordAuthorizeAsync(AppUser user, string password, CancellationToken cancel)
+    private async Task<JwtResult> PasswordAuthorizeAsync(AppUser user, string password, CancellationToken cancel)
     {
         var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
         if (!result.Succeeded)

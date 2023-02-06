@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,6 +21,11 @@ public static class DependencyInjection
         services.AddNeerApiServices();
         services.AddNeerControllers()
             .AddMvcOptions(options => options.Filters.Add<SuccessStatusCodesFilter>());
+
+        services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.SuppressInferBindingSourcesForParameters = true;
+        });
 
         services.AddCorsPolicy(configuration);
 

@@ -20,7 +20,7 @@ internal class FacebookAuthProviders : IAuthProviderValidator
         _options = optionsAccessor.Value;
     }
 
-    public async Task<bool> ValidateAsync(SsoEnterRequest request, CancellationToken ct = default)
+    public async Task<bool> ValidateAsync(JwtAuthenticateRequest request, CancellationToken ct = default)
     {
         var client = new FacebookClient
         {

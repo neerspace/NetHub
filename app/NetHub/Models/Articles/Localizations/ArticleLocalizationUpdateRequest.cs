@@ -2,7 +2,7 @@
 
 namespace NetHub.Models.Articles.Localizations;
 
-public record UpdateArticleLocalizationRequest : ArticleLocalizationQuery
+public record ArticleLocalizationUpdateRequest : ArticleLocalizationQuery
 {
     public string? NewLanguageCode { get; set; }
     public string? Title { get; set; }

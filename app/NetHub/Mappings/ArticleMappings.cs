@@ -14,11 +14,11 @@ public class ArticleMappings : IRegister
         config.NewConfig<Article, ArticleModelExtended>()
             .Map(am => am.Tags, a => a.Tags!.Select(at => at.Tag!.Name));
 
-        config.NewConfig<CreateArticleLocalizationRequest, ArticleLocalization>()
+        config.NewConfig<ArticleLocalizationCreateRequest, ArticleLocalization>()
             .IgnoreNullValues(true);
 
         // Article Localization
-        config.NewConfig<UpdateArticleLocalizationRequest, ArticleLocalization>()
+        config.NewConfig<ArticleLocalizationUpdateRequest, ArticleLocalization>()
             //TODO: Test this
             //TODO: Test Mirroring
             .Ignore(ua => ua.Contributors)

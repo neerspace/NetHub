@@ -15,7 +15,7 @@ namespace NetHub.Api.Endpoints.Me;
 [Authorize]
 [Tags(TagNames.Me)]
 [ApiVersion(Versions.V1)]
-public sealed class MeProfilePhotoUpdateEndpoint : Endpoint<SetUserPhotoRequest, SetUserPhotoResult>
+public sealed class MeProfilePhotoUpdateEndpoint : Endpoint<MeProfilePhotoUpdateRequest, MeProfilePhotoUpdateResult>
 {
     private readonly ISqlServerDatabase _database;
     private readonly IResourceService _resourceService;
@@ -28,29 +28,28 @@ public sealed class MeProfilePhotoUpdateEndpoint : Endpoint<SetUserPhotoRequest,
 
 
     [HttpPost("me/profile-picture"), ClientSide(ActionName = "updateProfilePhoto")]
-    //TODO: Fix
     //TODO: Add Profile Put
-    public override async Task<SetUserPhotoResult> HandleAsync([FromForm] SetUserPhotoRequest request, CancellationToken ct)
+    public override async Task<MeProfilePhotoUpdateResult> HandleAsync(MeProfilePhotoUpdateRequest updateRequest, CancellationToken ct)
     {
         var user = await UserProvider.GetUserAsync();
 
         if (user.PhotoId is not null)
             await _resourceService.DeleteResourceFromDb(user.PhotoId.Value);
 
-        if (request.File is not null)
+        if (updateRequest.File is not null)
         {
-            var photoId = await _resourceService.SaveResourceToDb(request.File);
+            var photoId = await _resourceService.SaveResourceToDb(updateRequest.File);
 
             user.PhotoId = photoId;
             user.ProfilePhotoUrl = Request.GetResourceUrl(photoId);
         }
-        else if (request.Link is not null)
+        else if (updateRequest.Link is not null)
         {
-            user.ProfilePhotoUrl = request.Link;
+            user.ProfilePhotoUrl = updateRequest.Link;
         }
         else
         {
-            throw new ValidationFailedException("No image provided");
+            throw new ValidationFailedException("No photo provided");
         }
 
         await _database.SaveChangesAsync(ct);

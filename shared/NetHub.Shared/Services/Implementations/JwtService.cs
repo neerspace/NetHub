@@ -42,7 +42,7 @@ public sealed class JwtService : IJwtService
     }
 
 
-    public async Task<AuthResult> GenerateAsync(AppUser user, CancellationToken ct)
+    public async Task<JwtResult> GenerateAsync(AppUser user, CancellationToken ct)
     {
         var device = await GetUserDeviceAsync(ct);
 
@@ -51,7 +51,7 @@ public sealed class JwtService : IJwtService
 
         SetRefreshTokenCookie(refreshToken, refreshTokenExpires);
 
-        return new AuthResult
+        return new JwtResult
         {
             Username = user.UserName,
             FirstName = user.FirstName,
@@ -63,7 +63,7 @@ public sealed class JwtService : IJwtService
         };
     }
 
-    public async Task<AuthResult> RefreshAsync(string refreshToken, CancellationToken ct)
+    public async Task<JwtResult> RefreshAsync(string refreshToken, CancellationToken ct)
     {
         var refreshTokens = _database.Set<AppToken>();
 

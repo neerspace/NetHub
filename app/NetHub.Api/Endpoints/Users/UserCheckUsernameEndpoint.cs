@@ -22,7 +22,7 @@ public sealed class UserCheckUsernameEndpoint : Endpoint<string, CheckUsernameRe
     [HttpGet("users/{username}"), ClientSide(ActionName = "checkUsername")]
     public override async Task<CheckUsernameResult> HandleAsync([FromRoute] string username, CancellationToken ct)
     {
-        var isExist = await _database.Set<AppUser>().AnyAsync(u => u.UserName == username, ct);
+        var isExist = await _database.Set<AppUser>().AnyAsync(u => u.NormalizedUserName == username.ToUpper(), ct);
 
         return new(!isExist);
     }

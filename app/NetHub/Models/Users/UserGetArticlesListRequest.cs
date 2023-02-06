@@ -2,13 +2,13 @@
 
 namespace NetHub.Models.Users;
 
-public sealed record GetUserArticlesRequest(
+public sealed record UserGetArticlesListRequest(
     string? UserName,
     int Page,
     int PerPage
 );
 
-internal sealed class GetUserArticlesValidator : AbstractValidator<GetUserArticlesRequest>
+internal sealed class GetUserArticlesValidator : AbstractValidator<UserGetArticlesListRequest>
 {
     public GetUserArticlesValidator()
     {

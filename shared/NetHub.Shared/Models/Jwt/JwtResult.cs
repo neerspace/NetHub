@@ -1,6 +1,6 @@
 ﻿namespace NetHub.Shared.Models.Jwt;
 
-public sealed record AuthResult
+public sealed record JwtResult
 {
     /// <example>aspadmin</example>
     public string Username { get; init; } = default!;

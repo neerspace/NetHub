@@ -12,10 +12,10 @@ namespace NetHub.Api.Endpoints.Articles.Localizations;
 
 [Tags(TagNames.ArticleLocalizations)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleLocalizationGetThreadEndpoint : Endpoint<ArticleLocalizationFilter, ViewLocalizationModel[]>
+public sealed class ArticleLocalizationSearchEndpoint : Endpoint<ArticleLocalizationFilter, ViewLocalizationModel[]>
 {
     private readonly IFilterService _filterService;
-    public ArticleLocalizationGetThreadEndpoint(IFilterService filterService) => _filterService = filterService;
+    public ArticleLocalizationSearchEndpoint(IFilterService filterService) => _filterService = filterService;
 
     [HttpGet("articles/{lang:alpha:length(2)}/search")]
     public override async Task<ViewLocalizationModel[]> HandleAsync(ArticleLocalizationFilter request, CancellationToken ct)

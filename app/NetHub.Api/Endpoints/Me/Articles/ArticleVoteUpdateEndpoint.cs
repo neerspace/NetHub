@@ -14,19 +14,19 @@ namespace NetHub.Api.Endpoints.Me.Articles;
 [Authorize]
 [Tags(TagNames.MyArticles)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleVoteUpdateEndpoint : ActionEndpoint<RateArticleRequest>
+public sealed class ArticleVoteUpdateEndpoint : ActionEndpoint<ArticleVoteUpdateRequest>
 {
     [HttpPost("me/articles/{id:long}/vote"), ClientSide(ActionName = "updateVote")]
-    public override async Task HandleAsync(RateArticleRequest request, CancellationToken ct)
+    public override async Task HandleAsync(ArticleVoteUpdateRequest voteUpdateRequest, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
 
         var actualVote = await Database.Set<ArticleVote>()
             .Include(av => av.Article)
-            .Where(av => av.ArticleId == request.Id && av.UserId == userId)
+            .Where(av => av.ArticleId == voteUpdateRequest.Id && av.UserId == userId)
             .FirstOrDefaultAsync(ct);
 
-        var article = await Database.Set<Article>().FirstOr404Async(a => a.Id == request.Id, ct);
+        var article = await Database.Set<Article>().FirstOr404Async(a => a.Id == voteUpdateRequest.Id, ct);
 
         if (actualVote is null)
         {
@@ -34,17 +34,17 @@ public sealed class ArticleVoteUpdateEndpoint : ActionEndpoint<RateArticleReques
             {
                 ArticleId = article.Id,
                 UserId = userId,
-                Vote = request.Vote
+                Vote = voteUpdateRequest.Vote
             };
 
-            article.Rate += request.Vote == Vote.Up ? 1 : -1;
+            article.Rate += voteUpdateRequest.Vote == Vote.Up ? 1 : -1;
 
             Database.Set<ArticleVote>().Add(voteEntity);
             await Database.SaveChangesAsync(ct);
             return;
         }
 
-        switch (request.Vote)
+        switch (voteUpdateRequest.Vote)
         {
             case Vote.Up:
                 //was up
