@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NetHub.Shared.Api;
-using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Models.Articles.Localizations;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Api.Swagger;
 
-namespace NetHub.Api.Endpoints.Articles.Rate;
+namespace NetHub.Api.Endpoints.Me.Articles;
 
-[Tags(TagNames.Articles)]
+[Tags(TagNames.MyArticles)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleRateGetEndpoint : Endpoint<long, RatingModel>
+public sealed class ArticleVoteGetEndpoint : Endpoint<long, RatingModel>
 {
-    [HttpGet("articles/{articleId:long}/rate")]
+    [HttpGet("me/articles/{articleId:long}/vote"), ClientSide(ActionName = "getVote")]
     public override async Task<RatingModel> HandleAsync([FromRoute(Name = "id")] long articleId, CancellationToken ct)
     {
         var rating = await Database.Set<ArticleVote>()

@@ -9,6 +9,7 @@ using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Enums;
 using NetHub.Models.Articles.Localizations;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Api.Swagger;
 using NetHub.Shared.Extensions;
 
 namespace NetHub.Api.Endpoints.Articles.Localizations;
@@ -16,9 +17,9 @@ namespace NetHub.Api.Endpoints.Articles.Localizations;
 [Authorize]
 [Tags(TagNames.ArticleLocalizations)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleLocalizationSetStatusEndpoint : ActionEndpoint<SetArticleStatusRequest>
+public sealed class ArticleLocalizationStatusUpdateEndpoint : ActionEndpoint<SetArticleStatusRequest>
 {
-    [HttpPatch("articles/{id:long}/{lang:alpha:length(2)}/status")]
+    [HttpPatch("articles/{id:long}/{lang:alpha:length(2)}/status"), ClientSide(ActionName = "updateStatus")]
     public override async Task HandleAsync(SetArticleStatusRequest statusRequest, CancellationToken ct)
     {
         var userId = UserProvider.UserId;

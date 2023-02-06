@@ -8,6 +8,7 @@ using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Enums;
 using NetHub.Models.Articles;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Api.Swagger;
 
 namespace NetHub.Api.Endpoints.Articles;
 
@@ -15,7 +16,7 @@ namespace NetHub.Api.Endpoints.Articles;
 [ApiVersion(Versions.V1)]
 public sealed class ArticleGetByIdEndpoint : Endpoint<long, (ArticleModelExtended, Guid[]?)>
 {
-    [HttpGet("articles/{id:long}")]
+    [HttpGet("articles/{id:long}"), ClientSide(ActionName = "getById")]
     public override async Task<(ArticleModelExtended, Guid[]?)> HandleAsync([FromRoute] long id, CancellationToken ct)
     {
         var article = await Database.Set<Article>()

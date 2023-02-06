@@ -6,6 +6,7 @@ using NetHub.Admin.Models.Languages;
 using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Api.Swagger;
 
 namespace NetHub.Api.Endpoints.Languages;
 
@@ -13,7 +14,7 @@ namespace NetHub.Api.Endpoints.Languages;
 [ApiVersion(Versions.V1)]
 public sealed class LanguageListEndpoint : ResultEndpoint<LanguageModel[]>
 {
-    [HttpGet("languages")]
+    [HttpGet("languages"), ClientSide(ActionName = "getAll")]
     public override async Task<LanguageModel[]> HandleAsync(CancellationToken ct)
     {
         var languages = await Database.Set<Language>()

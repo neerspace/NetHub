@@ -7,6 +7,7 @@ using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Models.Users;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Api.Swagger;
 
 namespace NetHub.Api.Endpoints.Users;
 
@@ -18,7 +19,8 @@ public sealed class UserListEndpoint : Endpoint<GetUsersInfoRequest, UserDto[]>
     public UserListEndpoint(ISqlServerDatabase database) => _database = database;
 
 
-    [HttpGet("users")]
+    [HttpGet("users"), ClientSide(ActionName = "usersInfo")]
+    //TODO: Fix
     public override async Task<UserDto[]> HandleAsync([FromQuery] GetUsersInfoRequest request, CancellationToken ct)
     {
         var users = await _database.Set<AppUser>()

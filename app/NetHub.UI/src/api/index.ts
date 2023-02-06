@@ -31,15 +31,14 @@ _api.interceptors.response.use(async (config) => {
   },
   (error: AxiosError) => {
     throw new ApiError(error.message, error.response?.status);
-  });
+  })
+;
 
-export default {
-  _articlesApi: new ArticlesApi(baseApiUrl, _api),
-  _localizationsApi: new ArticleLocalizationsApi(baseApiUrl, _api),
-  _usersApi: new UsersApi(baseApiUrl, _api),
-  _jwtApi: new JwtApi(baseApiUrl, _api),
-  _currenciesApi: new CurrencyApi(baseApiUrl, _api),
-  _currentUserApi: new CurrentUserApi(baseApiUrl, _api),
-  _languagesApi: new LanguagesApi(baseApiUrl, _api),
-  _resourcesApi: new ResourcesApi(baseApiUrl, _api)
-}
+  export const _articlesApi = new ArticlesApi(baseApiUrl, _api);
+  export const _localizationsApi = new ArticleLocalizationsApi(baseApiUrl, _api);
+  export const _usersApi = new UsersApi(baseApiUrl, _api);
+  export const _jwtApi = new JwtApi(baseApiUrl, _api);
+  export const _currenciesApi = new CurrencyApi(baseApiUrl, _api);
+  export const _currentUserApi = new CurrentUserApi(baseApiUrl, _api);
+  export const _languagesApi = new LanguagesApi(baseApiUrl, _api);
+  export const _resourcesApi = new ResourcesApi(baseApiUrl, _api);

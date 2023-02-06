@@ -5,18 +5,19 @@ using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Api.Swagger;
 
 namespace NetHub.Api.Endpoints.Resources;
 
 [Tags(TagNames.Resources)]
 [ApiVersion(Versions.V1)]
-public class ResourceGetByGuidEndpoint : Endpoint<Guid, FileResult>
+public class ResourceGetByIdEndpoint : Endpoint<Guid, FileResult>
 {
     private readonly ISqlServerDatabase _database;
-    public ResourceGetByGuidEndpoint(ISqlServerDatabase database) => _database = database;
+    public ResourceGetByIdEndpoint(ISqlServerDatabase database) => _database = database;
 
 
-    [HttpGet("resources/{id:guid}")]
+    [HttpGet("resources/{id:guid}"), ClientSide(ActionName = "getById")]
     public override async Task<FileResult> HandleAsync([FromRoute] Guid id, CancellationToken ct)
     {
         var resource = await _database.Set<Resource>().FirstOr404Async(r => r.Id == id, ct);

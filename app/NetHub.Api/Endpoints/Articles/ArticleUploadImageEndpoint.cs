@@ -7,6 +7,7 @@ using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Models.Articles;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Api.Swagger;
 using NetHub.Shared.Extensions;
 using NetHub.Shared.Services;
 
@@ -21,7 +22,8 @@ public class ArticleUploadImageEndpoint : Endpoint<AddArticleImageRequest, Creat
     public ArticleUploadImageEndpoint(IResourceService resourceService) => _resourceService = resourceService;
 
 
-    [HttpPost("articles/{id:long}/images")]
+    [HttpPost("articles/{id:long}/images"), ClientSide(ActionName = "uploadImage")]
+    //TODO: Fix
     public override async Task<CreatedResult> HandleAsync(AddArticleImageRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;

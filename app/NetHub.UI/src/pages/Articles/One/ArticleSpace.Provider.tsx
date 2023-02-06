@@ -1,6 +1,6 @@
 import React, {FC, PropsWithChildren, useState} from 'react';
 import {useQuery, useQueryClient, UseQueryResult} from "react-query";
-import {getArticle, getArticleActions, getLocalization} from "./ArticleSpace.functions";
+import {getArticle, getLocalization} from "./ArticleSpace.functions";
 import {useParams} from "react-router-dom";
 import IArticleLocalizationResponse from "../../../types/api/Article/IArticleLocalizationResponse";
 import {ApiError} from "../../../types/ApiError";

@@ -30,7 +30,7 @@ export class ArticleLocalizationsApi {
      * @param body (optional) 
      * @return Created
      */
-    post(id: string, lang: string, body: CreateArticleLocalizationRequest | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel> {
+    create(id: string, lang: string, body: CreateArticleLocalizationRequest | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel> {
         let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -60,11 +60,11 @@ export class ArticleLocalizationsApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processPost(_response);
+            return this.processCreate(_response);
         });
     }
 
-    protected processPost(response: AxiosResponse): Promise<ArticleLocalizationModel> {
+    protected processCreate(response: AxiosResponse): Promise<ArticleLocalizationModel> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -220,7 +220,7 @@ export class ArticleLocalizationsApi {
      * @param body (optional) 
      * @return Success
      */
-    get(id: string, lang: string, body: ArticleLocalizationQuery | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel> {
+    getByIdAndCode(id: string, lang: string, body: ArticleLocalizationQuery | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel> {
         let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -250,11 +250,11 @@ export class ArticleLocalizationsApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processGet(_response);
+            return this.processGetByIdAndCode(_response);
         });
     }
 
-    protected processGet(response: AxiosResponse): Promise<ArticleLocalizationModel> {
+    protected processGetByIdAndCode(response: AxiosResponse): Promise<ArticleLocalizationModel> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -513,7 +513,7 @@ export class ArticleLocalizationsApi {
      * @param perPage (optional) 
      * @return Success
      */
-    getAll(languageCode: string | undefined, page: number | undefined, perPage: number | undefined, lang: string , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtended[]> {
+    get(languageCode: string | undefined, page: number | undefined, perPage: number | undefined, lang: string , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtended[]> {
         let url_ = this.baseUrl + "/v1/articles/{lang}?";
         if (lang === undefined || lang === null)
             throw new Error("The parameter 'lang' must be defined.");
@@ -548,11 +548,11 @@ export class ArticleLocalizationsApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processGetAll(_response);
+            return this.processGet(_response);
         });
     }
 
-    protected processGetAll(response: AxiosResponse): Promise<ArticleModelExtended[]> {
+    protected processGet(response: AxiosResponse): Promise<ArticleModelExtended[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -622,7 +622,7 @@ export class ArticleLocalizationsApi {
      * @param body (optional) 
      * @return No Content
      */
-    status(id: string, lang: string, body: SetArticleStatusRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    updateStatus(id: string, lang: string, body: SetArticleStatusRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/articles/{id}/{lang}/status";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -651,11 +651,11 @@ export class ArticleLocalizationsApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processStatus(_response);
+            return this.processUpdateStatus(_response);
         });
     }
 
-    protected processStatus(response: AxiosResponse): Promise<void> {
+    protected processUpdateStatus(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -991,7 +991,7 @@ export class ArticlesApi {
     /**
      * @return Success
      */
-    get(id: number , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtendedGuidArrayValueTuple> {
+    getById(id: number , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtendedGuidArrayValueTuple> {
         let url_ = this.baseUrl + "/v1/articles/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1014,11 +1014,11 @@ export class ArticlesApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processGet(_response);
+            return this.processGetById(_response);
         });
     }
 
-    protected processGet(response: AxiosResponse): Promise<ArticleModelExtendedGuidArrayValueTuple> {
+    protected processGetById(response: AxiosResponse): Promise<ArticleModelExtendedGuidArrayValueTuple> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1081,7 +1081,7 @@ export class ArticlesApi {
      * @param body (optional) 
      * @return Created
      */
-    images(id: string, body: AddArticleImageRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    uploadImage(id: string, body: AddArticleImageRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/articles/{id}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1107,193 +1107,11 @@ export class ArticlesApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processImages(_response);
+            return this.processUploadImage(_response);
         });
     }
 
-    protected processImages(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 201) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
-
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401  = _responseText;
-            result401 = ValidationError.fromJS(resultData401);
-            return throwException("Not Authorized", status, _responseText, _headers, result401);
-
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403  = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException("Permission Denied", status, _responseText, _headers, result403);
-
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException("Not Found", status, _responseText, _headers, result404);
-
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500  = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-
-    /**
-     * @return Success
-     */
-    rateGET(id: number, articleId: string , cancelToken?: CancelToken | undefined): Promise<RatingModel> {
-        let url_ = this.baseUrl + "/v1/articles/{articleId}/rate";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (articleId === undefined || articleId === null)
-            throw new Error("The parameter 'articleId' must be defined.");
-        url_ = url_.replace("{articleId}", encodeURIComponent("" + articleId));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processRateGET(_response);
-        });
-    }
-
-    protected processRateGET(response: AxiosResponse): Promise<RatingModel> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = RatingModel.fromJS(resultData200);
-            return Promise.resolve<RatingModel>(result200);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
-
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401  = _responseText;
-            result401 = ValidationError.fromJS(resultData401);
-            return throwException("Not Authorized", status, _responseText, _headers, result401);
-
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403  = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException("Permission Denied", status, _responseText, _headers, result403);
-
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException("Not Found", status, _responseText, _headers, result404);
-
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500  = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<RatingModel>(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Created
-     */
-    ratePOST(id: string, body: RateArticleRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/v1/articles/{id}/rate";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_: AxiosRequestConfig = {
-            data: content_,
-            method: "POST",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processRatePOST(_response);
-        });
-    }
-
-    protected processRatePOST(response: AxiosResponse): Promise<void> {
+    protected processUploadImage(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1552,7 +1370,7 @@ export class CurrentUserApi {
     /**
      * @return Success
      */
-    get(  cancelToken?: CancelToken | undefined): Promise<UserDto> {
+    me(  cancelToken?: CancelToken | undefined): Promise<UserDto> {
         let url_ = this.baseUrl + "/v1/me";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1572,11 +1390,11 @@ export class CurrentUserApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processGet(_response);
+            return this.processMe(_response);
         });
     }
 
-    protected processGet(response: AxiosResponse): Promise<UserDto> {
+    protected processMe(response: AxiosResponse): Promise<UserDto> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1640,106 +1458,7 @@ export class CurrentUserApi {
      * @param link (optional) 
      * @return Created
      */
-    profile(file: FileParameter | undefined, link: string | undefined , cancelToken?: CancelToken | undefined): Promise<SetUserPhotoResult> {
-        let url_ = this.baseUrl + "/v1/me/profile";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = new FormData();
-        if (file === null || file === undefined)
-            throw new Error("The parameter 'file' cannot be null.");
-        else
-            content_.append("File", file.data, file.fileName ? file.fileName : "File");
-        if (link === null || link === undefined)
-            throw new Error("The parameter 'link' cannot be null.");
-        else
-            content_.append("Link", link.toString());
-
-        let options_: AxiosRequestConfig = {
-            data: content_,
-            method: "POST",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processProfile(_response);
-        });
-    }
-
-    protected processProfile(response: AxiosResponse): Promise<SetUserPhotoResult> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 201) {
-            const _responseText = response.data;
-            let result201: any = null;
-            let resultData201  = _responseText;
-            result201 = SetUserPhotoResult.fromJS(resultData201);
-            return Promise.resolve<SetUserPhotoResult>(result201);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
-
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401  = _responseText;
-            result401 = ValidationError.fromJS(resultData401);
-            return throwException("Not Authorized", status, _responseText, _headers, result401);
-
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403  = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException("Permission Denied", status, _responseText, _headers, result403);
-
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException("Not Found", status, _responseText, _headers, result404);
-
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500  = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<SetUserPhotoResult>(null as any);
-    }
-
-    /**
-     * @param file (optional) 
-     * @param link (optional) 
-     * @return Created
-     */
-    profilePicture(file: FileParameter | undefined, link: string | undefined , cancelToken?: CancelToken | undefined): Promise<SetUserPhotoResult> {
+    updateProfilePhoto(file: FileParameter | undefined, link: string | undefined , cancelToken?: CancelToken | undefined): Promise<SetUserPhotoResult> {
         let url_ = this.baseUrl + "/v1/me/profile-picture";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1770,11 +1489,11 @@ export class CurrentUserApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processProfilePicture(_response);
+            return this.processUpdateProfilePhoto(_response);
         });
     }
 
-    protected processProfilePicture(response: AxiosResponse): Promise<SetUserPhotoResult> {
+    protected processUpdateProfilePhoto(response: AxiosResponse): Promise<SetUserPhotoResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2027,8 +1746,8 @@ export class JwtApi {
     /**
      * @return No Content
      */
-    revokeToken(  cancelToken?: CancelToken | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/v1/auth/revoke-token";
+    revoke(  cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/v1/auth/revoke";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -2046,11 +1765,11 @@ export class JwtApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processRevokeToken(_response);
+            return this.processRevoke(_response);
         });
     }
 
-    protected processRevokeToken(response: AxiosResponse): Promise<void> {
+    protected processRevoke(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2123,7 +1842,7 @@ export class LanguagesApi {
     /**
      * @return Success
      */
-    get(  cancelToken?: CancelToken | undefined): Promise<LanguageModel[]> {
+    getAll(  cancelToken?: CancelToken | undefined): Promise<LanguageModel[]> {
         let url_ = this.baseUrl + "/v1/languages";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2143,11 +1862,11 @@ export class LanguagesApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processGet(_response);
+            return this.processGetAll(_response);
         });
     }
 
-    protected processGet(response: AxiosResponse): Promise<LanguageModel[]> {
+    protected processGetAll(response: AxiosResponse): Promise<LanguageModel[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2214,106 +1933,7 @@ export class LanguagesApi {
     }
 }
 
-export class ResourcesApi {
-    private instance: AxiosInstance;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, instance?: AxiosInstance) {
-
-        this.instance = instance ? instance : axios.create();
-
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
-
-    }
-
-    /**
-     * @return Success
-     */
-    get(id: string , cancelToken?: CancelToken | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/v1/resources/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processGet(_response);
-        });
-    }
-
-    protected processGet(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
-
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401  = _responseText;
-            result401 = ValidationError.fromJS(resultData401);
-            return throwException("Not Authorized", status, _responseText, _headers, result401);
-
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403  = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException("Permission Denied", status, _responseText, _headers, result403);
-
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException("Not Found", status, _responseText, _headers, result404);
-
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500  = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-}
-
-export class UserSavedArticlesApi {
+export class MyArticlesApi {
     private instance: AxiosInstance;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -2330,7 +1950,7 @@ export class UserSavedArticlesApi {
      * @param body (optional) 
      * @return Success
      */
-    savedArticlesGET(id: string, lang: string, body: ArticleLocalizationQuery | undefined , cancelToken?: CancelToken | undefined): Promise<GetLocalizationSavingResult> {
+    isSaved(id: string, lang: string, body: ArticleLocalizationQuery | undefined , cancelToken?: CancelToken | undefined): Promise<IsSavedLocalizationResult> {
         let url_ = this.baseUrl + "/v1/me/saved-articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2360,11 +1980,11 @@ export class UserSavedArticlesApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processSavedArticlesGET(_response);
+            return this.processIsSaved(_response);
         });
     }
 
-    protected processSavedArticlesGET(response: AxiosResponse): Promise<GetLocalizationSavingResult> {
+    protected processIsSaved(response: AxiosResponse): Promise<IsSavedLocalizationResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2378,8 +1998,8 @@ export class UserSavedArticlesApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = GetLocalizationSavingResult.fromJS(resultData200);
-            return Promise.resolve<GetLocalizationSavingResult>(result200);
+            result200 = IsSavedLocalizationResult.fromJS(resultData200);
+            return Promise.resolve<IsSavedLocalizationResult>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -2420,14 +2040,14 @@ export class UserSavedArticlesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<GetLocalizationSavingResult>(null as any);
+        return Promise.resolve<IsSavedLocalizationResult>(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return No Content
      */
-    savedArticlesPATCH(id: string, lang: string, body: ArticleLocalizationQuery | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    toggleSave(id: string, lang: string, body: ArticleLocalizationQuery | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/me/saved-articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2456,11 +2076,11 @@ export class UserSavedArticlesApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processSavedArticlesPATCH(_response);
+            return this.processToggleSave(_response);
         });
     }
 
-    protected processSavedArticlesPATCH(response: AxiosResponse): Promise<void> {
+    protected processToggleSave(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2520,7 +2140,7 @@ export class UserSavedArticlesApi {
      * @param body (optional) 
      * @return Success
      */
-    savedArticlesAll(body: ArticleLocalizationQuery | undefined , cancelToken?: CancelToken | undefined): Promise<ViewLocalizationModel[]> {
+    savedArticles(body: ArticleLocalizationQuery | undefined , cancelToken?: CancelToken | undefined): Promise<ViewLocalizationModel[]> {
         let url_ = this.baseUrl + "/v1/me/saved-articles";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2544,11 +2164,11 @@ export class UserSavedArticlesApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processSavedArticlesAll(_response);
+            return this.processSavedArticles(_response);
         });
     }
 
-    protected processSavedArticlesAll(response: AxiosResponse): Promise<ViewLocalizationModel[]> {
+    protected processSavedArticles(response: AxiosResponse): Promise<ViewLocalizationModel[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2613,36 +2233,18 @@ export class UserSavedArticlesApi {
         }
         return Promise.resolve<ViewLocalizationModel[]>(null as any);
     }
-}
-
-export class UsersApi {
-    private instance: AxiosInstance;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, instance?: AxiosInstance) {
-
-        this.instance = instance ? instance : axios.create();
-
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
-
-    }
 
     /**
-     * @param key (optional) 
-     * @param provider (optional) 
      * @return Success
      */
-    checkExists(key: string | undefined, provider: ProviderType | undefined , cancelToken?: CancelToken | undefined): Promise<CheckUserExistsResult> {
-        let url_ = this.baseUrl + "/v1/users/check-exists?";
-        if (key === null)
-            throw new Error("The parameter 'key' cannot be null.");
-        else if (key !== undefined)
-            url_ += "Key=" + encodeURIComponent("" + key) + "&";
-        if (provider === null)
-            throw new Error("The parameter 'provider' cannot be null.");
-        else if (provider !== undefined)
-            url_ += "Provider=" + encodeURIComponent("" + provider) + "&";
+    getVote(id: number, articleId: string , cancelToken?: CancelToken | undefined): Promise<RatingModel> {
+        let url_ = this.baseUrl + "/v1/me/articles/{articleId}/vote";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (articleId === undefined || articleId === null)
+            throw new Error("The parameter 'articleId' must be defined.");
+        url_ = url_.replace("{articleId}", encodeURIComponent("" + articleId));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -2661,11 +2263,11 @@ export class UsersApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processCheckExists(_response);
+            return this.processGetVote(_response);
         });
     }
 
-    protected processCheckExists(response: AxiosResponse): Promise<CheckUserExistsResult> {
+    protected processGetVote(response: AxiosResponse): Promise<RatingModel> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2679,8 +2281,8 @@ export class UsersApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = CheckUserExistsResult.fromJS(resultData200);
-            return Promise.resolve<CheckUserExistsResult>(result200);
+            result200 = RatingModel.fromJS(resultData200);
+            return Promise.resolve<RatingModel>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2721,13 +2323,312 @@ export class UsersApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<CheckUserExistsResult>(null as any);
+        return Promise.resolve<RatingModel>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Created
+     */
+    updateVote(id: string, body: RateArticleRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/v1/me/articles/{id}/vote";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUpdateVote(_response);
+        });
+    }
+
+    protected processUpdateVote(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 201) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500  = _responseText;
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+}
+
+export class ResourcesApi {
+    private instance: AxiosInstance;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, instance?: AxiosInstance) {
+
+        this.instance = instance ? instance : axios.create();
+
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+
     }
 
     /**
      * @return Success
      */
-    get(username: string , cancelToken?: CancelToken | undefined): Promise<CheckUsernameResult> {
+    getById(id: string , cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/v1/resources/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetById(_response);
+        });
+    }
+
+    protected processGetById(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500  = _responseText;
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+}
+
+export class UsersApi {
+    private instance: AxiosInstance;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, instance?: AxiosInstance) {
+
+        this.instance = instance ? instance : axios.create();
+
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+
+    }
+
+    /**
+     * @param key (optional) 
+     * @param provider (optional) 
+     * @return Success
+     */
+    checkIfExists(key: string | undefined, provider: ProviderType | undefined , cancelToken?: CancelToken | undefined): Promise<CheckUserIfExistsResult> {
+        let url_ = this.baseUrl + "/v1/users/check-if-exists?";
+        if (key === null)
+            throw new Error("The parameter 'key' cannot be null.");
+        else if (key !== undefined)
+            url_ += "Key=" + encodeURIComponent("" + key) + "&";
+        if (provider === null)
+            throw new Error("The parameter 'provider' cannot be null.");
+        else if (provider !== undefined)
+            url_ += "Provider=" + encodeURIComponent("" + provider) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCheckIfExists(_response);
+        });
+    }
+
+    protected processCheckIfExists(response: AxiosResponse): Promise<CheckUserIfExistsResult> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = CheckUserIfExistsResult.fromJS(resultData200);
+            return Promise.resolve<CheckUserIfExistsResult>(result200);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500  = _responseText;
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CheckUserIfExistsResult>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    checkUsername(username: string , cancelToken?: CancelToken | undefined): Promise<CheckUsernameResult> {
         let url_ = this.baseUrl + "/v1/users/{username}";
         if (username === undefined || username === null)
             throw new Error("The parameter 'username' must be defined.");
@@ -2750,11 +2651,11 @@ export class UsersApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processGet(_response);
+            return this.processCheckUsername(_response);
         });
     }
 
-    protected processGet(response: AxiosResponse): Promise<CheckUsernameResult> {
+    protected processCheckUsername(response: AxiosResponse): Promise<CheckUsernameResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2906,7 +2807,7 @@ export class UsersApi {
      * @param body (optional) 
      * @return Success
      */
-    articles(username: string, body: GetUserArticlesRequest | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtended[]> {
+    userArticles(username: string, body: GetUserArticlesRequest | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtended[]> {
         let url_ = this.baseUrl + "/v1/users/{username}/articles";
         if (username === undefined || username === null)
             throw new Error("The parameter 'username' must be defined.");
@@ -2933,11 +2834,11 @@ export class UsersApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processArticles(_response);
+            return this.processUserArticles(_response);
         });
     }
 
-    protected processArticles(response: AxiosResponse): Promise<ArticleModelExtended[]> {
+    protected processUserArticles(response: AxiosResponse): Promise<ArticleModelExtended[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3007,7 +2908,7 @@ export class UsersApi {
      * @param userNames (optional) 
      * @return Success
      */
-    getAll(userNames: string[] | undefined , cancelToken?: CancelToken | undefined): Promise<UserDto[]> {
+    usersInfo(userNames: string[] | undefined , cancelToken?: CancelToken | undefined): Promise<UserDto[]> {
         let url_ = this.baseUrl + "/v1/users?";
         if (userNames === null)
             throw new Error("The parameter 'userNames' cannot be null.");
@@ -3031,11 +2932,11 @@ export class UsersApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processGetAll(_response);
+            return this.processUsersInfo(_response);
         });
     }
 
-    protected processGetAll(response: AxiosResponse): Promise<UserDto[]> {
+    protected processUsersInfo(response: AxiosResponse): Promise<UserDto[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3105,7 +3006,7 @@ export class UsersApi {
      * @param body (optional) 
      * @return Success
      */
-    search(body: SearchUsersRequest | undefined , cancelToken?: CancelToken | undefined): Promise<PrivateUserDto[]> {
+    privateUsersInfo(body: SearchUsersRequest | undefined , cancelToken?: CancelToken | undefined): Promise<PrivateUserDto[]> {
         let url_ = this.baseUrl + "/v1/users/search";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3129,11 +3030,11 @@ export class UsersApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processSearch(_response);
+            return this.processPrivateUsersInfo(_response);
         });
     }
 
-    protected processSearch(response: AxiosResponse): Promise<PrivateUserDto[]> {
+    protected processPrivateUsersInfo(response: AxiosResponse): Promise<PrivateUserDto[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3713,10 +3614,10 @@ export interface IAuthResult {
     profilePhotoUrl: string | null;
 }
 
-export class CheckUserExistsResult implements ICheckUserExistsResult {
+export class CheckUserIfExistsResult implements ICheckUserIfExistsResult {
     isProviderRegistered!: boolean;
 
-    constructor(data?: ICheckUserExistsResult) {
+    constructor(data?: ICheckUserIfExistsResult) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -3731,9 +3632,9 @@ export class CheckUserExistsResult implements ICheckUserExistsResult {
         }
     }
 
-    static fromJS(data: any): CheckUserExistsResult {
+    static fromJS(data: any): CheckUserIfExistsResult {
         data = typeof data === 'object' ? data : {};
-        let result = new CheckUserExistsResult();
+        let result = new CheckUserIfExistsResult();
         result.init(data);
         return result;
     }
@@ -3745,7 +3646,7 @@ export class CheckUserExistsResult implements ICheckUserExistsResult {
     }
 }
 
-export interface ICheckUserExistsResult {
+export interface ICheckUserIfExistsResult {
     isProviderRegistered: boolean;
 }
 
@@ -3924,6 +3825,7 @@ export interface ICreateArticleRequest {
 export class CryptoResponseDto implements ICryptoResponseDto {
     btc!: OneCryptoDto;
     ton!: OneCryptoDto;
+    error!: string | null;
 
     constructor(data?: ICryptoResponseDto) {
         if (data) {
@@ -3940,6 +3842,7 @@ export class CryptoResponseDto implements ICryptoResponseDto {
         if (_data) {
             this.btc = _data["btc"] ? OneCryptoDto.fromJS(_data["btc"]) : <any>null;
             this.ton = _data["ton"] ? OneCryptoDto.fromJS(_data["ton"]) : <any>null;
+            this.error = _data["error"] !== undefined ? _data["error"] : <any>null;
         }
     }
 
@@ -3954,6 +3857,7 @@ export class CryptoResponseDto implements ICryptoResponseDto {
         data = typeof data === 'object' ? data : {};
         data["btc"] = this.btc ? this.btc.toJSON() : <any>null;
         data["ton"] = this.ton ? this.ton.toJSON() : <any>null;
+        data["error"] = this.error !== undefined ? this.error : <any>null;
         return data;
     }
 }
@@ -3961,6 +3865,7 @@ export class CryptoResponseDto implements ICryptoResponseDto {
 export interface ICryptoResponseDto {
     btc: IOneCryptoDto;
     ton: IOneCryptoDto;
+    error: string | null;
 }
 
 export class CurrenciesResponse implements ICurrenciesResponse {
@@ -4160,6 +4065,7 @@ export interface IErrorDetails {
 export class ExchangeResponseModel implements IExchangeResponseModel {
     usd!: OneExchangeModel;
     euro!: OneExchangeModel;
+    error!: string | null;
 
     constructor(data?: IExchangeResponseModel) {
         if (data) {
@@ -4176,6 +4082,7 @@ export class ExchangeResponseModel implements IExchangeResponseModel {
         if (_data) {
             this.usd = _data["usd"] ? OneExchangeModel.fromJS(_data["usd"]) : <any>null;
             this.euro = _data["euro"] ? OneExchangeModel.fromJS(_data["euro"]) : <any>null;
+            this.error = _data["error"] !== undefined ? _data["error"] : <any>null;
         }
     }
 
@@ -4190,6 +4097,7 @@ export class ExchangeResponseModel implements IExchangeResponseModel {
         data = typeof data === 'object' ? data : {};
         data["usd"] = this.usd ? this.usd.toJSON() : <any>null;
         data["euro"] = this.euro ? this.euro.toJSON() : <any>null;
+        data["error"] = this.error !== undefined ? this.error : <any>null;
         return data;
     }
 }
@@ -4197,42 +4105,7 @@ export class ExchangeResponseModel implements IExchangeResponseModel {
 export interface IExchangeResponseModel {
     usd: IOneExchangeModel;
     euro: IOneExchangeModel;
-}
-
-export class GetLocalizationSavingResult implements IGetLocalizationSavingResult {
-    isSaved!: boolean;
-
-    constructor(data?: IGetLocalizationSavingResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.isSaved = _data["isSaved"] !== undefined ? _data["isSaved"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): GetLocalizationSavingResult {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetLocalizationSavingResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["isSaved"] = this.isSaved !== undefined ? this.isSaved : <any>null;
-        return data;
-    }
-}
-
-export interface IGetLocalizationSavingResult {
-    isSaved: boolean;
+    error: string | null;
 }
 
 export class GetUserArticlesRequest implements IGetUserArticlesRequest {
@@ -4277,6 +4150,42 @@ export interface IGetUserArticlesRequest {
     userName: string | null;
     page: number;
     perPage: number;
+}
+
+export class IsSavedLocalizationResult implements IIsSavedLocalizationResult {
+    isSaved!: boolean;
+
+    constructor(data?: IIsSavedLocalizationResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isSaved = _data["isSaved"] !== undefined ? _data["isSaved"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): IsSavedLocalizationResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new IsSavedLocalizationResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isSaved"] = this.isSaved !== undefined ? this.isSaved : <any>null;
+        return data;
+    }
+}
+
+export interface IIsSavedLocalizationResult {
+    isSaved: boolean;
 }
 
 export class LanguageModel implements ILanguageModel {

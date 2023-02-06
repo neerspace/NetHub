@@ -7,6 +7,7 @@ using NetHub.Models.Users;
 using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Api.Swagger;
 using NetHub.Shared.Extensions;
 
 namespace NetHub.Api.Endpoints.Me;
@@ -20,7 +21,7 @@ public class MeGetEndpoint : ResultEndpoint<UserDto>
     public MeGetEndpoint(UserManager<AppUser> userManager) => _userManager = userManager;
 
 
-    [HttpGet("me")]
+    [HttpGet("me"), ClientSide(ActionName = "me")]
     public override async Task<UserDto> HandleAsync(CancellationToken ct)
     {
         var userId = UserProvider.UserId;

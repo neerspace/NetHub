@@ -2,21 +2,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.EntityFramework.Extensions;
-using NetHub.Shared.Api;
-using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Enums;
 using NetHub.Models.Articles.Rating;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Api.Swagger;
 
-namespace NetHub.Api.Endpoints.Articles.Rate;
+namespace NetHub.Api.Endpoints.Me.Articles;
 
 [Authorize]
-[Tags(TagNames.Articles)]
+[Tags(TagNames.MyArticles)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleRateSetVoteEndpoint : ActionEndpoint<RateArticleRequest>
+public sealed class ArticleVoteUpdateEndpoint : ActionEndpoint<RateArticleRequest>
 {
-    [HttpPost("articles/{id:long}/rate")]
+    [HttpPost("me/articles/{id:long}/vote"), ClientSide(ActionName = "updateVote")]
     public override async Task HandleAsync(RateArticleRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;

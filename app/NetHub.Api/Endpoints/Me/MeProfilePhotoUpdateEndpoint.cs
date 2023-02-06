@@ -6,6 +6,7 @@ using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Models.Users;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Api.Swagger;
 using NetHub.Shared.Extensions;
 using NetHub.Shared.Services;
 
@@ -14,19 +15,21 @@ namespace NetHub.Api.Endpoints.Me;
 [Authorize]
 [Tags(TagNames.Me)]
 [ApiVersion(Versions.V1)]
-public sealed class MeUpdateProfileEndpoint : Endpoint<SetUserPhotoRequest, SetUserPhotoResult>
+public sealed class MeProfilePhotoUpdateEndpoint : Endpoint<SetUserPhotoRequest, SetUserPhotoResult>
 {
     private readonly ISqlServerDatabase _database;
     private readonly IResourceService _resourceService;
 
-    public MeUpdateProfileEndpoint(ISqlServerDatabase database, IResourceService resourceService)
+    public MeProfilePhotoUpdateEndpoint(ISqlServerDatabase database, IResourceService resourceService)
     {
         _database = database;
         _resourceService = resourceService;
     }
 
 
-    [HttpPost("me/profile-picture")]
+    [HttpPost("me/profile-picture"), ClientSide(ActionName = "updateProfilePhoto")]
+    //TODO: Fix
+    //TODO: Add Profile Put
     public override async Task<SetUserPhotoResult> HandleAsync([FromForm] SetUserPhotoRequest request, CancellationToken ct)
     {
         var user = await UserProvider.GetUserAsync();

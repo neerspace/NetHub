@@ -7,6 +7,7 @@ using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Models.Articles;
 using NetHub.Models.Users;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Api.Swagger;
 
 namespace NetHub.Api.Endpoints.Users;
 
@@ -14,7 +15,8 @@ namespace NetHub.Api.Endpoints.Users;
 [ApiVersion(Versions.V1)]
 public class UserGetArticlesListEndpoint : Endpoint<GetUserArticlesRequest, ArticleModelExtended[]>
 {
-    [HttpGet("users/{username}/articles")]
+    [HttpGet("users/{username}/articles"), ClientSide(ActionName = "userArticles")]
+    //TODO: Fix
     public override async Task<ArticleModelExtended[]> HandleAsync(GetUserArticlesRequest request, CancellationToken ct)
     {
         var username = string.IsNullOrEmpty(request.UserName)
@@ -23,6 +25,7 @@ public class UserGetArticlesListEndpoint : Endpoint<GetUserArticlesRequest, Arti
 
         var articles = await Database.Set<Article>()
             .Include(a => a.Localizations)
+            .Include(a => a.Author)
             .Where(a => a.Author!.NormalizedUserName == username)
             .Skip((request.Page - 1) * request.PerPage)
             .Take(request.PerPage)

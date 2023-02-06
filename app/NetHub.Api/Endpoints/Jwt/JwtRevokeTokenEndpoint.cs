@@ -15,7 +15,7 @@ public class JwtRevokeTokenEndpoint : ActionEndpoint
     public JwtRevokeTokenEndpoint(IOptions<JwtOptions> optionsAccessor) => _options = optionsAccessor.Value;
 
 
-    [HttpDelete("auth/revoke-token")]
+    [HttpDelete("auth/revoke")]
     public override Task HandleAsync(CancellationToken ct)
     {
         Response.Cookies.Delete(_options.RefreshToken.CookieName);

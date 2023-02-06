@@ -11,7 +11,7 @@ using NetHub.Shared.Api.Constants;
 namespace NetHub.Api.Endpoints.Me.SavedArticles;
 
 [Authorize]
-[Tags(TagNames.MySavedArticles)]
+[Tags(TagNames.MyArticles)]
 [ApiVersion(Versions.V1)]
 public sealed class SavedArticleListEndpoint : Endpoint<ArticleLocalizationQuery, ViewLocalizationModel[]>
 {

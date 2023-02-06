@@ -9,6 +9,7 @@ using NetHub.Data.SqlServer.Enums;
 using NetHub.Models.Articles.Localizations;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Api.Swagger;
 using NetHub.Shared.Models.Localizations;
 
 namespace NetHub.Api.Endpoints.Articles.Localizations;
@@ -17,7 +18,7 @@ namespace NetHub.Api.Endpoints.Articles.Localizations;
 [ApiVersion(Versions.V1)]
 public sealed class ArticleLocalizationGetByIdEndpoint : Endpoint<ArticleLocalizationQuery, ArticleLocalizationModel>
 {
-    [HttpGet("articles/{id:long}/{lang:alpha:length(2)}")]
+    [HttpGet("articles/{id:long}/{lang:alpha:length(2)}"), ClientSide(ActionName = "getByIdAndCode")]
     public override async Task<ArticleLocalizationModel> HandleAsync(ArticleLocalizationQuery request, CancellationToken ct)
     {
         var userId = UserProvider.TryGetUserId();

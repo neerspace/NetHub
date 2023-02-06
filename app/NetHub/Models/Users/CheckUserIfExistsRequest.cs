@@ -3,9 +3,9 @@ using NetHub.Shared.Models.Jwt;
 
 namespace NetHub.Models.Users;
 
-public sealed record CheckUserExistsRequest(string Key, ProviderType Provider);
+public sealed record CheckUserIfExistsRequest(string Key, ProviderType Provider);
 
-internal sealed class CheckUserExistsValidator : AbstractValidator<CheckUserExistsRequest>
+internal sealed class CheckUserExistsValidator : AbstractValidator<CheckUserIfExistsRequest>
 {
     public CheckUserExistsValidator()
     {
