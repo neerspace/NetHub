@@ -6,6 +6,8 @@ import { isAccessTokenValid } from '../../../utils/JwtHelper';
 import Actions from '../../UI/Action/Actions';
 import SvgSelector from '../../UI/SvgSelector/SvgSelector';
 import cl from './ArticleRateCounter.module.sass';
+import { _myArticlesApi } from "../../../api";
+import { Vote } from "../../../api/_api";
 
 export type RateVariants = 'Up' | 'Down';
 
@@ -64,7 +66,7 @@ const ArticlesRateCounter: FC<IArticleRateCounterProps> = ({
 
     updateCounter(newState.rate, newState.vote);
     await afterRequest();
-    await articlesApi.setRate(articleId, 'Up');
+    await _myArticlesApi.updateVote(articleId, Vote.Up);
   }
 
   async function handleDownVote(e: React.MouseEvent) {
@@ -99,7 +101,7 @@ const ArticlesRateCounter: FC<IArticleRateCounterProps> = ({
     });
     updateCounter(newState.rate, newState.vote);
     await afterRequest();
-    await articlesApi.setRate(articleId, 'Down');
+    await _myArticlesApi.updateVote(articleId, Vote.Down);
   }
 
   return (

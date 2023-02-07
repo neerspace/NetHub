@@ -4,6 +4,7 @@ export const QueryClientConstants = {
   articleLocalization: 'articleLocalization',
   savedArticles: 'savedArticles',
   contributors: 'contributors',
+  contributor: 'contributor',
   authorization: 'authorization',
   user: 'user'
 };

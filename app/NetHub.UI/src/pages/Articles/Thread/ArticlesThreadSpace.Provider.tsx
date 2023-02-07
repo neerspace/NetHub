@@ -5,6 +5,8 @@ import {UkrainianLanguage} from "../../../utils/constants";
 import IExtendedArticle from "../../../types/IExtendedArticle";
 import {articlesApi} from "../../../api/api";
 import {useAppStore} from "../../../store/config";
+import { _articlesApi, _localizationsApi } from "../../../api";
+import { ViewLocalizationModel } from "../../../api/_api";
 
 type ContextType = {
   languages: { title: string, value: string }[],
@@ -34,8 +36,8 @@ const ArticlesThreadSpaceProvider: FC<PropsWithChildren> = ({children}) => {
   const languages = [{title: 'UA', value: 'ua'}, {title: 'EN', value: 'en'}]
   const [articlesLanguage, setArticlesLanguage] = useState<string>(localStorage.getItem('articlesLanguage') ?? UkrainianLanguage);
 
-  const articlesAccessor: any = useQuery<IExtendedArticle[], ApiError>(['articles', articlesLanguage, isLogin],
-    () => articlesApi.getArticles(articlesLanguage)
+  const articlesAccessor: any = useQuery<ViewLocalizationModel[], ApiError>(['articles', articlesLanguage, isLogin],
+    () => _localizationsApi.search(articlesLanguage)
   );
 
   const handleSetArticles = (newArticles: IExtendedArticle[]) => {

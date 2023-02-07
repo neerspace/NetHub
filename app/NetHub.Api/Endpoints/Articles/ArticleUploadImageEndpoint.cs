@@ -15,7 +15,7 @@ namespace NetHub.Api.Endpoints.Articles;
 [Authorize]
 [Tags(TagNames.Articles)]
 [ApiVersion(Versions.V1)]
-public class ArticleUploadImageEndpoint : Endpoint<AddArticleImageRequest, CreatedResult>
+public class ArticleUploadImageEndpoint : Endpoint<AddArticleImageRequest, AddArticleImageResult>
 {
     private readonly IResourceService _resourceService;
     public ArticleUploadImageEndpoint(IResourceService resourceService) => _resourceService = resourceService;
@@ -23,7 +23,7 @@ public class ArticleUploadImageEndpoint : Endpoint<AddArticleImageRequest, Creat
 
     [HttpPost("articles/{id:long}/images"), ClientSide(ActionName = "uploadImage")]
     [Consumes("multipart/form-data")]
-    public override async Task<CreatedResult> HandleAsync(AddArticleImageRequest request, CancellationToken ct)
+    public override async Task<AddArticleImageResult> HandleAsync(AddArticleImageRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
 
@@ -42,6 +42,6 @@ public class ArticleUploadImageEndpoint : Endpoint<AddArticleImageRequest, Creat
 
         await Database.SaveChangesAsync(ct);
 
-        return Created(Request.GetResourceUrl(resourceId), null);
+        return new (Request.GetResourceUrl(resourceId));
     }
 }

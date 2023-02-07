@@ -6,7 +6,7 @@ import {
   ArticlesApi,
   CurrencyApi,
   CurrentUserApi,
-  JwtApi, LanguagesApi, ResourcesApi,
+  JwtApi, LanguagesApi, MyArticlesApi, ResourcesApi,
   UsersApi
 } from "./_api";
 
@@ -35,6 +35,7 @@ _api.interceptors.response.use(async (config) => {
 ;
 
   export const _articlesApi = new ArticlesApi(baseApiUrl, _api);
+  export const _myArticlesApi = new MyArticlesApi(baseApiUrl, _api);
   export const _localizationsApi = new ArticleLocalizationsApi(baseApiUrl, _api);
   export const _usersApi = new UsersApi(baseApiUrl, _api);
   export const _jwtApi = new JwtApi(baseApiUrl, _api);

@@ -6,6 +6,7 @@ import {useQueryClient} from "react-query";
 import ErrorBlock from "../../Layout/ErrorBlock";
 import ArticleShort from "../Shared/ArticleShort";
 import {QueryClientConstants} from "../../../constants/queryClientConstants";
+import { _myArticlesApi } from "../../../api";
 
 interface IArticlesThreadProps {
   articles: IExtendedArticle[],
@@ -18,7 +19,7 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles, byUser
   const queryClient = useQueryClient();
 
   const handleSaving = (localization: IExtendedArticle) => async () => {
-    await articlesApi.toggleSavingLocalization(localization.articleId, localization.languageCode);
+    await _myArticlesApi.toggleSave(localization.articleId, localization.languageCode);
     setArticles(articles.map((a) => a.localizationId === localization.localizationId
       ? {...a, isSaved: !a.isSaved} : a));
     await queryClient.invalidateQueries(QueryClientConstants.savedArticles);

@@ -10,6 +10,7 @@ import ArticleShort from '../Shared/ArticleShort';
 import cl from './SavedArticles.module.sass';
 import SavedArticlesSkeleton from './SavedArticlesSkeleton';
 import './transitions.css';
+import { _myArticlesApi } from "../../../api";
 
 const SavedArticles = () => {
   const { savedArticles, setSavedArticles } = useSavedArticlesContext();
@@ -24,7 +25,7 @@ const SavedArticles = () => {
   }
 
   async function removeFromSavedHandle(id: number, code: string) {
-    await articlesApi.toggleSavingLocalization(id, code);
+    await _myArticlesApi.toggleSave(id, code);
     const savedArticleIndex = savedArticles.data!.findIndex(
       (a) => a.articleId === id && a.languageCode === code
     );

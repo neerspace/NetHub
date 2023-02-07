@@ -15,7 +15,6 @@ import { jwtApi, userApi } from '../../api/api';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useAppStore } from '../../store/config';
-import { ProviderType } from '../../types/ProviderType';
 import { SsoRequest, SsoRequestSchema } from '../../types/schemas/Sso/SsoSchema';
 import { usernameDebounce } from '../../utils/debounceHelper';
 import LoginService from '../../utils/LoginService';
@@ -23,6 +22,8 @@ import TitleInput from '../UI/TitleInput/TitleInput';
 import FacebookAuthButton from './Buttons/FacebookAuthButton';
 import GoogleAuthButton from './Buttons/GoogleAuthButton';
 import TelegramAuthButton from './Buttons/TelegramAuthButton';
+import { _usersApi } from "../../api";
+import { ProviderType } from '../../api/_api';
 
 interface ISecondStep {
   isExpanded: boolean,
@@ -94,7 +95,7 @@ const Login = () => {
     const providerRequest = await LoginService.ProviderHandle(provider);
     setRequest(providerRequest);
 
-    const { isProviderRegistered } = await userApi.checkIfExists(providerRequest.providerKey, provider);
+    const { isProviderRegistered } = await _usersApi.checkIfExists(providerRequest.providerKey, provider);
 
     if (!isProviderRegistered) {
       if (!isExpanded) {
@@ -141,9 +142,9 @@ const Login = () => {
           </Text>
           <Box margin={'10px'} />
           <Box display={'flex'} gap={6} mt={'5px'}>
-            <GoogleAuthButton onClick={async () => await firstStep(ProviderType.GOOGLE)} />
-            <TelegramAuthButton onClick={async () => await firstStep(ProviderType.TELEGRAM)} />
-            <FacebookAuthButton onClick={async () => await firstStep(ProviderType.FACEBOOK)} />
+            <GoogleAuthButton onClick={async () => await firstStep(ProviderType.Google)} />
+            <TelegramAuthButton onClick={async () => await firstStep(ProviderType.Telegram)} />
+            <FacebookAuthButton onClick={async () => await firstStep(ProviderType.Facebook)} />
           </Box>
           <AccordionButton ref={accordionButtonRef} display={'none'} />
           <AccordionPanel paddingInlineStart={0} paddingInlineEnd={0}>

@@ -10,6 +10,9 @@ import {articlesApi} from "../../../api/api";
 import {useMutation} from 'react-query';
 import ArticleCreatingSpaceProvider, {useArticleCreatingContext} from "./ArticleCreatingSpace.Provider";
 import {CreateArticleFormSchema} from "../../../types/schemas/Article/CreateArticleFormSchema";
+import { _articlesApi, _localizationsApi } from "../../../api";
+import { ArticleCreateRequest, ArticleLocalizationCreateRequest } from "../../../api/_api";
+import { UkrainianLanguage } from "../../../utils/constants";
 
 type CreateArticleFormRef = React.ElementRef<typeof CreateArticleForm>
 
@@ -51,7 +54,9 @@ const ArticleCreatingSpace: Page = () => {
         .current?.getTinyRef()
         .current?.saveImages(article);
 
-      await articlesApi.createLocalization(articleId!, 'ua', article)
+      const request = ArticleLocalizationCreateRequest.fromJS(article);
+      await _localizationsApi.create(articleId!, UkrainianLanguage, request);
+
       ArticleStorage.clearArticleData();
       setArticle(defaultArticleState);
     } catch (e: any) {

@@ -8,6 +8,7 @@ import {useParams} from "react-router-dom";
 import IUpdateProfileRequest from "../../types/api/Profile/IUpdateProfileRequest";
 import {QueryClientConstants} from "../../constants/queryClientConstants";
 import {useAppStore} from "../../store/config";
+import { DashboardResult } from "../../api/_api";
 
 export type ProfileChangesType = 'profile' | 'photo' | 'username';
 
@@ -68,7 +69,7 @@ const ProfileSpaceProvider: FC<PropsWithChildren> = ({children}) => {
     },
     refetchIntervalInBackground: true
   })
-  const dashboardAccessor = useQuery<IDashboardResponse, ApiError>(['dashboard', username], () => getUserDashboard(username));
+  const dashboardAccessor = useQuery<DashboardResult, ApiError>(['dashboard', username], () => getUserDashboard(username));
   const [changes, setChanges] = useState<ProfileChangesType[]>([]);
 
   const handleAddChanges = (change: ProfileChangesType) => {

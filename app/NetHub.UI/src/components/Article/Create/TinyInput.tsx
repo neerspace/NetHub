@@ -1,11 +1,19 @@
-import React, {forwardRef, ForwardRefRenderFunction, useCallback, useImperativeHandle, useRef} from 'react';
-import {Editor} from '@tinymce/tinymce-react';
-import {Editor as TinyEditor} from 'tinymce';
+import React, {
+  forwardRef,
+  ForwardRefRenderFunction,
+  useCallback,
+  useImperativeHandle,
+  useRef
+} from 'react';
+import { Editor } from '@tinymce/tinymce-react';
+import { Editor as TinyEditor } from 'tinymce';
 import classes from './ArticleCreating.module.sass';
-import {articlesApi} from "../../../api/api";
-import {tinyConfig} from "../../../utils/constants";
+import { articlesApi } from "../../../api/api";
+import { tinyConfig } from "../../../utils/constants";
 import ILocalization from "../../../types/ILocalization";
-import {Box, FormControl, useColorModeValue} from "@chakra-ui/react";
+import { Box, FormControl, useColorModeValue } from "@chakra-ui/react";
+import { _articlesApi, _myArticlesApi } from "../../../api";
+import { ArticleCreateRequest, IArticleCreateRequest } from "../../../api/_api";
 
 interface ITinyInputProps {
   data: string;
@@ -24,7 +32,17 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
     const editorRef = useRef<TinyEditor | null>(null);
 
     const saveImageCallback = useCallback(async (article: ILocalization, id?: string) => {
-      if (!id) id = (await articlesApi.createArticle(article.title, article.tags, article.originalLink!)).id.toString();
+
+      if (!id) {
+        const request = ArticleCreateRequest.fromJS({
+          name: article.title,
+          tags: article.tags,
+          originalArticleLink: article.originalLink!
+        });
+
+        id = (await _articlesApi.create(request)).id.toString();
+      }
+
       sessionStorage.setItem('articleId', id!);
       await editorRef.current!.uploadImages();
       sessionStorage.removeItem('articleId');
@@ -45,9 +63,7 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
     const saveImages = async (blobInfo: any) => {
       const id = sessionStorage.getItem('articleId');
       if (!id) return;
-      const fd = new FormData();
-      fd.append('file', blobInfo.blob());
-      const {location} = await articlesApi.addImagesToArticle(id, fd);
+      const {location} = await _articlesApi.uploadImage(+id, {data: blobInfo.blob(), fileName: 'File'});
 
       return location;
     };

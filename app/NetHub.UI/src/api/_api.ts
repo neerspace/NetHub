@@ -397,22 +397,17 @@ export class ArticleLocalizationsApi {
     }
 
     /**
-     * @param languageCode (optional) 
      * @param filters (optional) 
      * @param sorts (optional) 
      * @param page (optional) 
      * @param pageSize (optional) 
      * @return Success
      */
-    search(languageCode: string | undefined, filters: string | undefined, sorts: string | undefined, page: number | undefined, pageSize: number | undefined, lang: string , cancelToken?: CancelToken | undefined): Promise<ViewLocalizationModel[]> {
-        let url_ = this.baseUrl + "/v1/articles/{lang}/search?";
-        if (lang === undefined || lang === null)
-            throw new Error("The parameter 'lang' must be defined.");
-        url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
-        if (languageCode === null)
-            throw new Error("The parameter 'languageCode' cannot be null.");
-        else if (languageCode !== undefined)
-            url_ += "LanguageCode=" + encodeURIComponent("" + languageCode) + "&";
+    search(languageCode: string, filters: string | undefined, sorts: string | undefined, page: number | undefined, pageSize: number | undefined , cancelToken?: CancelToken | undefined): Promise<ViewLocalizationModel[]> {
+        let url_ = this.baseUrl + "/v1/articles/{languageCode}/search?";
+        if (languageCode === undefined || languageCode === null)
+            throw new Error("The parameter 'languageCode' must be defined.");
+        url_ = url_.replace("{LanguageCode}", encodeURIComponent("" + languageCode));
         if (filters === null)
             throw new Error("The parameter 'filters' cannot be null.");
         else if (filters !== undefined)
@@ -985,7 +980,7 @@ export class ArticlesApi {
      * @param file (optional) 
      * @return Created
      */
-    uploadImage(id: number, file: FileParameter | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    uploadImage(id: number, file: FileParameter | undefined , cancelToken?: CancelToken | undefined): Promise<AddArticleImageResult> {
         let url_ = this.baseUrl + "/v1/articles/{id}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1003,6 +998,7 @@ export class ArticlesApi {
             method: "POST",
             url: url_,
             headers: {
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -1018,7 +1014,7 @@ export class ArticlesApi {
         });
     }
 
-    protected processUploadImage(response: AxiosResponse): Promise<void> {
+    protected processUploadImage(response: AxiosResponse): Promise<AddArticleImageResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1030,7 +1026,10 @@ export class ArticlesApi {
         }
         if (status === 201) {
             const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
+            let result201: any = null;
+            let resultData201  = _responseText;
+            result201 = AddArticleImageResult.fromJS(resultData201);
+            return Promise.resolve<AddArticleImageResult>(result201);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -1071,7 +1070,7 @@ export class ArticlesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<void>(null as any);
+        return Promise.resolve<AddArticleImageResult>(null as any);
     }
 }
 
@@ -1430,6 +1429,113 @@ export class CurrentUserApi {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<MeProfilePhotoUpdateResult>(null as any);
+    }
+
+    /**
+     * @param username (optional) 
+     * @param firstName (optional) 
+     * @param lastName (optional) 
+     * @param middleName (optional) 
+     * @param description (optional) 
+     * @return No Content
+     */
+    updateProfile(username: string | undefined, firstName: string | undefined, lastName: string | undefined, middleName: string | undefined, description: string | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/v1/me/profile?";
+        if (username === null)
+            throw new Error("The parameter 'username' cannot be null.");
+        else if (username !== undefined)
+            url_ += "Username=" + encodeURIComponent("" + username) + "&";
+        if (firstName === null)
+            throw new Error("The parameter 'firstName' cannot be null.");
+        else if (firstName !== undefined)
+            url_ += "FirstName=" + encodeURIComponent("" + firstName) + "&";
+        if (lastName === null)
+            throw new Error("The parameter 'lastName' cannot be null.");
+        else if (lastName !== undefined)
+            url_ += "LastName=" + encodeURIComponent("" + lastName) + "&";
+        if (middleName === null)
+            throw new Error("The parameter 'middleName' cannot be null.");
+        else if (middleName !== undefined)
+            url_ += "MiddleName=" + encodeURIComponent("" + middleName) + "&";
+        if (description === null)
+            throw new Error("The parameter 'description' cannot be null.");
+        else if (description !== undefined)
+            url_ += "Description=" + encodeURIComponent("" + description) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "PUT",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUpdateProfile(_response);
+        });
+    }
+
+    protected processUpdateProfile(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 204) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500  = _responseText;
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
     }
 }
 
@@ -1810,127 +1916,6 @@ export class LanguagesApi {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<LanguageModel[]>(null as any);
-    }
-}
-
-export class MeProfileUpdateEndpointApi {
-    private instance: AxiosInstance;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, instance?: AxiosInstance) {
-
-        this.instance = instance ? instance : axios.create();
-
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
-
-    }
-
-    /**
-     * @param username (optional) 
-     * @param firstName (optional) 
-     * @param lastName (optional) 
-     * @param middleName (optional) 
-     * @param description (optional) 
-     * @return No Content
-     */
-    updateProfile(username: string | undefined, firstName: string | undefined, lastName: string | undefined, middleName: string | undefined, description: string | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/v1/me/profile?";
-        if (username === null)
-            throw new Error("The parameter 'username' cannot be null.");
-        else if (username !== undefined)
-            url_ += "Username=" + encodeURIComponent("" + username) + "&";
-        if (firstName === null)
-            throw new Error("The parameter 'firstName' cannot be null.");
-        else if (firstName !== undefined)
-            url_ += "FirstName=" + encodeURIComponent("" + firstName) + "&";
-        if (lastName === null)
-            throw new Error("The parameter 'lastName' cannot be null.");
-        else if (lastName !== undefined)
-            url_ += "LastName=" + encodeURIComponent("" + lastName) + "&";
-        if (middleName === null)
-            throw new Error("The parameter 'middleName' cannot be null.");
-        else if (middleName !== undefined)
-            url_ += "MiddleName=" + encodeURIComponent("" + middleName) + "&";
-        if (description === null)
-            throw new Error("The parameter 'description' cannot be null.");
-        else if (description !== undefined)
-            url_ += "Description=" + encodeURIComponent("" + description) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "PUT",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processUpdateProfile(_response);
-        });
-    }
-
-    protected processUpdateProfile(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 204) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
-
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401  = _responseText;
-            result401 = ValidationError.fromJS(resultData401);
-            return throwException("Not Authorized", status, _responseText, _headers, result401);
-
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403  = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException("Permission Denied", status, _responseText, _headers, result403);
-
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException("Not Found", status, _responseText, _headers, result404);
-
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500  = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
     }
 }
 
@@ -2992,6 +2977,42 @@ export class UsersApi {
         }
         return Promise.resolve<PrivateUserResult[]>(null as any);
     }
+}
+
+export class AddArticleImageResult implements IAddArticleImageResult {
+    location!: string;
+
+    constructor(data?: IAddArticleImageResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.location = _data["location"] !== undefined ? _data["location"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AddArticleImageResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddArticleImageResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["location"] = this.location !== undefined ? this.location : <any>null;
+        return data;
+    }
+}
+
+export interface IAddArticleImageResult {
+    location: string;
 }
 
 export class ArticleContributorModel implements IArticleContributorModel {

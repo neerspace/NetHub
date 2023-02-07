@@ -1,17 +1,20 @@
-import {Badge, Box, Button, Skeleton, Text,} from '@chakra-ui/react';
-import React, {useCallback} from 'react';
-import {useQuery, useQueryClient} from 'react-query';
-import {useNavigate} from "react-router-dom";
-import {articlesApi} from '../../../../api/api';
-import {QueryClientConstants} from '../../../../constants/queryClientConstants';
-import {getArticleContributors, getAuthor,} from '../../../../pages/Articles/One/ArticleSpace.functions';
-import {useArticleContext} from '../../../../pages/Articles/One/ArticleSpace.Provider';
-import {DateToRelativeCalendar} from '../../../../utils/dateHelper';
+import { Badge, Box, Button, Skeleton, Text, } from '@chakra-ui/react';
+import React, { useCallback } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
+import { useNavigate } from "react-router-dom";
+import { QueryClientConstants } from '../../../../constants/queryClientConstants';
+import {
+  getArticleContributors,
+  getAuthor,
+} from '../../../../pages/Articles/One/ArticleSpace.functions';
+import { useArticleContext } from '../../../../pages/Articles/One/ArticleSpace.Provider';
 import Actions from '../../../UI/Action/Actions';
 import FilledDiv from '../../../UI/FilledDiv';
 import ArticleSavingActions from '../../Shared/ArticleSavingActions';
-import ArticlesRateCounter, {RateVariants,} from '../../Shared/ArticlesRateCounter';
+import ArticlesRateCounter, { RateVariants, } from '../../Shared/ArticlesRateCounter';
 import cl from './ArticleBody.module.sass';
+import { _myArticlesApi } from "../../../../api";
+import { ArticleLocalizationModel, ArticleModelExtended } from "../../../../api/_api";
 
 const ArticleBody = () => {
   const { articleAccessor, setArticle, localizationAccessor, setLocalization } =
@@ -21,15 +24,14 @@ const ArticleBody = () => {
   const queryClient = useQueryClient();
 
   async function handleSave() {
-    await articlesApi.toggleSavingLocalization(
+    await _myArticlesApi.toggleSave(
       localizationAccessor.data!.articleId,
-      localizationAccessor.data!.languageCode
-    );
+      localizationAccessor.data!.languageCode)
   }
 
   function handleUpdateCounter(rate: number, vote?: RateVariants) {
-    setArticle({ ...article, rate });
-    setLocalization({ ...localization, vote, rate });
+    setArticle(ArticleModelExtended.fromJS({ ...article, rate }));
+    setLocalization(ArticleLocalizationModel.fromJS({ ...localization, vote, rate }));
   }
 
   async function afterCounter() {
@@ -52,11 +54,11 @@ const ArticleBody = () => {
   const getDate = useCallback(() => {
     switch (localization.status) {
       case ('Draft' || 'Pending'):
-        return `Створено: ${DateToRelativeCalendar(localization.created)}`;
+        return `Створено: ${localization.created.toRelativeCalendar()}`;
       case 'Published':
-        return `Опубліковано: ${DateToRelativeCalendar(localization.published!)}`;
+        return `Опубліковано: ${localization.published!.toRelativeCalendar()}`;
       case 'Banned':
-        return `Забанено: ${DateToRelativeCalendar(localization.banned!)}`;
+        return `Забанено: ${localization.banned!.toRelativeCalendar()}`;
     }
   }, [localization]);
 
@@ -147,7 +149,7 @@ const ArticleBody = () => {
           <div className={cl.created}>{getDate()}</div>
           {localization.updated ? (
             <div className={cl.updated}>
-              Оновлено: {DateToRelativeCalendar(localization.updated)}
+              Оновлено: {localization.updated.toRelativeCalendar()}
             </div>
           ) : null}
         </div>
