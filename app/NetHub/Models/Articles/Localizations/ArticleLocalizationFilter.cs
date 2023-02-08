@@ -4,7 +4,7 @@ using NetHub.Shared.Models;
 
 namespace NetHub.Models.Articles.Localizations;
 
-public sealed record ArticleLocalizationFilter([FromRoute] string LanguageCode) : FilterRequest;
+public sealed record ArticleLocalizationFilter([FromRoute(Name = "lang")] string lang) : FilterRequest;
 
 internal sealed class ArticleLocalizationFilterValidator : AbstractValidator<ArticleLocalizationFilter>
 {

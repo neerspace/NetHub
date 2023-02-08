@@ -4,14 +4,15 @@ import { ApiError } from "../../types/ApiError";
 import { QueryClientConstants } from "../../constants/queryClientConstants";
 import { _myArticlesApi } from "../../api";
 import { ViewLocalizationModel } from "../../api/_api";
+import { IAbstractLocalization } from "../../types/api/IAbstractLocalization";
 
 type ContextType = {
-  savedArticles: UseQueryResult<ViewLocalizationModel[], ApiError>,
-  setSavedArticles: (articles: ViewLocalizationModel[]) => void
+  savedArticles: UseQueryResult<IAbstractLocalization[], ApiError>,
+  setSavedArticles: (articles: IAbstractLocalization[]) => void
 }
 
 const InitialContextValue: ContextType = {
-  savedArticles: {} as UseQueryResult<ViewLocalizationModel[], ApiError>,
+  savedArticles: {} as UseQueryResult<IAbstractLocalization[], ApiError>,
   setSavedArticles: () => {
   }
 }
@@ -22,9 +23,9 @@ export const useSavedArticlesContext = (): ContextType => useContext<ContextType
 
 const SavedSpaceProvider: FC<PropsWithChildren> = ({children}) => {
   const queryClient = useQueryClient();
-  const savedArticles = useQuery<ViewLocalizationModel[], ApiError>(QueryClientConstants.savedArticles, () => _myArticlesApi.savedArticles());
+  const savedArticles = useQuery<IAbstractLocalization[], ApiError>(QueryClientConstants.savedArticles, () => _myArticlesApi.savedArticles());
 
-  const setSavedArticles = (articles: ViewLocalizationModel[]) => queryClient.setQueryData(QueryClientConstants.savedArticles, articles);
+  const setSavedArticles = (articles: IAbstractLocalization[]) => queryClient.setQueryData(QueryClientConstants.savedArticles, articles);
 
   const value: ContextType = useMemo(() => {
     return {

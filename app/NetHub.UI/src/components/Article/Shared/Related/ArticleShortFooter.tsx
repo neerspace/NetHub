@@ -4,10 +4,11 @@ import ArticlesRateCounter from "../ArticlesRateCounter";
 import ArticleSavingActions from "../ArticleSavingActions";
 import { Box, Text } from "@chakra-ui/react";
 import Actions from "../../../UI/Action/Actions";
-import { IArticleLocalizationModel, Vote } from "../../../../api/_api";
+import { Vote } from "../../../../api/_api";
+import { IAbstractLocalization } from "../../../../types/api/IAbstractLocalization";
 
 interface IArticleShortFooterProps {
-  localization: IArticleLocalizationModel,
+  localization: IAbstractLocalization,
   save: { actual: boolean, handle: () => Promise<void> },
 
   updateCounter: (rate: number, vote: Vote | null) => void,

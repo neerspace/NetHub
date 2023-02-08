@@ -6,11 +6,12 @@ import FilledDiv from '../../UI/FilledDiv';
 import cl from './ArticleShort.module.sass';
 import ArticleShortFooter from './Related/ArticleShortFooter';
 import ArticleShortHeader from './Related/ArticleShortHeader';
-import { IArticleLocalizationModel, Vote } from "../../../api/_api";
+import { Vote } from "../../../api/_api";
+import { IAbstractLocalization } from "../../../types/api/IAbstractLocalization";
 
 interface IArticleItemProps {
-  localization: IArticleLocalizationModel;
-  setLocalization: (localization: IArticleLocalizationModel) => void;
+  localization: IAbstractLocalization;
+  setLocalization: (localization: IAbstractLocalization) => void;
   save: { actual: boolean; handle: () => Promise<void> };
   time?: { before?: string; show?: 'default' | 'saved' };
   afterCounterRequest: () => Promise<void>;

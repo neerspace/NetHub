@@ -1,10 +1,10 @@
 import React, { FC, useCallback } from 'react';
 import cl from "../ArticleShort.module.sass";
 import { Text, useColorModeValue } from "@chakra-ui/react";
-import { IArticleLocalizationModel } from "../../../../api/_api";
+import { IAbstractLocalization } from "../../../../types/api/IAbstractLocalization";
 
 interface IArticleShortHeaderProps {
-  localization: IArticleLocalizationModel,
+  localization: IAbstractLocalization,
   time?: { before?: string, show?: 'default' | 'saved' }
 }
 
@@ -18,7 +18,7 @@ const ArticleShortHeader: FC<IArticleShortHeaderProps> = ({localization, time}) 
 
     switch (localization.status) {
       case 'Published':
-        return localization.published!.toRelativeCalendar();
+        return localization.published?.toRelativeCalendar();
       case 'Banned':
         return localization.banned!.toRelativeCalendar();
       case 'Draft' || 'Pending':

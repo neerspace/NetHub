@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { useQueryClient } from 'react-query';
-import { userApi } from '../../api/api';
 import { QueryClientConstants } from '../../constants/queryClientConstants';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useDebounce } from '../../hooks/useDebounce';
@@ -10,7 +9,8 @@ import { usernameDebounce } from '../../utils/debounceHelper';
 import { JWTStorage } from '../../utils/localStorageProvider';
 import { ExtendedRequest, useProfileContext } from './ProfileSpace.Provider';
 import { _currentUserApi, _jwtApi, _usersApi } from "../../api";
-import { FileParameter } from "../../api/_api";
+import { FileParameter, MeProfileUpdateRequest, UserResult } from "../../api/_api";
+import { FilterInfo } from "../../types/api/IFilterInfo";
 
 export async function getUserDashboard(username?: string) {
   return username ?
@@ -52,7 +52,7 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
   } = useProfileContext();
   const queryClient = useQueryClient();
   const {updateProfile: updateProfileAction, user: reduxUser} = useAppStore();
-  const oldUserInfo = userAccessor.data!;
+  const oldUserInfo = userAccessor.data! as UserResult;
 
   const handleUpdateUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newUsername = event.target.value.toLowerCase();
@@ -119,23 +119,38 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
         for (const change of changes) {
           switch (change) {
             case 'profile':
-              //TODO: Fix
-              await _currentUserApi.updateProfile(...changeRequest);
+              await _currentUserApi.updateProfile(new MeProfileUpdateRequest(
+                {
+                  username: null,
+                  firstName: changeRequest.firstName,
+                  lastName: changeRequest.lastName,
+                  middleName: changeRequest.middleName ?? null,
+                  description: changeRequest.description ?? null
+                })
+              );
               break;
             case 'photo':
               if (typeof (changeRequest.image) === 'string') {
-                newProfileImage = (await _currentUserApi.updateProfilePhoto(changeRequest.image)).link;
+                newProfileImage = (await _currentUserApi.updateProfilePhoto(changeRequest.image, undefined)).link;
               } else {
                 const request: FileParameter = {
                   data: changeRequest.image,
                   fileName: `${oldUserInfo.userName}-ProfilePhoto`
                 }
 
-                newProfileImage = (await _currentUserApi.updateProfilePhoto(request)).link;
+                newProfileImage = (await _currentUserApi.updateProfilePhoto(undefined, request)).link;
               }
               break;
             case 'username':
-              await _currentUserApi.updateProfile(changeRequest.username);
+              await _currentUserApi.updateProfile(new MeProfileUpdateRequest(
+                {
+                  username: changeRequest.username,
+                  firstName: null,
+                  lastName: null,
+                  middleName: null,
+                  description: null
+                }
+              ));
               break;
           }
         }

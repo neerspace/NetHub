@@ -56,7 +56,7 @@ const ArticleBody = () => {
       case ('Draft' || 'Pending'):
         return `Створено: ${localization.created.toRelativeCalendar()}`;
       case 'Published':
-        return `Опубліковано: ${localization.published!.toRelativeCalendar()}`;
+        return `Опубліковано: ${localization.published?.toRelativeCalendar()}`;
       case 'Banned':
         return `Забанено: ${localization.banned!.toRelativeCalendar()}`;
     }

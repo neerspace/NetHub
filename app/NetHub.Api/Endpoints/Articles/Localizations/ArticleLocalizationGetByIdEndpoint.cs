@@ -16,10 +16,10 @@ namespace NetHub.Api.Endpoints.Articles.Localizations;
 
 [Tags(TagNames.ArticleLocalizations)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleLocalizationGetByIdEndpoint : Endpoint<ArticleLocalizationQuery, ArticleLocalizationModel>
+public sealed class ArticleLocalizationGetByIdEndpoint : Endpoint<ArticleLocalizationQuery, ViewLocalizationModel>
 {
     [HttpGet("articles/{id:long}/{lang:alpha:length(2)}"), ClientSide(ActionName = "getByIdAndCode")]
-    public override async Task<ArticleLocalizationModel> HandleAsync(ArticleLocalizationQuery request, CancellationToken ct)
+    public override async Task<ViewLocalizationModel> HandleAsync(ArticleLocalizationQuery request, CancellationToken ct)
     {
         var userId = UserProvider.TryGetUserId();
 
@@ -34,7 +34,7 @@ public sealed class ArticleLocalizationGetByIdEndpoint : Endpoint<ArticleLocaliz
 
         GuardPermissions(entity, userId);
 
-        var localization = entity.Adapt<ArticleLocalizationModel>();
+        var localization = entity.Adapt<ViewLocalizationModel>();
 
         if (userId is not null)
         {

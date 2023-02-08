@@ -130,7 +130,7 @@ export class ArticleLocalizationsApi {
         let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         if (lang === undefined || lang === null)
             throw new Error("The parameter 'lang' must be defined.");
         url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
@@ -214,11 +214,11 @@ export class ArticleLocalizationsApi {
     /**
      * @return Success
      */
-    getByIdAndCode(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel> {
+    getByIdAndCode(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<ViewLocalizationModel> {
         let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         if (lang === undefined || lang === null)
             throw new Error("The parameter 'lang' must be defined.");
         url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
@@ -244,7 +244,7 @@ export class ArticleLocalizationsApi {
         });
     }
 
-    protected processGetByIdAndCode(response: AxiosResponse): Promise<ArticleLocalizationModel> {
+    protected processGetByIdAndCode(response: AxiosResponse): Promise<ViewLocalizationModel> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -258,8 +258,8 @@ export class ArticleLocalizationsApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = ArticleLocalizationModel.fromJS(resultData200);
-            return Promise.resolve<ArticleLocalizationModel>(result200);
+            result200 = ViewLocalizationModel.fromJS(resultData200);
+            return Promise.resolve<ViewLocalizationModel>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -300,7 +300,7 @@ export class ArticleLocalizationsApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ArticleLocalizationModel>(null as any);
+        return Promise.resolve<ViewLocalizationModel>(null as any);
     }
 
     /**
@@ -403,11 +403,11 @@ export class ArticleLocalizationsApi {
      * @param pageSize (optional) 
      * @return Success
      */
-    search(languageCode: string, filters: string | undefined, sorts: string | undefined, page: number | undefined, pageSize: number | undefined , cancelToken?: CancelToken | undefined): Promise<ViewLocalizationModel[]> {
-        let url_ = this.baseUrl + "/v1/articles/{languageCode}/search?";
-        if (languageCode === undefined || languageCode === null)
-            throw new Error("The parameter 'languageCode' must be defined.");
-        url_ = url_.replace("{LanguageCode}", encodeURIComponent("" + languageCode));
+    search(lang: string, filters: string | undefined, sorts: string | undefined, page: number | undefined, pageSize: number | undefined , cancelToken?: CancelToken | undefined): Promise<ViewLocalizationModel[]> {
+        let url_ = this.baseUrl + "/v1/articles/{lang}/search?";
+        if (lang === undefined || lang === null)
+            throw new Error("The parameter 'lang' must be defined.");
+        url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
         if (filters === null)
             throw new Error("The parameter 'filters' cannot be null.");
         else if (filters !== undefined)
@@ -1432,41 +1432,21 @@ export class CurrentUserApi {
     }
 
     /**
-     * @param username (optional) 
-     * @param firstName (optional) 
-     * @param lastName (optional) 
-     * @param middleName (optional) 
-     * @param description (optional) 
+     * @param body (optional) 
      * @return No Content
      */
-    updateProfile(username: string | undefined, firstName: string | undefined, lastName: string | undefined, middleName: string | undefined, description: string | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/v1/me/profile?";
-        if (username === null)
-            throw new Error("The parameter 'username' cannot be null.");
-        else if (username !== undefined)
-            url_ += "Username=" + encodeURIComponent("" + username) + "&";
-        if (firstName === null)
-            throw new Error("The parameter 'firstName' cannot be null.");
-        else if (firstName !== undefined)
-            url_ += "FirstName=" + encodeURIComponent("" + firstName) + "&";
-        if (lastName === null)
-            throw new Error("The parameter 'lastName' cannot be null.");
-        else if (lastName !== undefined)
-            url_ += "LastName=" + encodeURIComponent("" + lastName) + "&";
-        if (middleName === null)
-            throw new Error("The parameter 'middleName' cannot be null.");
-        else if (middleName !== undefined)
-            url_ += "MiddleName=" + encodeURIComponent("" + middleName) + "&";
-        if (description === null)
-            throw new Error("The parameter 'description' cannot be null.");
-        else if (description !== undefined)
-            url_ += "Description=" + encodeURIComponent("" + description) + "&";
+    updateProfile(body: MeProfileUpdateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/v1/me/profile";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: AxiosRequestConfig = {
+            data: content_,
             method: "PUT",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
             },
             cancelToken
         };
@@ -1939,7 +1919,7 @@ export class MyArticlesApi {
         let url_ = this.baseUrl + "/v1/me/saved-articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         if (lang === undefined || lang === null)
             throw new Error("The parameter 'lang' must be defined.");
         url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
@@ -2031,7 +2011,7 @@ export class MyArticlesApi {
         let url_ = this.baseUrl + "/v1/me/saved-articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         if (lang === undefined || lang === null)
             throw new Error("The parameter 'lang' must be defined.");
         url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
@@ -4254,6 +4234,58 @@ export interface IMeProfilePhotoUpdateResult {
     link: string;
 }
 
+export class MeProfileUpdateRequest implements IMeProfileUpdateRequest {
+    username!: string | null;
+    firstName!: string | null;
+    lastName!: string | null;
+    middleName!: string | null;
+    description!: string | null;
+
+    constructor(data?: IMeProfileUpdateRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.username = _data["username"] !== undefined ? _data["username"] : <any>null;
+            this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
+            this.lastName = _data["lastName"] !== undefined ? _data["lastName"] : <any>null;
+            this.middleName = _data["middleName"] !== undefined ? _data["middleName"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): MeProfileUpdateRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new MeProfileUpdateRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["username"] = this.username !== undefined ? this.username : <any>null;
+        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
+        data["lastName"] = this.lastName !== undefined ? this.lastName : <any>null;
+        data["middleName"] = this.middleName !== undefined ? this.middleName : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        return data;
+    }
+}
+
+export interface IMeProfileUpdateRequest {
+    username: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    middleName: string | null;
+    description: string | null;
+}
+
 export class OneCryptoDto implements IOneCryptoDto {
     usd!: number;
     usd24Change!: number;
@@ -4622,24 +4654,24 @@ export interface IValidationError {
 
 export class ViewLocalizationModel implements IViewLocalizationModel {
     userId!: number | null;
-    isSaved!: boolean | null;
-    savedDate!: DateTime | null;
-    vote!: Vote | null;
+    id!: number;
+    articleId!: number;
+    languageCode!: string;
+    contributorRole!: ArticleContributorRole;
+    contributorId!: number;
     title!: string;
     description!: string;
     html!: string;
+    status!: ContentStatus;
+    views!: number;
+    rate!: number;
     created!: DateTime;
     updated!: DateTime | null;
     published!: DateTime | null;
     banned!: DateTime | null;
-    views!: number;
-    articleId!: number;
-    languageCode!: string;
-    status!: ContentStatus;
-    localizationId!: number;
-    contributorId!: number;
-    contributorRole!: ArticleContributorRole;
-    rate!: number;
+    isSaved!: boolean | null;
+    savedDate!: DateTime | null;
+    vote!: Vote | null;
 
     constructor(data?: IViewLocalizationModel) {
         if (data) {
@@ -4653,24 +4685,24 @@ export class ViewLocalizationModel implements IViewLocalizationModel {
     init(_data?: any) {
         if (_data) {
             this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
-            this.isSaved = _data["isSaved"] !== undefined ? _data["isSaved"] : <any>null;
-            this.savedDate = _data["savedDate"] ? DateTime.fromISO(_data["savedDate"].toString()) : <any>null;
-            this.vote = _data["vote"] !== undefined ? _data["vote"] : <any>null;
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.articleId = _data["articleId"] !== undefined ? _data["articleId"] : <any>null;
+            this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
+            this.contributorRole = _data["contributorRole"] !== undefined ? _data["contributorRole"] : <any>null;
+            this.contributorId = _data["contributorId"] !== undefined ? _data["contributorId"] : <any>null;
             this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
             this.html = _data["html"] !== undefined ? _data["html"] : <any>null;
+            this.status = _data["status"] !== undefined ? _data["status"] : <any>null;
+            this.views = _data["views"] !== undefined ? _data["views"] : <any>null;
+            this.rate = _data["rate"] !== undefined ? _data["rate"] : <any>null;
             this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>null;
             this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>null;
             this.published = _data["published"] ? DateTime.fromISO(_data["published"].toString()) : <any>null;
             this.banned = _data["banned"] ? DateTime.fromISO(_data["banned"].toString()) : <any>null;
-            this.views = _data["views"] !== undefined ? _data["views"] : <any>null;
-            this.articleId = _data["articleId"] !== undefined ? _data["articleId"] : <any>null;
-            this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
-            this.status = _data["status"] !== undefined ? _data["status"] : <any>null;
-            this.localizationId = _data["localizationId"] !== undefined ? _data["localizationId"] : <any>null;
-            this.contributorId = _data["contributorId"] !== undefined ? _data["contributorId"] : <any>null;
-            this.contributorRole = _data["contributorRole"] !== undefined ? _data["contributorRole"] : <any>null;
-            this.rate = _data["rate"] !== undefined ? _data["rate"] : <any>null;
+            this.isSaved = _data["isSaved"] !== undefined ? _data["isSaved"] : <any>null;
+            this.savedDate = _data["savedDate"] ? DateTime.fromISO(_data["savedDate"].toString()) : <any>null;
+            this.vote = _data["vote"] !== undefined ? _data["vote"] : <any>null;
         }
     }
 
@@ -4684,48 +4716,48 @@ export class ViewLocalizationModel implements IViewLocalizationModel {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["userId"] = this.userId !== undefined ? this.userId : <any>null;
-        data["isSaved"] = this.isSaved !== undefined ? this.isSaved : <any>null;
-        data["savedDate"] = this.savedDate ? this.savedDate.toString() : <any>null;
-        data["vote"] = this.vote !== undefined ? this.vote : <any>null;
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["articleId"] = this.articleId !== undefined ? this.articleId : <any>null;
+        data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
+        data["contributorRole"] = this.contributorRole !== undefined ? this.contributorRole : <any>null;
+        data["contributorId"] = this.contributorId !== undefined ? this.contributorId : <any>null;
         data["title"] = this.title !== undefined ? this.title : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
         data["html"] = this.html !== undefined ? this.html : <any>null;
+        data["status"] = this.status !== undefined ? this.status : <any>null;
+        data["views"] = this.views !== undefined ? this.views : <any>null;
+        data["rate"] = this.rate !== undefined ? this.rate : <any>null;
         data["created"] = this.created ? this.created.toString() : <any>null;
         data["updated"] = this.updated ? this.updated.toString() : <any>null;
         data["published"] = this.published ? this.published.toString() : <any>null;
         data["banned"] = this.banned ? this.banned.toString() : <any>null;
-        data["views"] = this.views !== undefined ? this.views : <any>null;
-        data["articleId"] = this.articleId !== undefined ? this.articleId : <any>null;
-        data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
-        data["status"] = this.status !== undefined ? this.status : <any>null;
-        data["localizationId"] = this.localizationId !== undefined ? this.localizationId : <any>null;
-        data["contributorId"] = this.contributorId !== undefined ? this.contributorId : <any>null;
-        data["contributorRole"] = this.contributorRole !== undefined ? this.contributorRole : <any>null;
-        data["rate"] = this.rate !== undefined ? this.rate : <any>null;
+        data["isSaved"] = this.isSaved !== undefined ? this.isSaved : <any>null;
+        data["savedDate"] = this.savedDate ? this.savedDate.toString() : <any>null;
+        data["vote"] = this.vote !== undefined ? this.vote : <any>null;
         return data;
     }
 }
 
 export interface IViewLocalizationModel {
     userId: number | null;
-    isSaved: boolean | null;
-    savedDate: DateTime | null;
-    vote: Vote | null;
+    id: number;
+    articleId: number;
+    languageCode: string;
+    contributorRole: ArticleContributorRole;
+    contributorId: number;
     title: string;
     description: string;
     html: string;
+    status: ContentStatus;
+    views: number;
+    rate: number;
     created: DateTime;
     updated: DateTime | null;
     published: DateTime | null;
     banned: DateTime | null;
-    views: number;
-    articleId: number;
-    languageCode: string;
-    status: ContentStatus;
-    localizationId: number;
-    contributorId: number;
-    contributorRole: ArticleContributorRole;
-    rate: number;
+    isSaved: boolean | null;
+    savedDate: DateTime | null;
+    vote: Vote | null;
 }
 
 export enum Vote {

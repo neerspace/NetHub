@@ -2,19 +2,19 @@ import React, { FC, PropsWithChildren, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { UkrainianLanguage } from "../../../utils/constants";
 import { useQuery, useQueryClient, UseQueryResult } from "react-query";
-import IExtendedArticle from "../../../types/IExtendedArticle";
 import { ApiError } from "../../../types/ApiError";
 import { _localizationsApi, _usersApi } from "../../../api";
 import { PrivateUserResult, ViewLocalizationModel } from "../../../api/_api";
 import { QueryClientConstants } from "../../../constants/queryClientConstants";
+import { ILocalizationExtended } from "../../../types/api/ILocalizationExtended";
 
 type ContextType = {
   languages: { title: string, value: string }[],
   articlesLanguage: string,
   setArticlesLanguage: (language: string) => void,
   contributorAccessor: UseQueryResult<PrivateUserResult, ApiError>,
-  contributorArticlesAccessor: UseQueryResult<IExtendedArticle[], ApiError>,
-  setContributorArticles: (articles: IExtendedArticle[]) => void
+  contributorArticlesAccessor: UseQueryResult<ILocalizationExtended[], ApiError>,
+  setContributorArticles: (articles: ILocalizationExtended[]) => void
 }
 
 const InitialContextValue: ContextType = {
@@ -23,7 +23,7 @@ const InitialContextValue: ContextType = {
   setArticlesLanguage: () => {
   },
   contributorAccessor: {} as UseQueryResult<PrivateUserResult, ApiError>,
-  contributorArticlesAccessor: {} as UseQueryResult<IExtendedArticle[], ApiError>,
+  contributorArticlesAccessor: {} as UseQueryResult<ILocalizationExtended[], ApiError>,
   setContributorArticles: () => {
   }
 };
@@ -40,7 +40,8 @@ const ContributorArticlesSpaceProvider: FC<PropsWithChildren> = ({children}) => 
 
   const contributorAccessor = useQuery<PrivateUserResult, ApiError>([QueryClientConstants.contributor, contributorId],
     async () => (await _usersApi.usersInfo([contributorId!]))[0]);
-  const contributorArticlesAccessor = useQuery<ViewLocalizationModel[], ApiError>([QueryClientConstants.contributor, QueryClientConstants.articles, contributorId, articlesLanguage],
+  const contributorArticlesAccessor = useQuery<ViewLocalizationModel[], ApiError>
+  ([QueryClientConstants.contributor, QueryClientConstants.articles, contributorId, articlesLanguage],
     () => _localizationsApi.search(articlesLanguage, "contributorId==" + contributorId), {enabled: !!contributorAccessor.data});
   // articlesApi.getUserArticles(, articlesLanguage), )
   const handleSetArticlesLanguage = (value: string) => {
@@ -48,7 +49,7 @@ const ContributorArticlesSpaceProvider: FC<PropsWithChildren> = ({children}) => 
     setArticlesLanguage(value);
   }
 
-  const handleSetArticles = (newArticles: IExtendedArticle[]) => {
+  const handleSetArticles = (newArticles: ILocalizationExtended[]) => {
     queryClient.setQueryData(['contributor', 'articles', contributorId, articlesLanguage], newArticles);
   }
 

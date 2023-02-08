@@ -8,8 +8,6 @@ import cl from './ArticleRateCounter.module.sass';
 import { _myArticlesApi } from "../../../api";
 import { Vote } from "../../../api/_api";
 
-export type RateVariants = 'Up' | 'Down';
-
 interface IArticleRateCounterProps {
   vote: Vote | null;
   rate: number;

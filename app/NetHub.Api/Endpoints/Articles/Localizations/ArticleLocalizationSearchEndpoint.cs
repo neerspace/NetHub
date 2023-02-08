@@ -17,7 +17,7 @@ public sealed class ArticleLocalizationSearchEndpoint : Endpoint<ArticleLocaliza
     private readonly IFilterService _filterService;
     public ArticleLocalizationSearchEndpoint(IFilterService filterService) => _filterService = filterService;
 
-    [HttpGet("articles/{languageCode:alpha:length(2)}/search")]
+    [HttpGet("articles/{lang:alpha:length(2)}/search")]
     public override async Task<ViewLocalizationModel[]> HandleAsync(ArticleLocalizationFilter request, CancellationToken ct)
     {
         var userId = UserProvider.TryGetUserId();

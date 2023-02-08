@@ -1,17 +1,18 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef } from 'react';
 import ArticleSettings from '../../../components/Article/Create/ArticleSettings';
-import Layout, {Page} from "../../../components/Layout/Layout";
+import Layout, { Page } from "../../../components/Layout/Layout";
 import CreateArticleForm from "../../../components/Article/Create/CreateArticleForm";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
-import {ArticleStorage} from "../../../utils/localStorageProvider";
-import {useNavigate} from "react-router-dom";
-import {articlesApi} from "../../../api/api";
-import {useMutation} from 'react-query';
-import ArticleCreatingSpaceProvider, {useArticleCreatingContext} from "./ArticleCreatingSpace.Provider";
-import {CreateArticleFormSchema} from "../../../types/schemas/Article/CreateArticleFormSchema";
-import { _articlesApi, _localizationsApi } from "../../../api";
-import { ArticleCreateRequest, ArticleLocalizationCreateRequest } from "../../../api/_api";
+import { ArticleStorage } from "../../../utils/localStorageProvider";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from 'react-query';
+import ArticleCreatingSpaceProvider, {
+  useArticleCreatingContext
+} from "./ArticleCreatingSpace.Provider";
+import { CreateArticleFormSchema } from "../../../types/schemas/Article/CreateArticleFormSchema";
+import { _localizationsApi } from "../../../api";
+import { ArticleLocalizationCreateRequest } from "../../../api/_api";
 import { UkrainianLanguage } from "../../../utils/constants";
 
 type CreateArticleFormRef = React.ElementRef<typeof CreateArticleForm>

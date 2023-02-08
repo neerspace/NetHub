@@ -27,6 +27,6 @@ public sealed class SavedArticleListEndpoint : ResultEndpoint<ViewLocalizationMo
             .ProjectToType<ViewLocalizationModel>()
             .ToArrayAsync(ct);
 
-        return saved.DistinctBy(s => s.LocalizationId).ToArray();
+        return saved.DistinctBy(s => s.Id).ToArray();
     }
 }
