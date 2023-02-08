@@ -14,7 +14,7 @@
 </app-main-header>
 
 <app-main-content>
-  <form app-form-layout [formGroup]="usersService.form" [ready]="ready">
+  <form app-form-layout [formGroup]="usersService.form" [ready]="ready" [disableBrowserSecurity]="true">
 
     <app-number-field *ngIf="!isCreating" label="ID" controlName="id"
                       disabled="true" [allowCopy]="true">

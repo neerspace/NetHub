@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NetHub.Admin.Models.Roles;
-using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Swagger;
 using NetHub.Data.SqlServer.Entities.Identity;

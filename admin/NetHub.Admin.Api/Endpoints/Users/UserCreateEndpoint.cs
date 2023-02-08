@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
 using NetHub.Admin.Models.Users;
-using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;

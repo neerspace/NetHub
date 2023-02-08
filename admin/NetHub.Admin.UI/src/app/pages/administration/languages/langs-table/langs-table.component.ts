@@ -15,8 +15,8 @@ import { LanguageService } from '../language.service';
 export class LangsTableComponent {
   columns: ColumnInfo[] = languageColumns;
   buttons: ITableAction<LanguageModel>[] = [
-    { button: editButton, onClick: this.showForm.bind(this) },
-    { button: deleteButton, onClick: this.fetchDelete.bind(this) },
+    { button: editButton(), onClick: this.showForm.bind(this) },
+    { button: deleteButton(), onClick: this.fetchDelete.bind(this) },
   ];
 
   constructor(private downloadService: DownloadService, public languagesService: LanguageService) {}

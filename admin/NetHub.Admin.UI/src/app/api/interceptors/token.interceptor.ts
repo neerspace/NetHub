@@ -8,7 +8,7 @@ import {
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Observable, throwError } from 'rxjs';
+import { Observable, tap, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { SecuredStorage } from '../../services/storage';
@@ -40,7 +40,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
     if (this.isSecureUrl(request.url)) {
       console.log('secured case');
-      return this.tokenService.handleRequest(request, next);
+      return this.tokenService.handleRequest(request, next).pipe(tap(_ => this.loader.hide()));
     }
 
     console.log('alt case');
@@ -52,26 +52,27 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private invokeRequest(next: HttpHandler, request: HttpRequest<any>): Observable<HttpEvent<any>> {
-    return next.handle(request).pipe(
-      catchError(error => {
-        if (error instanceof HttpErrorResponse) {
-          if (request.url.endsWith('/jwt/refresh')) {
-            this.securedStorage.jwtPayload = null;
-            this.loader.hide();
-            this.router.navigateByUrl('/login', { state: { redirect: this.route.url } });
-          } else if (error.status === 403) {
-            this.loader.hide();
-            this.router.navigateByUrl('/error/403', { skipLocationChange: true });
-          } else if (error.status === 401) {
-            const observer = this.tokenService.handleRequest(request, next);
-            if (observer) {
-              return observer;
+    return next
+      .handle(request)
+      .pipe(tap(_ => this.loader.hide()))
+      .pipe(
+        catchError(error => {
+          if (error instanceof HttpErrorResponse) {
+            if (request.url.endsWith('/jwt/refresh')) {
+              this.securedStorage.jwtPayload = null;
+              this.router.navigateByUrl('/login', { state: { redirect: this.route.url } });
+            } else if (error.status === 403) {
+              this.router.navigateByUrl('/error/403', { skipLocationChange: true });
+            } else if (error.status === 401) {
+              const observer = this.tokenService.handleRequest(request, next);
+              if (observer) {
+                return observer;
+              }
             }
           }
-        }
 
-        return throwError(error);
-      }),
-    );
+          return throwError(error);
+        }),
+      );
   }
 }

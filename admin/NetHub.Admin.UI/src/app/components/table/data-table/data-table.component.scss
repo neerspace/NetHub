@@ -68,6 +68,11 @@ tr {
   text-align: center;
   vertical-align: middle;
   width: 5rem;
+  white-space: nowrap;
+
+  button:not(:first-child) {
+    margin-left: .25rem;
+  }
 
   button {
     border: none;
@@ -78,9 +83,10 @@ tr {
     white-space: nowrap;
 
     .text {
+      vertical-align: text-bottom;
       font-size: .9rem;
       margin-right: .5rem;
-      padding: .15rem .3rem;
+      padding: .15rem .3rem 0;
     }
 
     &.edit:hover, &.success:hover {
@@ -124,6 +130,6 @@ tr {
   }
 }
 
-.details-button{
-    background-color: var(--c-bg-3) !important;
+.details-button {
+  background-color: var(--c-bg-3) !important;
 }

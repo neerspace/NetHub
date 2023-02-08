@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
 import { FormReady } from '../types';
 
 @Component({
@@ -11,4 +11,5 @@ import { FormReady } from '../types';
 })
 export class FormLayoutComponent {
   @Input() ready: FormReady = null;
+  @HostBinding('class.disable-browser-security') @Input() disableBrowserSecurity = false;
 }

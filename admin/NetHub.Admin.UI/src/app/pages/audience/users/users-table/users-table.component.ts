@@ -15,8 +15,8 @@ import { UserService } from '../user.service';
 export class UsersTableComponent {
   columns: ColumnInfo[] = userColumns;
   buttons: ITableAction<UserModel>[] = [
-    { button: editButton, onClick: this.showForm.bind(this) },
-    { button: deleteButton, onClick: this.fetchDelete.bind(this) },
+    { button: editButton(), onClick: this.showForm.bind(this) },
+    { button: deleteButton(), onClick: this.fetchDelete.bind(this) },
   ];
   ready: FormReady = null;
 

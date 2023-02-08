@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { routes } from './_routes';
 import { ApiModule } from './api/api.module';
+import { AuthorizedGuard } from './api/guards/authorized.guard';
+import { EnsurePermissionsGuard } from './api/guards/ensure-permissions.guard';
 
 import { AppComponent } from './app.component';
 import { CoreComponentsModule } from './components/core/core-components.module';
@@ -29,7 +31,10 @@ import { PagesModule } from './pages/pages.module';
     PagesModule,
     LayoutComponentsModule,
   ],
-  providers: [],
+  providers: [
+    AuthorizedGuard,
+    EnsurePermissionsGuard,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -34,7 +34,7 @@ export interface IButtonInfo {
 
 export interface ITableAction<T> {
   button: IButtonInfo;
-  onClick: (val: T) => Observable<void> | void;
+  onClick: (context: any, val: T) => Observable<void> | void;
 }
 
 export type FetchApiEvent<T> = (params: IFilterInfo) => Observable<IFiltered<T>>;
@@ -56,6 +56,10 @@ export interface IFilterInfo {
 // ========================================
 
 export type FormatterFunc = (el: any, obj?: any) => string;
+
+export interface ActionButtonsColumn<T> {
+  actions: ITableAction<T>[];
+}
 
 export interface ColumnBase {
   key: string;
@@ -97,12 +101,14 @@ export interface DateRangeFilter {
   filterValueRange?: IRange<DateTime>;
 }
 
-export type ColumnInfo = ColumnBase &
-  (
-    | BooleanFilter
-    | DropdownFilter
-    /*| DropdownFilterWithEnum*/
-    | TextFilter
-    | NumberFilter
-    | DateRangeFilter
-  );
+export type ColumnInfo =
+  | ActionButtonsColumn<any>
+  | (ColumnBase &
+      (
+        | BooleanFilter
+        | DropdownFilter
+        /*| DropdownFilterWithEnum*/
+        | TextFilter
+        | NumberFilter
+        | DateRangeFilter
+      ));

@@ -1,3 +1,5 @@
+@import 'mixins';
+
 app-main-header button {
   margin-left: .5rem;
 }
@@ -46,14 +48,14 @@ select:-webkit-autofill {
   }
 }
 
-.counter{
-    &.counter-positive{
-        color: var(--c-success);
-    }
+.counter {
+  &.counter-positive {
+    color: var(--c-success);
+  }
 
-    &.counter-negative{
-        color: var(--c-danger);
-    }
+  &.counter-negative {
+    color: var(--c-danger);
+  }
 }
 
 .toast {
@@ -74,4 +76,8 @@ select:-webkit-autofill {
   &[data-color=info] {
     background-color: var(--c-accent);
   }
+}
+
+.disable-browser-security {
+  @include disable-browser-security;
 }

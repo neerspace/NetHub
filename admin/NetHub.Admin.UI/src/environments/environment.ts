@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://admin-api.nethub.local:9110',
+  apiBaseUrl: 'http://admin-api.nethub.local',
 };
 
 export const logger = {

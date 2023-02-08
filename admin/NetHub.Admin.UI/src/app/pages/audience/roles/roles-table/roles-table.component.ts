@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RoleModel } from 'src/app/api';
 import { FormReady } from 'src/app/components/form/types';
-import { ColumnInfo, IFiltered, IFilterInfo, ITableAction } from 'src/app/components/table/types';
+import { ColumnInfo, IFiltered, IFilterInfo } from 'src/app/components/table/types';
 import { DownloadService } from 'src/app/services/download.service';
 import { roleColumns } from '../role-columns';
 import { RoleService } from '../role.service';
@@ -13,16 +13,12 @@ import { RoleService } from '../role.service';
   styleUrls: ['./roles-table.component.scss'],
 })
 export class RolesTableComponent {
-  columns: ColumnInfo[] = roleColumns;
-  buttons: ITableAction<RoleModel>[] = [
-    {
-      button: { class: 'success', text: 'Permissions', icon: 'la-edit' },
-      onClick: this.showForm.bind(this),
-    },
-  ];
+  columns: ColumnInfo[];
   ready: FormReady = null;
 
-  constructor(private downloadService: DownloadService, public roleService: RoleService) {}
+  constructor(private downloadService: DownloadService, public roleService: RoleService) {
+    this.columns = roleColumns(this);
+  }
 
   fetchFilter(params: IFilterInfo): Observable<IFiltered<RoleModel>> {
     return this.roleService.filter(params);
