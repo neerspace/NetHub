@@ -75,6 +75,7 @@ export class DataTableComponent<T> implements OnInit {
         const newFilters = buildFiltersQuery(this.filtersForm.value);
         if (this.filters !== newFilters) {
           this.filters = newFilters;
+          this.resetPagination();
           this.loadData();
         }
       });
@@ -114,9 +115,7 @@ export class DataTableComponent<T> implements OnInit {
         setTimeout(() => (this.loading = false), 1200);
         this.loader.hide();
         this.toaster.showFail(error.message);
-        this.total = 0;
-        this.pagination.setPage(1);
-        this.updatePageIndicatorText();
+        this.resetPagination();
       },
     });
   }
@@ -171,6 +170,12 @@ export class DataTableComponent<T> implements OnInit {
       this.pagination.setPage(1);
       this.loadData(true);
     }
+  }
+
+  private resetPagination() {
+    this.total = 0;
+    this.pagination.setPage(1);
+    this.updatePageIndicatorText();
   }
 
   private updatePageIndicatorText(): void {
