@@ -2,8 +2,6 @@ import React, { FC, PropsWithChildren, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { UkrainianLanguage } from "../../../utils/constants";
 import { useQuery, useQueryClient, UseQueryResult } from "react-query";
-import IUserInfoResponse from "../../../types/api/User/IUserInfoResponse";
-import { articlesApi, userApi } from "../../../api/api";
 import IExtendedArticle from "../../../types/IExtendedArticle";
 import { ApiError } from "../../../types/ApiError";
 import { _localizationsApi, _usersApi } from "../../../api";

@@ -13,8 +13,8 @@ public class CryptoResponse
 
 public class CryptoResponseDto
 {
-    public OneCryptoDto? Btc { get; init; }
-    public OneCryptoDto? Ton { get; init; }
+    public OneCryptoDto Btc { get; init; }
+    public OneCryptoDto Ton { get; init; }
     public string? Error { get; set; }
 }
 

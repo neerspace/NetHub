@@ -9,6 +9,8 @@ using NetHub.Shared.Api.Extensions;
 using NetHub.Data.SqlServer;
 using NetHub.Data.SqlServer.Context;
 using NetHub;
+using NetHub.Shared;
+using NetHub.Shared.Api;
 
 var logger = LoggerInstaller.InitFromCurrentEnvironment();
 
@@ -44,9 +46,14 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
     if (builder.Environment.IsDevelopment())
         builder.Configuration.AddJsonFile("appsettings.Development.json");
 
+    // Database
     builder.Services.AddSqlServerDatabase(builder.Configuration);
+    // Application
     builder.Services.AddAdminApplication();
-    builder.Services.AddWebAdminApi(builder.Configuration);
+    builder.Services.AddSharedApplication(builder.Configuration);
+    // Api
+    builder.Services.AddSharedApi(builder.Configuration, builder.Environment);
+    builder.Services.AddWebAdminApi();
 }
 
 // Configure the HTTP request pipeline

@@ -11,10 +11,10 @@ import { useArticleContext } from '../../../../pages/Articles/One/ArticleSpace.P
 import Actions from '../../../UI/Action/Actions';
 import FilledDiv from '../../../UI/FilledDiv';
 import ArticleSavingActions from '../../Shared/ArticleSavingActions';
-import ArticlesRateCounter, { RateVariants, } from '../../Shared/ArticlesRateCounter';
+import ArticlesRateCounter from '../../Shared/ArticlesRateCounter';
 import cl from './ArticleBody.module.sass';
 import { _myArticlesApi } from "../../../../api";
-import { ArticleLocalizationModel, ArticleModelExtended } from "../../../../api/_api";
+import { ArticleLocalizationModel, ArticleModelExtended, Vote } from "../../../../api/_api";
 
 const ArticleBody = () => {
   const { articleAccessor, setArticle, localizationAccessor, setLocalization } =
@@ -29,9 +29,9 @@ const ArticleBody = () => {
       localizationAccessor.data!.languageCode)
   }
 
-  function handleUpdateCounter(rate: number, vote?: RateVariants) {
-    setArticle(ArticleModelExtended.fromJS({ ...article, rate }));
-    setLocalization(ArticleLocalizationModel.fromJS({ ...localization, vote, rate }));
+  function handleUpdateCounter(rate: number, vote: Vote | null) {
+    setArticle(new ArticleModelExtended({ ...article, rate }));
+    setLocalization(new ArticleLocalizationModel ({ ...localization, vote, rate }));
   }
 
   async function afterCounter() {
@@ -112,7 +112,7 @@ const ArticleBody = () => {
           <ArticlesRateCounter
             articleId={article.id}
             rate={article.rate}
-            vote={localization.vote ?? undefined}
+            vote={localization.vote}
             updateCounter={handleUpdateCounter}
             afterRequest={afterCounter}
           />

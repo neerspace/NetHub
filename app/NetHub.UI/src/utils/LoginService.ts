@@ -31,6 +31,7 @@ export default class LoginService {
       username: tokenResponse.email.replace(/@.*$/, ''),
       firstName: tokenResponse.firstName ?? '',
       lastName: tokenResponse.lastName ?? '',
+      middleName: null,
       profilePhotoUrl: tokenResponse.photoUrl,
       email: tokenResponse.email,
       providerMetadata: {
@@ -59,6 +60,7 @@ export default class LoginService {
               username: data.username ?? '',
               firstName: data.first_name ?? '',
               lastName: data.last_name ?? '',
+              middleName: null,
               profilePhotoUrl: data.photo_url,
               email: data.email ?? '',
               providerMetadata: {
@@ -91,6 +93,7 @@ export default class LoginService {
       username: tokenResponse.email?.replace(/@.*$/, '') ?? '',
       firstName: tokenResponse.firstName ?? '',
       lastName: tokenResponse.lastName ?? '',
+      middleName: null,
       profilePhotoUrl: tokenResponse.photoUrl,
       email: tokenResponse.email ?? null,
       providerMetadata: {

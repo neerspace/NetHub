@@ -1,15 +1,15 @@
-import React, {FC, useState} from 'react';
-import {Avatar, Box, Button, Input, Select, useColorModeValue} from "@chakra-ui/react";
-import {useDebounce} from "../../../hooks/useDebounce";
-import {IPrivateUserInfoResponse} from "../../../types/api/User/IUserInfoResponse";
-import {searchApi} from "../../../api/api";
+import React, { FC, useState } from 'react';
+import { Avatar, Box, Button, Input, Select, useColorModeValue } from "@chakra-ui/react";
+import { useDebounce } from "../../../hooks/useDebounce";
 import Tag from "../One/Body/Tag";
-import {createImageFromInitials} from "../../../utils/logoGenerator";
+import { createImageFromInitials } from "../../../utils/logoGenerator";
 import useValidator from "../../../hooks/useValidator";
-import {isNotNull, isNotNullOrWhiteSpace} from "../../../utils/validators";
+import { isNotNull, isNotNullOrWhiteSpace } from "../../../utils/validators";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
-import {Contributor} from "./AddContributorsBlock";
+import { Contributor } from "./AddContributorsBlock";
 import ErrorMessage from "../../UI/Snackbar/ErrorMessage";
+import { _usersApi } from "../../../api";
+import { ArticleContributorRole, PrivateUserResult } from "../../../api/_api";
 
 interface IContributorErrors {
   username: boolean,
@@ -23,20 +23,20 @@ interface ISearchContributorProps {
 
 const SearchContributor: FC<ISearchContributorProps> = ({contributors, setContributors}) => {
   const debounceLogic = async (searchValue: string) => {
-    const results = await searchApi.searchUsersByUsername(searchValue);
+    const results = await _usersApi.usersInfo([searchValue]);
     setResults(results);
   };
   const debounce = useDebounce(debounceLogic, 1000);
   const lineColor = useColorModeValue('#D0D0D0', 'white');
   const boxBgColor = useColorModeValue('whiteLight', 'whiteDark');
-  const contributorRoles = ['Editor', 'Translator', 'Copyrighter']
+  const contributorRoles = Object.keys(ArticleContributorRole);
 
 
-  const [results, setResults] = useState<IPrivateUserInfoResponse[]>([]);
+  const [results, setResults] = useState<PrivateUserResult[]>([]);
   const [currentContributor, setCurrentContributor] =
     useState<Contributor>({
-      user: {} as IPrivateUserInfoResponse,
-      role: contributorRoles[0]
+      user: {} as PrivateUserResult,
+      role: ArticleContributorRole.Editor
     })
   const {subscribeValidator, validateAll, errors} = useValidator<IContributorErrors>();
   const {enqueueError} = useCustomSnackbar();
@@ -54,11 +54,11 @@ const SearchContributor: FC<ISearchContributorProps> = ({contributors, setContri
     }
   }
 
-  const onTagClickHandle = (user: IPrivateUserInfoResponse) => {
+  const onTagClickHandle = (user: PrivateUserResult) => {
     setCurrentContributor({...currentContributor, user});
   }
 
-  const onInputChangeHandle = (role: string) => {
+  const onInputChangeHandle = (role: ArticleContributorRole) => {
     setCurrentContributor({...currentContributor, role})
   }
 
@@ -135,7 +135,7 @@ const SearchContributor: FC<ISearchContributorProps> = ({contributors, setContri
       <Select
         width={'20%'}
         onChange={(e) => {
-          onInputChangeHandle(e.target.value)
+          onInputChangeHandle(e.target.value as ArticleContributorRole)
         }}
       >
         {

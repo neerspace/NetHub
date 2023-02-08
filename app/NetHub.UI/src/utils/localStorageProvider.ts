@@ -1,4 +1,4 @@
-import IAuthResult from '../types/api/Refresh/IAuthResult';
+import { JwtResult } from "../api/_api";
 
 export class JWTStorage {
   static getAccessToken() {
@@ -13,10 +13,10 @@ export class JWTStorage {
     return localStorage.getItem('refreshTokenExpires');
   }
 
-  static setTokensData(data: IAuthResult) {
+  static setTokensData(data: JwtResult) {
     localStorage.setItem('accessToken', data.token);
-    localStorage.setItem('accessTokenExpires', data.tokenExpires);
-    localStorage.setItem('refreshTokenExpires', data.refreshTokenExpires);
+    localStorage.setItem('accessTokenExpires', data.tokenExpires.toString());
+    localStorage.setItem('refreshTokenExpires', data.refreshTokenExpires.toString());
   }
 
   static clearTokensData() {

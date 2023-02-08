@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useQueryClient } from 'react-query';
-import { jwtApi, userApi } from '../../api/api';
+import { userApi } from '../../api/api';
 import { QueryClientConstants } from '../../constants/queryClientConstants';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useDebounce } from '../../hooks/useDebounce';
@@ -9,7 +9,7 @@ import { ProfileSchema } from '../../types/schemas/Profile/ProfileSchema';
 import { usernameDebounce } from '../../utils/debounceHelper';
 import { JWTStorage } from '../../utils/localStorageProvider';
 import { ExtendedRequest, useProfileContext } from './ProfileSpace.Provider';
-import { _currentUserApi, _usersApi } from "../../api";
+import { _currentUserApi, _jwtApi, _usersApi } from "../../api";
 import { FileParameter } from "../../api/_api";
 
 export async function getUserDashboard(username?: string) {
@@ -18,8 +18,22 @@ export async function getUserDashboard(username?: string) {
     : await _currentUserApi.dashboard();
 }
 
-export async function getUserInfo(username?: string) {
-  return username ? (await userApi.getUsersInfo([username]))[0] : await userApi.me();
+export async function getUserInfo(setRequest: (value: ExtendedRequest) => void, username?: string) {
+  if (username)
+    return (await _usersApi.usersInfo([username]))[0];
+
+  const me = await _currentUserApi.me();
+  setRequest({
+    username: me.userName,
+    email: me.email,
+    image: '',
+    firstName: me.firstName,
+    lastName: me.lastName,
+    middleName: me.middleName,
+    description: me.description ?? ''
+  })
+
+  return me;
 }
 
 export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSettingsButton: () => void) => {
@@ -105,18 +119,19 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
         for (const change of changes) {
           switch (change) {
             case 'profile':
+              //TODO: Fix
               await _currentUserApi.updateProfile(...changeRequest);
               break;
             case 'photo':
               if (typeof (changeRequest.image) === 'string') {
-                newProfileImage = _currentUserApi.updateProfilePhoto(changeRequest.image);
+                newProfileImage = (await _currentUserApi.updateProfilePhoto(changeRequest.image)).link;
               } else {
                 const request: FileParameter = {
                   data: changeRequest.image,
-                  name: `${oldUserInfo.userName}-ProfilePhoto`
+                  fileName: `${oldUserInfo.userName}-ProfilePhoto`
                 }
 
-                newProfileImage = _currentUserApi.updateProfilePhoto(request);
+                newProfileImage = (await _currentUserApi.updateProfilePhoto(request)).link;
               }
               break;
             case 'username':
@@ -131,7 +146,7 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
           profilePhotoUrl: newProfileImage === '' ? reduxUser.profilePhotoUrl : newProfileImage
         });
 
-        const jwt = await jwtApi.refresh();
+        const jwt = await _jwtApi.refresh();
         JWTStorage.setTokensData(jwt);
       } catch
         (e) {

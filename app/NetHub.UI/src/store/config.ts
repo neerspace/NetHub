@@ -1,8 +1,8 @@
 import create from 'zustand';
 import Localizations from "../constants/localizations";
-import {JWTStorage} from "../utils/localStorageProvider";
-import {IReduxUser} from "../types/IReduxUser";
-import {ILanguage} from "../vite-env";
+import { JWTStorage } from "../utils/localStorageProvider";
+import { IReduxUser } from "../types/IReduxUser";
+import { ILanguage } from "../vite-env";
 
 interface IStoreInitialState {
   isLogin: boolean | null,
@@ -16,7 +16,7 @@ interface IStoreInitialState {
 
 export const useAppStore = create<IStoreInitialState>(set => ({
   isLogin: null,
-  user: {username: '', profilePhotoUrl: null, firstName: ''},
+  user: {username: '', profilePhotoUrl: null, firstName: '', lastName: null},
   language: Localizations.Ukrainian,
   login: (reduxUser: IReduxUser) => set({
     isLogin: true,

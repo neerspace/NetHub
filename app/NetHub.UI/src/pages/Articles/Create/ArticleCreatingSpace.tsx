@@ -54,7 +54,7 @@ const ArticleCreatingSpace: Page = () => {
         .current?.getTinyRef()
         .current?.saveImages(article);
 
-      const request = ArticleLocalizationCreateRequest.fromJS(article);
+      const request = new ArticleLocalizationCreateRequest(article);
       await _localizationsApi.create(articleId!, UkrainianLanguage, request);
 
       ArticleStorage.clearArticleData();

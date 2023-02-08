@@ -1,11 +1,10 @@
-import React, {FC, useCallback, useMemo} from 'react';
+import React, { FC, useCallback } from 'react';
 import cl from "../ArticleShort.module.sass";
-import {Box, Text, useColorModeValue} from "@chakra-ui/react";
-import IExtendedArticle from "../../../../types/IExtendedArticle";
-import {DateTime} from "luxon";
+import { Text, useColorModeValue } from "@chakra-ui/react";
+import { IArticleLocalizationModel } from "../../../../api/_api";
 
 interface IArticleShortHeaderProps {
-  localization: IExtendedArticle,
+  localization: IArticleLocalizationModel,
   time?: { before?: string, show?: 'default' | 'saved' }
 }
 
@@ -15,15 +14,15 @@ const ArticleShortHeader: FC<IArticleShortHeaderProps> = ({localization, time}) 
   const getTimeAgo = useCallback(() => {
 
     if ((time?.show ?? 'default') === 'saved')
-      return DateTime.fromISO(localization.savedDate!).toRelativeCalendar();
+      return localization.savedDate!.toRelativeCalendar();
 
     switch (localization.status) {
       case 'Published':
-        return DateTime.fromISO(localization.published!).toRelativeCalendar();
+        return localization.published!.toRelativeCalendar();
       case 'Banned':
-        return DateTime.fromISO(localization.banned!).toRelativeCalendar();
+        return localization.banned!.toRelativeCalendar();
       case 'Draft' || 'Pending':
-        return DateTime.fromISO(localization.created).toRelativeCalendar();
+        return localization.created.toRelativeCalendar();
     }
   }, [localization, time])
 

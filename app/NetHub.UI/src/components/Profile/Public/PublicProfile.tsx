@@ -1,13 +1,11 @@
-import React, {FC} from 'react';
+import React from 'react';
 import cl from "../Profile.module.sass";
 import PublicDashboard from "./PublicDashboard";
-import IDashboardResponse from "../../../types/api/Dashboard/IDashboardResponse";
-import IUserInfoResponse from "../../../types/api/User/IUserInfoResponse";
 import SvgSelector from "../../UI/SvgSelector/SvgSelector";
-import {Button, Text} from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
 import FilledDiv from "../../UI/FilledDiv";
-import {useNavigate} from "react-router-dom";
-import {useProfileContext} from "../../../pages/Profile/ProfileSpace.Provider";
+import { useNavigate } from "react-router-dom";
+import { useProfileContext } from "../../../pages/Profile/ProfileSpace.Provider";
 
 const PublicProfile = () => {
   const navigate = useNavigate();

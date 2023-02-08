@@ -11,7 +11,6 @@ import {
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { z as u } from 'zod';
-import { jwtApi, userApi } from '../../api/api';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useAppStore } from '../../store/config';
@@ -22,8 +21,9 @@ import TitleInput from '../UI/TitleInput/TitleInput';
 import FacebookAuthButton from './Buttons/FacebookAuthButton';
 import GoogleAuthButton from './Buttons/GoogleAuthButton';
 import TelegramAuthButton from './Buttons/TelegramAuthButton';
-import { _usersApi } from "../../api";
-import { ProviderType } from '../../api/_api';
+import { _jwtApi, _usersApi } from "../../api";
+import { JwtAuthenticateRequest, ProviderType, SsoType } from '../../api/_api';
+import { JWTStorage } from "../../utils/localStorageProvider";
 
 interface ISecondStep {
   isExpanded: boolean,
@@ -41,8 +41,8 @@ const Login = () => {
     lastName: '',
     email: ''
   } as SsoRequest);
-  const { login } = useAppStore();
-  const { enqueueError, enqueueSuccess, enqueueSnackBar } = useCustomSnackbar('info');
+  const {login} = useAppStore();
+  const {enqueueError, enqueueSuccess, enqueueSnackBar} = useCustomSnackbar('info');
   const navigate = useNavigate();
   const accordionButtonRef = useRef<HTMLButtonElement | null>(null);
   const [errors, setErrors] = useState<u.ZodFormattedError<{
@@ -57,7 +57,7 @@ const Login = () => {
     type: 'register' | 'login',
     providerKey: string
   }
-  >>({ _errors: [] });
+  >>({_errors: []});
 
   const debounceLogic = async (username: string | null) => await usernameDebounce(username, setErrors, errors);
   const debounce = useDebounce(debounceLogic, 1000);
@@ -71,14 +71,14 @@ const Login = () => {
       return;
     }
 
-    setErrors({ _errors: [] });
+    setErrors({_errors: []});
 
     return validationResult.success;
   };
 
   const updateRequest = (key: string, value: string | undefined) => {
     setRequest((prev: SsoRequest) => {
-      return { ...prev, [key]: value };
+      return {...prev, [key]: value};
     });
   };
 
@@ -90,24 +90,26 @@ const Login = () => {
       isExpanded = !isExpanded;
     }
 
-    setRegistrationStep({ isExpanded: false, enableEmail: false });
+    setRegistrationStep({isExpanded: false, enableEmail: false});
 
     const providerRequest = await LoginService.ProviderHandle(provider);
     setRequest(providerRequest);
 
-    const { isProviderRegistered } = await _usersApi.checkIfExists(providerRequest.providerKey, provider);
+    const {isProviderRegistered} = await _usersApi.checkIfExists(providerRequest.providerKey, provider);
 
     if (!isProviderRegistered) {
       if (!isExpanded) {
         accordionButtonRef.current?.click();
         isExpanded = true;
       }
-      setRegistrationStep({ isExpanded, enableEmail: !providerRequest.email });
+      setRegistrationStep({isExpanded, enableEmail: !providerRequest.email});
       // accordionButtonRef.current?.click();
       return;
     }
     enqueueSnackBar('Завантаження...');
-    const user = await jwtApi.authenticate({ ...providerRequest, type: 'login' });
+    const user = await _jwtApi.authenticate(
+      new JwtAuthenticateRequest({...providerRequest, type: SsoType.Login}))
+    JWTStorage.setTokensData(user);
     enqueueSuccess('Авторизовано!');
 
     login(user);
@@ -119,7 +121,10 @@ const Login = () => {
       return;
     try {
       enqueueSnackBar('Завантаження...');
-      const user = await jwtApi.authenticate({ ...request, type: 'register' });
+      const user = await _jwtApi.authenticate(
+        new JwtAuthenticateRequest({...request, type: SsoType.Register}));
+      JWTStorage.setTokensData(user);
+
       enqueueSuccess('Авторизовано!');
 
       login(user);
@@ -140,17 +145,17 @@ const Login = () => {
           <Text as={'b'} color={useColorModeValue('#757575', 'whiteDark')}>
             Оберіть спосіб авторизації
           </Text>
-          <Box margin={'10px'} />
+          <Box margin={'10px'}/>
           <Box display={'flex'} gap={6} mt={'5px'}>
-            <GoogleAuthButton onClick={async () => await firstStep(ProviderType.Google)} />
-            <TelegramAuthButton onClick={async () => await firstStep(ProviderType.Telegram)} />
-            <FacebookAuthButton onClick={async () => await firstStep(ProviderType.Facebook)} />
+            <GoogleAuthButton onClick={async () => await firstStep(ProviderType.Google)}/>
+            <TelegramAuthButton onClick={async () => await firstStep(ProviderType.Telegram)}/>
+            <FacebookAuthButton onClick={async () => await firstStep(ProviderType.Facebook)}/>
           </Box>
-          <AccordionButton ref={accordionButtonRef} display={'none'} />
+          <AccordionButton ref={accordionButtonRef} display={'none'}/>
           <AccordionPanel paddingInlineStart={0} paddingInlineEnd={0}>
-            <Box margin={'10px'} />
+            <Box margin={'10px'}/>
             <Text as={'p'} fontWeight={700}>Уточніть інформацію</Text>
-            <Box margin={'10px'} />
+            <Box margin={'10px'}/>
             <TitleInput title={'Username*'}
                         placeholder={'Ім\'я користувача'}
                         value={request.username!}
@@ -161,7 +166,7 @@ const Login = () => {
                           if (e.target.value !== null && e.target.value !== '')
                             debounce(e.target.value);
                         }}
-                        width={'100%'} />
+                        width={'100%'}/>
             <TitleInput title={'Email*'}
                         placeholder={'Електронна пошта'}
                         value={request.email!}
@@ -169,28 +174,28 @@ const Login = () => {
                         errorMessage={[...new Set(errors.email?._errors)].join(', ')}
                         onChange={(e) => updateRequest('email', e.target.value)}
                         width={'100%'}
-                        isDisabled={!registrationStep.enableEmail} />
+                        isDisabled={!registrationStep.enableEmail}/>
             <TitleInput title={'Firstname*'}
                         placeholder={'Iм\'я'}
                         value={request.firstName!}
                         isInvalid={!!errors.firstName}
                         errorMessage={errors.firstName?._errors?.join(', ')}
                         onChange={(e) => updateRequest('firstName', e.target.value)}
-                        width={'100%'} />
+                        width={'100%'}/>
             <TitleInput title={'Lastname*'}
                         placeholder={'Прізвище'}
                         value={request.lastName!}
                         isInvalid={!!errors.lastName}
                         errorMessage={errors.lastName?._errors?.join(', ')}
                         onChange={(e) => updateRequest('lastName', e.target.value)}
-                        width={'100%'} />
+                        width={'100%'}/>
             <TitleInput title={'Middlename'}
                         placeholder={'По-батькові'}
-                        value={request.middleName}
+                        value={request.middleName ?? ''}
                         isInvalid={!!errors.middleName}
                         errorMessage={errors.middleName?._errors?.join(', ')}
                         onChange={(e) => updateRequest('middleName', e.target.value === '' ? undefined : e.target.value)}
-                        width={'100%'} />
+                        width={'100%'}/>
             <Button onClick={secondStep}>Зареєструватись</Button>
           </AccordionPanel>
         </AccordionItem>

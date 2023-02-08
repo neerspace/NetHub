@@ -22,10 +22,10 @@ export const SsoRequestSchema = u.object({
     .regex(onlyLettersRegex, 'Невірно введене'),
   middleName: u.string().min(5, 'Занадто коротке')
     .regex(onlyLettersRegex, 'Невірно введено')
-    .optional(),
+    .nullable(),
   profilePhotoUrl: u.string()
     .nullable(),
-  providerMetadata: u.any(),
+  providerMetadata: u.object({}),
   provider: u.nativeEnum(ProviderType),
   providerKey: u.string(),
   type: u.enum(['register', 'login']).optional()

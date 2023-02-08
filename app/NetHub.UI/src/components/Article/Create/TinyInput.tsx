@@ -8,12 +8,13 @@ import React, {
 import { Editor } from '@tinymce/tinymce-react';
 import { Editor as TinyEditor } from 'tinymce';
 import classes from './ArticleCreating.module.sass';
-import { articlesApi } from "../../../api/api";
 import { tinyConfig } from "../../../utils/constants";
-import ILocalization from "../../../types/ILocalization";
 import { Box, FormControl, useColorModeValue } from "@chakra-ui/react";
-import { _articlesApi, _myArticlesApi } from "../../../api";
-import { ArticleCreateRequest, IArticleCreateRequest } from "../../../api/_api";
+import { _articlesApi } from "../../../api";
+import { ArticleCreateRequest } from "../../../api/_api";
+import {
+  IArticleLocalizationCreateExtendedRequest
+} from "../../../pages/Articles/Create/ArticleCreatingSpace.Provider";
 
 interface ITinyInputProps {
   data: string;
@@ -24,20 +25,20 @@ interface ITinyInputProps {
 }
 
 interface ITinyInputHandle {
-  saveImages: (article: ILocalization, id?: string) => Promise<string>;
+  saveImages: (article: IArticleLocalizationCreateExtendedRequest, id?: string) => Promise<string>;
 }
 
 const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
   ({data, setData, editorTitle, isInvalid, errorMessage}, ref) => {
     const editorRef = useRef<TinyEditor | null>(null);
 
-    const saveImageCallback = useCallback(async (article: ILocalization, id?: string) => {
+    const saveImageCallback = useCallback(async (article: IArticleLocalizationCreateExtendedRequest, id?: string) => {
 
       if (!id) {
-        const request = ArticleCreateRequest.fromJS({
+        const request = new ArticleCreateRequest({
           name: article.title,
           tags: article.tags,
-          originalArticleLink: article.originalLink!
+          originalArticleLink: article.originalLink
         });
 
         id = (await _articlesApi.create(request)).id.toString();
@@ -54,19 +55,22 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
     }, []);
 
     useImperativeHandle(ref, () => ({
-      async saveImages(article: ILocalization, id?: string) {
+      async saveImages(article: IArticleLocalizationCreateExtendedRequest, id?: string) {
         return await saveImageCallback(article, id)
       }
     }), [saveImageCallback]);
 
 
-    const saveImages = async (blobInfo: any) => {
-      const id = sessionStorage.getItem('articleId');
-      if (!id) return;
-      const {location} = await _articlesApi.uploadImage(+id, {data: blobInfo.blob(), fileName: 'File'});
+    const saveImages: (blobInfo: any) => Promise<string> =
+      async (blobInfo: any) => {
+        const id = sessionStorage.getItem('articleId');
+        const {location} = await _articlesApi.uploadImage(+id!, {
+          data: blobInfo.blob(),
+          fileName: 'File'
+        });
 
-      return location;
-    };
+        return location;
+      };
 
     const errorColor = useColorModeValue('error', 'errorDark');
 

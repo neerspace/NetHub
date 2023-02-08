@@ -1,4 +1,3 @@
-import IUserInfoResponse from "../../../types/api/User/IUserInfoResponse";
 import { articleUserRoles } from "../../../constants/article";
 import { ArticleContributorModel } from "../../../api/_api";
 import { _usersApi } from "../../../api";
@@ -13,7 +12,7 @@ export async function getArticleContributors(contributors: ArticleContributorMod
   });
 }
 
-export function getAuthor(contributors: ArticleContributorModel[], users: IUserInfoResponse[]) {
+export function getAuthor(contributors: ArticleContributorModel[], users: { userName: string }[]) {
   const authorUserName = contributors.find(a => a.role === 'Author')?.userName;
 
   return users.find(u => u.userName === authorUserName);

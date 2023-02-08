@@ -23,7 +23,7 @@ public class MeProfileUpdateEndpoint : ActionEndpoint<MeProfileUpdateRequest>
 
 
     [HttpPut("me/profile"), ClientSide(ActionName = "updateProfile")]
-    public override async Task HandleAsync(MeProfileUpdateRequest request, CancellationToken ct)
+    public override async Task HandleAsync([FromQuery] MeProfileUpdateRequest request, CancellationToken ct)
     {
         var user = await Database.Set<AppUser>().FirstOr404Async(u => u.Id == UserProvider.UserId, cancel: ct);
 

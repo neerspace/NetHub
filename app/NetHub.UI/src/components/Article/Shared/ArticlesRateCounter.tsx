@@ -1,6 +1,5 @@
 import { Text } from '@chakra-ui/react';
 import React, { FC } from 'react';
-import { articlesApi } from '../../../api/api';
 import useCustomSnackbar from '../../../hooks/useCustomSnackbar';
 import { isAccessTokenValid } from '../../../utils/JwtHelper';
 import Actions from '../../UI/Action/Actions';
@@ -12,9 +11,9 @@ import { Vote } from "../../../api/_api";
 export type RateVariants = 'Up' | 'Down';
 
 interface IArticleRateCounterProps {
-  vote?: RateVariants;
+  vote: Vote | null;
   rate: number;
-  updateCounter: (rate: number, vote?: RateVariants) => void;
+  updateCounter: (rate: number, vote: Vote | null) => void;
   afterRequest: () => Promise<void>;
   articleId: number;
 }
@@ -44,13 +43,13 @@ const ArticlesRateCounter: FC<IArticleRateCounterProps> = ({
     if (!checkAuth()) return;
 
     const prevState = vote;
-    const newState: { rate: number; vote?: RateVariants } = {
+    const newState: { rate: number; vote: Vote | null } = {
       rate: 0,
-      vote: undefined,
+      vote: null,
     };
 
-    if (prevState === 'Up') newState.vote = undefined;
-    else newState.vote = 'Up';
+    if (prevState === 'Up') newState.vote = null;
+    else newState.vote = Vote.Up;
 
     if (prevState === undefined) {
       newState.rate = rate + 1;
@@ -74,13 +73,13 @@ const ArticlesRateCounter: FC<IArticleRateCounterProps> = ({
     if (!checkAuth()) return;
 
     const prevState = vote;
-    const newState: { rate: number; vote?: RateVariants } = {
+    const newState: { rate: number; vote: Vote | null } = {
       rate: 0,
-      vote: undefined,
+      vote: null,
     };
 
-    if (prevState === 'Down') newState.vote = undefined;
-    else newState.vote = 'Down';
+    if (prevState === 'Down') newState.vote = null;
+    else newState.vote = Vote.Down;
 
     if (prevState === undefined) {
       newState.rate = rate - 1;
@@ -93,12 +92,7 @@ const ArticlesRateCounter: FC<IArticleRateCounterProps> = ({
     if (prevState === 'Up') {
       newState.rate = rate - 2;
     }
-    console.log({
-      vote,
-      rate,
-      newState: newState.rate,
-      newStateVote: newState.vote,
-    });
+
     updateCounter(newState.rate, newState.vote);
     await afterRequest();
     await _myArticlesApi.updateVote(articleId, Vote.Down);

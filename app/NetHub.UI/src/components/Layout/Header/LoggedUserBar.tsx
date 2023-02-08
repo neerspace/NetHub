@@ -4,7 +4,7 @@ import classes from './Header.module.sass';
 import { createImageFromInitials } from '../../../utils/logoGenerator';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../../store/config';
-import { jwtApi, userApi } from '../../../api/api';
+import { _jwtApi } from "../../../api";
 
 const LoggedUserBar: FC = () => {
     const { user, logout } = useAppStore();
@@ -19,7 +19,7 @@ const LoggedUserBar: FC = () => {
 
     function handleLogout() {
       logout();
-      jwtApi.logout().then(() => navigate('/'));
+      _jwtApi.revoke().then(() => navigate('/'));
     }
 
     return (

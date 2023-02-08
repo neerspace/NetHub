@@ -5,14 +5,13 @@ using NeerCore.Data.Abstractions;
 using NeerCore.DependencyInjection;
 using NeerCore.Exceptions;
 using NeerCore.Mapping.Extensions;
-using NetHub.Shared.Models;
-using NetHub.Shared.Services;
 using NetHub.Data.SqlServer.Context;
+using NetHub.Shared.Models;
 using Sieve.Exceptions;
 using Sieve.Models;
 using Sieve.Services;
 
-namespace NetHub.Services;
+namespace NetHub.Shared.Services.Implementations;
 
 [Service]
 internal sealed class SieveFilterService : IFilterService

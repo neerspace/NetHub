@@ -1,5 +1,5 @@
-import { jwtApi } from '../api/api';
 import { JWTStorage } from './localStorageProvider';
+import { _jwtApi } from "../api";
 
 const refreshTokenCookie = 'NetHub-Refresh-Token';
 
@@ -46,7 +46,7 @@ async function refreshToken(): Promise<string | null> {
   window.isRefreshing = true;
   console.log('[JWT] refreshing...');
   try {
-    const jwt = await jwtApi.refresh();
+    const jwt = await _jwtApi.refresh();
     JWTStorage.setTokensData(jwt);
     console.log('[JWT] token refreshed');
     return jwt.token;

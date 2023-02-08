@@ -1,12 +1,12 @@
-import React, {FC} from 'react';
-import {ICryptoResponse} from "../../types/api/Currency/ICurrencyResponse";
-import {Box, Text, useColorModeValue} from "@chakra-ui/react";
+import React, { FC } from 'react';
+import { Box, Text, useColorModeValue } from "@chakra-ui/react";
 import SvgSelector from "../UI/SvgSelector/SvgSelector";
 import CurrencyRow from "./CurrencyRow";
 import CryptoChange from "./CryptoChange";
+import { CryptoResponseDto } from "../../api/_api";
 
 interface ICryptoRateProps {
-  rate: ICryptoResponse
+  rate: CryptoResponseDto
 }
 
 const CryptoRate: FC<ICryptoRateProps> = ({rate}) => {
@@ -31,7 +31,6 @@ const CryptoRate: FC<ICryptoRateProps> = ({rate}) => {
           <Text as={'p'} fontWeight={'bold'}>{rate.btc.usd}$</Text>,
           null,
           <CryptoChange number={rate.btc.usd24Change}/>
-          // <Text as={'p'} fontWeight={'bold'}>36,78</Text>
         ]}
       />
       <CurrencyRow

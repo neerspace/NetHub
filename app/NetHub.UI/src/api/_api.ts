@@ -3209,7 +3209,7 @@ export class ArticleLocalizationModel implements IArticleLocalizationModel {
     banned!: DateTime | null;
     isSaved!: boolean;
     savedDate!: DateTime | null;
-    vote!: Vote;
+    vote!: Vote | null;
 
     constructor(data?: IArticleLocalizationModel) {
         if (data) {
@@ -3307,7 +3307,7 @@ export interface IArticleLocalizationModel {
     banned: DateTime | null;
     isSaved: boolean;
     savedDate: DateTime | null;
-    vote: Vote;
+    vote: Vote | null;
 }
 
 export class ArticleLocalizationUpdateRequest implements IArticleLocalizationUpdateRequest {
@@ -4411,7 +4411,7 @@ export enum ProviderType {
 }
 
 export class RatingModel implements IRatingModel {
-    vote!: Vote;
+    vote!: Vote | null;
 
     constructor(data?: IRatingModel) {
         if (data) {
@@ -4443,7 +4443,7 @@ export class RatingModel implements IRatingModel {
 }
 
 export interface IRatingModel {
-    vote: Vote;
+    vote: Vote | null;
 }
 
 export enum SsoType {
@@ -4624,7 +4624,7 @@ export class ViewLocalizationModel implements IViewLocalizationModel {
     userId!: number | null;
     isSaved!: boolean | null;
     savedDate!: DateTime | null;
-    vote!: Vote;
+    vote!: Vote | null;
     title!: string;
     description!: string;
     html!: string;
@@ -4710,7 +4710,7 @@ export interface IViewLocalizationModel {
     userId: number | null;
     isSaved: boolean | null;
     savedDate: DateTime | null;
-    vote: Vote;
+    vote: Vote | null;
     title: string;
     description: string;
     html: string;

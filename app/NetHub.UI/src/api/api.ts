@@ -1,24 +1,6 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import qs from 'qs';
-import { RateVariants } from '../components/Article/Shared/ArticlesRateCounter';
-import IArticleLocalizationResponse from '../types/api/Article/IArticleLocalizationResponse';
-import IArticleResponse from '../types/api/Article/IArticleResponse';
-import ICheckEmailResponse from '../types/api/CheckEmail/ICheckEmailRequest';
-import ICheckUsernameResponse from '../types/api/CheckUsername/ICheckUsernameResponse';
-import ICurrencyResponse from '../types/api/Currency/ICurrencyResponse';
-import IDashboardResponse from '../types/api/Dashboard/IDashboardResponse';
-import INewsResponse from '../types/api/News/INewsResponse';
-import IUpdateProfileRequest from '../types/api/Profile/IUpdateProfileRequest';
-import IAuthResult from '../types/api/Refresh/IAuthResult';
-import IUserInfoResponse, { IPrivateUserInfoResponse } from '../types/api/User/IUserInfoResponse';
+import axios, { AxiosError } from 'axios';
 import { ApiError } from '../types/ApiError';
-import IExtendedArticle from '../types/IExtendedArticle';
-import { IReduxUser } from '../types/IReduxUser';
-import { Operator } from '../types/Operators';
-import { ProviderType } from '../types/ProviderType';
-import { SsoRequest } from '../types/schemas/Sso/SsoSchema';
 import { getOrRefreshAccessToken } from '../utils/JwtService';
-import { JWTStorage } from '../utils/localStorageProvider';
 
 // export const baseApiUrl = import.meta.env.VITE_IS_DEVELOPMENT === 'true'
 //   ? import.meta.env.VITE_TEST_BACK_POINT
@@ -63,13 +45,13 @@ export const articlesApi = {
   //     });
   //   return result.data;
   // },
-  getArticleImages: async () => {
-    return [
-      'https://upload.wikimedia.org/wikipedia/commons/e/ed/Gibson_Les_Paul%28sg%29_1962.jpg',
-      'https://ru.wargaming.net/clans/media/clans/emblems/cl_1/1/emblem_195x195.png',
-      'https://ru-wotp.wgcdn.co/dcont/fb/image/wgfest_ps__006.jpg'
-    ];
-  },
+  // getArticleImages: async () => {
+    // return [
+    //   'https://upload.wikimedia.org/wikipedia/commons/e/ed/Gibson_Les_Paul%28sg%29_1962.jpg',
+    //   'https://ru.wargaming.net/clans/media/clans/emblems/cl_1/1/emblem_195x195.png',
+    //   'https://ru-wotp.wgcdn.co/dcont/fb/image/wgfest_ps__006.jpg'
+    // ];
+  // },
   // addImagesToArticle: (id: string, formData: FormData) => {
   //   return _api
   //     .post(`/articles/${id}/images`, formData)
@@ -120,17 +102,17 @@ export const articlesApi = {
 };
 
 export const userApi = {
-  getUsersInfo: async (usernames: number[] | string[]) => {
-    const result: AxiosResponse<IUserInfoResponse[]> = await _api.get('/user/users-info', {
-      params: {
-        userNames: usernames
-      },
-      paramsSerializer: params => {
-        return qs.stringify(params);
-      }
-    });
-    return result.data;
-  },
+  // getUsersInfo: async (usernames: number[] | string[]) => {
+  //   const result: AxiosResponse<IUserInfoResponse[]> = await _api.get('/user/users-info', {
+  //     params: {
+  //       userNames: usernames
+  //     },
+  //     paramsSerializer: params => {
+  //       return qs.stringify(params);
+  //     }
+  //   });
+  //   return result.data;
+  // },
   // getUserDashboard: async (username: string): Promise<IDashboardResponse> => {
   //   const result: AxiosResponse<IDashboardResponse> = await _api.get(`/user/${username}/dashboard`);
   //   return result.data;
@@ -146,10 +128,10 @@ export const userApi = {
   //   const response: AxiosResponse<ICheckUsernameResponse> = await _api.post('/user/check-username', { username });
   //   return response.data.isAvailable;
   // },
-  me: async (): Promise<IUserInfoResponse> => {
-    const result: AxiosResponse<IUserInfoResponse> = await _api.get('/user/me');
-    return result.data;
-  },
+  // me: async (): Promise<IUserInfoResponse> => {
+  //   const result: AxiosResponse<IUserInfoResponse> = await _api.get('/user/me');
+  //   return result.data;
+  // },
   // myDashboard: async (): Promise<IDashboardResponse> => {
   //   const result: AxiosResponse<IDashboardResponse> = await _api.get('/user/me/dashboard');
   //   return result.data;
@@ -180,31 +162,31 @@ export const userApi = {
 };
 
 export const jwtApi = {
-  authenticate: async (request: SsoRequest): Promise<IReduxUser> => {
-    const response: AxiosResponse<IAuthResult> = await _authApi.post('/jwt/sso', request);
-    JWTStorage.setTokensData(response.data);
-
-    return response.data;
-  },
-  refresh: async (): Promise<IAuthResult> => {
-    const response: AxiosResponse<IAuthResult> = await _authApi.post('/jwt/refresh-token');
-    return response.data;
-  },
-  logout: async () => {
-    await _authApi.delete('/jwt/revoke-token');
-  },
+  // authenticate: async (request: SsoRequest): Promise<IReduxUser> => {
+  //   const response: AxiosResponse<IAuthResult> = await _authApi.post('/jwt/sso', request);
+  //   JWTStorage.setTokensData(response.data);
+  //
+  //   return response.data;
+  // },
+  // refresh: async (): Promise<IAuthResult> => {
+  //   const response: AxiosResponse<IAuthResult> = await _authApi.post('/jwt/refresh-token');
+  //   return response.data;
+  // },
+  // logout: async () => {
+  //   await _authApi.delete('/jwt/revoke-token');
+  // },
 };
 
 export const infoApi = {
-  getCurrenciesRate: async () => {
-    const response: AxiosResponse<ICurrencyResponse> = await _api.get('/currency-rates');
-    return response.data;
-  }
+  // getCurrenciesRate: async () => {
+  //   const response: AxiosResponse<ICurrencyResponse> = await _api.get('/currency-rates');
+  //   return response.data;
+  // }
 };
 
 export const searchApi = {
-  searchUsersByUsername: async (searchValue: string) => {
-    const response: AxiosResponse<IPrivateUserInfoResponse[]> = await _api.get('/search/users?username=' + searchValue);
-    return response.data;
-  }
+  // searchUsersByUsername: async (searchValue: string) => {
+  //   const response: AxiosResponse<IPrivateUserInfoResponse[]> = await _api.get('/search/users?username=' + searchValue);
+  //   return response.data;
+  // }
 };
