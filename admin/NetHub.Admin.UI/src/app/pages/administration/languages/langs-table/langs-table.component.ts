@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LanguageModel } from 'src/app/api';
-import { deleteButton, editButton } from 'src/app/components/table/buttons';
-import { ColumnInfo, IFiltered, IFilterInfo, ITableAction } from 'src/app/components/table/types';
+import { ColumnInfo, IFiltered, IFilterInfo } from 'src/app/components/table/types';
 import { DownloadService } from 'src/app/services/download.service';
 import { languageColumns } from '../language-columns';
 import { LanguageService } from '../language.service';
@@ -13,13 +12,11 @@ import { LanguageService } from '../language.service';
   styleUrls: ['./langs-table.component.scss'],
 })
 export class LangsTableComponent {
-  columns: ColumnInfo[] = languageColumns;
-  buttons: ITableAction<LanguageModel>[] = [
-    { button: editButton(), onClick: this.showForm.bind(this) },
-    { button: deleteButton(), onClick: this.fetchDelete.bind(this) },
-  ];
+  columns: ColumnInfo[];
 
-  constructor(private downloadService: DownloadService, public languagesService: LanguageService) {}
+  constructor(private downloadService: DownloadService, public languagesService: LanguageService) {
+    this.columns = languageColumns(this);
+  }
 
   fetchFilter(params: IFilterInfo): Observable<IFiltered<LanguageModel>> {
     return this.languagesService.filter(params);

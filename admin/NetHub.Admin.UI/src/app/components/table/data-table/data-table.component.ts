@@ -238,5 +238,3 @@ export class DataTableComponent<T> implements OnInit {
     // }
   }
 }
-
-type A = {};

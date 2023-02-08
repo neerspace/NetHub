@@ -1,19 +1,12 @@
 import { Component, Injector, TemplateRef, ViewChild } from '@angular/core';
-import {
-  ColumnInfo,
-  IFiltered,
-  IFilterInfo,
-  ITableAction,
-} from '../../../../components/table/types';
 import { Observable } from 'rxjs';
-import { deleteButton } from '../../../../components/table/buttons';
-import { ArticlesService } from '../services/article.service';
 import { ArticleModel } from '../../../../api';
-import { articleColumns } from '../article-columns';
-import { SettingsKey } from '../../../../services/storage/types';
-import { SplitBaseComponent } from '../../../../components/split/split-base.component';
 import { TabsComponent } from '../../../../components/core/tabs/tabs.component';
-import { DomSanitizer } from '@angular/platform-browser';
+import { SplitBaseComponent } from '../../../../components/split/split-base.component';
+import { ColumnInfo, IFiltered, IFilterInfo } from '../../../../components/table/types';
+import { SettingsKey } from '../../../../services/storage/types';
+import { articleColumns } from '../article-columns';
+import { ArticlesService } from '../services/article.service';
 
 @Component({
   selector: 'app-articles-table',
@@ -24,26 +17,11 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> {
   @ViewChild(TabsComponent) tabsComponent!: TabsComponent;
   @ViewChild('localization') localizationTemplate!: TemplateRef<any>;
 
-  additionColumns: ITableAction<ArticleModel>[] = [
-    {
-      button: {
-        class: 'details-button',
-        text: 'Details',
-      },
-      onClick: this.onLocalizationClick.bind(this),
-    },
-  ];
-  columns: ColumnInfo[] = articleColumns;
-  buttons: ITableAction<ArticleModel>[] = [
-    { button: deleteButton(), onClick: this.fetchDelete.bind(this) },
-  ];
+  columns: ColumnInfo[];
 
-  constructor(
-    injector: Injector,
-    public articlesService: ArticlesService,
-    private sanitized: DomSanitizer,
-  ) {
+  constructor(injector: Injector, public articlesService: ArticlesService) {
     super(injector, SettingsKey.UsersSplitSizes);
+    this.columns = articleColumns(this);
   }
 
   fetchDelete(model: ArticleModel): void {

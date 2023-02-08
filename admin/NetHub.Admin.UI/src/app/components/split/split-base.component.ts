@@ -1,10 +1,9 @@
-import {Injector} from '@angular/core';
-import {IOutputAreaSizes} from 'angular-split';
-import {StorageService} from "../../services/storage";
-import {ViewportService} from "../../theme/viewport.service";
-import {SettingsKey} from "../../services/storage/types";
-import {ColumnInfo, ITableAction} from "../table/types";
-
+import { Injector } from '@angular/core';
+import { IOutputAreaSizes } from 'angular-split';
+import { StorageService } from '../../services/storage';
+import { SettingsKey } from '../../services/storage/types';
+import { ViewportService } from '../../theme/viewport.service';
+import { ColumnInfo } from '../table/types';
 
 export abstract class SplitBaseComponent<T> {
   private storage: StorageService;
@@ -16,12 +15,12 @@ export abstract class SplitBaseComponent<T> {
   protected constructor(injector: Injector, private splitSizesStorageKey: SettingsKey) {
     this.storage = injector.get(StorageService);
     this.device = injector.get(ViewportService);
-    [this.firstComponentSize, this.secondComponentSize] = this.storage.get(this.splitSizesStorageKey) || [100, 0];
+    [this.firstComponentSize, this.secondComponentSize] = this.storage.get(
+      this.splitSizesStorageKey,
+    ) || [100, 0];
   }
 
   abstract get columns(): ColumnInfo[];
-
-  abstract get buttons(): ITableAction<T>[];
 
   resize(newSizes: number[] | IOutputAreaSizes) {
     const listSize = newSizes[0] as number;
@@ -41,7 +40,10 @@ export abstract class SplitBaseComponent<T> {
       this.secondComponentSize = formSize;
     }
 
-    this.storage.set(this.splitSizesStorageKey, [this.firstComponentSize, this.secondComponentSize]);
+    this.storage.set(this.splitSizesStorageKey, [
+      this.firstComponentSize,
+      this.secondComponentSize,
+    ]);
 
     return this.firstComponentSize;
   }

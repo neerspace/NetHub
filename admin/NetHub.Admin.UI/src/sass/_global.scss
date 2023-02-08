@@ -49,6 +49,8 @@ select:-webkit-autofill {
 }
 
 .counter {
+  color: var(--c-text-dim);
+
   &.counter-positive {
     color: var(--c-success);
   }

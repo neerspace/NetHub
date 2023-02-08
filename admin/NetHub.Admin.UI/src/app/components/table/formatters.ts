@@ -1,5 +1,5 @@
-import {DateTime} from 'luxon';
-import {getDomain} from "../../shared/utilities";
+import { DateTime } from 'luxon';
+import { getDomain } from '../../shared/utilities';
 
 const maxStringLength = 28;
 
@@ -15,26 +15,22 @@ export function formatCheckmark(value: string | undefined): string {
   }
 }
 
-export function formatCounter(value: number){
-  if (value > 0){
-    return `<span class="counter counter-positive">💚 ${value}</span>`;
-  }
-  else if (value < 0){
-    return `<span class="counter counter-negative">❤️ ${-value}</span>`;
-
-  }
-  else {
-    return `<span class="counter">🤍 ${value}</span>`;
+export function formatCounter(value: number) {
+  if (value > 0) {
+    return `<span class="counter counter-positive"><i class="las la-heart"></i> ${value}</span>`;
+  } else if (value < 0) {
+    return `<span class="counter counter-negative"><i class="las la-heart"></i>️ ${-value}</span>`;
+  } else {
+    return `<span class="counter"><i class="las la-heart"></i>️ ${value}</span>`;
   }
 }
 
 export function formatLink(link: string | null) {
-
   if (link) {
     const display = getDomain(link);
     return `<a href=\"${link}\" title=\"${link}\">${display}</a>`;
   } else {
-    return '-'
+    return '-';
   }
 }
 
