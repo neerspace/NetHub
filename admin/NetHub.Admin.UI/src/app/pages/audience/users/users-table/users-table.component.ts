@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserModel } from 'src/app/api';
 import { FormReady } from 'src/app/components/form/types';
-import { deleteButton, editButton } from 'src/app/components/table/buttons';
-import { ColumnInfo, IFiltered, IFilterInfo, ITableAction } from 'src/app/components/table/types';
+import { ColumnInfo, IFiltered, IFilterInfo } from 'src/app/components/table/types';
 import { DownloadService } from 'src/app/services/download.service';
 import { userColumns } from '../user-columns';
 import { UserService } from '../user.service';
@@ -13,14 +12,12 @@ import { UserService } from '../user.service';
   templateUrl: './users-table.component.html',
 })
 export class UsersTableComponent {
-  columns: ColumnInfo[] = userColumns;
-  buttons: ITableAction<UserModel>[] = [
-    { button: editButton(), onClick: this.showForm.bind(this) },
-    { button: deleteButton(), onClick: this.fetchDelete.bind(this) },
-  ];
+  columns: ColumnInfo[];
   ready: FormReady = null;
 
-  constructor(private downloadService: DownloadService, public usersService: UserService) {}
+  constructor(private downloadService: DownloadService, public usersService: UserService) {
+    this.columns = userColumns(this);
+  }
 
   fetchFilter(params: IFilterInfo): Observable<IFiltered<UserModel>> {
     return this.usersService.filter(params);

@@ -18,16 +18,17 @@
            [class.desc]="sorts === col.key && !sortsAsc"></i>
       </button>
       <ng-template #notSortable>
-        <div class="col-header">
+        <div class="col-header"
+             [class.table-buttons]="!!col.actions">
           {{col.title}}
         </div>
       </ng-template>
     </th>
     <!--<th *ngIf="buttons.length > 0"-->
     <!--    class="table-buttons">-->
-      <!--      <button class=" filters-button btn btn-icon btn-outline-danger" title="Reset filters">-->
-      <!--        <i class="las la-filter"></i>-->
-      <!--      </button>-->
+    <!--      <button class=" filters-button btn btn-icon btn-outline-danger" title="Reset filters">-->
+    <!--        <i class="las la-filter"></i>-->
+    <!--      </button>-->
     <!--</th>-->
   </tr>
   <tr>

@@ -26,13 +26,13 @@ export function roleColumns(context: RolesTableComponent): ColumnInfo[] {
       actions: [
         {
           button: editButton('Permissions'),
-          onClick: (model: RoleModel | 'create') => {
+          onClick: (model: RoleModel) => {
             context.showForm(model);
           },
         },
         {
           button: deleteButton(),
-          onClick: (model: RoleModel | 'create') => {
+          onClick: (model: RoleModel) => {
             context.showForm(model);
           },
         },
