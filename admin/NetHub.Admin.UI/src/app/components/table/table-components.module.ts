@@ -1,13 +1,14 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TablePaginationComponent } from './pagination/table-pagination.component';
-import { TablePageSizeComponent } from './page-size-select/table-page-size.component';
-import { DataTableComponent } from './data-table/data-table.component';
-import { FormComponentsModule } from '../form/form-components.module';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TableFilterFieldComponent } from './filter-field/table-filter-field.component';
 import { NgxMaskModule } from 'ngx-mask';
+import { CoreComponentsModule } from '../core/core-components.module';
+import { FormComponentsModule } from '../form/form-components.module';
 import { ColumnChooserComponent } from './column-chooser/column-chooser.component';
+import { DataTableComponent } from './data-table/data-table.component';
+import { TableFilterFieldComponent } from './filter-field/table-filter-field.component';
+import { TablePageSizeComponent } from './page-size-select/table-page-size.component';
+import { TablePaginationComponent } from './pagination/table-pagination.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,12 @@ import { ColumnChooserComponent } from './column-chooser/column-chooser.componen
     ColumnChooserComponent,
   ],
   exports: [DataTableComponent],
-  imports: [CommonModule, FormComponentsModule, ReactiveFormsModule, NgxMaskModule],
+  imports: [
+    CommonModule,
+    FormComponentsModule,
+    ReactiveFormsModule,
+    NgxMaskModule,
+    CoreComponentsModule,
+  ],
 })
 export class TableComponentsModule {}

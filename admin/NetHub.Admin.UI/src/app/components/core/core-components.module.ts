@@ -4,9 +4,10 @@ import { IconButtonComponent } from './button/icon-button.component';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { LoadingBarComponent } from './loading-bar/loading-bar.component';
 import { ModalConfirmComponent } from './modal-confirm/modal-confirm.component';
-import { ToastAreaComponent } from './toast/toast-area.component';
+import { TabComponent } from './tabs/tab/tab.component';
 import { TabsComponent } from './tabs/tabs.component';
-import {TabComponent} from "./tabs/tab/tab.component";
+import { ToastAreaComponent } from './toast/toast-area.component';
+import { DropdownButtonComponent } from './dropdown/dropdown-button/dropdown-button.component';
 
 @NgModule({
   declarations: [
@@ -17,8 +18,17 @@ import {TabComponent} from "./tabs/tab/tab.component";
     ToastAreaComponent,
     TabComponent,
     TabsComponent,
+    DropdownButtonComponent,
   ],
-  exports: [LoadingBarComponent, IconButtonComponent, ModalConfirmComponent, ToastAreaComponent, TabsComponent, TabComponent],
+  exports: [
+    LoadingBarComponent,
+    IconButtonComponent,
+    ModalConfirmComponent,
+    ToastAreaComponent,
+    TabsComponent,
+    TabComponent,
+    DropdownComponent,
+  ],
   imports: [CommonModule],
 })
 export class CoreComponentsModule {}

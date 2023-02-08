@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'div[app-dropdown]',
+  selector: 'app-dropdown',
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.scss'],
   host: {
     class: 'dropdown',
   },
 })
-export class DropdownComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
+export class DropdownComponent {
+  @Input() key!: string;
+  @Input() buttonText!: any;
 }

@@ -161,6 +161,7 @@ export class DataTableComponent<T> implements OnInit {
   changePage(newPage: number): void {
     if (this.page !== newPage) {
       this.page = newPage;
+      this.updatePageIndicatorText();
       this.loadData();
     }
   }

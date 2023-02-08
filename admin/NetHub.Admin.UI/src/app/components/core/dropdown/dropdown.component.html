@@ -1,1 +1,9 @@
-<p>dropdown works!</p>
+<button class="btn btn-sm btn-outline-dark dropdown-button"
+        [id]="key"
+        data-bs-toggle="dropdown">
+  <strong>{{buttonText}}</strong>
+</button>
+<ul class="dropdown-menu dropdown-menu-dark text-small"
+    [attr.aria-labelledby]="key">
+  <ng-content></ng-content>
+</ul>
