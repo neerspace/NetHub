@@ -68,7 +68,7 @@ export function articleColumns(context: ArticlesTableComponent): ColumnInfo[] {
     },
     {
       key: 'originalArticleLink',
-      title: 'Original Article Link',
+      title: 'Original Article',
       sortable: false,
       filter: FilterType.optText,
       formatter: formatLink,

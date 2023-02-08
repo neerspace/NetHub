@@ -2,9 +2,10 @@ import { DateTime } from 'luxon';
 import { getDomain } from '../../shared/utilities';
 
 const maxStringLength = 28;
+const emptyStringPlaceholder = '<span class="text-dimmed">—</span>';
 
 export function formatAsDate(value: string | undefined): string {
-  return value ? DateTime.fromISO(value).toFormat('dd/MM/yyyy HH:mm') : '–';
+  return value ? DateTime.fromISO(value).toFormat('dd/MM/yyyy HH:mm') : emptyStringPlaceholder;
 }
 
 export function formatCheckmark(value: string | undefined): string {
@@ -30,13 +31,13 @@ export function formatLink(link: string | null) {
     const display = getDomain(link);
     return `<a href=\"${link}\" title=\"${link}\">${display}</a>`;
   } else {
-    return '-';
+    return emptyStringPlaceholder;
   }
 }
 
 export function formatAsText(value: string | undefined): string {
   if (!value) {
-    return '–';
+    return emptyStringPlaceholder;
   }
   if (value.length > maxStringLength) {
     return value.substring(0, maxStringLength - 3) + '...';

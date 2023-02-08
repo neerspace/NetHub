@@ -19,6 +19,7 @@ export class DataTableComponent<T> implements OnInit {
 
   @Input() defaultSorting: string | null = 'id';
   @Input() columns: ColumnInfo[] = [];
+  @Input() columnChooser: boolean = false;
   @Input() onFilter!: FetchApiEvent<T>;
 
   sortsAsc = true;

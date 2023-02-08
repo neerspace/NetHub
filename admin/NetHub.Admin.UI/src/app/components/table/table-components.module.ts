@@ -7,6 +7,7 @@ import { FormComponentsModule } from '../form/form-components.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TableFilterFieldComponent } from './filter-field/table-filter-field.component';
 import { NgxMaskModule } from 'ngx-mask';
+import { ColumnChooserComponent } from './column-chooser/column-chooser.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { NgxMaskModule } from 'ngx-mask';
     TablePaginationComponent,
     TablePageSizeComponent,
     TableFilterFieldComponent,
+    ColumnChooserComponent,
   ],
   exports: [DataTableComponent],
   imports: [CommonModule, FormComponentsModule, ReactiveFormsModule, NgxMaskModule],

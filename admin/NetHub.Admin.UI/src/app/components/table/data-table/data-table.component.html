@@ -2,6 +2,9 @@
 
 <ng-content></ng-content>
 
+<app-column-chooser *ngIf="columnChooser"
+                    [columns]="columns"></app-column-chooser>
+
 <table id="users-table"
        class="table table-hover">
   <thead>
@@ -79,7 +82,7 @@
 
 <div class="table-footer"
      [class.hidden]="!data || data.length === 0">
-  <app-page-size *ngIf="data && data.length > pageSize"
+  <app-page-size *ngIf="data && total > pageSize"
                  [pageSize]="pageSize"
                  (pageSizeChange)="changePageSize($event)"></app-page-size>
   <div class="page-indicator">{{pageIndicatorText}}</div>
