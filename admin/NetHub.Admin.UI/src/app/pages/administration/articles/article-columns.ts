@@ -1,6 +1,11 @@
 ﻿import { ArticleModel } from '../../../api';
 import { deleteButton } from '../../../components/table/buttons';
-import { formatAsDate, formatCounter, formatLink } from '../../../components/table/formatters';
+import {
+  formatAsDate,
+  formatAsText,
+  formatCounter,
+  formatLink,
+} from '../../../components/table/formatters';
 import { ColumnInfo, FilterType } from '../../../components/table/types';
 import { ArticlesTableComponent } from './articles-table/articles-table.component';
 
@@ -30,7 +35,8 @@ export function articleColumns(context: ArticlesTableComponent): ColumnInfo[] {
       key: 'name',
       title: 'Name',
       sortable: true,
-      filter: FilterType.text,
+      filter: FilterType.optText,
+      formatter: formatAsText,
     },
     {
       key: 'created',
@@ -64,14 +70,14 @@ export function articleColumns(context: ArticlesTableComponent): ColumnInfo[] {
       key: 'originalArticleLink',
       title: 'Original Article Link',
       sortable: false,
-      filter: FilterType.text,
+      filter: FilterType.optText,
       formatter: formatLink,
     },
     {
       key: 'rate',
       title: 'Rate',
       sortable: true,
-      filter: FilterType.number,
+      filter: FilterType.optNumber,
       numberPattern: 'integer',
       formatter: formatCounter,
     },

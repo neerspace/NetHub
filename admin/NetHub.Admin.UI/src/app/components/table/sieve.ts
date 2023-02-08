@@ -97,11 +97,11 @@ export function buildFiltersQuery(options: IDictionary<string | number | DateTim
         }
       } else {
         const op = operators.find(x => x[0] === key)?.[1] || Operator.Equals;
-        queryParts.push(key + op + (value || ''));
+        queryParts.push(key + op + (value === 0 ? 0 : value || ''));
       }
     });
 
-  // logger.debug(queryParts.join('\n'));
+  console.info(queryParts.join('\n'));
   return queryParts.join(',');
 }
 
