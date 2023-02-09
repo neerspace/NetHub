@@ -1,4 +1,12 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChange,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
@@ -20,6 +28,7 @@ export class DataTableComponent<T> implements OnInit {
   @Input() defaultSorting: string | null = 'id';
   @Input() columns: ColumnInfo[] = [];
   @Input() columnChooser: boolean = false;
+  @Input() columnChooserSequence?: string;
   @Input() onFilter!: FetchApiEvent<T>;
 
   sortsAsc = true;

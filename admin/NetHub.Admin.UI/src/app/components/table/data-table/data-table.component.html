@@ -2,14 +2,12 @@
 
 <ng-content></ng-content>
 
-<app-column-chooser *ngIf="columnChooser"
-                    [columns]="columns"></app-column-chooser>
-
 <table id="users-table"
        class="table table-hover">
   <thead>
   <tr>
-    <th *ngFor="let col of $any(columns)">
+    <th *ngFor="let col of $any(columns)"
+        [class.hidden]="col.hidden">
       <button *ngIf="col.sortable; else notSortable"
               class="btn col-header"
               [class.sortable]="!!col.sortable"
@@ -37,8 +35,9 @@
     <!--</th>-->
   </tr>
   <tr>
-    <th *ngFor="let col of columns"
-        [formGroup]="filtersForm">
+    <th *ngFor="let col of $any(columns)"
+        [formGroup]="filtersForm"
+        [class.hidden]="col.hidden">
       <app-table-filter-field [column]="col"></app-table-filter-field>
     </th>
     <!--<th *ngIf="buttons.length > 0"-->
@@ -55,7 +54,8 @@
   <tr *ngFor="let item of data">
     <td *ngFor="let col of $any(columns)"
         [class.table-buttons]="!!col.actions"
-        [class.table-active]="col.key === sorts">
+        [class.table-active]="col.key === sorts"
+        [class.hidden]="col.hidden">
       <ng-container *ngIf="!col.actions; else actionButtonsColumn">
         <div [innerHTML]="col.formatter ? col.formatter(item[col.key], item) : item[col.key]"></div>
       </ng-container>
@@ -82,10 +82,17 @@
 
 <div class="table-footer"
      [class.hidden]="!data || data.length === 0">
+
+  <app-column-chooser *ngIf="columnChooser"
+                      [sequenceName]="columnChooserSequence!"
+                      [(columns)]="columns"></app-column-chooser>
+
   <app-page-size *ngIf="data && total > pageSize"
                  [pageSize]="pageSize"
                  (pageSizeChange)="changePageSize($event)"></app-page-size>
+
   <div class="page-indicator">{{pageIndicatorText}}</div>
+
   <app-pagination #pagination
                   [page]="page"
                   [pageSize]="pageSize"

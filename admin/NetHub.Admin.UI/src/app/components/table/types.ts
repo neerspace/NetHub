@@ -57,7 +57,14 @@ export interface IFilterInfo {
 
 export type FormatterFunc = (el: any, obj?: any) => string;
 
+export interface Hideable {
+  hideable?: boolean;
+  hidden?: boolean;
+}
+
 export interface ActionButtonsColumn<T> {
+  key?: string;
+  title?: string;
   actions: ITableAction<T>[];
 }
 
@@ -101,14 +108,16 @@ export interface DateRangeFilter {
   filterValueRange?: IRange<DateTime>;
 }
 
-export type ColumnInfo =
-  | ActionButtonsColumn<any>
-  | (ColumnBase &
-      (
-        | BooleanFilter
-        | DropdownFilter
-        /*| DropdownFilterWithEnum*/
-        | TextFilter
-        | NumberFilter
-        | DateRangeFilter
-      ));
+export type ColumnInfo = Hideable &
+  (
+    | ActionButtonsColumn<any>
+    | (ColumnBase &
+        (
+          | BooleanFilter
+          | DropdownFilter
+          /*| DropdownFilterWithEnum*/
+          | TextFilter
+          | NumberFilter
+          | DateRangeFilter
+        ))
+  );

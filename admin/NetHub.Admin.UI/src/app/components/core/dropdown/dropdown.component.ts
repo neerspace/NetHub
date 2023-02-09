@@ -10,5 +10,6 @@ import { Component, Input } from '@angular/core';
 })
 export class DropdownComponent {
   @Input() key!: string;
+  @Input() buttonIcon?: string;
   @Input() buttonText!: any;
 }

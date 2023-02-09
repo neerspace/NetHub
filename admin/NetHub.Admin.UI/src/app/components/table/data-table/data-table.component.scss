@@ -138,10 +138,6 @@ td {
   > * {
     margin-right: 2rem;
   }
-
-  &.hidden {
-    display: none;
-  }
 }
 
 .details-button {
@@ -151,4 +147,8 @@ td {
 .page-indicator {
   font-size: .9rem;
   align-self: center;
+}
+
+.hidden {
+  display: none;
 }
