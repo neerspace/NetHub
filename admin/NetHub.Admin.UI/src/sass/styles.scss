@@ -46,4 +46,15 @@ button.btn, a {
   color: var(--c-text) !important;
 }
 
+
+.as-split-gutter {
+  background-color: var(--c-primary) !important;
+}
+
+.split-view as-split-area > .split-area-content {
+  margin: 10px;
+  overflow: scroll;
+}
+
+
 @import 'bootstrap/scss/bootstrap';
