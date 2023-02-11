@@ -1,49 +1,103 @@
-<app-main-header short="true" [pageTitle]="isCreating ? 'Create Role' : 'Edit Role'">
-  <button app-icon-button icon="la-undo" variant="secondary"
+<app-main-header short="true"
+                 [pageTitle]="isCreating ? 'Create Role' : 'Edit Role'">
+  <button app-icon-button
+          icon="la-undo"
+          variant="secondary"
           (onclick)="backToTable()">
     Back
   </button>
-  <button app-icon-button *ngIf="!isCreating" icon="la-ban" variant="danger"
-          [disabled]="ready !== 'ready'" (onclick)="roleService.delete(id)">
+  <button app-icon-button
+          *ngIf="!isCreating"
+          icon="la-ban"
+          variant="danger"
+          [disabled]="ready !== 'ready'"
+          (onclick)="roleService.delete(id)">
     Delete
   </button>
-  <button app-icon-button icon="la-save" variant="success"
-          [disabled]="ready !== 'ready'" (onclick)="submit()">
+  <button app-icon-button
+          icon="la-save"
+          variant="success"
+          [disabled]="ready !== 'ready'"
+          (onclick)="submit()">
     {{isCreating ? 'Create' : 'Save'}}
   </button>
 </app-main-header>
 
 <app-main-content>
-  <form app-form-layout [formGroup]="roleService.form" [ready]="ready">
+  <form app-form-layout
+        [formGroup]="roleService.form"
+        [ready]="ready">
 
-    <app-number-field *ngIf="!isCreating" label="ID" controlName="id"
-                      disabled="true" [allowCopy]="true">
-    </app-number-field>
+    <app-number-field *ngIf="!isCreating"
+                      label="ID"
+                      controlName="id"
+                      disabled="true"
+                      [allowCopy]="true"></app-number-field>
 
-    <app-text-field label="Role Name" controlName="name"
-                    [maxLength]="50" [required]="true">
-    </app-text-field>
+    <app-text-field label="Role Name"
+                    controlName="name"
+                    [maxLength]="50"
+                    [required]="true"></app-text-field>
 
     <ul>
       <ng-container *ngFor="let pem of roleService.permissions"
-                    [ngTemplateOutlet]="singlePermission"
-                    [ngTemplateOutletContext]="{$implicit:pem}">
-      </ng-container>
+                    [ngTemplateOutlet]="permissionItem"
+                    [ngTemplateOutletContext]="{ permission: pem }"></ng-container>
     </ul>
   </form>
 
 </app-main-content>
 
-<ng-template #singlePermission let-permission>
-  <li>
-    {{permission.displayName}}
-    <input type="checkbox" *ngIf="permission.key">
-    <input type="checkbox" *ngIf="permission.manageKey">
+<ng-template #permissionItem
+             let-permission="permission">
+  <li *ngIf="permission.manageKey; else simplePermission"
+      class="menu-item form-check checkbox">
+    <label *ngIf="permission.manageKey"
+           class="form-check-label">
+      {{permission.displayName}}
+      <input class="form-check-input"
+             [name]="permission.key"
+             type="checkbox"
+             [indeterminate]="permission.state === 1"
+             [checked]="permission.state === 2"
+             (click)="onPermissionChange($event, permission)">
+    </label>
     <ul *ngIf="!!permission.children">
       <ng-container *ngFor="let pem of permission.children"
-                    [ngTemplateOutlet]="singlePermission"
-                    [ngTemplateOutletContext]="{$implicit:pem}">
-      </ng-container>
+                    [ngTemplateOutlet]="permissionItem"
+                    [ngTemplateOutletContext]="{ permission: pem }"></ng-container>
     </ul>
+    <br />
   </li>
+
+  <ng-template #simplePermission>
+    <li class="menu-item form-check checkbox">
+      <label *ngIf="permission.key"
+             class="form-check-label">
+        {{permission.displayName}}
+        <input class="form-check-input"
+               [name]="permission.key"
+               type="checkbox"
+               [checked]="permission.state > 0"
+               (click)="onPermissionChange($event, permission)">
+      </label>
+      <ul *ngIf="!!permission.children">
+        <ng-container *ngFor="let pem of permission.children"
+                      [ngTemplateOutlet]="permissionItem"
+                      [ngTemplateOutletContext]="{ permission: pem }"></ng-container>
+      </ul>
+      <br />
+    </li>
+  </ng-template>
+  <!--<li>-->
+  <!--  <input type="checkbox"-->
+  <!--         *ngIf="permission.key">-->
+  <!--  <input type="checkbox"-->
+  <!--         *ngIf="permission.manageKey">-->
+  <!--  <ul *ngIf="!!permission.children">-->
+  <!--    <ng-container *ngFor="let pem of permission.children"-->
+  <!--                  [ngTemplateOutlet]="singlePermission"-->
+  <!--                  [ngTemplateOutletContext]="{$implicit:pem}"></ng-container>-->
+  <!--  </ul>-->
+  <!--</li>-->
 </ng-template>

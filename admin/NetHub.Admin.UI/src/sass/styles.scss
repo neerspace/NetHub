@@ -57,4 +57,13 @@ button.btn, a {
 }
 
 
+.radio input[type="radio"],
+.radio-inline input[type="radio"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"] {
+  float: left;
+  margin-left: -20px;
+}
+
+
 @import 'bootstrap/scss/bootstrap';

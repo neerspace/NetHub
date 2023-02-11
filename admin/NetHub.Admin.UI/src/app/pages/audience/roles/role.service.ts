@@ -8,6 +8,17 @@ import { IFiltered, IFilterInfo } from 'src/app/components/table/types';
 import { ModalsService } from 'src/app/services/modals.service';
 import { LoaderService, ToasterService } from 'src/app/services/viewport';
 
+export enum PermissionState {
+  none = 0,
+  read = 1,
+  manage = 2,
+}
+
+export type PermissionModelExtended = PermissionModel & {
+  state: PermissionState;
+  parent: PermissionModelExtended | null;
+};
+
 @Injectable({ providedIn: 'root' })
 export class RoleService {
   readonly form: FormGroupReady;
@@ -30,7 +41,7 @@ export class RoleService {
       ready: [null as FormReady, []],
       id: ['', []],
       name: ['', []],
-      permissions: [[], []],
+      permissions: [[] as string[], []],
     }) as any;
     this.form.ready = this.form.get('ready') as FormControl;
   }
@@ -52,6 +63,18 @@ export class RoleService {
         this.onRequestError(error);
       },
     });
+  }
+
+  private extendPermissions(sourcePermissions: PermissionModel[]): PermissionModelExtended[] {
+    const result: PermissionModelExtended[] = [];
+
+    for (const permission of sourcePermissions as PermissionModelExtended[]) {
+      // permission.state = ;
+      //   ? PermissionState.manage
+      //   : permission.result.push(permission);
+    }
+
+    return result;
   }
 
   getById(id: number): void {
