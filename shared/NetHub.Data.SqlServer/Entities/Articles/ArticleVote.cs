@@ -7,7 +7,7 @@ namespace NetHub.Data.SqlServer.Entities.Articles;
 [Table($"{nameof(ArticleVote)}s")]
 public record ArticleVote
 {
-	#region Localization
+	#region Article
 
 	public long ArticleId { get; set; }
 	public virtual Article? Article { get; set; }

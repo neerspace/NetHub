@@ -36,13 +36,27 @@ internal sealed class UserProvider : IUserProvider
         return longResult ? userId : null;
     }
 
-
     public async Task<AppUser> GetUserAsync()
     {
-        var user = await UserManager.FindByIdAsync(UserId.ToString());
-        if (user is null)
-            throw new UnauthorizedException("Authorized used required");
+        try
+        {
+            var user = await UserManager.FindByIdAsync(UserId.ToString());
+            if (user is null)
+                throw new UnauthorizedException("Authorized used required");
 
-        return _userProfile ??= user;
+            return _userProfile ??= user;
+        }
+        catch (Exception e)
+        {
+            throw new UnauthorizedException("Authorized used required");
+        }
+    }
+
+    public async Task<AppUser?> TryGetUserAsync()
+    {
+        var userId = TryGetUserId();
+        var user = await UserManager.FindByIdAsync(userId?.ToString());
+
+        return user;
     }
 }

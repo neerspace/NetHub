@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
 using NetHub.Core.Exceptions;
+using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Enums;
+using NetHub.Extensions;
 using NetHub.Models.Articles.Localizations;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
@@ -16,50 +18,43 @@ namespace NetHub.Api.Endpoints.Articles.Localizations;
 
 [Tags(TagNames.ArticleLocalizations)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleLocalizationGetByIdEndpoint : Endpoint<ArticleLocalizationQuery, ViewLocalizationModel>
+public sealed class ArticleLocalizationGetByIdEndpoint : Endpoint<ArticleLocalizationQuery, ArticleLocalizationModel>
 {
     [HttpGet("articles/{id:long}/{lang:alpha:length(2)}"), ClientSide(ActionName = "getByIdAndCode")]
-    public override async Task<ViewLocalizationModel> HandleAsync(ArticleLocalizationQuery request, CancellationToken ct)
+    public override async Task<ArticleLocalizationModel> HandleAsync(ArticleLocalizationQuery request, CancellationToken ct)
     {
-        var userId = UserProvider.TryGetUserId();
+        var user = await UserProvider.TryGetUserAsync();
 
-        var entity = await Database.Set<ArticleLocalization>()
-            .Include(l => l.Contributors).ThenInclude(c => c.User)
+        var localization = await Database
+            .GetExtendedArticles(user?.Id, true, true)
             .FirstOrDefaultAsync(l =>
-                l.ArticleId == request.Id
-                && l.LanguageCode == request.LanguageCode, ct);
+                l.ArticleId == request.Id && l.LanguageCode == request.LanguageCode, ct);
 
-        if (entity is null)
+        if (localization is null)
             throw new NotFoundException("No such article localization");
 
-        GuardPermissions(entity, userId);
+        GuardPermissions(localization, user?.UserName);
+        AddViews(Database, localization);
 
-        var localization = entity.Adapt<ViewLocalizationModel>();
-
-        if (userId is not null)
-        {
-            var isSaved = await Database.Set<SavedArticle>()
-                .SingleOrDefaultAsync(sa => sa.LocalizationId == localization.Id && sa.UserId == userId, ct);
-            var articleVote = await Database.Set<ArticleVote>()
-                .SingleOrDefaultAsync(sa => sa.ArticleId == localization.ArticleId && sa.UserId == userId, ct);
-
-            localization.IsSaved = isSaved != null;
-            localization.SavedDate = isSaved?.SavedDate;
-            localization.Vote = articleVote?.Vote;
-        }
-
-        entity.Views++;
         await Database.SaveChangesAsync(ct);
 
         return localization;
     }
 
-    private static void GuardPermissions(ArticleLocalization localization, long? userId)
+    private static void GuardPermissions(ArticleLocalizationModel localization, string? userName)
     {
         if (localization.Status == ContentStatus.Published)
             return;
 
-        if (userId is null || !localization.Contributors.Select(c => c.UserId).Contains(userId.Value))
+        if (userName is null || !localization.Contributors.Select(c => c.UserName).Contains(userName))
             throw new PermissionsException();
+    }
+
+    private static void AddViews(ISqlServerDatabase database, ArticleLocalizationModel model)
+    {
+        var localization = new ArticleLocalization {Id = model.Id, Views = model.Views};
+        database.Set<ArticleLocalization>().Attach(localization);
+
+        localization.Views++;
     }
 }

@@ -1,60 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NetHub.Shared.Api;
-using NetHub.Shared.Api.Abstractions;
-using NetHub.Data.SqlServer.Entities.Articles;
-using NetHub.Data.SqlServer.Entities.Views;
+using Microsoft.EntityFrameworkCore;
+using NetHub.Data.SqlServer.Enums;
+using NetHub.Extensions;
 using NetHub.Models.Articles.Localizations;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
-using NetHub.Shared.Models;
-using NetHub.Shared.Services;
+using NetHub.Shared.Models.Localizations;
 
 namespace NetHub.Api.Endpoints.Articles.Localizations;
 
 [Tags(TagNames.ArticleLocalizations)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleLocalizationSearchEndpoint : Endpoint<ArticleLocalizationFilter, ViewLocalizationModel[]>
+public sealed class ArticleLocalizationSearchEndpoint : Endpoint<ArticleLocalizationFilter, ArticleLocalizationModel[]>
 {
-    private readonly IFilterService _filterService;
-    public ArticleLocalizationSearchEndpoint(IFilterService filterService) => _filterService = filterService;
-
     [HttpGet("articles/{lang:alpha:length(2)}/search")]
-    public override async Task<ViewLocalizationModel[]> HandleAsync(ArticleLocalizationFilter request, CancellationToken ct)
+    public override async Task<ArticleLocalizationModel[]> HandleAsync(ArticleLocalizationFilter request, CancellationToken ct)
     {
         var userId = UserProvider.TryGetUserId();
 
-        var result = userId != null
-            ? GetExtendedArticles(request, ct, userId.Value)
-            : GetSimpleArticles(request, ct);
+        IQueryable<ArticleLocalizationModel> queryable = Database
+            .GetExtendedArticles(userId, loadContributors: request.ContributorUsername is not null)
+            .Where(a => a.Status == ContentStatus.Published)
+            .OrderBy(a => a.Published);
 
-        return await result;
-    }
+        if (request.ContributorUsername is not null)
+            queryable = queryable
+                .Where(a => a.Contributors
+                    .Any(u => u.UserName == request.ContributorUsername));
 
-    private async Task<ViewLocalizationModel[]> GetSimpleArticles(FilterRequest request, CancellationToken cancel)
-    {
-        if (request.Filters != null && request.Filters.Contains("contributorRole"))
-            request.Filters = request.Filters.Replace(",contributorRole==Author", "");
-
-        if (request.Filters != null && request.Filters.Contains("contributorId"))
-            request.Filters = request.Filters.Replace("contributorId", "InContributors");
-
-        request.Filters += ",status==published";
-        request.Sorts = "published";
-
-        var result = await _filterService
-            .FilterAsync<ArticleLocalization, ViewLocalizationModel>(request, cancel, al => al.Contributors);
-
-        return result;
-    }
-
-    private async Task<ViewLocalizationModel[]> GetExtendedArticles(FilterRequest request, CancellationToken cancel,
-        long userId)
-    {
-        request.Filters += $",userId=={userId}";
-        request.Filters += ",status==published";
-        request.Sorts = "published";
-
-        var result =
-            await _filterService.FilterAsync<ViewUserArticle, ViewLocalizationModel>(request, ct: cancel);
-        return result;
+        return await queryable.ToArrayAsync(ct);
     }
 }

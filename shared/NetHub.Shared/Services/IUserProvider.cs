@@ -8,4 +8,5 @@ public interface IUserProvider
     string UserName { get; }
     long? TryGetUserId();
     Task<AppUser> GetUserAsync();
+    Task<AppUser?> TryGetUserAsync();
 }

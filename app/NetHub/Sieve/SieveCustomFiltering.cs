@@ -1,7 +1,7 @@
 ﻿using NeerCore.DependencyInjection;
 using NetHub.Data.SqlServer.Entities.Articles;
+using NetHub.Shared.Models.Localizations;
 using Sieve.Services;
-using static System.Int32;
 
 namespace NetHub.Data.SqlServer.Sieve;
 
@@ -10,11 +10,10 @@ internal sealed class SieveCustomFiltering : ISieveCustomFilterMethods
 {
     public IQueryable<ArticleLocalization> InContributors(IQueryable<ArticleLocalization> source, string op, string[] values)
     {
-        var parseResult = TryParse(values[0], out var contributorId);
-        if (!parseResult)
-            return source;
+        var username = values[0];
 
-        var result = source.Where(p => p.Contributors.Any(c => c.UserId == contributorId));
+        var result = source.Where(p =>
+            p.Contributors.Any(c => string.Equals(c.User.UserName, username, StringComparison.InvariantCultureIgnoreCase)));
         return result;
     }
 }

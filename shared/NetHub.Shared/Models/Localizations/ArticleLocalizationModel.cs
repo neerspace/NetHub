@@ -1,26 +1,39 @@
 ﻿using NetHub.Data.SqlServer.Enums;
+using Sieve.Attributes;
 
 namespace NetHub.Shared.Models.Localizations;
 
 public sealed class ArticleLocalizationModel
 {
+    [Sieve(CanFilter = true, CanSort = true)]
     public long Id { get; set; }
-    public long ArticleId { get; set; }//
-    public string LanguageCode { get; set; } = default!;//
+    [Sieve(CanFilter = true, CanSort = true)]
+    public long ArticleId { get; set; }
+    [Sieve(CanFilter = true, CanSort = true)]
+    public string LanguageCode { get; set; } = default!;
+    [Sieve(CanFilter = true)]
     public ArticleContributorModel[] Contributors { get; set; } = default!;
-    public string Title { get; set; } = default!;//
-    public string Description { get; set; } = default!;//
+    public string Title { get; set; } = default!;
+    public string Description { get; set; } = default!;
     public string Html { get; set; } = default!;
-    public ContentStatus Status { get; set; }//
-    public int Views { get; set; }//
-    public int Rate { get; set; }//
 
-    public DateTimeOffset Created { get; set; }//
-    public DateTimeOffset? Updated { get; set; }//
-    public DateTimeOffset? Published { get; set; }//
-    public DateTimeOffset? Banned { get; set; }//
+    [Sieve(CanFilter = true)]
+    public ContentStatus Status { get; set; }
+
+    [Sieve(CanSort = true)]
+    public int Views { get; set; }
+    public int Rate { get; set; }
+
+    [Sieve(CanSort = true)]
+    public DateTimeOffset Created { get; set; }
+    [Sieve(CanSort = true)]
+    public DateTimeOffset? Updated { get; set; }
+    [Sieve(CanSort = true)]
+    public DateTimeOffset? Published { get; set; }
+    [Sieve(CanSort = true)]
+    public DateTimeOffset? Banned { get; set; }
 
     public bool IsSaved { get; set; }
-    public DateTimeOffset? SavedDate { get; set; }//
-    public Vote? Vote { get; set; }//
+    public DateTimeOffset? SavedDate { get; set; }
+    public Vote? Vote { get; set; }
 }
