@@ -15,6 +15,7 @@ import { ArticlesService } from '../services/article.service';
 })
 export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> {
   @ViewChild(TabsComponent) tabsComponent!: TabsComponent;
+  @ViewChild('article') articleTemplate!: TemplateRef<any>;
   @ViewChild('localization') localizationTemplate!: TemplateRef<any>;
 
   columns: ColumnInfo[];
@@ -36,5 +37,40 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> {
 
   onLocalizationClick() {
     this.tabsComponent.openTab('New Tab', this.localizationTemplate, 'aoa', true);
+  onDetailsClick(model: ArticleModel) {
+
+    const article$ = this.articlesService.getById(model.id);
+    const localizations$ = this.articlesService.getLocalizations(model.id);
+
+    combineLatest([article$, localizations$])
+      .subscribe(([article, localizations]) => {
+
+        this.tabsComponent.closeAllTabs();
+
+        this.tabsComponent.openTab(
+          this.generateTabName(article),
+          this.articleTemplate,
+          article
+        );
+
+        for (let localization of localizations) {
+          this.tabsComponent.openTab(
+            this.generateTabName(localization),
+            this.localizationTemplate,
+            localization,
+            true);
+        }
+
+        this.loaderService.hide();
+      })
+  }
+
+  private generateTabName(data: ArticleModel | ArticleLocalizationModel): string {
+    if (data instanceof ArticleModel) {
+      return `${data.id}: General`;
+    } else {
+      const code = data.languageCode.charAt(0).toUpperCase() + data.languageCode.slice(1);
+      return `${data.articleId}: ${code}`;
+    }
   }
 }

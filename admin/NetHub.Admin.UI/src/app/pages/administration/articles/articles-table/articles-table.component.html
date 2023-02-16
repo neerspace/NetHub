@@ -31,22 +31,65 @@
             (dragEnd)="resize($event.sizes)">
     <as-split-area [size]="firstComponentSize">
       <div class="split-area-content">
+<<<<<<< HEAD
         <app-data-table #table
                         defaultSorting="-created"
                         [columns]="columns"
                         [columnChooser]="true"
                         [onFilter]="fetchFilter.bind(this)"></app-data-table>
         <button (click)="onLocalizationClick()">Add Tab</button>
+=======
+        <app-data-table
+          #table
+          defaultSorting="-created"
+          [additionColumns]="additionColumns"
+          [columns]="columns"
+          [buttons]="buttons"
+          [onFilter]="fetchFilter.bind(this)">
+        </app-data-table>
+>>>>>>> origin/development
       </div>
     </as-split-area>
     <as-split-area [size]="secondComponentSize">
       <div class="split-area-content">
         <app-tabs>
-          <app-tab tabTitle="First tab">Hello</app-tab>
         </app-tabs>
-
-        <ng-template #localization>
-          I'm localization
+        <ng-template let-data="data" #article>
+          <app-article-view [article]="data"></app-article-view>
+        </ng-template>
+        <ng-template let-data="data" #localization>
+          <app-localization-view [localization]="data"></app-localization-view>
+  <button app-icon-button
+          icon="la-sync"
+          variant="primary"
+          [disabled]="table.loading"
+          (click)="table.loadData()">
+  <button app-icon-button
+          icon="la-download"
+          variant="primary"
+          [disabled]="table.loading"
+          (click)="downloadJson()">
+  <button app-icon-button
+          *ngIf="articlesService.lastFormId"
+          icon="la-undo"
+          variant="secondary"
+          (click)="articlesService.showForm()">
+  <as-split class="split-view"
+            unit="percent"
+            direction="vertical"
+            [gutterSize]="4"
+            (dragEnd)="resize($event.sizes)">
+        <app-data-table #table
+                        defaultSorting="-created"
+                        [columns]="columns"
+                        [columnChooser]="true"
+                        [onFilter]="fetchFilter.bind(this)"></app-data-table>
+        <button (click)="onLocalizationClick()">Add Tab</button>
+        <ng-template let-data="data" #article>
+          <app-article-view [article]="data"></app-article-view>
+        </ng-template>
+        <ng-template let-data="data" #localization>
+          <app-localization-view [localization]="data"></app-localization-view>
         </ng-template>
       </div>
     </as-split-area>

@@ -24,10 +24,11 @@ public class ArticleByIdEndpoint : Endpoint<long, ArticleModel>
     [HttpGet("articles/{id:long}"), ClientSide(ActionName = "getById")]
     public override async Task<ArticleModel> HandleAsync([FromRoute] long id, CancellationToken ct)
     {
-        var user = await _database.Set<Article>()
+        var article = await _database.Set<Article>()
             .Include(a => a.Tags)!.ThenInclude(t => t.Tag)
             .AsNoTracking()
             .Where(u => u.Id == id).FirstOr404Async(ct);
-        return user.Adapt<ArticleModel>();
+
+        return article.Adapt<ArticleModel>();
     }
 }
