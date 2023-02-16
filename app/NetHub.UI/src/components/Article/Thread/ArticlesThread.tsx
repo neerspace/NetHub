@@ -5,12 +5,11 @@ import ErrorBlock from "../../Layout/ErrorBlock";
 import ArticleShort from "../Shared/ArticleShort";
 import { QueryClientConstants } from "../../../constants/queryClientConstants";
 import { _myArticlesApi } from "../../../api";
-import { ILocalizationExtended } from "../../../types/api/ILocalizationExtended";
-import { IAbstractLocalization } from "../../../types/api/IAbstractLocalization";
+import { ISimpleLocalization } from "../../../types/api/ISimpleLocalization";
 
 interface IArticlesThreadProps {
-  articles: IAbstractLocalization[],
-  setArticles: (articles: IAbstractLocalization[]) => void
+  articles: ISimpleLocalization[],
+  setArticles: (articles: ISimpleLocalization[]) => void
   byUser?: boolean
 }
 
@@ -18,7 +17,7 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles, byUser
 
   const queryClient = useQueryClient();
 
-  const handleSaving = (localization: IAbstractLocalization) => async () => {
+  const handleSaving = (localization: ISimpleLocalization) => async () => {
     await _myArticlesApi.toggleSave(localization.articleId, localization.languageCode);
     setArticles(articles.map((a) => a.id === localization.id
       ? {...a, isSaved: !a.isSaved} : a));
@@ -26,11 +25,11 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles, byUser
     await queryClient.invalidateQueries([QueryClientConstants.articleLocalization, localization.articleId, localization.languageCode]);
   }
 
-  const handleSetLocalization = (localization: IAbstractLocalization) => {
+  const handleSetLocalization = (localization: ISimpleLocalization) => {
     setArticles(articles.map((a) => a.id === localization.id ? localization : a));
   }
 
-  const afterRequest = (item: IAbstractLocalization) => async function () {
+  const afterRequest = (item: ISimpleLocalization) => async function () {
     await queryClient.invalidateQueries(QueryClientConstants.savedArticles);
     await queryClient.invalidateQueries([QueryClientConstants.articleLocalization, item.articleId, item.languageCode]);
     await queryClient.invalidateQueries([QueryClientConstants.article, item.articleId]);

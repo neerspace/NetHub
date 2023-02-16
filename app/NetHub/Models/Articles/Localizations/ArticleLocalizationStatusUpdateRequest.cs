@@ -1,8 +1,10 @@
-﻿namespace NetHub.Models.Articles.Localizations;
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace NetHub.Models.Articles.Localizations;
 
 public sealed record ArticleLocalizationStatusUpdateRequest(
-    long Id,
-    string LanguageCode,
+    [FromRoute] long Id,
+    [FromRoute] string Language,
     ArticleStatusActions Status
 );
 

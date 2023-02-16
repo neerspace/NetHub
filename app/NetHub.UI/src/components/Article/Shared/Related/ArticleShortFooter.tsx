@@ -5,10 +5,10 @@ import ArticleSavingActions from "../ArticleSavingActions";
 import { Box, Text } from "@chakra-ui/react";
 import Actions from "../../../UI/Action/Actions";
 import { Vote } from "../../../../api/_api";
-import { IAbstractLocalization } from "../../../../types/api/IAbstractLocalization";
+import { ISimpleLocalization } from "../../../../types/api/ISimpleLocalization";
 
 interface IArticleShortFooterProps {
-  localization: IAbstractLocalization,
+  localization: ISimpleLocalization,
   save: { actual: boolean, handle: () => Promise<void> },
 
   updateCounter: (rate: number, vote: Vote | null) => void,

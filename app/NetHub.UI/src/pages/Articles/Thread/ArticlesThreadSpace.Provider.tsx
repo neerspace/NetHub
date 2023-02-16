@@ -4,21 +4,20 @@ import { ApiError } from "../../../types/ApiError";
 import { UkrainianLanguage } from "../../../utils/constants";
 import { useAppStore } from "../../../store/config";
 import { _localizationsApi } from "../../../api";
-import { ViewLocalizationModel } from "../../../api/_api";
-import { ILocalizationExtended } from "../../../types/api/ILocalizationExtended";
 import { FilterInfo } from "../../../types/api/IFilterInfo";
+import { ISimpleLocalization } from "../../../types/api/ISimpleLocalization";
 
 type ContextType = {
   languages: { title: string, value: string }[],
-  articlesAccessor: UseQueryResult<ILocalizationExtended[], ApiError>,
-  setArticles: (articles: ILocalizationExtended[]) => void,
+  articlesAccessor: UseQueryResult<ISimpleLocalization[], ApiError>,
+  setArticles: (articles: ISimpleLocalization[]) => void,
   articlesLanguage: string,
   setArticlesLanguage: (language: string) => void
 }
 
 const InitialContextValue: ContextType = {
   languages: [{title: 'UA', value: 'ua'}, {title: 'EN', value: 'en'}],
-  articlesAccessor: {} as UseQueryResult<ILocalizationExtended[], ApiError>,
+  articlesAccessor: {} as UseQueryResult<ISimpleLocalization[], ApiError>,
   setArticles: () => {
   },
   articlesLanguage: localStorage.getItem('articlesLanguage') ?? UkrainianLanguage,
@@ -38,16 +37,15 @@ const ArticlesThreadSpaceProvider: FC<PropsWithChildren> = ({children}) => {
 
   console.log('language', articlesLanguage)
 
-  const articlesAccessor: any = useQuery<ViewLocalizationModel[], ApiError>(['articles', articlesLanguage, isLogin],
+  const articlesAccessor: any = useQuery<ISimpleLocalization[], ApiError>(['articles', articlesLanguage, isLogin],
     () => loadArticles()
   );
 
   const loadArticles = async () => {
-    const f = new FilterInfo();
-    return await _localizationsApi.search(articlesLanguage, f.filters, f.sorts, f.page, f.pageSize);
+    return await _localizationsApi.search(articlesLanguage, undefined);
   }
 
-  const handleSetArticles = (newArticles: ILocalizationExtended[]) => {
+  const handleSetArticles = (newArticles: ISimpleLocalization[]) => {
     queryClient.setQueryData(['articles', articlesLanguage, isLogin], newArticles);
   }
 

@@ -7,11 +7,11 @@ import cl from './ArticleShort.module.sass';
 import ArticleShortFooter from './Related/ArticleShortFooter';
 import ArticleShortHeader from './Related/ArticleShortHeader';
 import { Vote } from "../../../api/_api";
-import { IAbstractLocalization } from "../../../types/api/IAbstractLocalization";
+import { ISimpleLocalization } from "../../../types/api/ISimpleLocalization";
 
 interface IArticleItemProps {
-  localization: IAbstractLocalization;
-  setLocalization: (localization: IAbstractLocalization) => void;
+  localization: ISimpleLocalization;
+  setLocalization: (localization: ISimpleLocalization) => void;
   save: { actual: boolean; handle: () => Promise<void> };
   time?: { before?: string; show?: 'default' | 'saved' };
   afterCounterRequest: () => Promise<void>;

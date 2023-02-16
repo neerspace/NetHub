@@ -13,7 +13,7 @@ namespace NetHub.Api.Endpoints.Articles.Localizations;
 [ApiVersion(Versions.V1)]
 public sealed class ArticleLocalizationSearchEndpoint : Endpoint<ArticleLocalizationFilter, ArticleLocalizationModel[]>
 {
-    [HttpGet("articles/{lang:alpha:length(2)}/search")]
+    [HttpGet("articles/{Lang:alpha:length(2)}/search")]
     public override async Task<ArticleLocalizationModel[]> HandleAsync(ArticleLocalizationFilter request, CancellationToken ct)
     {
         var userId = UserProvider.TryGetUserId();

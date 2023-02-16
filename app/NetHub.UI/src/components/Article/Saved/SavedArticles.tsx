@@ -11,13 +11,13 @@ import './transitions.css';
 import { _myArticlesApi } from "../../../api";
 import { ILocalizationExtended } from "../../../types/api/ILocalizationExtended";
 import { IViewLocalizationModel, ViewLocalizationModel } from "../../../api/_api";
-import { IAbstractLocalization } from "../../../types/api/IAbstractLocalization";
+import { ISimpleLocalization } from "../../../types/api/ISimpleLocalization";
 
 const SavedArticles = () => {
   const { savedArticles, setSavedArticles } = useSavedArticlesContext();
   const queryClient = useQueryClient();
 
-  async function handleSetArticle(localization: IAbstractLocalization) {
+  async function handleSetArticle(localization: ISimpleLocalization) {
     setSavedArticles(
       savedArticles.data!.map((a) =>
         a.id === localization.id ? localization : a
@@ -35,7 +35,7 @@ const SavedArticles = () => {
     );
   }
 
-  const afterCounterRequest = (article: IAbstractLocalization) =>
+  const afterCounterRequest = (article: ISimpleLocalization) =>
     async function () {
       await queryClient.invalidateQueries(QueryClientConstants.articles);
       await queryClient.invalidateQueries([

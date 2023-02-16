@@ -214,7 +214,7 @@ export class ArticleLocalizationsApi {
     /**
      * @return Success
      */
-    getByIdAndCode(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<ViewLocalizationModel> {
+    getByIdAndCode(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel> {
         let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -244,7 +244,7 @@ export class ArticleLocalizationsApi {
         });
     }
 
-    protected processGetByIdAndCode(response: AxiosResponse): Promise<ViewLocalizationModel> {
+    protected processGetByIdAndCode(response: AxiosResponse): Promise<ArticleLocalizationModel> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -258,8 +258,8 @@ export class ArticleLocalizationsApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = ViewLocalizationModel.fromJS(resultData200);
-            return Promise.resolve<ViewLocalizationModel>(result200);
+            result200 = ArticleLocalizationModel.fromJS(resultData200);
+            return Promise.resolve<ArticleLocalizationModel>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -300,7 +300,7 @@ export class ArticleLocalizationsApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ViewLocalizationModel>(null as any);
+        return Promise.resolve<ArticleLocalizationModel>(null as any);
     }
 
     /**
@@ -397,33 +397,18 @@ export class ArticleLocalizationsApi {
     }
 
     /**
-     * @param filters (optional) 
-     * @param sorts (optional) 
-     * @param page (optional) 
-     * @param pageSize (optional) 
+     * @param contributorUsername (optional) 
      * @return Success
      */
-    search(lang: string, filters: string | undefined, sorts: string | undefined, page: number | undefined, pageSize: number | undefined , cancelToken?: CancelToken | undefined): Promise<ViewLocalizationModel[]> {
-        let url_ = this.baseUrl + "/v1/articles/{lang}/search?";
+    search(lang: string, contributorUsername: string | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel[]> {
+        let url_ = this.baseUrl + "/v1/articles/{Lang}/search?";
         if (lang === undefined || lang === null)
             throw new Error("The parameter 'lang' must be defined.");
-        url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
-        if (filters === null)
-            throw new Error("The parameter 'filters' cannot be null.");
-        else if (filters !== undefined)
-            url_ += "Filters=" + encodeURIComponent("" + filters) + "&";
-        if (sorts === null)
-            throw new Error("The parameter 'sorts' cannot be null.");
-        else if (sorts !== undefined)
-            url_ += "Sorts=" + encodeURIComponent("" + sorts) + "&";
-        if (page === null)
-            throw new Error("The parameter 'page' cannot be null.");
-        else if (page !== undefined)
-            url_ += "Page=" + encodeURIComponent("" + page) + "&";
-        if (pageSize === null)
-            throw new Error("The parameter 'pageSize' cannot be null.");
-        else if (pageSize !== undefined)
-            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
+        url_ = url_.replace("{Lang}", encodeURIComponent("" + lang));
+        if (contributorUsername === null)
+            throw new Error("The parameter 'contributorUsername' cannot be null.");
+        else if (contributorUsername !== undefined)
+            url_ += "ContributorUsername=" + encodeURIComponent("" + contributorUsername) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -446,7 +431,7 @@ export class ArticleLocalizationsApi {
         });
     }
 
-    protected processSearch(response: AxiosResponse): Promise<ViewLocalizationModel[]> {
+    protected processSearch(response: AxiosResponse): Promise<ArticleLocalizationModel[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -463,12 +448,12 @@ export class ArticleLocalizationsApi {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(ViewLocalizationModel.fromJS(item));
+                    result200!.push(ArticleLocalizationModel.fromJS(item));
             }
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<ViewLocalizationModel[]>(result200);
+            return Promise.resolve<ArticleLocalizationModel[]>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -509,26 +494,21 @@ export class ArticleLocalizationsApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ViewLocalizationModel[]>(null as any);
+        return Promise.resolve<ArticleLocalizationModel[]>(null as any);
     }
 
     /**
-     * @param languageCode (optional) 
      * @param status (optional) 
      * @return No Content
      */
-    updateStatus(id: number, languageCode: string | undefined, status: ArticleStatusActions | undefined, lang: string , cancelToken?: CancelToken | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/v1/articles/{id}/{lang}/status?";
+    updateStatus(id: number, language: string, status: ArticleStatusActions | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/v1/articles/{Id}/{Language}/status?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{Id}", encodeURIComponent("" + id));
-        if (lang === undefined || lang === null)
-            throw new Error("The parameter 'lang' must be defined.");
-        url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
-        if (languageCode === null)
-            throw new Error("The parameter 'languageCode' cannot be null.");
-        else if (languageCode !== undefined)
-            url_ += "LanguageCode=" + encodeURIComponent("" + languageCode) + "&";
+        if (language === undefined || language === null)
+            throw new Error("The parameter 'language' must be defined.");
+        url_ = url_.replace("{Language}", encodeURIComponent("" + language));
         if (status === null)
             throw new Error("The parameter 'status' cannot be null.");
         else if (status !== undefined)
@@ -2095,7 +2075,7 @@ export class MyArticlesApi {
     /**
      * @return Success
      */
-    savedArticles(  cancelToken?: CancelToken | undefined): Promise<ViewLocalizationModel[]> {
+    savedArticles(  cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel[]> {
         let url_ = this.baseUrl + "/v1/me/saved-articles";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2119,7 +2099,7 @@ export class MyArticlesApi {
         });
     }
 
-    protected processSavedArticles(response: AxiosResponse): Promise<ViewLocalizationModel[]> {
+    protected processSavedArticles(response: AxiosResponse): Promise<ArticleLocalizationModel[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2136,12 +2116,12 @@ export class MyArticlesApi {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(ViewLocalizationModel.fromJS(item));
+                    result200!.push(ArticleLocalizationModel.fromJS(item));
             }
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<ViewLocalizationModel[]>(result200);
+            return Promise.resolve<ArticleLocalizationModel[]>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -2182,7 +2162,7 @@ export class MyArticlesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ViewLocalizationModel[]>(null as any);
+        return Promise.resolve<ArticleLocalizationModel[]>(null as any);
     }
 
     /**
@@ -2464,6 +2444,113 @@ export class ResourcesApi {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<void>(null as any);
+    }
+}
+
+export class TestApi {
+    private instance: AxiosInstance;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, instance?: AxiosInstance) {
+
+        this.instance = instance ? instance : axios.create();
+
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+
+    }
+
+    /**
+     * @return Success
+     */
+    get(  cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel[]> {
+        let url_ = this.baseUrl + "/v1/test-extended-articles";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGet(_response);
+        });
+    }
+
+    protected processGet(response: AxiosResponse): Promise<ArticleLocalizationModel[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ArticleLocalizationModel.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<ArticleLocalizationModel[]>(result200);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500  = _responseText;
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<ArticleLocalizationModel[]>(null as any);
     }
 }
 
@@ -2998,6 +3085,7 @@ export interface IAddArticleImageResult {
 export class ArticleContributorModel implements IArticleContributorModel {
     role!: ArticleContributorRole;
     userName!: string;
+    profilePhotoUrl!: string | null;
 
     constructor(data?: IArticleContributorModel) {
         if (data) {
@@ -3012,6 +3100,7 @@ export class ArticleContributorModel implements IArticleContributorModel {
         if (_data) {
             this.role = _data["role"] !== undefined ? _data["role"] : <any>null;
             this.userName = _data["userName"] !== undefined ? _data["userName"] : <any>null;
+            this.profilePhotoUrl = _data["profilePhotoUrl"] !== undefined ? _data["profilePhotoUrl"] : <any>null;
         }
     }
 
@@ -3026,6 +3115,7 @@ export class ArticleContributorModel implements IArticleContributorModel {
         data = typeof data === 'object' ? data : {};
         data["role"] = this.role !== undefined ? this.role : <any>null;
         data["userName"] = this.userName !== undefined ? this.userName : <any>null;
+        data["profilePhotoUrl"] = this.profilePhotoUrl !== undefined ? this.profilePhotoUrl : <any>null;
         return data;
     }
 }
@@ -3033,6 +3123,7 @@ export class ArticleContributorModel implements IArticleContributorModel {
 export interface IArticleContributorModel {
     role: ArticleContributorRole;
     userName: string;
+    profilePhotoUrl: string | null;
 }
 
 export enum ArticleContributorRole {
@@ -4650,114 +4741,6 @@ export interface IValidationError {
     errors: IErrorDetails;
 
     [key: string]: any;
-}
-
-export class ViewLocalizationModel implements IViewLocalizationModel {
-    userId!: number | null;
-    id!: number;
-    articleId!: number;
-    languageCode!: string;
-    contributorRole!: ArticleContributorRole;
-    contributorId!: number;
-    title!: string;
-    description!: string;
-    html!: string;
-    status!: ContentStatus;
-    views!: number;
-    rate!: number;
-    created!: DateTime;
-    updated!: DateTime | null;
-    published!: DateTime | null;
-    banned!: DateTime | null;
-    isSaved!: boolean | null;
-    savedDate!: DateTime | null;
-    vote!: Vote | null;
-
-    constructor(data?: IViewLocalizationModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.articleId = _data["articleId"] !== undefined ? _data["articleId"] : <any>null;
-            this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
-            this.contributorRole = _data["contributorRole"] !== undefined ? _data["contributorRole"] : <any>null;
-            this.contributorId = _data["contributorId"] !== undefined ? _data["contributorId"] : <any>null;
-            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
-            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
-            this.html = _data["html"] !== undefined ? _data["html"] : <any>null;
-            this.status = _data["status"] !== undefined ? _data["status"] : <any>null;
-            this.views = _data["views"] !== undefined ? _data["views"] : <any>null;
-            this.rate = _data["rate"] !== undefined ? _data["rate"] : <any>null;
-            this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>null;
-            this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>null;
-            this.published = _data["published"] ? DateTime.fromISO(_data["published"].toString()) : <any>null;
-            this.banned = _data["banned"] ? DateTime.fromISO(_data["banned"].toString()) : <any>null;
-            this.isSaved = _data["isSaved"] !== undefined ? _data["isSaved"] : <any>null;
-            this.savedDate = _data["savedDate"] ? DateTime.fromISO(_data["savedDate"].toString()) : <any>null;
-            this.vote = _data["vote"] !== undefined ? _data["vote"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): ViewLocalizationModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new ViewLocalizationModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["articleId"] = this.articleId !== undefined ? this.articleId : <any>null;
-        data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
-        data["contributorRole"] = this.contributorRole !== undefined ? this.contributorRole : <any>null;
-        data["contributorId"] = this.contributorId !== undefined ? this.contributorId : <any>null;
-        data["title"] = this.title !== undefined ? this.title : <any>null;
-        data["description"] = this.description !== undefined ? this.description : <any>null;
-        data["html"] = this.html !== undefined ? this.html : <any>null;
-        data["status"] = this.status !== undefined ? this.status : <any>null;
-        data["views"] = this.views !== undefined ? this.views : <any>null;
-        data["rate"] = this.rate !== undefined ? this.rate : <any>null;
-        data["created"] = this.created ? this.created.toString() : <any>null;
-        data["updated"] = this.updated ? this.updated.toString() : <any>null;
-        data["published"] = this.published ? this.published.toString() : <any>null;
-        data["banned"] = this.banned ? this.banned.toString() : <any>null;
-        data["isSaved"] = this.isSaved !== undefined ? this.isSaved : <any>null;
-        data["savedDate"] = this.savedDate ? this.savedDate.toString() : <any>null;
-        data["vote"] = this.vote !== undefined ? this.vote : <any>null;
-        return data;
-    }
-}
-
-export interface IViewLocalizationModel {
-    userId: number | null;
-    id: number;
-    articleId: number;
-    languageCode: string;
-    contributorRole: ArticleContributorRole;
-    contributorId: number;
-    title: string;
-    description: string;
-    html: string;
-    status: ContentStatus;
-    views: number;
-    rate: number;
-    created: DateTime;
-    updated: DateTime | null;
-    published: DateTime | null;
-    banned: DateTime | null;
-    isSaved: boolean | null;
-    savedDate: DateTime | null;
-    vote: Vote | null;
 }
 
 export enum Vote {

@@ -19,7 +19,7 @@ namespace NetHub.Api.Endpoints.Articles.Localizations;
 [ApiVersion(Versions.V1)]
 public sealed class ArticleLocalizationStatusUpdateEndpoint : ActionEndpoint<ArticleLocalizationStatusUpdateRequest>
 {
-    [HttpPatch("articles/{id:long}/{lang:alpha:length(2)}/status"), ClientSide(ActionName = "updateStatus")]
+    [HttpPatch("articles/{Id:long}/{Language:alpha:length(2)}/status"), ClientSide(ActionName = "updateStatus")]
     public override async Task HandleAsync(ArticleLocalizationStatusUpdateRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
@@ -27,7 +27,7 @@ public sealed class ArticleLocalizationStatusUpdateEndpoint : ActionEndpoint<Art
         var localization = await Database.Set<ArticleLocalization>()
             .Include(al => al.Contributors)
             .FirstOr404Async(al => al.ArticleId == request.Id
-                && al.LanguageCode == request.LanguageCode, ct);
+                && al.LanguageCode == request.Language, ct);
 
         if (localization.GetAuthorId() != userId)
             throw new PermissionsException();

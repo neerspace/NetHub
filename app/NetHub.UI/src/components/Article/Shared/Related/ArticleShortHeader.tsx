@@ -1,10 +1,10 @@
 import React, { FC, useCallback } from 'react';
 import cl from "../ArticleShort.module.sass";
 import { Text, useColorModeValue } from "@chakra-ui/react";
-import { IAbstractLocalization } from "../../../../types/api/IAbstractLocalization";
+import { ISimpleLocalization } from "../../../../types/api/ISimpleLocalization";
 
 interface IArticleShortHeaderProps {
-  localization: IAbstractLocalization,
+  localization: ISimpleLocalization,
   time?: { before?: string, show?: 'default' | 'saved' }
 }
 
