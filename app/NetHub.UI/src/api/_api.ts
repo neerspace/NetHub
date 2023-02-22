@@ -4482,6 +4482,7 @@ export class PrivateUserResult implements IPrivateUserResult {
     userName!: string;
     description!: string | null;
     profilePhotoUrl!: string | null;
+    registered!: DateTime;
 
     constructor(data?: IPrivateUserResult) {
         if (data) {
@@ -4498,6 +4499,7 @@ export class PrivateUserResult implements IPrivateUserResult {
             this.userName = _data["userName"] !== undefined ? _data["userName"] : <any>null;
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
             this.profilePhotoUrl = _data["profilePhotoUrl"] !== undefined ? _data["profilePhotoUrl"] : <any>null;
+            this.registered = _data["registered"] ? DateTime.fromISO(_data["registered"].toString()) : <any>null;
         }
     }
 
@@ -4514,6 +4516,7 @@ export class PrivateUserResult implements IPrivateUserResult {
         data["userName"] = this.userName !== undefined ? this.userName : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
         data["profilePhotoUrl"] = this.profilePhotoUrl !== undefined ? this.profilePhotoUrl : <any>null;
+        data["registered"] = this.registered ? this.registered.toString() : <any>null;
         return data;
     }
 }
@@ -4523,6 +4526,7 @@ export interface IPrivateUserResult {
     userName: string;
     description: string | null;
     profilePhotoUrl: string | null;
+    registered: DateTime;
 }
 
 export enum ProviderType {

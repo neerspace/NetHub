@@ -1,8 +1,7 @@
 import { DateTime } from 'luxon';
 
-export function getTimeFrom(date: string) {
-  const a = DateTime.fromISO(date);
-  const diff = DateTime.utc().diff(a, ['years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds']).toObject();
+export function getTimeFrom(date: DateTime) {
+  const diff = DateTime.utc().diff(date, ['years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds']).toObject();
 
   if (diff.years! > 0)
     return diff.months! > 0
