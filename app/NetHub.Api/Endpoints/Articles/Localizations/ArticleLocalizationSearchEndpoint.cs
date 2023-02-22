@@ -21,6 +21,7 @@ public sealed class ArticleLocalizationSearchEndpoint : Endpoint<ArticleLocaliza
         IQueryable<ArticleLocalizationModel> queryable = Database
             .GetExtendedArticles(userId, loadContributors: request.ContributorUsername is not null)
             .Where(a => a.Status == ContentStatus.Published)
+            .Where(a => a.LanguageCode == request.Lang)
             .OrderBy(a => a.Published);
 
         if (request.ContributorUsername is not null)
