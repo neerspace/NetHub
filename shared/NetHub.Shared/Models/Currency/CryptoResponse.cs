@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace NetHub.Shared.Models.Currency;
 
@@ -7,8 +7,8 @@ public class CryptoResponse
     [JsonPropertyName("bitcoin")]
     public required OneCrypto Btc { get; init; }
 
-    [JsonPropertyName("the-open-network")]
-    public required OneCrypto Ton { get; init; }
+[JsonPropertyName("the-open-network")]
+public required OneCrypto Ton { get; init; }
 }
 
 public class CryptoResponseDto

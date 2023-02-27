@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NetHub.Core.Extensions;
 using NetHub.Shared.Services;
 

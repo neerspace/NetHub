@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Models.Articles.Localizations;

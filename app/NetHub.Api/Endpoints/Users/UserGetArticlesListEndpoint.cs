@@ -1,11 +1,11 @@
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NetHub.Shared.Api;
-using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Models.Articles;
 using NetHub.Models.Users;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Api.Swagger;
 using NetHub.Shared.Models.Articles;

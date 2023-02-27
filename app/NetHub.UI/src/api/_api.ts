@@ -2262,7 +2262,7 @@ export class MyArticlesApi {
      * @return Created
      */
     updateVote(id: number, vote: Vote | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/v1/me/articles/{id}/vote?";
+        let url_ = this.baseUrl + "/v1/me/articles/{Id}/vote?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{Id}", encodeURIComponent("" + id));

@@ -6,7 +6,12 @@ export class JWTStorage {
   }
 
   static getAccessTokenExpires() {
-    return localStorage.getItem('accessTokenExpires');
+    const expiresDate = localStorage.getItem('accessTokenExpires');
+
+    if (expiresDate)
+      return new Date(expiresDate);
+
+    return null;
   }
 
   static getRefreshTokenExpires() {

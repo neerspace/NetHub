@@ -1,4 +1,4 @@
-﻿using NeerCore.DependencyInjection;
+using NeerCore.DependencyInjection;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Shared.Models.Localizations;
 using Sieve.Services;

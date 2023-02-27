@@ -42,6 +42,6 @@ public class ArticleUploadImageEndpoint : Endpoint<AddArticleImageRequest, AddAr
 
         await Database.SaveChangesAsync(ct);
 
-        return new (Request.GetResourceUrl(resourceId));
+        return new(Request.GetResourceUrl(resourceId));
     }
 }

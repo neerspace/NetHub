@@ -5,35 +5,28 @@ const refreshTokenCookie = 'NetHub-Refresh-Token';
 
 async function waitIfIsRefreshing() {
   if (window.isRefreshing) {
-    console.log('[JWT] is refreshing = true, awaiting...');
+    console.log('[JWT] is refreshing = true, awaiting... [R] - ' + window.isRefreshing);
     while (window.isRefreshing)
       await new Promise(resolve => setTimeout(resolve, 300));
   }
 }
 
 // gets a valid access token or refreshes it and gets new one
-export async function getOrRefreshAccessToken(url?: string): Promise<string | null> {
-  if (!url || isAuthorizedUrl(url!)) {
+export async function getOrRefreshAccessToken(): Promise<string | null> {
     await waitIfIsRefreshing();
 
     const accessToken = JWTStorage.getAccessToken();
-    if (!isRefreshTokenCookieExist()) {
-      if (!accessToken) {
-        console.log('[JWT] no access token');
-        return null;
-      }
+    const expirationDate = JWTStorage.getAccessTokenExpires();
 
-      if (!isAccessTokenExpired()) {
-        // console.log('[JWT] access token is valid');
-        return accessToken;
-      }
+    if (accessToken && expirationDate && expirationDate > new Date()) {
+      return accessToken;
     }
 
-    return await refreshToken();
-  }
+    if (isRefreshTokenCookieExist()) {
+      return await refreshToken();
+    }
 
-  console.log('[JWT] access token skipped');
-  return null;
+    return null;
 }
 
 async function refreshToken(): Promise<string | null> {
@@ -65,15 +58,11 @@ function isAccessTokenExpired() {
   return !expirationDate || new Date(expirationDate) < new Date();
 }
 
-function isAuthorizedUrl(url: string): boolean {
-  return !url.startsWith('/jwt/');
-}
-
 function isRefreshTokenCookieExist() {
   const d = new Date();
   d.setTime(d.getTime() + (1000));
   const expires = 'expires=' + d.toUTCString();
 
-  document.cookie = refreshTokenCookie + '=check;path=/;' + expires;
+  document.cookie = refreshTokenCookie + '=check;path=/;' + expires + ';SameSite=Strict;domain=.nethub.local';
   return document.cookie.indexOf(refreshTokenCookie + '=') == -1;
 }

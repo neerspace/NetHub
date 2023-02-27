@@ -1,4 +1,4 @@
-﻿namespace NetHub.Shared.Models.Jwt;
+namespace NetHub.Shared.Models.Jwt;
 
 public sealed record JwtResult
 {

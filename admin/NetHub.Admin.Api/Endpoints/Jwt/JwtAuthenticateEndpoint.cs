@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NeerCore.Exceptions;
 using NetHub.Admin.Models.Jwt;
-using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Extensions;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Models.Jwt;
 using NetHub.Shared.Services;
 

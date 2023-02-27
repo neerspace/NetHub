@@ -1,4 +1,4 @@
-﻿using NeerCore.Exceptions;
+using NeerCore.Exceptions;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Enums;

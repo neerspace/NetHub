@@ -88,7 +88,7 @@ public sealed class JwtService : IJwtService
         HttpContext.Response.Cookies.Append(_options.RefreshToken.CookieName, refreshToken, new CookieOptions
         {
             HttpOnly = true,
-            Secure = _environment.IsProduction(),
+            Secure = true,
             IsEssential = true,
             SameSite = SameSiteMode.Strict,
             // SameSite = _environment.IsProduction() ? SameSiteMode.Strict : SameSiteMode.Lax,
@@ -129,7 +129,7 @@ public sealed class JwtService : IJwtService
         var ip = HttpContext.GetIPAddress().ToString();
 
         if (userAgent.IsRobot // coz we hate robots here
-            // UA platform is invalid
+                              // UA platform is invalid
             || string.Equals(userAgent.Platform, "Unknown Platform", StringComparison.OrdinalIgnoreCase)
             // UA browser is invalid
             || string.IsNullOrEmpty(userAgent.Browser)

@@ -1,4 +1,4 @@
-﻿namespace NetHub.Shared.Api.Options;
+namespace NetHub.Shared.Api.Options;
 
 public sealed class CorsOptions
 {

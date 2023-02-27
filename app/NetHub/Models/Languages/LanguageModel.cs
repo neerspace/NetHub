@@ -1,4 +1,4 @@
-﻿namespace NetHub.Models.Languages;
+namespace NetHub.Models.Languages;
 
 public sealed class LanguageModel
 {

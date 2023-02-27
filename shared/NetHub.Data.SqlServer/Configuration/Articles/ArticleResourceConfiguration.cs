@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetHub.Data.SqlServer.Entities.Articles;
 
@@ -8,7 +8,7 @@ public class ArticleResourceConfiguration : IEntityTypeConfiguration<ArticleReso
 {
     public void Configure(EntityTypeBuilder<ArticleResource> builder)
     {
-        builder.HasKey(ar =>  ar.ResourceId);
+        builder.HasKey(ar => ar.ResourceId);
 
         builder.HasOne(ar => ar.Article)
             .WithMany(a => a.Images);

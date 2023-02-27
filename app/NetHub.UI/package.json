@@ -66,7 +66,8 @@
     "nswag": "^13.18.2",
     "sass": "^1.54.5",
     "typescript": "^4.6.4",
-    "vite": "^3.2.3"
+    "vite": "^3.2.3",
+    "vite-plugin-mkcert": "^1.13.2"
   },
   "overrides": {
     "autoprefixer": "10.4.5"

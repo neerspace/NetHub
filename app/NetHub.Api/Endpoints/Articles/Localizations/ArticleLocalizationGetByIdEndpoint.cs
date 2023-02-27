@@ -1,4 +1,4 @@
-﻿using Mapster;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
@@ -52,7 +52,7 @@ public sealed class ArticleLocalizationGetByIdEndpoint : Endpoint<ArticleLocaliz
 
     private static void AddViews(ISqlServerDatabase database, ArticleLocalizationModel model)
     {
-        var localization = new ArticleLocalization {Id = model.Id, Views = model.Views};
+        var localization = new ArticleLocalization { Id = model.Id, Views = model.Views };
         database.Set<ArticleLocalization>().Attach(localization);
 
         localization.Views++;

@@ -1,12 +1,12 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using NeerCore.DependencyInjection;
 using NeerCore.Exceptions;
-using NetHub.Shared.Extensions;
 using NetHub.Core.Constants;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Shared.Extensions;
 
 namespace NetHub.Shared.Services;
 

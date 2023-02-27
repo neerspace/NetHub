@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using NeerCore.Data.Abstractions;
 using NetHub.Data.SqlServer.Entities.Articles;
 

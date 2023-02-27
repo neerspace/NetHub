@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NetHub.Admin.Models.Articles;
 using NetHub.Data.SqlServer.Entities.Articles;

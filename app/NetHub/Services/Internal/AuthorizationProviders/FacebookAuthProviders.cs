@@ -1,4 +1,4 @@
-﻿using Facebook;
+using Facebook;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
 using NeerCore.DependencyInjection;

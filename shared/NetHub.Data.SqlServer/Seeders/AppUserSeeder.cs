@@ -1,4 +1,4 @@
-﻿// using Microsoft.AspNetCore.Identity;
+// using Microsoft.AspNetCore.Identity;
 // using Microsoft.EntityFrameworkCore;
 // using NeerCore.Data.EntityFramework.Abstractions;
 // using NetHub.Data.SqlServer.Entities;

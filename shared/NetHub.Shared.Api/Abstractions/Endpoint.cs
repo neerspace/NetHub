@@ -1,9 +1,9 @@
 using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using NetHub.Data.SqlServer.Context;
 using NetHub.Shared.Models;
 using NetHub.Shared.Services;
-using NetHub.Data.SqlServer.Context;
 
 namespace NetHub.Shared.Api.Abstractions;
 
@@ -64,4 +64,5 @@ public abstract class ResultEndpoint<TResponse> : EndpointBaseAsync
 public abstract class FilterEndpoint<TResponse> : Endpoint<FilterRequest, Filtered<TResponse>> { }
 
 public abstract class FilterEndpoint<TFilter, TResponse> : Endpoint<TFilter, Filtered<TResponse>>
-    where TFilter : FilterRequest { }
+    where TFilter : FilterRequest
+{ }

@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NetHub.Shared.Extensions;
 
 namespace NetHub.Admin.Models.Jwt;

@@ -1,4 +1,4 @@
-﻿using Google.Apis.Auth;
+using Google.Apis.Auth;
 using NeerCore.DependencyInjection;
 using NeerCore.Exceptions;
 using NetHub.Shared.Models.Jwt;

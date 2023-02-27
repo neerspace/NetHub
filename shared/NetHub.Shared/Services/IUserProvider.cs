@@ -1,4 +1,4 @@
-﻿using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Shared.Services;
 

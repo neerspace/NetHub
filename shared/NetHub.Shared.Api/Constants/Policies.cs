@@ -1,4 +1,4 @@
-﻿namespace NetHub.Shared.Api.Constants;
+namespace NetHub.Shared.Api.Constants;
 
 public static class Policies
 {

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using NeerCore.DependencyInjection;
 using Sieve.Models;
 using Sieve.Services;

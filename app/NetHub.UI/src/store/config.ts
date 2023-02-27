@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import Localizations from "../constants/localizations";
 import { JWTStorage } from "../utils/localStorageProvider";
 import { IReduxUser } from "../types/IReduxUser";

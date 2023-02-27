@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.Abstractions;

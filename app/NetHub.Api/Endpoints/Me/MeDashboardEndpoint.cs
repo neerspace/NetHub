@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NetHub.Shared.Api;
-using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Enums;
 using NetHub.Models.Users;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
 
 namespace NetHub.Api.Endpoints.Me;

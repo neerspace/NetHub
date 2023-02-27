@@ -66,8 +66,8 @@ public sealed class AccessTokenGenerator
     {
         // TODO: mb smth not works
         List<Claim> claims = await (from u in _database.Set<AppUserClaim>()
-                where u.UserId == userId
-                select new Claim(u.ClaimType, u.ClaimValue ?? "null"))
+                                    where u.UserId == userId
+                                    select new Claim(u.ClaimType, u.ClaimValue ?? "null"))
             .ToListAsync(ct);
 
         claims.AddRange(await _database.Set<AppUserRole>()
@@ -82,8 +82,8 @@ public sealed class AccessTokenGenerator
     private Task<List<string>> GetUserRolesAsync(long userId, CancellationToken ct)
     {
         return (from u in _database.Set<AppUserRole>()
-            where u.UserId == userId
-            join r in _database.Set<AppRole>() on u.RoleId equals r.Id
-            select r.Name).ToListAsync(ct);
+                where u.UserId == userId
+                join r in _database.Set<AppRole>() on u.RoleId equals r.Id
+                select r.Name).ToListAsync(ct);
     }
 }

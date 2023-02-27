@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 using NeerCore.Data.Abstractions;
 
 namespace NetHub.Data.SqlServer.Entities;

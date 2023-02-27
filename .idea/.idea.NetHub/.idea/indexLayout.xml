@@ -2,6 +2,7 @@
 <project version="4">
   <component name="UserContentModel">
     <attachedFolders>
+      <Path>admin/NetHub.Admin.UI</Path>
       <Path>app/NetHub.UI</Path>
     </attachedFolders>
     <explicitIncludes />

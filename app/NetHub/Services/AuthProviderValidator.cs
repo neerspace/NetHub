@@ -1,4 +1,4 @@
-﻿using NeerCore.DependencyInjection;
+using NeerCore.DependencyInjection;
 using NetHub.Shared.Models.Jwt;
 using NetHub.Shared.Services;
 

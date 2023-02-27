@@ -55,10 +55,10 @@ public static class NSwagEndpointNameFactory
                 ?? httpMethod
                 : httpMethod switch
                 {
-                    "post"   => "create",
-                    "put"    => "update",
+                    "post" => "create",
+                    "put" => "update",
                     "delete" => "delete",
-                    _        => httpMethod
+                    _ => httpMethod
                 };
 
             return result;

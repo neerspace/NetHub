@@ -76,7 +76,8 @@ public sealed class ResponsesFilter : IDocumentFilter
     private static Dictionary<string, OpenApiMediaType> ErrorContent => new()
     {
         {
-            JsonContent, new OpenApiMediaType
+            JsonContent,
+            new OpenApiMediaType
             {
                 Schema = new OpenApiSchema
                 {
@@ -95,7 +96,8 @@ public sealed class ResponsesFilter : IDocumentFilter
     private static Dictionary<string, OpenApiMediaType> ValidationErrorContent => new()
     {
         {
-            JsonContent, new OpenApiMediaType
+            JsonContent,
+            new OpenApiMediaType
             {
                 Schema = new OpenApiSchema
                 {

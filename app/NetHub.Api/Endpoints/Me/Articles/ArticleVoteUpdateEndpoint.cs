@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.EntityFramework.Extensions;
@@ -16,7 +16,7 @@ namespace NetHub.Api.Endpoints.Me.Articles;
 [ApiVersion(Versions.V1)]
 public sealed class ArticleVoteUpdateEndpoint : ActionEndpoint<ArticleVoteUpdateRequest>
 {
-    [HttpPost("me/articles/{id:long}/vote"), ClientSide(ActionName = "updateVote")]
+    [HttpPost("me/articles/{Id:long}/vote"), ClientSide(ActionName = "updateVote")]
     public override async Task HandleAsync(ArticleVoteUpdateRequest voteUpdateRequest, CancellationToken ct)
     {
         var userId = UserProvider.UserId;

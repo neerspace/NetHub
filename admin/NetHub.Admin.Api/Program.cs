@@ -3,14 +3,14 @@ using NeerCore.Api.Swagger.Extensions;
 using NeerCore.Exceptions;
 using NeerCore.Logging;
 using NeerCore.Logging.Extensions;
-using NetHub.Admin.Api;
+using NetHub;
 using NetHub.Admin;
-using NetHub.Shared.Api.Extensions;
+using NetHub.Admin.Api;
 using NetHub.Data.SqlServer;
 using NetHub.Data.SqlServer.Context;
-using NetHub;
 using NetHub.Shared;
 using NetHub.Shared.Api;
+using NetHub.Shared.Api.Extensions;
 
 var logger = LoggerInstaller.InitFromCurrentEnvironment();
 

@@ -1,4 +1,4 @@
-﻿using NetHub.Shared.Models.Localizations;
+using NetHub.Shared.Models.Localizations;
 
 namespace NetHub.Shared.Models.Articles;
 
