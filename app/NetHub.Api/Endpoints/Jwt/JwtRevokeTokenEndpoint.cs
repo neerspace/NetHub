@@ -4,6 +4,7 @@ using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Options;
+using NetHub.Shared.Services.Implementations;
 
 namespace NetHub.Api.Endpoints.Jwt;
 
@@ -12,21 +13,18 @@ namespace NetHub.Api.Endpoints.Jwt;
 public class JwtRevokeTokenEndpoint : ActionEndpoint
 {
     private readonly JwtOptions _options;
-    public JwtRevokeTokenEndpoint(IOptions<JwtOptions> optionsAccessor) => _options = optionsAccessor.Value;
+    private readonly CookieOptionsAccessor _cookieOptionsAccessor;
+    public JwtRevokeTokenEndpoint(IOptions<JwtOptions> optionsAccessor, CookieOptionsAccessor cookieOptionsAccessor)
+    {
+        _options = optionsAccessor.Value;
+        _cookieOptionsAccessor = cookieOptionsAccessor;
+    }
 
 
     [HttpDelete("auth/revoke")]
     public override Task HandleAsync(CancellationToken ct)
     {
-        Response.Cookies.Delete(_options.RefreshToken.CookieName, new()
-        {
-            HttpOnly = true,
-            Secure = true,
-            IsEssential = true,
-            SameSite = SameSiteMode.Strict,
-            // SameSite = _environment.IsProduction() ? SameSiteMode.Strict : SameSiteMode.Lax,
-            Domain = _options.RefreshToken.CookieDomain,
-        });
+        Response.Cookies.Delete(_options.RefreshToken.CookieName, _cookieOptionsAccessor.GetRefreshOptions());
         return Task.CompletedTask;
     }
 }
