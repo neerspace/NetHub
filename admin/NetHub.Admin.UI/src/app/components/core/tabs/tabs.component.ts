@@ -3,7 +3,7 @@ import {
   Component, ComponentFactoryResolver,
   ContentChildren,
   OnInit,
-  QueryList, TemplateRef,
+  QueryList, TemplateRef, Type,
   ViewChild, ViewContainerRef
 } from '@angular/core';
 import {TabComponent} from "./tab/tab.component";
@@ -15,15 +15,14 @@ import {TabComponent} from "./tab/tab.component";
 })
 export class TabsComponent implements AfterContentInit {
   @ContentChildren(TabComponent) tabs: QueryList<TabComponent> = new QueryList<TabComponent>();
-  @ViewChild('container', {read: ViewContainerRef}) dynamicTabsContainer! : ViewContainerRef;
+  @ViewChild('container', {read: ViewContainerRef}) dynamicTabsContainer!: ViewContainerRef;
   dynamicTabs: TabComponent[] = [];
 
-  constructor(private _componentFactoryResolver: ComponentFactoryResolver) {}
   ngAfterContentInit(): void {
 
     let activeTabs = this.tabs.filter((tab) => tab.active);
 
-    if (activeTabs.length === 0) {
+    if (activeTabs.length === 0 && this.tabs.first) {
       this.selectTab(this.tabs.first);
     }
   }
@@ -35,11 +34,10 @@ export class TabsComponent implements AfterContentInit {
     tab.active = true;
   }
 
-  openTab(title: string, template: TemplateRef<any>, data: any, isCloseable = false){
+  openTab(title: string, template: TemplateRef<any>, data: any, isCloseable = false) {
 
-    const componentFactory = this._componentFactoryResolver.resolveComponentFactory(TabComponent);
-
-    const componentRef = this.dynamicTabsContainer.createComponent(componentFactory);
+    const tabType: Type<TabComponent> = TabComponent;
+    const componentRef = this.dynamicTabsContainer.createComponent<TabComponent>(tabType);
     const instance: TabComponent = componentRef.instance as TabComponent;
 
     instance.title = title;
@@ -49,7 +47,7 @@ export class TabsComponent implements AfterContentInit {
     instance.active = true;
 
     this.dynamicTabs.push(componentRef.instance as TabComponent);
-    this.selectTab(this.dynamicTabs[this.dynamicTabs.length - 1]);
+    this.selectTab(this.dynamicTabs[0]);
   }
 
   closeTab(tab: TabComponent) {
@@ -58,10 +56,20 @@ export class TabsComponent implements AfterContentInit {
         this.dynamicTabs.splice(i, 1);
 
         this.dynamicTabsContainer.remove(i);
-        this.selectTab(this.tabs.first);
+
+        if (this.tabs.first) {
+          this.selectTab(this.tabs.first);
+        } else if (this.dynamicTabs.length > 0) {
+          this.selectTab(this.dynamicTabs[0])
+        }
 
         break;
       }
     }
+  }
+
+  closeAllTabs() {
+    this.dynamicTabs = [];
+    this.dynamicTabsContainer.clear()
   }
 }

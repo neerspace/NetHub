@@ -3,7 +3,7 @@ import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 import {FormGroupReady, FormId, FormReady} from "../../../../components/form/types";
 import {Router} from "@angular/router";
-import {ArticleModel, ArticlesApi, ErrorDto} from "../../../../api";
+import {ArticleLocalizationModel, ArticleModel, ArticlesApi, ErrorDto} from "../../../../api";
 import {FormBuilder} from "@angular/forms";
 import {LoaderService, ToasterService} from "../../../../services/viewport";
 import {ModalsService} from "../../../../services/modals.service";
@@ -34,7 +34,7 @@ export class ArticlesService {
     this.router.navigate(['articles', this.lastFormId]);
   }
 
-  getById(id: number): void {
+  getByIdAndSetToForm(id: number): void {
     this.onRequestStart();
     this.articlesApi.getById(id).subscribe({
       next: (article: ArticleModel | any) => {
@@ -50,8 +50,16 @@ export class ArticlesService {
     });
   }
 
+  getById(id: number): Observable<ArticleModel>{
+    return this.articlesApi.getById(id);
+  }
+
   filter(request: IFilterInfo): Observable<IFiltered<ArticleModel>> {
     return this.articlesApi.filter(request.filters, request.sorts, request.page, request.pageSize);
+  }
+
+  getLocalizations(id: number): Observable<ArticleLocalizationModel[]>{
+    return this.articlesApi.getByArticleId(id);
   }
 
   // update(id: number): void {
@@ -75,7 +83,7 @@ export class ArticlesService {
         this.onRequestStart();
         this.articlesApi.delete(id).subscribe({
           next: () => {
-            this.toaster.showSuccess('Role successfully deleted');
+            this.toaster.showSuccess('Article successfully deleted');
             this.router.navigateByUrl('articles');
             this.onRequestSuccess();
           },
