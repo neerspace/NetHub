@@ -1,12 +1,12 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using NeerCore.DependencyInjection;
 using NeerCore.Exceptions;
-using NetHub.Shared.Extensions;
 using NetHub.Core.Constants;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Shared.Extensions;
 
 namespace NetHub.Shared.Services;
 
@@ -36,13 +36,27 @@ internal sealed class UserProvider : IUserProvider
         return longResult ? userId : null;
     }
 
-
     public async Task<AppUser> GetUserAsync()
     {
-        var user = await UserManager.FindByIdAsync(UserId.ToString());
-        if (user is null)
-            throw new UnauthorizedException("Authorized used required");
+        try
+        {
+            var user = await UserManager.FindByIdAsync(UserId.ToString());
+            if (user is null)
+                throw new UnauthorizedException("Authorized used required");
 
-        return _userProfile ??= user;
+            return _userProfile ??= user;
+        }
+        catch (Exception e)
+        {
+            throw new UnauthorizedException("Authorized used required");
+        }
+    }
+
+    public async Task<AppUser?> TryGetUserAsync()
+    {
+        var userId = TryGetUserId();
+        var user = await UserManager.FindByIdAsync(userId?.ToString());
+
+        return user;
     }
 }

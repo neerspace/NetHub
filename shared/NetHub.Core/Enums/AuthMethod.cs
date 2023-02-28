@@ -1,4 +1,4 @@
-﻿namespace NetHub.Core.Enums;
+namespace NetHub.Core.Enums;
 
 /// <summary>
 /// Authorization methods.
@@ -6,6 +6,6 @@
 /// </summary>
 public enum AuthMethod
 {
-	Register = 0,
-	Password = 10
+    Register = 0,
+    Password = 10
 }

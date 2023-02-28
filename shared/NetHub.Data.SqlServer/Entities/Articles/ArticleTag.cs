@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 using NeerCore.Data.Abstractions;
 
 namespace NetHub.Data.SqlServer.Entities.Articles;
@@ -6,17 +6,17 @@ namespace NetHub.Data.SqlServer.Entities.Articles;
 [Table($"{nameof(ArticleTag)}s")]
 public class ArticleTag : IEntity
 {
-	#region Tag
+    #region Tag
 
-	public long TagId { get; set; }
-	public virtual Tag? Tag { get; set; }
+    public long TagId { get; set; }
+    public virtual Tag? Tag { get; set; }
 
-	#endregion
+    #endregion
 
-	#region Article
+    #region Article
 
-	public long ArticleId { get; set; }
-	public virtual Article? Article { get; set; }
+    public long ArticleId { get; set; }
+    public virtual Article? Article { get; set; }
 
-	#endregion
+    #endregion
 }

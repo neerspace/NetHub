@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Core.Enums;
 using NetHub.Data.SqlServer.Conversions;
 using NetHub.Data.SqlServer.Entities.Identity;
-using NetHub.Data.SqlServer.Entities.Views;
 using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Data.SqlServer.Context;
@@ -23,11 +22,6 @@ public class SqlServerDbContext : IdentityDbContext<AppUser, AppRole, long, AppU
         builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         builder.AddLocalizedStrings(GetType().Assembly);
         builder.ApplyAllDataSeeders();
-
-        builder.Entity<ViewUserArticle>(config =>
-        {
-            config.ToView("v_ExtendedUserArticle").HasKey(ea => new { ea.UserId, ea.LocalizationId });
-        });
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)

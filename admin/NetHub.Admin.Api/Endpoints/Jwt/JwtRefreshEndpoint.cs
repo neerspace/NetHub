@@ -10,7 +10,7 @@ namespace NetHub.Admin.Api.Endpoints.Jwt;
 
 [Tags(TagNames.Jwt)]
 [ApiVersion(Versions.V1)]
-public class JwtRefreshEndpoint : ResultEndpoint<AuthResult>
+public class JwtRefreshEndpoint : ResultEndpoint<JwtResult>
 {
     private readonly IJwtService _jwtService;
     private readonly JwtOptions _jwtOptions;
@@ -23,7 +23,7 @@ public class JwtRefreshEndpoint : ResultEndpoint<AuthResult>
 
 
     [HttpPost("jwt/refresh")]
-    public override async Task<AuthResult> HandleAsync(CancellationToken ct)
+    public override async Task<JwtResult> HandleAsync(CancellationToken ct)
     {
         if (HttpContext.Request.Cookies.TryGetValue(_jwtOptions.RefreshToken.CookieName, out var refreshToken))
             return await _jwtService.RefreshAsync(refreshToken, ct);

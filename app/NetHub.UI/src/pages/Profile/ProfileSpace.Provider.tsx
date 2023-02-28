@@ -1,13 +1,12 @@
-import React, {createContext, FC, PropsWithChildren, useContext, useMemo, useState} from 'react';
-import {useQuery, UseQueryResult} from "react-query";
-import {ApiError} from "../../types/ApiError";
-import IUserInfoResponse from "../../types/api/User/IUserInfoResponse";
-import {getUserDashboard, getUserInfo} from "./ProfileSpace.functions";
-import IDashboardResponse from "../../types/api/Dashboard/IDashboardResponse";
-import {useParams} from "react-router-dom";
+import React, { createContext, FC, PropsWithChildren, useContext, useMemo, useState } from 'react';
+import { useQuery, UseQueryResult } from "react-query";
+import { ApiError } from "../../types/ApiError";
+import { getUserDashboard, getUserInfo } from "./ProfileSpace.functions";
+import { useParams } from "react-router-dom";
 import IUpdateProfileRequest from "../../types/api/Profile/IUpdateProfileRequest";
-import {QueryClientConstants} from "../../constants/queryClientConstants";
-import {useAppStore} from "../../store/config";
+import { QueryClientConstants } from "../../constants/queryClientConstants";
+import { useAppStore } from "../../store/config";
+import { DashboardResult, PrivateUserResult, UserResult } from "../../api/_api";
 
 export type ProfileChangesType = 'profile' | 'photo' | 'username';
 
@@ -18,8 +17,8 @@ export interface ExtendedRequest extends IUpdateProfileRequest {
 }
 
 type ContextType = {
-  userAccessor: UseQueryResult<IUserInfoResponse, ApiError>,
-  dashboardAccessor: UseQueryResult<IDashboardResponse, ApiError>,
+  userAccessor: UseQueryResult<UserResult | PrivateUserResult, ApiError>,
+  dashboardAccessor: UseQueryResult<DashboardResult, ApiError>,
   changeRequest: ExtendedRequest,
   setChangeRequest: (request: ExtendedRequest) => void,
   changes: ProfileChangesType[],
@@ -29,8 +28,8 @@ type ContextType = {
 }
 
 const InitialContextValue: ContextType = {
-  userAccessor: {} as UseQueryResult<IUserInfoResponse, ApiError>,
-  dashboardAccessor: {} as UseQueryResult<IDashboardResponse, ApiError>,
+  userAccessor: {} as UseQueryResult<UserResult | PrivateUserResult, ApiError>,
+  dashboardAccessor: {} as UseQueryResult<DashboardResult, ApiError>,
   changeRequest: {} as ExtendedRequest,
   setChangeRequest: () => {
   },
@@ -52,23 +51,11 @@ const ProfileSpaceProvider: FC<PropsWithChildren> = ({children}) => {
   const [request, setRequest] = useState<ExtendedRequest>({} as ExtendedRequest);
   const reduxUser = useAppStore(store => store.user);
 
-  const userAccessor = useQuery<IUserInfoResponse, ApiError>([QueryClientConstants.user, username ?? reduxUser.username], () => getUserInfo(username), {
-    onSuccess: (user) => {
-      setRequest(
-        {
-          username: user.userName,
-          email: user.email,
-          image: '',
-          firstName: user.firstName,
-          lastName: user.lastName,
-          middleName: user.middleName,
-          description: user.description ?? ''
-        }
-      )
-    },
-    refetchIntervalInBackground: true
-  })
-  const dashboardAccessor = useQuery<IDashboardResponse, ApiError>(['dashboard', username], () => getUserDashboard(username));
+  const userAccessor = useQuery<UserResult | PrivateUserResult, ApiError>([QueryClientConstants.user, username ?? reduxUser.username],
+    () => getUserInfo(setRequest, username),
+  {refetchIntervalInBackground: true}
+  )
+  const dashboardAccessor = useQuery<DashboardResult, ApiError>([QueryClientConstants.dashboard, username], () => getUserDashboard(username));
   const [changes, setChanges] = useState<ProfileChangesType[]>([]);
 
   const handleAddChanges = (change: ProfileChangesType) => {

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using NetHub.Core.Constants;
 using NetHub.Shared.Api.Extensions;
 using NetHub.Shared.Options;

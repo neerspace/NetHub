@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Shared.Extensions;

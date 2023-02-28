@@ -1,6 +1,6 @@
-﻿namespace NetHub.Shared.Options;
+namespace NetHub.Shared.Options;
 
 public class MezhaOptions
 {
-	public string BaseUrl { get; init; } = default!;
+    public string BaseUrl { get; init; } = default!;
 }

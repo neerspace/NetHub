@@ -1,10 +1,10 @@
-﻿namespace NetHub.Shared.Models.Jwt;
+namespace NetHub.Shared.Models.Jwt;
 
 public enum ProviderType
 {
-	Telegram,
-	Google,
-	GitHub,
-	LinkedIn,
-	Facebook
+    Telegram,
+    Google,
+    GitHub,
+    LinkedIn,
+    Facebook
 }

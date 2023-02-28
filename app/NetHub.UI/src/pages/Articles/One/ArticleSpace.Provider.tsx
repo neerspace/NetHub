@@ -1,28 +1,28 @@
-import React, {FC, PropsWithChildren, useState} from 'react';
-import {useQuery, useQueryClient, UseQueryResult} from "react-query";
-import {getArticle, getArticleActions, getLocalization} from "./ArticleSpace.functions";
-import {useParams} from "react-router-dom";
-import IArticleLocalizationResponse from "../../../types/api/Article/IArticleLocalizationResponse";
-import {ApiError} from "../../../types/ApiError";
-import {RateVariants} from "../../../components/Article/Shared/ArticlesRateCounter";
-import {useAppStore} from "../../../store/config";
-import IArticleResponse from "../../../types/api/Article/IArticleResponse";
-import {AxiosError, AxiosResponse} from "axios";
-import IExtendedArticle from "../../../types/IExtendedArticle";
-import {QueryClientConstants} from "../../../constants/queryClientConstants";
+import React, { FC, PropsWithChildren } from 'react';
+import { useQuery, useQueryClient, UseQueryResult } from "react-query";
+import { useParams } from "react-router-dom";
+import { ApiError } from "../../../types/ApiError";
+import { QueryClientConstants } from "../../../constants/queryClientConstants";
+import { _articlesApi, _localizationsApi } from "../../../api";
+import {
+  ArticleLocalizationModel,
+  ArticleModelExtended,
+  IArticleLocalizationModel,
+  IArticleModelExtended
+} from "../../../api/_api";
 
 type ContextType = {
-  articleAccessor: UseQueryResult<IArticleResponse, ApiError>,
-  setArticle: (article: IArticleResponse) => void,
-  localizationAccessor: UseQueryResult<IArticleLocalizationResponse, ApiError>,
-  setLocalization: (localization: IArticleLocalizationResponse) => void
+  articleAccessor: UseQueryResult<IArticleModelExtended, ApiError>,
+  setArticle: (article: IArticleModelExtended) => void,
+  localizationAccessor: UseQueryResult<IArticleLocalizationModel, ApiError>,
+  setLocalization: (localization: IArticleLocalizationModel) => void
 }
 
 const InitialContextValue: ContextType = {
-  articleAccessor: {} as UseQueryResult<IArticleResponse, ApiError>,
+  articleAccessor: {} as UseQueryResult<IArticleModelExtended, ApiError>,
   setArticle: () => {
   },
-  localizationAccessor: {} as UseQueryResult<IArticleLocalizationResponse, ApiError>,
+  localizationAccessor: {} as UseQueryResult<IArticleLocalizationModel, ApiError>,
   setLocalization: () => {
   }
 };
@@ -36,12 +36,13 @@ const ArticleSpaceProvider: FC<PropsWithChildren> = ({children}) => {
 
   const {id, code} = useParams();
 
-  const articleAccessor = useQuery<IArticleResponse, ApiError>([QueryClientConstants.article, Number(id)], () => getArticle(id!));
-  const localizationAccessor = useQuery<IArticleLocalizationResponse, ApiError>([QueryClientConstants.articleLocalization, Number(id), code], () => getLocalization(id!, code!));
+  const articleAccessor = useQuery<ArticleModelExtended, ApiError>([QueryClientConstants.article, +id!], () => _articlesApi.getById(+id!));
+  const localizationAccessor = useQuery<ArticleLocalizationModel, ApiError>([QueryClientConstants.articleLocalization, +id!, code],
+    () => _localizationsApi.getByIdAndCode(+id!, code!));
 
 
-  const setArticle = (article: IArticleResponse) => queryClient.setQueryData([QueryClientConstants.article, Number(id)], article);
-  const setLocalization = (localization: IArticleLocalizationResponse) => queryClient.setQueryData([QueryClientConstants.articleLocalization, Number(id), code], localization);
+  const setArticle = (article: IArticleModelExtended) => queryClient.setQueryData([QueryClientConstants.article, +id!], article);
+  const setLocalization = (localization: IArticleLocalizationModel) => queryClient.setQueryData([QueryClientConstants.articleLocalization, +id!, code], localization);
 
   const value: ContextType = React.useMemo(
     () => ({

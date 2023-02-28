@@ -1,4 +1,4 @@
-﻿using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Shared.Services;
 
@@ -8,4 +8,5 @@ public interface IUserProvider
     string UserName { get; }
     long? TryGetUserId();
     Task<AppUser> GetUserAsync();
+    Task<AppUser?> TryGetUserAsync();
 }

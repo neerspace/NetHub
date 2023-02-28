@@ -33,7 +33,7 @@ const AuthorizedHoc = ({ children: Children, requireAuthorization }: IAuthorized
         username: jwt.username,
         profilePhotoUrl: jwt.image,
         firstName: jwt.firstname,
-        // lastName: data.lastName
+        lastName: null
       });
       return true;
     }

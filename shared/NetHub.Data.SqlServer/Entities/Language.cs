@@ -1,4 +1,4 @@
-﻿using NeerCore.Data.Abstractions;
+using NeerCore.Data.Abstractions;
 using NeerCore.Localization;
 
 namespace NetHub.Data.SqlServer.Entities;

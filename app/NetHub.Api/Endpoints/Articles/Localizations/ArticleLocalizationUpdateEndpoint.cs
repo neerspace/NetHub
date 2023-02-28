@@ -1,10 +1,8 @@
-﻿using Mapster;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Exceptions;
-using NetHub.Shared.Api;
-using NetHub.Shared.Api.Abstractions;
 using NetHub.Core.Constants;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities;
@@ -12,6 +10,8 @@ using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Enums;
 using NetHub.Models.Articles.Localizations;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Models.Localizations;
 
@@ -20,10 +20,10 @@ namespace NetHub.Api.Endpoints.Articles.Localizations;
 [Authorize]
 [Tags(TagNames.ArticleLocalizations)]
 [ApiVersion(Versions.V1)]
-public sealed class ArticleLocalizationUpdateEndpoint : ActionEndpoint<UpdateArticleLocalizationRequest>
+public sealed class ArticleLocalizationUpdateEndpoint : ActionEndpoint<ArticleLocalizationUpdateRequest>
 {
     [HttpPut("articles/{id:long}/{lang:alpha:length(2)}")]
-    public override async Task HandleAsync([FromBody] UpdateArticleLocalizationRequest request, CancellationToken ct)
+    public override async Task HandleAsync([FromBody] ArticleLocalizationUpdateRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
         var localization = await Database.Set<ArticleLocalization>()
@@ -59,7 +59,7 @@ public sealed class ArticleLocalizationUpdateEndpoint : ActionEndpoint<UpdateArt
         await Database.SaveChangesAsync(ct);
     }
 
-    private async Task SetNewLanguageAsync(UpdateArticleLocalizationRequest request, ArticleLocalization localization, CancellationToken ct)
+    private async Task SetNewLanguageAsync(ArticleLocalizationUpdateRequest request, ArticleLocalization localization, CancellationToken ct)
     {
         if (await Database.Set<ArticleLocalization>().CountAsync(l =>
                 l.ArticleId == request.Id
@@ -103,7 +103,7 @@ public sealed class ArticleLocalizationUpdateEndpoint : ActionEndpoint<UpdateArt
         await Database.SaveChangesAsync(ct);
     }
 
-    private static void SetNewFields(UpdateArticleLocalizationRequest request, ArticleLocalization localization)
+    private static void SetNewFields(ArticleLocalizationUpdateRequest request, ArticleLocalization localization)
     {
         if (request.Title is not null)
             localization.Title = request.Title;

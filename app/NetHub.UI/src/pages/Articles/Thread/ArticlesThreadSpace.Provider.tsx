@@ -1,22 +1,23 @@
-import React, {createContext, FC, PropsWithChildren, useContext, useEffect, useMemo, useState} from 'react';
-import {useQuery, useQueryClient, UseQueryResult} from "react-query";
-import {ApiError} from "../../../types/ApiError";
-import {UkrainianLanguage} from "../../../utils/constants";
-import IExtendedArticle from "../../../types/IExtendedArticle";
-import {articlesApi} from "../../../api/api";
-import {useAppStore} from "../../../store/config";
+import React, { createContext, FC, PropsWithChildren, useContext, useMemo, useState } from 'react';
+import { useQuery, useQueryClient, UseQueryResult } from "react-query";
+import { ApiError } from "../../../types/ApiError";
+import { UkrainianLanguage } from "../../../utils/constants";
+import { useAppStore } from "../../../store/config";
+import { _localizationsApi } from "../../../api";
+import { FilterInfo } from "../../../types/api/IFilterInfo";
+import { ISimpleLocalization } from "../../../types/api/ISimpleLocalization";
 
 type ContextType = {
   languages: { title: string, value: string }[],
-  articlesAccessor: UseQueryResult<IExtendedArticle[], ApiError>,
-  setArticles: (articles: IExtendedArticle[]) => void,
+  articlesAccessor: UseQueryResult<ISimpleLocalization[], ApiError>,
+  setArticles: (articles: ISimpleLocalization[]) => void,
   articlesLanguage: string,
   setArticlesLanguage: (language: string) => void
 }
 
 const InitialContextValue: ContextType = {
   languages: [{title: 'UA', value: 'ua'}, {title: 'EN', value: 'en'}],
-  articlesAccessor: {} as UseQueryResult<IExtendedArticle[], ApiError>,
+  articlesAccessor: {} as UseQueryResult<ISimpleLocalization[], ApiError>,
   setArticles: () => {
   },
   articlesLanguage: localStorage.getItem('articlesLanguage') ?? UkrainianLanguage,
@@ -34,11 +35,17 @@ const ArticlesThreadSpaceProvider: FC<PropsWithChildren> = ({children}) => {
   const languages = [{title: 'UA', value: 'ua'}, {title: 'EN', value: 'en'}]
   const [articlesLanguage, setArticlesLanguage] = useState<string>(localStorage.getItem('articlesLanguage') ?? UkrainianLanguage);
 
-  const articlesAccessor: any = useQuery<IExtendedArticle[], ApiError>(['articles', articlesLanguage, isLogin],
-    () => articlesApi.getArticles(articlesLanguage)
+  console.log('language', articlesLanguage)
+
+  const articlesAccessor: any = useQuery<ISimpleLocalization[], ApiError>(['articles', articlesLanguage, isLogin],
+    () => loadArticles()
   );
 
-  const handleSetArticles = (newArticles: IExtendedArticle[]) => {
+  const loadArticles = async () => {
+    return await _localizationsApi.search(articlesLanguage, undefined);
+  }
+
+  const handleSetArticles = (newArticles: ISimpleLocalization[]) => {
     queryClient.setQueryData(['articles', articlesLanguage, isLogin], newArticles);
   }
 

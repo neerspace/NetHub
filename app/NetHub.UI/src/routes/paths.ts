@@ -57,7 +57,7 @@ export const paths: IPath[] = [
     requireAuthorization: false
   },
   {
-    path: '/articles/by/:contributorId',
+    path: '/articles/by/:contributorUsername',
     Component: ContributorArticlesSpace,
     requireAuthorization: false
   },

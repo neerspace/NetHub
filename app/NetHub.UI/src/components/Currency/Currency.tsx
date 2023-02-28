@@ -1,21 +1,19 @@
-import React, {useState} from 'react';
-import {useQuery} from "react-query";
-import {infoApi} from "../../api/api";
+import React, { useState } from 'react';
+import { useQuery } from "react-query";
 import FilledDiv from "../UI/FilledDiv";
 import ExchangeRate from "./ExchangeRate";
 import cl from './Currency.module.sass';
 import CryptoRate from "./CryptoRate";
-import {Text, Skeleton, useColorMode, useColorModeValue, Box, Button, ChakraProvider} from "@chakra-ui/react";
-import ICurrencyResponse from "../../types/api/Currency/ICurrencyResponse";
-import {DateTime} from "luxon";
-import {ApiError} from "../../types/ApiError";
-import {useArticlesThreadContext} from "../../pages/Articles/Thread/ArticlesThreadSpace.Provider";
-import theme from "../../constants/themes";
+import { Box, Skeleton, Text, useColorMode, useColorModeValue } from "@chakra-ui/react";
+import { DateTime } from "luxon";
+import { ApiError } from "../../types/ApiError";
+import { _currenciesApi } from "../../api";
+import { CurrenciesResponse } from "../../api/_api";
 
 
 const Currency = () => {
-  const currencies = useQuery<ICurrencyResponse, ApiError>('currency', () => infoApi.getCurrenciesRate(), {
-    onSuccess: (result) => setDate(DateTime.fromISO(result.updated))
+  const currencies = useQuery<CurrenciesResponse, ApiError>('currency', () => _currenciesApi.get(), {
+    onSuccess: (result) => setDate(result.updated)
   });
   const blockColor = useColorModeValue('whiteLight', '#333439')
   const {colorMode} = useColorMode();
@@ -23,7 +21,6 @@ const Currency = () => {
   const updatedColor = useColorModeValue('#D4D4D8', 'whiteDark');
 
   if (currencies.isLoading) return <Skeleton height='270px'/>;
-
 
   return (
       <FilledDiv

@@ -1,17 +1,18 @@
-import React, {createContext, FC, PropsWithChildren, useContext, useMemo} from 'react';
-import {useQuery, useQueryClient, UseQueryResult} from "react-query";
-import IExtendedArticle from "../../types/IExtendedArticle";
-import {loadSavedArticles} from "../../components/Article/Saved/SavedArticles.functions";
-import {ApiError} from "../../types/ApiError";
-import {QueryClientConstants} from "../../constants/queryClientConstants";
+import React, { createContext, FC, PropsWithChildren, useContext, useMemo } from 'react';
+import { useQuery, useQueryClient, UseQueryResult } from "react-query";
+import { ApiError } from "../../types/ApiError";
+import { QueryClientConstants } from "../../constants/queryClientConstants";
+import { _myArticlesApi } from "../../api";
+import { ViewLocalizationModel } from "../../api/_api";
+import { ISimpleLocalization } from "../../types/api/ISimpleLocalization";
 
 type ContextType = {
-  savedArticles: UseQueryResult<IExtendedArticle[], ApiError>,
-  setSavedArticles: (articles: IExtendedArticle[]) => void
+  savedArticles: UseQueryResult<ISimpleLocalization[], ApiError>,
+  setSavedArticles: (articles: ISimpleLocalization[]) => void
 }
 
 const InitialContextValue: ContextType = {
-  savedArticles: {} as UseQueryResult<IExtendedArticle[], ApiError>,
+  savedArticles: {} as UseQueryResult<ISimpleLocalization[], ApiError>,
   setSavedArticles: () => {
   }
 }
@@ -22,9 +23,9 @@ export const useSavedArticlesContext = (): ContextType => useContext<ContextType
 
 const SavedSpaceProvider: FC<PropsWithChildren> = ({children}) => {
   const queryClient = useQueryClient();
-  const savedArticles = useQuery<IExtendedArticle[], ApiError>(QueryClientConstants.savedArticles, () => loadSavedArticles());
+  const savedArticles = useQuery<ISimpleLocalization[], ApiError>(QueryClientConstants.savedArticles, () => _myArticlesApi.savedArticles());
 
-  const setSavedArticles = (articles: IExtendedArticle[]) => queryClient.setQueryData(QueryClientConstants.savedArticles, articles);
+  const setSavedArticles = (articles: ISimpleLocalization[]) => queryClient.setQueryData(QueryClientConstants.savedArticles, articles);
 
   const value: ContextType = useMemo(() => {
     return {

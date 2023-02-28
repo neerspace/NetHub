@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using NeerCore.DependencyInjection.Extensions;
 using NeerCore.Mapping.Extensions;

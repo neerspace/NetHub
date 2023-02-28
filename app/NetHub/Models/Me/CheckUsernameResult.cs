@@ -1,3 +1,3 @@
-﻿namespace NetHub.Models.Me;
+namespace NetHub.Models.Me;
 
 public sealed record CheckUsernameResult(bool IsAvailable);

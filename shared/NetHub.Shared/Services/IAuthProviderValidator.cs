@@ -1,16 +1,16 @@
-﻿using NetHub.Shared.Models.Jwt;
+using NetHub.Shared.Models.Jwt;
 
 namespace NetHub.Shared.Services;
 
 public interface IAuthProviderValidator
 {
-	ProviderType Type { get; }
+    ProviderType Type { get; }
 
-	Task<bool> ValidateAsync(SsoEnterRequest request, CancellationToken ct = default);
+    Task<bool> ValidateAsync(JwtAuthenticateRequest request, CancellationToken ct = default);
 }
 
 public enum SsoType
 {
-	Register,
-	Login
+    Register,
+    Login
 }

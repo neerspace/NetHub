@@ -1,6 +1,6 @@
-﻿namespace NetHub.Shared.Api.Constants;
+namespace NetHub.Shared.Api.Constants;
 
 public static class Versions
 {
-	public const string V1 = "1.0";
+    public const string V1 = "1.0";
 }

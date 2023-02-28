@@ -1,18 +1,20 @@
-import React, {FC, useState} from 'react';
+import React, { FC, useState } from 'react';
 import classes from "./ArticleCreating.module.sass";
-import {Avatar, Box, Text} from "@chakra-ui/react";
+import { Avatar, Box, Text } from "@chakra-ui/react";
 import FilledDiv from "../../UI/FilledDiv";
 import Tag from "../One/Body/Tag";
 import SearchContributor from "./SearchContributor";
-import {IPrivateUserInfoResponse} from "../../../types/api/User/IUserInfoResponse";
-import {createImageFromInitials} from "../../../utils/logoGenerator";
-import ILocalization from "../../../types/ILocalization";
+import { createImageFromInitials } from "../../../utils/logoGenerator";
+import {
+  IArticleLocalizationCreateExtendedRequest
+} from "../../../pages/Articles/Create/ArticleCreatingSpace.Provider";
+import { ArticleContributorRole, PrivateUserResult } from "../../../api/_api";
 
-export type Contributor = { user: IPrivateUserInfoResponse, role: string };
+export type Contributor = { user: PrivateUserResult, role: ArticleContributorRole };
 
 interface IAddContributorsBlockProps {
-  article: ILocalization,
-  setArticle: (article: ILocalization) => void
+  article: IArticleLocalizationCreateExtendedRequest,
+  setArticle: (article: IArticleLocalizationCreateExtendedRequest) => void
 }
 
 const AddContributorsBlock: FC<IAddContributorsBlockProps> = ({article, setArticle}) => {
@@ -22,7 +24,7 @@ const AddContributorsBlock: FC<IAddContributorsBlockProps> = ({article, setArtic
     setContributors(contributors);
     setArticle({
       ...article, contributors: contributors.map(c => {
-        return {userId: c.user.id, role: c.role}
+        return {userId: c.user.id, role: c.role, userName: c.user.userName}
       })
     })
   }

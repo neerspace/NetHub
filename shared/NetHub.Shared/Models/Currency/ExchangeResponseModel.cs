@@ -1,4 +1,4 @@
-﻿namespace NetHub.Shared.Models.Currency;
+namespace NetHub.Shared.Models.Currency;
 
 public record ExchangeResponseModel
 {

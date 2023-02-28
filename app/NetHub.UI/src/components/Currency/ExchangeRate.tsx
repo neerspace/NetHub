@@ -1,12 +1,12 @@
-import React, {FC} from 'react';
-import {IExchangesResponse} from "../../types/api/Currency/ICurrencyResponse";
-import {Box, Text, useColorModeValue} from "@chakra-ui/react";
+import React, { FC } from 'react';
+import { Box, Text, useColorModeValue } from "@chakra-ui/react";
 import CurrencyRow from "./CurrencyRow";
 import CurrencyUsd from "../UI/Icons/CurrencyUsd";
 import CurrencyEuro from "../UI/Icons/CurrencyEuro";
+import { ExchangeResponseModel } from "../../api/_api";
 
 interface IExchangeProps {
-  rate: IExchangesResponse
+  rate: ExchangeResponseModel
 }
 
 const ExchangeRate: FC<IExchangeProps> = ({rate}) => {

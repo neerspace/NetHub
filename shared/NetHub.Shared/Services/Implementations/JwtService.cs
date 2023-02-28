@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
@@ -21,28 +20,28 @@ public sealed class JwtService : IJwtService
 {
     private readonly JwtOptions _options;
     private readonly ISqlServerDatabase _database;
-    private readonly IWebHostEnvironment _environment;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly AccessTokenGenerator _accessTokenGenerator;
     private readonly RefreshTokenGenerator _refreshTokenGenerator;
+    private readonly CookieOptionsAccessor _cookieOptionsAccessor;
 
     private HttpContext HttpContext => _httpContextAccessor.HttpContext!;
 
     public JwtService(
         ISqlServerDatabase database, IOptions<JwtOptions> jwtOptionsAccessor,
-        IHttpContextAccessor httpContextAccessor, IWebHostEnvironment environment,
-        AccessTokenGenerator accessTokenGenerator, RefreshTokenGenerator refreshTokenGenerator)
+        IHttpContextAccessor httpContextAccessor, AccessTokenGenerator accessTokenGenerator,
+        RefreshTokenGenerator refreshTokenGenerator, CookieOptionsAccessor cookieOptionsAccessor)
     {
         _database = database;
-        _environment = environment;
         _options = jwtOptionsAccessor.Value;
         _httpContextAccessor = httpContextAccessor;
         _accessTokenGenerator = accessTokenGenerator;
         _refreshTokenGenerator = refreshTokenGenerator;
+        _cookieOptionsAccessor = cookieOptionsAccessor;
     }
 
 
-    public async Task<AuthResult> GenerateAsync(AppUser user, CancellationToken ct)
+    public async Task<JwtResult> GenerateAsync(AppUser user, CancellationToken ct)
     {
         var device = await GetUserDeviceAsync(ct);
 
@@ -51,7 +50,7 @@ public sealed class JwtService : IJwtService
 
         SetRefreshTokenCookie(refreshToken, refreshTokenExpires);
 
-        return new AuthResult
+        return new JwtResult
         {
             Username = user.UserName,
             FirstName = user.FirstName,
@@ -63,7 +62,7 @@ public sealed class JwtService : IJwtService
         };
     }
 
-    public async Task<AuthResult> RefreshAsync(string refreshToken, CancellationToken ct)
+    public async Task<JwtResult> RefreshAsync(string refreshToken, CancellationToken ct)
     {
         var refreshTokens = _database.Set<AppToken>();
 
@@ -85,16 +84,7 @@ public sealed class JwtService : IJwtService
     }
 
     private void SetRefreshTokenCookie(string refreshToken, DateTimeOffset refreshTokenExpires) =>
-        HttpContext.Response.Cookies.Append(_options.RefreshToken.CookieName, refreshToken, new CookieOptions
-        {
-            HttpOnly = true,
-            Secure = _environment.IsProduction(),
-            IsEssential = true,
-            SameSite = SameSiteMode.Strict,
-            // SameSite = _environment.IsProduction() ? SameSiteMode.Strict : SameSiteMode.Lax,
-            Domain = _options.RefreshToken.CookieDomain,
-            Expires = refreshTokenExpires,
-        });
+        HttpContext.Response.Cookies.Append(_options.RefreshToken.CookieName, refreshToken, _cookieOptionsAccessor.GetRefreshOptions(refreshTokenExpires));
 
     /// <summary>
     /// Verifies given refresh token by current user request client.
@@ -129,7 +119,7 @@ public sealed class JwtService : IJwtService
         var ip = HttpContext.GetIPAddress().ToString();
 
         if (userAgent.IsRobot // coz we hate robots here
-            // UA platform is invalid
+                              // UA platform is invalid
             || string.Equals(userAgent.Platform, "Unknown Platform", StringComparison.OrdinalIgnoreCase)
             // UA browser is invalid
             || string.IsNullOrEmpty(userAgent.Browser)

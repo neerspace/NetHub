@@ -1,4 +1,4 @@
-﻿using Google.Apis.Auth;
+using Google.Apis.Auth;
 using NeerCore.DependencyInjection;
 using NeerCore.Exceptions;
 using NetHub.Shared.Models.Jwt;
@@ -11,7 +11,7 @@ internal sealed class GoogleAuthProvider : IAuthProviderValidator
 {
     public ProviderType Type => ProviderType.Google;
 
-    public async Task<bool> ValidateAsync(SsoEnterRequest request, CancellationToken ct = default)
+    public async Task<bool> ValidateAsync(JwtAuthenticateRequest request, CancellationToken ct = default)
     {
         request.ProviderMetadata.TryGetValue("token", out var token);
 

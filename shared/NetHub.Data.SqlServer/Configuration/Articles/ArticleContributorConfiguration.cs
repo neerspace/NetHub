@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Enums;

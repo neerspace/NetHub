@@ -1,4 +1,4 @@
-﻿using NetHub.Admin.Extensions;
+using NetHub.Admin.Extensions;
 using NetHub.Data.SqlServer.Entities.Articles;
 using Sieve.Services;
 

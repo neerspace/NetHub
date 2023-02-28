@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NeerCore.Data.EntityFramework.Extensions;
-using NetHub.Shared.Api;
-using NetHub.Shared.Api.Abstractions;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Models.Articles;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Api.Swagger;
 using NetHub.Shared.Extensions;
 using NetHub.Shared.Services;
 
@@ -15,14 +15,15 @@ namespace NetHub.Api.Endpoints.Articles;
 [Authorize]
 [Tags(TagNames.Articles)]
 [ApiVersion(Versions.V1)]
-public class ArticleUploadImageEndpoint : Endpoint<AddArticleImageRequest, CreatedResult>
+public class ArticleUploadImageEndpoint : Endpoint<AddArticleImageRequest, AddArticleImageResult>
 {
     private readonly IResourceService _resourceService;
     public ArticleUploadImageEndpoint(IResourceService resourceService) => _resourceService = resourceService;
 
 
-    [HttpPost("articles/{id:long}/images")]
-    public override async Task<CreatedResult> HandleAsync(AddArticleImageRequest request, CancellationToken ct)
+    [HttpPost("articles/{id:long}/images"), ClientSide(ActionName = "uploadImage")]
+    [Consumes("multipart/form-data")]
+    public override async Task<AddArticleImageResult> HandleAsync(AddArticleImageRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
 
@@ -41,6 +42,6 @@ public class ArticleUploadImageEndpoint : Endpoint<AddArticleImageRequest, Creat
 
         await Database.SaveChangesAsync(ct);
 
-        return Created(Request.GetResourceUrl(resourceId), null);
+        return new(Request.GetResourceUrl(resourceId));
     }
 }

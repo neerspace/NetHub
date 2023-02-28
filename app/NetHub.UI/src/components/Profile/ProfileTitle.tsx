@@ -5,11 +5,11 @@ import {useProfileContext} from "../../pages/Profile/ProfileSpace.Provider";
 import {useParams} from "react-router-dom";
 
 const ProfileTitle = () => {
-  const {id} = useParams();
+  const {username} = useParams();
   const {userAccessor} = useProfileContext();
   const reduxUser = useAppStore(state => state.user);
 
-  const title = id
+  const title = username
     ? userAccessor.data?.userName
       ? userAccessor.data.userName
       : <Skeleton width={'30%'}>height</Skeleton> //'height' - to declare font height to skeleton

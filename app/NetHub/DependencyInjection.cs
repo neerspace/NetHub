@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NeerCore.DependencyInjection.Extensions;
 using NetHub.Constants;
-using NetHub.Shared.Options;
 using NetHub.Core.Constants;
+using NetHub.Data.SqlServer.Sieve;
+using NetHub.Shared.Options;
 using Ng.Services;
 using Sieve.Models;
 using Sieve.Services;
@@ -19,6 +20,7 @@ public static class DependencyInjection
 
         services.AddLazyCache();
         services.AddHttpClients(configuration);
+        services.AddCustomSieve(configuration);
     }
 
     private static void AddHttpClients(this IServiceCollection services, IConfiguration configuration)
@@ -34,5 +36,12 @@ public static class DependencyInjection
         {
             config.BaseAddress = new Uri(currencyOptions.MonobankApiUrl);
         });
+    }
+
+    private static void AddCustomSieve(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<SieveOptions>(configuration.GetSection(ConfigSectionNames.Sieve).Bind);
+        services.AddScoped<ISieveCustomFilterMethods, SieveCustomFiltering>();
+        services.AddTransient<ISieveProcessor, SieveProcessor>();
     }
 }

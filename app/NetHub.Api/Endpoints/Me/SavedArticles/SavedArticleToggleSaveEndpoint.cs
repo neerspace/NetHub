@@ -1,22 +1,23 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.EntityFramework.Extensions;
-using NetHub.Shared.Api;
-using NetHub.Shared.Api.Abstractions;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Models.Articles.Localizations;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Api.Swagger;
 
 namespace NetHub.Api.Endpoints.Me.SavedArticles;
 
 [Authorize]
-[Tags(TagNames.MySavedArticles)]
+[Tags(TagNames.MyArticles)]
 [ApiVersion(Versions.V1)]
 public sealed class SavedArticleToggleSaveEndpoint : ActionEndpoint<ArticleLocalizationQuery>
 {
-    [HttpPatch("me/saved-articles/{id:long}/{lang:alpha:length(2)}")]
+    [HttpPatch("me/saved-articles/{id:long}/{lang:alpha:length(2)}"), ClientSide(ActionName = "toggleSave")]
     public override async Task HandleAsync(ArticleLocalizationQuery request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
