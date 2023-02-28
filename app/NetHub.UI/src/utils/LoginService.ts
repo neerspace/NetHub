@@ -1,19 +1,21 @@
 import { auth, facebookProvider, googleProvider } from '../api/firebase';
 import { signInWithPopup } from 'firebase/auth';
 import IProviderTokenResponse from '../types/IProviderTokenResponse';
-import { ProviderType } from '../types/ProviderType';
 import { SsoRequest } from '../types/schemas/Sso/SsoSchema';
+import { ProviderType } from '../api/_api';
 
 
 export default class LoginService {
   static async ProviderHandle(provider: ProviderType): Promise<SsoRequest> {
     switch (provider) {
-      case ProviderType.GOOGLE:
+      case ProviderType.Google:
         return await LoginService.googleHandle();
-      case ProviderType.TELEGRAM:
+      case ProviderType.Telegram:
         return await LoginService.telegramHandle();
-      case ProviderType.FACEBOOK:
+      case ProviderType.Facebook:
         return await LoginService.facebookHandle();
+      default:
+        throw new Error('Such provider doesn\'t implemented yet');
     }
   }
 
@@ -29,6 +31,7 @@ export default class LoginService {
       username: tokenResponse.email.replace(/@.*$/, ''),
       firstName: tokenResponse.firstName ?? '',
       lastName: tokenResponse.lastName ?? '',
+      middleName: null,
       profilePhotoUrl: tokenResponse.photoUrl,
       email: tokenResponse.email,
       providerMetadata: {
@@ -36,7 +39,7 @@ export default class LoginService {
         token: credential._tokenResponse.oauthIdToken,
       },
       providerKey: tokenResponse.localId,
-      provider: ProviderType.GOOGLE,
+      provider: ProviderType.Google,
     };
   }
 
@@ -57,6 +60,7 @@ export default class LoginService {
               username: data.username ?? '',
               firstName: data.first_name ?? '',
               lastName: data.last_name ?? '',
+              middleName: null,
               profilePhotoUrl: data.photo_url,
               email: data.email ?? '',
               providerMetadata: {
@@ -68,7 +72,7 @@ export default class LoginService {
                 last_name: data.last_name ?? null,
                 photo_url: data.photo_url ?? null,
               },
-              provider: ProviderType.TELEGRAM,
+              provider: ProviderType.Telegram,
               providerKey: data.id.toString()
             };
             resolve(request);
@@ -89,6 +93,7 @@ export default class LoginService {
       username: tokenResponse.email?.replace(/@.*$/, '') ?? '',
       firstName: tokenResponse.firstName ?? '',
       lastName: tokenResponse.lastName ?? '',
+      middleName: null,
       profilePhotoUrl: tokenResponse.photoUrl,
       email: tokenResponse.email ?? null,
       providerMetadata: {
@@ -96,7 +101,7 @@ export default class LoginService {
         token: credential._tokenResponse.oauthAccessToken,
       },
       providerKey: tokenResponse.localId,
-      provider: ProviderType.FACEBOOK,
+      provider: ProviderType.Facebook,
     };
   }
 }

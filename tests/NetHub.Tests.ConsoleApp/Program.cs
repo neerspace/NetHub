@@ -1,3 +1,3 @@
-﻿using NetHub.Tests.ConsoleApp.UserAgentServiceTests;
+using NetHub.Tests.ConsoleApp.UserAgentServiceTests;
 
 UserAgentServiceTest.Run();

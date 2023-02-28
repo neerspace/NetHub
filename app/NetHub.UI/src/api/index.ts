@@ -6,18 +6,20 @@ import {
   ArticlesApi,
   CurrencyApi,
   CurrentUserApi,
-  JwtApi, LanguagesApi, ResourcesApi,
+  JwtApi, LanguagesApi, MyArticlesApi, ResourcesApi,
   UsersApi
 } from "./_api";
 
 export const baseApiUrl = 'https://api.nethub.local:9010';
 
-export const _api = axios.create({
+const _apiInstance = axios.create();
+
+const _jwtApiInstance = axios.create({
   withCredentials: true
 });
 
-_api.interceptors.request.use(async (config) => {
-  const accessToken = await getOrRefreshAccessToken(config.url);
+_apiInstance.interceptors.request.use(async (config) => {
+  const accessToken = await getOrRefreshAccessToken();
 
   if (accessToken !== null)
     config.headers = {
@@ -26,20 +28,20 @@ _api.interceptors.request.use(async (config) => {
   return config;
 });
 
-_api.interceptors.response.use(async (config) => {
+_apiInstance.interceptors.response.use(async (config) => {
     return config;
   },
   (error: AxiosError) => {
     throw new ApiError(error.message, error.response?.status);
-  });
+  })
+;
 
-export default {
-  _articlesApi: new ArticlesApi(baseApiUrl, _api),
-  _localizationsApi: new ArticleLocalizationsApi(baseApiUrl, _api),
-  _usersApi: new UsersApi(baseApiUrl, _api),
-  _jwtApi: new JwtApi(baseApiUrl, _api),
-  _currenciesApi: new CurrencyApi(baseApiUrl, _api),
-  _currentUserApi: new CurrentUserApi(baseApiUrl, _api),
-  _languagesApi: new LanguagesApi(baseApiUrl, _api),
-  _resourcesApi: new ResourcesApi(baseApiUrl, _api)
-}
+export const _articlesApi = new ArticlesApi(baseApiUrl, _apiInstance);
+export const _myArticlesApi = new MyArticlesApi(baseApiUrl, _apiInstance);
+export const _localizationsApi = new ArticleLocalizationsApi(baseApiUrl, _apiInstance);
+export const _usersApi = new UsersApi(baseApiUrl, _apiInstance);
+export const _jwtApi = new JwtApi(baseApiUrl, _jwtApiInstance);
+export const _currenciesApi = new CurrencyApi(baseApiUrl, _apiInstance);
+export const _currentUserApi = new CurrentUserApi(baseApiUrl, _apiInstance);
+export const _languagesApi = new LanguagesApi(baseApiUrl, _apiInstance);
+export const _resourcesApi = new ResourcesApi(baseApiUrl, _apiInstance);

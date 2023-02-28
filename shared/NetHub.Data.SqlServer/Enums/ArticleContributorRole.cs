@@ -1,10 +1,10 @@
-﻿namespace NetHub.Data.SqlServer.Enums;
+namespace NetHub.Data.SqlServer.Enums;
 
 public enum ArticleContributorRole
 {
-	Author,
-	Editor,
-	Test,
-	Copyrighter,
-	Translator
+    Author,
+    Editor,
+    Test,
+    Copyrighter,
+    Translator
 }

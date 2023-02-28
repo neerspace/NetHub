@@ -1,7 +1,7 @@
-import {z as u} from "zod";
-import {userApi} from "../../../api/api";
-import {onlyLettersRegex, usernameRegex} from "../../../utils/regex";
-import {ProviderType} from "../../ProviderType";
+import { z as u } from "zod";
+import { ProviderType } from "../../../api/_api";
+import { onlyLettersRegex, usernameRegex } from "../../../utils/regex";
+import { _usersApi } from "../../../api";
 
 export type SsoRequest = u.infer<typeof SsoRequestSchema>;
 
@@ -11,7 +11,7 @@ export const SsoRequestSchema = u.object({
     .max(12, 'Довжина імені користувача повинна бути від 3 до 12')
     .regex(usernameRegex, 'Невірно введене ім\'я користувача')
     .refine(async (username) => {
-      return await userApi.checkUsername(username);
+      return (await _usersApi.checkUsername(username)).isAvailable;
     }, 'Ім\'я користувача вже використовується'),
   email: u.string()
     .email('Невірна поштова скринька')
@@ -22,10 +22,10 @@ export const SsoRequestSchema = u.object({
     .regex(onlyLettersRegex, 'Невірно введене'),
   middleName: u.string().min(5, 'Занадто коротке')
     .regex(onlyLettersRegex, 'Невірно введено')
-    .optional(),
+    .nullable(),
   profilePhotoUrl: u.string()
     .nullable(),
-  providerMetadata: u.any(),
+  providerMetadata: u.object({}),
   provider: u.nativeEnum(ProviderType),
   providerKey: u.string(),
   type: u.enum(['register', 'login']).optional()

@@ -1,1 +1,0 @@
-export type ContentStatus = 'Draft' | 'Pending' | 'Published' | 'Banned';

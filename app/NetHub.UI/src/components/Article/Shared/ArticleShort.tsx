@@ -2,16 +2,16 @@ import { Text, useColorModeValue } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useArticleContext } from '../../../pages/Articles/One/ArticleSpace.Provider';
-import IExtendedArticle from '../../../types/IExtendedArticle';
 import FilledDiv from '../../UI/FilledDiv';
 import cl from './ArticleShort.module.sass';
-import { RateVariants } from './ArticlesRateCounter';
 import ArticleShortFooter from './Related/ArticleShortFooter';
 import ArticleShortHeader from './Related/ArticleShortHeader';
+import { Vote } from "../../../api/_api";
+import { ISimpleLocalization } from "../../../types/api/ISimpleLocalization";
 
 interface IArticleItemProps {
-  localization: IExtendedArticle;
-  setLocalization: (localization: IExtendedArticle) => void;
+  localization: ISimpleLocalization;
+  setLocalization: (localization: ISimpleLocalization) => void;
   save: { actual: boolean; handle: () => Promise<void> };
   time?: { before?: string; show?: 'default' | 'saved' };
   afterCounterRequest: () => Promise<void>;
@@ -30,7 +30,7 @@ const ArticleShort: FC<IArticleItemProps> = ({
   const navigate = useNavigate();
   const article = articleAccessor.data!;
 
-  function updateCounter(rate: number, vote?: RateVariants) {
+  function updateCounter(rate: number, vote: Vote | null) {
     setArticle({ ...article, rate });
     setLocalization({ ...localization, rate, vote });
   }

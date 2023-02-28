@@ -30,7 +30,6 @@ const ArticleSavingActions: FC<ISavingActionsProps> = ({isSavedDefault, onSave, 
       .catch(() => enqueueError('Помилка копіювання'))
   }
 
-
   return (
     <Actions className={cl.actionsRight}>
       <IconButton iconId={'ExternalLink'} checkAuth={false} onClick={copyToClipboard}/>

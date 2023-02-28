@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.EntityFramework.Design;
 
 namespace NetHub.Data.SqlServer.Context;

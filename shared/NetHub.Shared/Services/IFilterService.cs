@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
 using NeerCore.Data.Abstractions;
 using NetHub.Shared.Models;
 

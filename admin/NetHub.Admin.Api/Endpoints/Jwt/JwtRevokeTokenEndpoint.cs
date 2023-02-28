@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Options;
+using NetHub.Shared.Services.Implementations;
 
 namespace NetHub.Admin.Api.Endpoints.Jwt;
 
@@ -10,13 +11,18 @@ namespace NetHub.Admin.Api.Endpoints.Jwt;
 public class JwtRevokeTokenEndpoint : ActionEndpoint
 {
     private readonly JwtOptions _options;
-    public JwtRevokeTokenEndpoint(IOptions<JwtOptions> optionsAccessor) => _options = optionsAccessor.Value;
+    private readonly CookieOptionsAccessor _cookieOptionsAccessor;
+    public JwtRevokeTokenEndpoint(IOptions<JwtOptions> optionsAccessor, CookieOptionsAccessor cookieOptionsAccessor)
+    {
+        _options = optionsAccessor.Value;
+        _cookieOptionsAccessor = cookieOptionsAccessor;
+    }
 
 
     [HttpPost("auth/revoke-token")]
     public override Task HandleAsync(CancellationToken ct)
     {
-        Response.Cookies.Delete(_options.RefreshToken.CookieName);
+        Response.Cookies.Delete(_options.RefreshToken.CookieName, _cookieOptionsAccessor.GetRefreshOptions());
         return Task.CompletedTask;
     }
 }

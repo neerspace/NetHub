@@ -2,12 +2,14 @@ import React from 'react';
 import ArticlesThread from "../../../components/Article/Thread/ArticlesThread";
 import ArticlesThreadSpaceSkeleton from "../Thread/ArticlesThreadSpaceSkeleton";
 import Currency from "../../../components/Currency/Currency";
-import {Skeleton, Text} from "@chakra-ui/react";
+import { Skeleton, Text } from "@chakra-ui/react";
 import ArticlesThreadTitle from "../../../components/Article/Thread/ArticlesThreadTitle";
-import ContributorArticlesSpaceProvider, {useContributorArticlesContext} from "./ContributorArticlesSpace.Provider";
-import Layout, {Page} from "../../../components/Layout/Layout";
+import ContributorArticlesSpaceProvider, {
+  useContributorArticlesContext
+} from "./ContributorArticlesSpace.Provider";
+import Layout, { Page } from "../../../components/Layout/Layout";
 import ErrorBlock from "../../../components/Layout/ErrorBlock";
-import {ErrorsHandler} from "../../../utils/ErrorsHandler";
+import { ErrorsHandler } from "../../../utils/ErrorsHandler";
 
 const ContributorArticlesSpace: Page = () => {
   const {
@@ -37,7 +39,8 @@ const ContributorArticlesSpace: Page = () => {
   return <Layout Titles={titles}>
     {
       contributorArticlesAccessor.isError
-        ? <ErrorBlock>{ErrorsHandler.default(contributorArticlesAccessor.error.statusCode)}</ErrorBlock>
+        ?
+        <ErrorBlock>{ErrorsHandler.default(contributorArticlesAccessor.error.statusCode)}</ErrorBlock>
         : !contributorArticlesAccessor.isSuccess
           ? <ArticlesThreadSpaceSkeleton/>
           : <ArticlesThread

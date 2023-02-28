@@ -1,30 +1,32 @@
 import React from 'react';
 import { useQueryClient } from 'react-query';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { articlesApi } from '../../../api/api';
 import { QueryClientConstants } from '../../../constants/queryClientConstants';
 import { useSavedArticlesContext } from '../../../pages/Saved/SavedSpace.Provider';
-import IExtendedArticle from '../../../types/IExtendedArticle';
 import ErrorBlock from '../../Layout/ErrorBlock';
 import ArticleShort from '../Shared/ArticleShort';
 import cl from './SavedArticles.module.sass';
 import SavedArticlesSkeleton from './SavedArticlesSkeleton';
 import './transitions.css';
+import { _myArticlesApi } from "../../../api";
+import { ILocalizationExtended } from "../../../types/api/ILocalizationExtended";
+import { IViewLocalizationModel, ViewLocalizationModel } from "../../../api/_api";
+import { ISimpleLocalization } from "../../../types/api/ISimpleLocalization";
 
 const SavedArticles = () => {
   const { savedArticles, setSavedArticles } = useSavedArticlesContext();
   const queryClient = useQueryClient();
 
-  async function handleSetArticle(localization: IExtendedArticle) {
+  async function handleSetArticle(localization: ISimpleLocalization) {
     setSavedArticles(
       savedArticles.data!.map((a) =>
-        a.localizationId === localization.localizationId ? localization : a
+        a.id === localization.id ? localization : a
       )
     );
   }
 
   async function removeFromSavedHandle(id: number, code: string) {
-    await articlesApi.toggleSavingLocalization(id, code);
+    await _myArticlesApi.toggleSave(id, code);
     const savedArticleIndex = savedArticles.data!.findIndex(
       (a) => a.articleId === id && a.languageCode === code
     );
@@ -33,7 +35,7 @@ const SavedArticles = () => {
     );
   }
 
-  const afterCounterRequest = (article: IExtendedArticle) =>
+  const afterCounterRequest = (article: ISimpleLocalization) =>
     async function () {
       await queryClient.invalidateQueries(QueryClientConstants.articles);
       await queryClient.invalidateQueries([
@@ -56,7 +58,7 @@ const SavedArticles = () => {
     <TransitionGroup className={cl.savedWrapper}>
       {savedArticles.data!.map((article) => (
         <CSSTransition
-          key={article.localizationId}
+          key={article.id}
           timeout={500}
           classNames='item'
         >

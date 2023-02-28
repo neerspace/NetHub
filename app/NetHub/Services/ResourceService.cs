@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using NeerCore.DependencyInjection;
-using NetHub.Shared.Extensions;
-using NetHub.Shared.Services;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
+using NetHub.Shared.Extensions;
+using NetHub.Shared.Services;
 
 namespace NetHub.Services;
 

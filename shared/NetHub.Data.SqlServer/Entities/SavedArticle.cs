@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 using NeerCore.Data.Abstractions;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Entities.Identity;
@@ -8,19 +8,19 @@ namespace NetHub.Data.SqlServer.Entities;
 [Table($"{nameof(SavedArticle)}s")]
 public class SavedArticle : IEntity
 {
-	#region ArticleLocalization
+    #region ArticleLocalization
 
-	public long LocalizationId { get; set; }
-	public virtual ArticleLocalization? Localization { get; set; }
+    public long LocalizationId { get; set; }
+    public virtual ArticleLocalization? Localization { get; set; }
 
-	#endregion
+    #endregion
 
-	#region User
+    #region User
 
-	public long UserId { get; set; }
-	public virtual AppUser? User { get; set; }
+    public long UserId { get; set; }
+    public virtual AppUser? User { get; set; }
 
-	#endregion
+    #endregion
 
-	public DateTimeOffset SavedDate { get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset SavedDate { get; set; } = DateTimeOffset.UtcNow;
 }

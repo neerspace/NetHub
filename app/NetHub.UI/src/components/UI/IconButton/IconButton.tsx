@@ -21,15 +21,20 @@ const IconButton: FC<IIconButtonProps> = ({iconId, onClick, filledIconId, defaul
 
   const {enqueueError} = useCustomSnackbar();
 
-  function authorizeCheck() {
+  function isAuthorized(): boolean {
     if (!isAccessTokenValid()) {
       enqueueError('Будь ласка, авторизуйтесь')
-      return;
+      return false;
     }
+
+    return true;
   }
 
   async function onClickHandle(e: React.MouseEvent) {
-    checkAuth && authorizeCheck();
+    if(checkAuth)
+      if (!isAuthorized())
+        return;
+
     if (filledIconId)
       setIsActive(prev => !prev);
 

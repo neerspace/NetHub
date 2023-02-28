@@ -3,12 +3,14 @@ using NeerCore.Api.Swagger.Extensions;
 using NeerCore.Exceptions;
 using NeerCore.Logging;
 using NeerCore.Logging.Extensions;
-using NetHub.Admin.Api;
+using NetHub;
 using NetHub.Admin;
-using NetHub.Shared.Api.Extensions;
+using NetHub.Admin.Api;
 using NetHub.Data.SqlServer;
 using NetHub.Data.SqlServer.Context;
-using NetHub;
+using NetHub.Shared;
+using NetHub.Shared.Api;
+using NetHub.Shared.Api.Extensions;
 
 var logger = LoggerInstaller.InitFromCurrentEnvironment();
 
@@ -44,9 +46,14 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
     if (builder.Environment.IsDevelopment())
         builder.Configuration.AddJsonFile("appsettings.Development.json");
 
+    // Database
     builder.Services.AddSqlServerDatabase(builder.Configuration);
+    // Application
     builder.Services.AddAdminApplication();
-    builder.Services.AddWebAdminApi(builder.Configuration);
+    builder.Services.AddSharedApplication(builder.Configuration);
+    // Api
+    builder.Services.AddSharedApi(builder.Configuration, builder.Environment);
+    builder.Services.AddWebAdminApi();
 }
 
 // Configure the HTTP request pipeline

@@ -1,4 +1,4 @@
-﻿using NetHub.Data.SqlServer.Enums;
+using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Models.Articles.Localizations;
 

@@ -1,4 +1,4 @@
-﻿// using Microsoft.AspNetCore.Authorization;
+// using Microsoft.AspNetCore.Authorization;
 // using Microsoft.AspNetCore.Mvc;
 // using NetHub.Api.Abstractions;
 // using NetHub.Shared.Api;

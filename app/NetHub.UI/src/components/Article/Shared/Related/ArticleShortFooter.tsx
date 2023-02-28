@@ -1,16 +1,17 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import cl from "../ArticleShort.module.sass";
-import ArticlesRateCounter, {RateVariants} from "../ArticlesRateCounter";
+import ArticlesRateCounter from "../ArticlesRateCounter";
 import ArticleSavingActions from "../ArticleSavingActions";
-import IExtendedArticle from "../../../../types/IExtendedArticle";
-import {Box, Text} from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import Actions from "../../../UI/Action/Actions";
+import { Vote } from "../../../../api/_api";
+import { ISimpleLocalization } from "../../../../types/api/ISimpleLocalization";
 
 interface IArticleShortFooterProps {
-  localization: IExtendedArticle,
+  localization: ISimpleLocalization,
   save: { actual: boolean, handle: () => Promise<void> },
 
-  updateCounter: (rate: number, vote?: RateVariants) => void,
+  updateCounter: (rate: number, vote: Vote | null) => void,
 
   afterCounterRequest: () => Promise<void>,
 
@@ -31,7 +32,7 @@ const ArticleShortFooter: FC<IArticleShortFooterProps> =
           <ArticlesRateCounter
             rate={localization.rate}
             articleId={localization.articleId}
-            vote={localization.vote ?? undefined}
+            vote={localization.vote}
             updateCounter={updateCounter}
             afterRequest={afterCounterRequest}
           />

@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;

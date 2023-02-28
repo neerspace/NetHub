@@ -4,10 +4,10 @@ import classes from './Header.module.sass';
 import { createImageFromInitials } from '../../../utils/logoGenerator';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../../store/config';
-import { jwtApi, userApi } from '../../../api/api';
+import { _jwtApi } from "../../../api";
 
 const LoggedUserBar: FC = () => {
-    const { user, logout } = useAppStore();
+    const {user, logout} = useAppStore();
 
     const navigate = useNavigate();
     const getImage = () => user.profilePhotoUrl ?? createImageFromInitials(500, user.username);
@@ -17,9 +17,9 @@ const LoggedUserBar: FC = () => {
       setImage(getImage());
     }, [user.profilePhotoUrl]);
 
-    function handleLogout() {
+    async function handleLogout() {
+      await _jwtApi.revoke();
       logout();
-      jwtApi.logout().then(() => navigate('/'));
     }
 
     return (
@@ -30,8 +30,8 @@ const LoggedUserBar: FC = () => {
                   maxH={40}
                   src={image}
                   onError={() => setImage(createImageFromInitials(500, user.username))}
-                  _hover={{ cursor: 'pointer' }} />
-          <Text as={'b'} _hover={{ cursor: 'pointer' }}>
+                  _hover={{cursor: 'pointer'}}/>
+          <Text as={'b'} _hover={{cursor: 'pointer'}}>
             {user.username}
           </Text>
         </div>

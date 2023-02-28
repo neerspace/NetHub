@@ -1,4 +1,4 @@
-﻿using LazyCache;
+using LazyCache;
 using Mapster;
 using NeerCore.DependencyInjection;
 using NetHub.Constants;
