@@ -76,6 +76,10 @@ export interface ColumnBase {
   formatter?: FormatterFunc;
 }
 
+export interface NoneFilter {
+  filter: FilterType.none;
+}
+
 export interface BooleanFilter {
   filter: FilterType.boolDropdown;
 }
@@ -113,6 +117,7 @@ export type ColumnInfo = Hideable &
     | ActionButtonsColumn<any>
     | (ColumnBase &
         (
+          | NoneFilter
           | BooleanFilter
           | DropdownFilter
           /*| DropdownFilterWithEnum*/

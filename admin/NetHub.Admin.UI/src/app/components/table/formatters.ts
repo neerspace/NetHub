@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon';
 import { getDomain } from '../../shared/utilities';
 
-const maxStringLength = 28;
-const emptyStringPlaceholder = '<span class="text-dimmed">—</span>';
+export const maxStringLength = 28;
+export const emptyStringPlaceholder = '<span class="text-dimmed">—</span>';
 
 export function formatAsDate(value: string | undefined): string {
   return value ? DateTime.fromISO(value).toFormat('dd/MM/yyyy HH:mm') : emptyStringPlaceholder;
