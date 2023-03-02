@@ -5,7 +5,7 @@
 <table id="users-table"
        class="table table-hover">
   <thead>
-  <tr>
+  <tr *ngIf="columns && columns.length">
     <th *ngFor="let col of $any(columns)"
         [class.hidden]="col.hidden">
       <button *ngIf="col.sortable; else notSortable"
@@ -85,6 +85,7 @@
 
   <app-column-chooser *ngIf="columnChooser"
                       [sequenceName]="columnChooserSequence!"
+                      [(sequence)]="columnSequence"
                       [(columns)]="columns"></app-column-chooser>
 
   <app-page-size *ngIf="data && total > pageSize"

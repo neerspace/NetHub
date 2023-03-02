@@ -21,7 +21,7 @@ public sealed class LanguageByCodeEndpoint : Endpoint<string, LanguageModel>
     public LanguageByCodeEndpoint(ISqlServerDatabase database) => _database = database;
 
 
-    [HttpGet("languages/{code:alpha}"), ClientSide(ActionName = "getByCode")]
+    [HttpGet("languages/{code:alpha:length(2)}"), ClientSide(ActionName = "getByCode")]
     public override async Task<LanguageModel> HandleAsync([FromRoute] string code, CancellationToken ct)
     {
         var language = await _database.Set<Language>().AsNoTracking().FirstOr404Async(l => l.Code == code, ct);

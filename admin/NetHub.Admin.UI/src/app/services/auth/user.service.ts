@@ -61,14 +61,14 @@ export class UserService {
     });
   }
 
-  setUserData(authResult: AuthResult): void {
-    console.log('token payload:', jwtDecode(authResult.token));
+  setUserData(authResult: AuthResult | null): void {
+    // console.log('token payload:', jwtDecode(authResult.token));
     this.securedStorage.jwtPayload = authResult;
   }
 
   refresh(redirectUrl: string): Observable<boolean> {
     const refreshExpires = this.securedStorage.jwtPayload?.refreshTokenExpires;
-    if (!refreshExpires) {
+    if (this.securedStorage.jwtPayload && !refreshExpires) {
       this.router.navigateByUrl('/login');
       return of(false);
     }

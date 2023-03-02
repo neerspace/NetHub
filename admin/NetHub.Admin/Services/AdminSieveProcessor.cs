@@ -5,11 +5,10 @@ using Sieve.Services;
 
 namespace NetHub.Admin.Services;
 
-[Service(ServiceType = typeof(ISieveProcessor))]
+[Service<ISieveProcessor>]
 public class AdminSieveProcessor : SieveProcessor
 {
-    public AdminSieveProcessor(IOptions<SieveOptions> options, ISieveCustomFilterMethods customFilter)
-        : base(options, customFilter) { }
+    public AdminSieveProcessor(IOptions<SieveOptions> options) : base(options) { }
 
     protected override SievePropertyMapper MapProperties(SievePropertyMapper mapper) =>
         mapper.ApplyConfigurationsFromAssembly(GetType().Assembly);

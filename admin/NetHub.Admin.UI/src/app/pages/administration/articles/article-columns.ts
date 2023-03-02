@@ -18,8 +18,8 @@ export function articleColumns(context: ArticlesTableComponent): ColumnInfo[] {
             class: 'details-button',
             text: 'Details',
           },
-          onClick: () => {
-            context.onLocalizationClick();
+          onClick: model => {
+            context.onLocalizationClick(model);
           },
         },
       ],

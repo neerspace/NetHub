@@ -12,11 +12,11 @@ export abstract class SplitBaseComponent<T> {
   firstComponentSize: number = 100;
   secondComponentSize: number = 0;
 
-  protected constructor(injector: Injector, private splitSizesStorageKey: SettingsKey) {
+  protected constructor(injector: Injector, private splitSizesStorageKey: string) {
     this.storage = injector.get(StorageService);
     this.device = injector.get(ViewportService);
     [this.firstComponentSize, this.secondComponentSize] = this.storage.get(
-      this.splitSizesStorageKey,
+      SettingsKey.SplitSizes + this.splitSizesStorageKey,
     ) || [100, 0];
   }
 
@@ -40,7 +40,7 @@ export abstract class SplitBaseComponent<T> {
       this.secondComponentSize = formSize;
     }
 
-    this.storage.set(this.splitSizesStorageKey, [
+    this.storage.set(SettingsKey.SplitSizes + this.splitSizesStorageKey, [
       this.firstComponentSize,
       this.secondComponentSize,
     ]);

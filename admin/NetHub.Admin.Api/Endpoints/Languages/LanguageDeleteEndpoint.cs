@@ -17,7 +17,7 @@ public sealed class LanguageDeleteEndpoint : ActionEndpoint<string>
     public LanguageDeleteEndpoint(ISqlServerDatabase database) => _database = database;
 
 
-    [HttpDelete("languages/{code:alpha}")]
+    [HttpDelete("languages/{code:alpha:length(2)}")]
     public override async Task HandleAsync([FromRoute] string code, CancellationToken ct)
     {
         var language = await _database.Set<Language>().FirstOr404Async(l => l.Code == code, ct);

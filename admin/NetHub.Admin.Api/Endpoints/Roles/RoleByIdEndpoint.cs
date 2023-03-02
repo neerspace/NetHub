@@ -26,7 +26,7 @@ public class RoleByIdEndpoint : Endpoint<long, RoleModel>
     public override async Task<RoleModel> HandleAsync([FromRoute] long id, CancellationToken ct)
     {
         var role = await _database.Set<AppRole>()
-            .Include(r => r.RoleClaims!.Where(rc => rc.ClaimType == Claims.Permission))
+            .Include(r => r.RoleClaims!.Where(rc => rc.ClaimType == Claims.Permissions))
             .FirstOr404Async(r => r.Id == id, ct);
 
         return role.Adapt<RoleModel>();

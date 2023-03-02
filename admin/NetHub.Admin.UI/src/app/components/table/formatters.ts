@@ -36,11 +36,19 @@ export function formatLink(link: string | null) {
 }
 
 export function formatAsText(value: string | undefined): string {
-  if (!value) {
-    return emptyStringPlaceholder;
+  return limitStringLength(value, maxStringLength, emptyStringPlaceholder);
+}
+
+export function limitStringLength(
+  sourceString: string | undefined,
+  maxLength: number,
+  defaultValue: string,
+) {
+  if (!sourceString) {
+    return defaultValue;
   }
-  if (value.length > maxStringLength) {
-    return value.substring(0, maxStringLength - 3) + '...';
+  if (sourceString.length > maxLength) {
+    return sourceString.substring(0, maxLength - 3) + '...';
   }
-  return value;
+  return sourceString;
 }

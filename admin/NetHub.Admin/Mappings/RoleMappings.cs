@@ -11,7 +11,7 @@ public class RoleMappings : IRegister
     {
         config.NewConfig<AppRole, RoleModel>()
             .Map(m => m.Permissions, e => (e.RoleClaims ?? Array.Empty<AppRoleClaim>())
-                .Where(rc => rc.ClaimType == Claims.Permission)
+                .Where(rc => rc.ClaimType == Claims.Permissions)
                 .Select(rc => rc.ClaimValue).ToArray());
 
         config.NewConfig<RoleModel, AppRole>()
@@ -21,7 +21,7 @@ public class RoleMappings : IRegister
                 .Select(p => new AppRoleClaim
                 {
                     RoleId = e.Id,
-                    ClaimType = Claims.Permission,
+                    ClaimType = Claims.Permissions,
                     ClaimValue = p
                 }).ToList());
     }

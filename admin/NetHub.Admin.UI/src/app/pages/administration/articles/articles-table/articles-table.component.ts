@@ -1,12 +1,12 @@
 import { Component, Injector, TemplateRef, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ArticleModel } from '../../../../api';
-import { TabsComponent } from '../../../../components/core/tabs/tabs.component';
-import { SplitBaseComponent } from '../../../../components/split/split-base.component';
-import { ColumnInfo, IFiltered, IFilterInfo } from '../../../../components/table/types';
-import { SettingsKey } from '../../../../services/storage/types';
+import { combineLatest, Observable } from 'rxjs';
+import { ArticleLocalizationModel, ArticleModel } from 'src/app/api';
+import { TabsComponent } from 'src/app/components/core/tabs/tabs.component';
+import { SplitBaseComponent } from 'src/app/components/split/split-base.component';
+import { ColumnInfo, IFiltered, IFilterInfo } from 'src/app/components/table/types';
+import { limitStringLength } from '../../../../components/table/formatters';
 import { articleColumns } from '../article-columns';
-import { ArticlesService } from '../services/article.service';
+import { ArticlesService } from '../article.service';
 
 @Component({
   selector: 'app-articles-table',
@@ -21,7 +21,7 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> {
   columns: ColumnInfo[];
 
   constructor(injector: Injector, public articlesService: ArticlesService) {
-    super(injector, SettingsKey.UsersSplitSizes);
+    super(injector, 'users');
     this.columns = articleColumns(this);
   }
 
@@ -35,34 +35,32 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> {
     return this.articlesService.filter(params);
   }
 
-  onLocalizationClick() {
-    this.tabsComponent.openTab('New Tab', this.localizationTemplate, 'aoa', true);
-  onDetailsClick(model: ArticleModel) {
+  onLocalizationClick(model: ArticleModel) {
+    console.log('titile:::', model);
+    const tabTitle = limitStringLength(model.name, 20, 'Untitled');
+    this.tabsComponent.openTab(tabTitle, this.localizationTemplate, 'aoa', true);
+  }
 
+  onDetailsClick(model: ArticleModel) {
     const article$ = this.articlesService.getById(model.id);
     const localizations$ = this.articlesService.getLocalizations(model.id);
 
-    combineLatest([article$, localizations$])
-      .subscribe(([article, localizations]) => {
+    combineLatest([article$, localizations$]).subscribe(([article, localizations]) => {
+      this.tabsComponent.closeAllTabs();
 
-        this.tabsComponent.closeAllTabs();
+      this.tabsComponent.openTab(this.generateTabName(article), this.articleTemplate, article);
 
+      for (let localization of localizations) {
         this.tabsComponent.openTab(
-          this.generateTabName(article),
-          this.articleTemplate,
-          article
+          this.generateTabName(localization),
+          this.localizationTemplate,
+          localization,
+          true,
         );
+      }
 
-        for (let localization of localizations) {
-          this.tabsComponent.openTab(
-            this.generateTabName(localization),
-            this.localizationTemplate,
-            localization,
-            true);
-        }
-
-        this.loaderService.hide();
-      })
+      // this.loaderService.hide();
+    });
   }
 
   private generateTabName(data: ArticleModel | ArticleLocalizationModel): string {

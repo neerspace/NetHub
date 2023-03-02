@@ -1,21 +1,20 @@
-﻿import {Injectable} from "@angular/core";
-import {FormBuilder} from "@angular/forms";
-import {Router} from "@angular/router";
-import {ArticleLocalizationModel, ErrorDto, LocalizationsApi} from "../../../../api";
-import {ModalsService} from "../../../../services/modals.service";
-import {LoaderService, ToasterService} from "../../../../services/viewport";
+﻿import { Injectable } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ArticleLocalizationModel, ErrorDto, LocalizationsApi } from 'src/app/api';
+import { ModalsService } from 'src/app/services/modals.service';
+import { LoaderService, ToasterService } from 'src/app/services/viewport';
 
-@Injectable({providedIn: 'root'})
-export class LocalizationsService{
+@Injectable({ providedIn: 'root' })
+export class LocalizationsService {
   constructor(
     formBuilder: FormBuilder,
     private router: Router,
     private localizationsApi: LocalizationsApi,
     private modals: ModalsService,
     private loader: LoaderService,
-    private toaster: ToasterService
+    private toaster: ToasterService,
   ) {}
-
 
   getById(id: number): void {
     this.onRequestStart();

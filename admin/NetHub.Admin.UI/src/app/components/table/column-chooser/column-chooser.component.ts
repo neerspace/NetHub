@@ -10,21 +10,19 @@ import { ColumnInfo } from '../types';
 export class ColumnChooserComponent implements OnInit {
   @Input() columns!: ColumnInfo[];
   @Input() sequenceName!: string;
+  @Input() sequence: string[] = [];
 
   @Output() columnsChange: EventEmitter<ColumnInfo[]> = new EventEmitter();
+  @Output() sequenceChange: EventEmitter<string[]> = new EventEmitter();
 
-  sequence: string[] = [];
   optionColumns!: ColumnInfo[];
 
   constructor(private storage: StorageService) {}
 
   ngOnInit(): void {
-    this.sequence = this.storage.getColumnSequence(this.sequenceName) || [];
+    this.sequence ??= this.storage.getColumnSequence(this.sequenceName) || [];
 
     if (this.sequence && this.sequence.length > 0) {
-      for (const column of this.columns as any[]) {
-        column.hidden = column.hideable && !this.sequence.includes(column.key);
-      }
       this.optionColumns = this.columns.filter(x => x.key && x.title);
     } else {
       this.sequence = this.columns.filter(x => !x.hidden).map(x => x.key!);
@@ -34,6 +32,7 @@ export class ColumnChooserComponent implements OnInit {
   }
 
   onOptionChange(column: ColumnInfo, event: Event) {
+    console.log('option changed!!!');
     const checkbox = event.target as HTMLInputElement;
     column.hidden = !checkbox.checked;
 

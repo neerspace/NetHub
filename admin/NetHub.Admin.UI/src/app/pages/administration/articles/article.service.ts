@@ -1,14 +1,14 @@
-﻿import {IFiltered, IFilterInfo} from "../../../../components/table/types";
-import {Observable} from "rxjs";
-import {Injectable} from "@angular/core";
-import {FormGroupReady, FormId, FormReady} from "../../../../components/form/types";
-import {Router} from "@angular/router";
-import {ArticleLocalizationModel, ArticleModel, ArticlesApi, ErrorDto} from "../../../../api";
-import {FormBuilder} from "@angular/forms";
-import {LoaderService, ToasterService} from "../../../../services/viewport";
-import {ModalsService} from "../../../../services/modals.service";
+﻿import { Injectable } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { ArticleLocalizationModel, ArticleModel, ArticlesApi, ErrorDto } from 'src/app/api';
+import { FormGroupReady, FormId, FormReady } from 'src/app/components/form/types';
+import { IFiltered, IFilterInfo } from 'src/app/components/table/types';
+import { ModalsService } from 'src/app/services/modals.service';
+import { LoaderService, ToasterService } from 'src/app/services/viewport';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class ArticlesService {
   readonly form: FormGroupReady;
 
@@ -18,8 +18,8 @@ export class ArticlesService {
     private articlesApi: ArticlesApi,
     private modals: ModalsService,
     private loader: LoaderService,
-    private toaster: ToasterService
-    ) {
+    private toaster: ToasterService,
+  ) {
     this.form = formBuilder.group({
       ready: [null as FormReady, []],
       id: ['', []],
@@ -50,7 +50,7 @@ export class ArticlesService {
     });
   }
 
-  getById(id: number): Observable<ArticleModel>{
+  getById(id: number): Observable<ArticleModel> {
     return this.articlesApi.getById(id);
   }
 
@@ -58,7 +58,7 @@ export class ArticlesService {
     return this.articlesApi.filter(request.filters, request.sorts, request.page, request.pageSize);
   }
 
-  getLocalizations(id: number): Observable<ArticleLocalizationModel[]>{
+  getLocalizations(id: number): Observable<ArticleLocalizationModel[]> {
     return this.articlesApi.getByArticleId(id);
   }
 

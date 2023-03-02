@@ -36,14 +36,14 @@ export class TokenInterceptor implements HttpInterceptor {
    */
   public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.loader.show();
-    console.log('token start');
+    // console.log('[JWT] Token start');
 
     if (this.isSecureUrl(request.url)) {
-      console.log('secured case');
+      // console.log('[JWT] Secured case');
       return this.tokenService.handleRequest(request, next).pipe(tap(_ => this.loader.hide()));
     }
 
-    console.log('alt case');
+    // console.log('[JWT] Alt case');
     return this.invokeRequest(next, request);
   }
 
@@ -60,7 +60,7 @@ export class TokenInterceptor implements HttpInterceptor {
           if (error instanceof HttpErrorResponse) {
             if (request.url.endsWith('/jwt/refresh')) {
               this.securedStorage.jwtPayload = null;
-              this.router.navigateByUrl('/login', { state: { redirect: this.route.url } });
+              // this.router.navigateByUrl('/login', { state: { redirect: this.route.url } });
             } else if (error.status === 403) {
               this.router.navigateByUrl('/error/403', { skipLocationChange: true });
             } else if (error.status === 401) {

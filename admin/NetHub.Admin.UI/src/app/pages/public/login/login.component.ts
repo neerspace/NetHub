@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
     if (this.logout) {
       this.jwtApi.revokeToken().subscribe({
         next: () => {
+          this.userService.setUserData(null);
           this.toaster.showInfo('Logout succeeded');
         },
         error: error => {

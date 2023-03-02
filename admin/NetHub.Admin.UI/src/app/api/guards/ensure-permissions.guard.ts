@@ -6,7 +6,7 @@ export class EnsurePermissionsGuard implements CanActivateChild {
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<boolean> | boolean {
-    console.log('childRoute', childRoute);
+    // console.log('childRoute', childRoute);
     return true;
     // return this.canActivate(childRoute, state);
   }

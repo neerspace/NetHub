@@ -58,7 +58,7 @@
       "importRequiredTypes": true,
       "useGetBaseUrlMethod": false,
       "baseUrlTokenName": "API_URL",
-      "queryNullValue": "null",
+      "queryNullValue": "",
       "inlineNamedDictionaries": false,
       "inlineNamedAny": false,
       "templateDirectory": null,

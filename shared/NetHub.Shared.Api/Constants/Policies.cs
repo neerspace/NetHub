@@ -17,4 +17,7 @@ public static class Policies
 
     public const string HasReadArticlesPermission = "ReadArticles";
     public const string HasManageArticlesPermission = "ManageArticles";
+
+    public const string HasReadResourcesPermission = "ReadResources";
+    public const string HasManageResourcesPermission = "ManageResources";
 }

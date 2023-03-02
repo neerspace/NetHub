@@ -1,21 +1,14 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChange,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { logger } from 'src/environments/environment';
 import { ErrorDto } from '../../../api';
+import { StorageService } from '../../../services/storage';
 import { LoaderService, ToasterService } from '../../../services/viewport';
 import { TablePaginationComponent } from '../pagination/table-pagination.component';
 import { buildFiltersQuery, defaultNumberOperator, defaultTextOperator, postfixes } from '../sieve';
-import { ColumnBase, ColumnInfo, FetchApiEvent, FilterType, IFilterParams } from '../types';
+import { ColumnInfo, FetchApiEvent, FilterType, IFilterParams } from '../types';
 
 @Component({
   selector: 'app-data-table',
@@ -39,6 +32,7 @@ export class DataTableComponent<T> implements OnInit {
   data?: any[];
   loading: boolean = true;
   pageIndicatorText: string = '';
+  columnSequence: string[] = [];
 
   filtersForm!: FormGroup;
   private filters?: string;
@@ -48,6 +42,7 @@ export class DataTableComponent<T> implements OnInit {
     private activatedRoute: ActivatedRoute,
     private loader: LoaderService,
     private toaster: ToasterService,
+    private storage: StorageService,
   ) {
     this.loader.show();
   }
@@ -55,8 +50,17 @@ export class DataTableComponent<T> implements OnInit {
   ngOnInit(): void {
     this.extractSorts(this.defaultSorting);
     this.filtersForm = new FormGroup({});
+    if (this.columnChooser) {
+      if (!this.columnChooserSequence) {
+        throw new Error("'columnChooserSequence' is required when 'columnChooser' enabled.");
+      }
 
-    for (const col of this.columns as ColumnBase[]) {
+      this.columnSequence = this.storage.getColumnSequence(this.columnChooserSequence) || [];
+    }
+
+    for (const col of this.columns as any[]) {
+      col.hidden = col.hideable && !this.columnSequence.includes(col.key);
+
       if (col.filter) {
         if (col.filter === FilterType.optText) {
           this.filtersForm.addControl(col.key + postfixes.textOp, new FormControl());
