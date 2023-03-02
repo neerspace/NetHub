@@ -11,6 +11,7 @@ import { LoaderService, ToasterService } from '../../../services/viewport';
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
   readonly form: FormGroupReady;
+  flagFile?: File;
   public lastFormId?: FormId<string>;
 
   constructor(
@@ -25,10 +26,11 @@ export class LanguageService {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 
     this.form = formBuilder.group({
-      ready: [null as FormReady, []],
+      ready: [<FormReady>null, []],
       code: ['', []],
       name: ['', []],
       nameLocal: ['', []],
+      flagUrl: [<string | null>null, []],
     }) as any;
 
     this.form.ready = this.form.get('ready') as FormControl;
@@ -67,7 +69,7 @@ export class LanguageService {
     this.languagesApi.create(this.getRequestModel()).subscribe({
       next: (lang: LanguageModel) => {
         this.toaster.showSuccess('Language successfully created');
-        this.onRequestSuccess();
+        this.onRequestSuccess(lang.code);
         this.router.navigate(['languages', lang.code]);
       },
       error: (error: ErrorDto) => {
@@ -81,7 +83,7 @@ export class LanguageService {
     this.languagesApi.update(this.getRequestModel(code)).subscribe({
       next: () => {
         this.toaster.showSuccess('Language successfully updated');
-        this.onRequestSuccess();
+        this.onRequestSuccess(code);
       },
       error: (error: ErrorDto) => {
         this.onRequestError(error);
@@ -107,6 +109,20 @@ export class LanguageService {
     });
   }
 
+  private uploadFlagFile(code: string): Observable<void> {
+    if (!this.flagFile) {
+      throw new Error('Flag file is required.');
+    }
+    // const reader = new FileReader();
+    // reader.onload = e => console.log(e);
+    // reader.readAsDataURL(this.flagFile);
+
+    return this.languagesApi.uploadFlag(code, {
+      data: this.flagFile,
+      fileName: this.flagFile.name,
+    });
+  }
+
   private getRequestModel(code?: string): LanguageModel {
     const value = this.form.value;
     code = value.code || code;
@@ -127,10 +143,19 @@ export class LanguageService {
     }
   }
 
-  private onRequestSuccess() {
+  private onRequestSuccess(code?: string) {
     // console.log('request succeed');
-    this.loader.hide();
     this.form.ready.setValue('ready');
+    this.loader.hide();
+
+    if (this.flagFile && code) {
+      this.uploadFlagFile(code).subscribe(() => {
+        console.log('success!');
+        // this.loader.hide();
+        // this.form.ready.setValue('ready');
+      });
+    } else {
+    }
   }
 
   private onRequestError(error: ErrorDto) {

@@ -35,7 +35,7 @@ export class RequestTokenService {
       );
     }
 
-    console.log('[JWT] Append bearer');
+    // console.log('[JWT] Append bearer');
     request = this.appendBearer(jwt, request);
     return next.handle(request);
   }
@@ -70,7 +70,7 @@ export class RequestTokenService {
   private appendBearer(tokenData: IJwtData, request: HttpRequest<any>): HttpRequest<any> {
     request = request.clone({
       setHeaders: {
-        'Content-Type': 'application/json',
+        // 'Content-Type': request.body instanceof FormData ? 'multipart/form-data' : 'application/json',
         Authorization: 'Bearer ' + tokenData.token,
       },
     });

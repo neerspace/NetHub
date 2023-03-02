@@ -4,7 +4,7 @@ import jwtDecode from 'jwt-decode';
 import { DateTime } from 'luxon';
 import { map, Observable, of, Subscription } from 'rxjs';
 import { logger } from '../../../environments/environment';
-import { AuthResult, JWTApi, UserModel, UsersApi } from '../../api';
+import { JWTApi, JwtResult, UserModel, UsersApi } from '../../api';
 import { UnauthorizedError } from '../../shared/errors';
 import { IJwtPayload } from '../../shared/types';
 import { SecuredStorage } from '../storage';
@@ -61,7 +61,7 @@ export class UserService {
     });
   }
 
-  setUserData(authResult: AuthResult | null): void {
+  setUserData(authResult: JwtResult | null): void {
     // console.log('token payload:', jwtDecode(authResult.token));
     this.securedStorage.jwtPayload = authResult;
   }
@@ -74,7 +74,7 @@ export class UserService {
     }
 
     return this.jwtApi.refresh().pipe(
-      map((result: AuthResult) => {
+      map((result: JwtResult) => {
         if (result) {
           logger.debug('guard refresh');
           this.setUserData(result);

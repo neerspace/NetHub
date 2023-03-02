@@ -5,7 +5,7 @@ namespace NetHub.Admin.Models.Languages;
 
 public sealed class LanguageFlagUploadRequest
 {
-    [FromRoute]
+    [FromRoute(Name = "code")]
     public required string Code { get; set; }
 
     [FromForm]

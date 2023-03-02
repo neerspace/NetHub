@@ -25,6 +25,7 @@
 
 <app-main-content>
   <form app-form-layout
+        enctype="multipart/form-data"
         [formGroup]="languagesService.form"
         [ready]="ready">
 
@@ -53,6 +54,27 @@
     <app-text-field label="Local Name"
                     controlName="nameLocal"
                     [maxLength]="50"></app-text-field>
+
+    <div class="form-group flag-wrapper">
+      <label class="input-group-btn">
+        <span class="btn btn-icon btn-outline-secondary">
+          <span>
+            {{!languagesService.form.get('flagUrl') ? 'Upload flag' : 'Change Flag' }} (svg)
+            <input type="file"
+                   id="file"
+                   style="display: none;"
+                   accept=".svg"
+                   (change)="handleFileChange($event)">
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <div class="preview-container">
+      <img class="preview-image"
+           [src]="languagesService.form.get('flagUrl')!.value"
+           alt="" />
+    </div>
   </form>
 
 </app-main-content>

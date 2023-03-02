@@ -78,4 +78,21 @@ export class LangsFormComponent implements OnInit {
       nameLocal: capitalizeFirstLetter(localLanguageNames.of(code)),
     });
   }
+
+  handleFileChange(event: Event) {
+    const inputTarget = event.target as HTMLInputElement;
+    const file = inputTarget.files![0];
+    if (!file) {
+      return;
+    }
+
+    this.languagesService.flagFile = file;
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      this.languagesService.form.get('flagUrl')!.setValue(e.target!.result as string);
+    };
+
+    reader.readAsDataURL(file);
+  }
 }

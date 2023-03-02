@@ -3,19 +3,15 @@ using NeerCore.DependencyInjection;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
-using NetHub.Shared.Services;
 
-namespace NetHub.Services;
+namespace NetHub.Shared.Services.Implementations;
 
 [Service]
 internal sealed class ResourceService : IResourceService
 {
     private readonly ISqlServerDatabase _database;
 
-    public ResourceService(ISqlServerDatabase database)
-    {
-        _database = database;
-    }
+    public ResourceService(ISqlServerDatabase database) => _database = database;
 
 
     public async Task<Guid> UploadAsync(IFormFile file, CancellationToken ct = default)

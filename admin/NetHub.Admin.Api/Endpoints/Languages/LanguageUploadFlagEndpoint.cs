@@ -13,7 +13,7 @@ using NetHub.Shared.Services;
 namespace NetHub.Admin.Api.Endpoints.Languages;
 
 [ApiVersion(Versions.V1)]
-[Tags(TagNames.Resources)]
+[Tags(TagNames.Languages)]
 [Authorize(Policy = Policies.HasManageResourcesPermission)]
 public class LanguageUploadFlagEndpoint : ActionEndpoint<LanguageFlagUploadRequest>
 {
@@ -27,22 +27,26 @@ public class LanguageUploadFlagEndpoint : ActionEndpoint<LanguageFlagUploadReque
     }
 
 
-    [HttpPost("languages/{code:alpha:length(2)}"), ClientSide(ActionName = "uploadFlag")]
+    [HttpPost("languages/{code:alpha:length(2)}/upload-file"), ClientSide(ActionName = "uploadFlag")]
     [Consumes("multipart/form-data")]
-    public override async Task HandleAsync(LanguageFlagUploadRequest request, CancellationToken ct)
+    public override async Task HandleAsync([FromForm] LanguageFlagUploadRequest request, CancellationToken ct)
     {
         var languagesDb = _database.Set<Language>();
-        var language = await languagesDb
+        var language = await languagesDb.AsNoTracking()
             .Include(l => l.Flag)
             .Where(l => l.Code == request.Code)
             .FirstOr404Async(ct);
 
-        // Remove previous flag
-        if (language.Flag is not null)
-            await _resourceService.DeleteAsync(language.Flag.Id, ct);
+        var hadFlag = language.Flag is not null;
 
         // Upload new flag
         language.FlagId = await _resourceService.UploadAsync(request.File, ct);
+        languagesDb.Entry(language).Property(l => l.FlagId).IsModified = true;
+
+        if (hadFlag)
+        {
+            await _resourceService.DeleteAsync(language.Flag.Id, ct);
+        }
 
         await _database.SaveChangesAsync(ct);
     }

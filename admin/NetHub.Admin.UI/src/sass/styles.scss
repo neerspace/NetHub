@@ -18,7 +18,7 @@ body, app-admin-layout {
   justify-content: flex-start;
 }
 
-button.btn, a {
+button.btn, span.btn, a {
   color: var(--c-text);
   transition-duration: .075s;
 }
