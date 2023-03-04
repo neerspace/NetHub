@@ -35,8 +35,6 @@ const ArticlesThreadSpaceProvider: FC<PropsWithChildren> = ({children}) => {
   const languages = [{title: 'UA', value: 'ua'}, {title: 'EN', value: 'en'}]
   const [articlesLanguage, setArticlesLanguage] = useState<string>(localStorage.getItem('articlesLanguage') ?? UkrainianLanguage);
 
-  console.log('language', articlesLanguage)
-
   const articlesAccessor: any = useQuery<ISimpleLocalization[], ApiError>(['articles', articlesLanguage, isLogin],
     () => loadArticles()
   );
