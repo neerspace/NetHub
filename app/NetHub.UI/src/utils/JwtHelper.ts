@@ -1,13 +1,20 @@
 import { JWTStorage } from './localStorageProvider';
 
-export function isAccessTokenValid() {
-  return JWTStorage.getAccessToken() && new Date(JWTStorage.getAccessTokenExpires()!) > new Date();
-}
+export class JwtHelper {
 
-export function isAccessTokenExpired() {
-  return JWTStorage.getAccessToken() && new Date(JWTStorage.getAccessTokenExpires()!) < new Date();
-}
+  public static isAccessTokenValid(){
+    const token = JWTStorage.getAccessToken();
 
-export function isRefreshTokenValid() {
-  return new Date(JWTStorage.getRefreshTokenExpires()!) > new Date();
+    return !!token && !this.isAccessTokenExpired();
+  }
+
+  public static isAccessTokenExpired() {
+    const expirationDate = JWTStorage.getAccessTokenExpires();
+    return !expirationDate || new Date(expirationDate) < new Date();
+  }
+
+  public static isRefreshTokenExpired() {
+    const expirationDate = JWTStorage.getRefreshTokenExpires();
+    return !expirationDate || new Date(expirationDate) < new Date();
+  }
 }
