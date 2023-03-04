@@ -27,26 +27,23 @@ public class LanguageUploadFlagEndpoint : ActionEndpoint<LanguageFlagUploadReque
     }
 
 
-    [HttpPost("languages/{code:alpha:length(2)}/upload-file"), ClientSide(ActionName = "uploadFlag")]
+    [HttpPost("languages/{code:alpha:length(2)}/upload-flag"), ClientSide(ActionName = "uploadFlag")]
     [Consumes("multipart/form-data")]
     public override async Task HandleAsync([FromForm] LanguageFlagUploadRequest request, CancellationToken ct)
     {
         var languagesDb = _database.Set<Language>();
         var language = await languagesDb.AsNoTracking()
-            .Include(l => l.Flag)
             .Where(l => l.Code == request.Code)
             .FirstOr404Async(ct);
 
-        var hadFlag = language.Flag is not null;
+        var prevFlagId = language.FlagId;
 
         // Upload new flag
         language.FlagId = await _resourceService.UploadAsync(request.File, ct);
         languagesDb.Entry(language).Property(l => l.FlagId).IsModified = true;
 
-        if (hadFlag)
-        {
-            await _resourceService.DeleteAsync(language.Flag.Id, ct);
-        }
+        if (prevFlagId.HasValue)
+            await _resourceService.DeleteAsync(prevFlagId.Value, ct);
 
         await _database.SaveChangesAsync(ct);
     }

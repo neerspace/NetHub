@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ColumnInfo, FilterType } from '../types';
+import { ColumnInfo, DataTableError, FilterType } from '../types';
 import { FormControl, FormGroupDirective } from '@angular/forms';
 import { NumberInputProcessorService } from '../../../services/number-input-processor.service';
 import {
@@ -39,12 +39,21 @@ export class TableFilterFieldComponent implements OnInit {
     if (this.column.filter === FilterType.number || this.column.filter === FilterType.optNumber) {
       const range = this.column.filterValueRange;
       if (range && range.from && range.to && range.from > range.to) {
-        throw new Error('Number input max value mast be greater then min value');
+        throw new DataTableError('Number input max value mast be greater then min value');
       }
     }
+    if (!this.column.key) {
+      const columnInfo = JSON.stringify(this.column, null, 2);
+      throw new DataTableError(`Column 'key' mast be specified for ${columnInfo}`);
+    }
 
-    this.formControl = this.formGroup.form.get(this.column.key) as FormControl;
-    // console.log(this.column.key, this.formControl.value);
+    const formControl = this.formGroup.form.get(this.column.key) as FormControl | null;
+    if (!formControl) {
+      throw new DataTableError(
+        `Column 'key' mast be a valid form entry name: '${this.column.key}'`,
+      );
+    }
+    this.formControl = formControl;
 
     if (this.column.filter === FilterType.optText) {
       this.extraFormControl = this.formGroup.form.get(

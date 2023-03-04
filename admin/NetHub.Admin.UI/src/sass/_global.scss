@@ -93,3 +93,31 @@ select:-webkit-autofill {
   max-height: 19.5px;
   height: 19.5px;
 }
+
+.article-flag-button {
+  padding: 0 !important;
+  display: flex;
+  vertical-align: center;
+  position: relative;
+
+  .flag-filler {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    transition: opacity .15s linear;
+    opacity: 0%;
+  }
+
+  &:hover .flag-filler {
+    opacity: 50%;
+    transition: opacity .15s linear;
+  }
+
+  img {
+    object-fit: cover;
+  }
+}

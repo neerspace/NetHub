@@ -31,10 +31,7 @@ import { PagesModule } from './pages/pages.module';
     PagesModule,
     LayoutComponentsModule,
   ],
-  providers: [
-    AuthorizedGuard,
-    EnsurePermissionsGuard,
-  ],
+  providers: [AuthorizedGuard, EnsurePermissionsGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

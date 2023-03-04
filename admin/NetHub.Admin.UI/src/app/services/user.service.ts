@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import jwtDecode from 'jwt-decode';
 import { DateTime } from 'luxon';
 import { map, Observable, of, Subscription } from 'rxjs';
-import { logger } from '../../../environments/environment';
-import { JWTApi, JwtResult, UserModel, UsersApi } from '../../api';
-import { UnauthorizedError } from '../../shared/errors';
-import { IJwtPayload } from '../../shared/types';
-import { SecuredStorage } from '../storage';
+import { logger } from '../../environments/environment';
+import { JWTApi, JwtResult, UserModel, UsersApi } from '../api';
+import { UnauthorizedError } from '../shared/errors';
+import { IJwtPayload } from '../shared/types';
+import { SecuredStorage } from './storage';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {

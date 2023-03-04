@@ -9,6 +9,7 @@ import { DataTableComponent } from './data-table/data-table.component';
 import { TableFilterFieldComponent } from './filter-field/table-filter-field.component';
 import { TablePageSizeComponent } from './page-size-select/table-page-size.component';
 import { TablePaginationComponent } from './pagination/table-pagination.component';
+import { CustomColumnDirective } from './custom-column.directive';
 
 @NgModule({
   declarations: [
@@ -17,8 +18,9 @@ import { TablePaginationComponent } from './pagination/table-pagination.componen
     TablePageSizeComponent,
     TableFilterFieldComponent,
     ColumnChooserComponent,
+    CustomColumnDirective,
   ],
-  exports: [DataTableComponent],
+  exports: [DataTableComponent, CustomColumnDirective],
   imports: [
     CommonModule,
     FormComponentsModule,

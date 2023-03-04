@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ContentChildren, Input, OnInit, QueryList, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
@@ -6,9 +6,10 @@ import { logger } from 'src/environments/environment';
 import { ErrorDto } from '../../../api';
 import { StorageService } from '../../../services/storage';
 import { LoaderService, ToasterService } from '../../../services/viewport';
+import { CustomColumnDirective } from '../custom-column.directive';
 import { TablePaginationComponent } from '../pagination/table-pagination.component';
 import { buildFiltersQuery, defaultNumberOperator, defaultTextOperator, postfixes } from '../sieve';
-import { ColumnInfo, FetchApiEvent, FilterType, IFilterParams } from '../types';
+import { ColumnInfo, DataTableError, FetchApiEvent, FilterType, IFilterParams } from '../types';
 
 @Component({
   selector: 'app-data-table',
@@ -17,6 +18,9 @@ import { ColumnInfo, FetchApiEvent, FilterType, IFilterParams } from '../types';
 })
 export class DataTableComponent<T> implements OnInit {
   @ViewChild('pagination') pagination!: TablePaginationComponent;
+
+  @ContentChildren(CustomColumnDirective, { descendants: true })
+  customColumnTemplates!: QueryList<CustomColumnDirective<T>>;
 
   @Input() defaultSorting: string | null = 'id';
   @Input() columns: ColumnInfo[] = [];
@@ -48,11 +52,17 @@ export class DataTableComponent<T> implements OnInit {
   }
 
   ngOnInit(): void {
+    if (!this.columns || this.columns.length < 1) {
+      throw new DataTableError("Param 'columns' must be specified and has at least one element!");
+    }
+
     this.extractSorts(this.defaultSorting);
     this.filtersForm = new FormGroup({});
     if (this.columnChooser) {
       if (!this.columnChooserSequence) {
-        throw new Error("'columnChooserSequence' is required when 'columnChooser' enabled.");
+        throw new DataTableError(
+          "Param 'columnChooserSequence' is required when 'columnChooser' enabled.",
+        );
       }
 
       this.columnSequence = this.storage.getColumnSequence(this.columnChooserSequence) || [];
@@ -132,6 +142,14 @@ export class DataTableComponent<T> implements OnInit {
         this.resetPagination();
       },
     });
+  }
+
+  getCustomColumnByName(templateName: string): CustomColumnDirective<T> {
+    const customColumn = this.customColumnTemplates.find(x => x.templateName === templateName);
+    if (!customColumn) {
+      throw new DataTableError(`Custom column not found: "${templateName}"`);
+    }
+    return customColumn;
   }
 
   setFiltersToDefault(): void {

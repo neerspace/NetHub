@@ -2,20 +2,29 @@
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ArticleLocalizationModel, ArticleModel, ArticlesApi, ErrorDto } from 'src/app/api';
+import {
+  ArticleLocalizationModel,
+  ArticleModel,
+  ArticlesApi,
+  ErrorDto,
+  LanguagesApi,
+} from 'src/app/api';
 import { FormGroupReady, FormId, FormReady } from 'src/app/components/form/types';
 import { IFiltered, IFilterInfo } from 'src/app/components/table/types';
 import { ModalsService } from 'src/app/services/modals.service';
 import { LoaderService, ToasterService } from 'src/app/services/viewport';
+import { IDictionary } from '../../../shared/types';
 
 @Injectable({ providedIn: 'root' })
 export class ArticlesService {
   readonly form: FormGroupReady;
+  flags: IDictionary<string> = {};
 
   constructor(
     formBuilder: FormBuilder,
     private router: Router,
     private articlesApi: ArticlesApi,
+    private languagesApi: LanguagesApi,
     private modals: ModalsService,
     private loader: LoaderService,
     private toaster: ToasterService,
@@ -56,6 +65,14 @@ export class ArticlesService {
 
   filter(request: IFilterInfo): Observable<IFiltered<ArticleModel>> {
     return this.articlesApi.filter(request.filters, request.sorts, request.page, request.pageSize);
+  }
+
+  getFlags() {
+    this.languagesApi.filter(undefined, undefined, undefined, undefined).subscribe(langs => {
+      for (const lang of langs.data) {
+        this.flags[lang.code] = lang.flagUrl ?? '/assets/default-flag.svg';
+      }
+    });
   }
 
   getLocalizations(id: number): Observable<ArticleLocalizationModel[]> {

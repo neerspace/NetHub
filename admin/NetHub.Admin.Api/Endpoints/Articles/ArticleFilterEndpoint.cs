@@ -23,7 +23,8 @@ public sealed class ArticleFilterEndpoint : FilterEndpoint<ArticleFilterRequest,
     [HttpGet("articles"), ClientSide(ActionName = "filter")]
     public override async Task<Filtered<ArticleModel>> HandleAsync([FromQuery] ArticleFilterRequest request, CancellationToken ct)
     {
-        var result = await _filterService.FilterWithCountAsync<Article, ArticleModel>(request, ct);
+        var result = await _filterService.FilterWithCountAsync<Article, ArticleModel>(request, ct,
+            x => x.Localizations!);
         return result;
     }
 }

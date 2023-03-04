@@ -1,6 +1,14 @@
+import { TemplateRef } from '@angular/core';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { NumberPattern } from '../form/types';
+
+export class DataTableError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'DataTableERROR';
+  }
+}
 
 export interface IFiltered<TModel> {
   total: number;
@@ -73,6 +81,15 @@ export interface ColumnBase {
   title: string;
   sortable?: boolean;
   filter: FilterType;
+}
+
+interface TemplateColumn {
+  template?: string;
+  formatter?: never;
+}
+
+interface FormatterColumn {
+  template?: never;
   formatter?: FormatterFunc;
 }
 
@@ -115,7 +132,7 @@ export interface DateRangeFilter {
 export type ColumnInfo = Hideable &
   (
     | ActionButtonsColumn<any>
-    | (ColumnBase &
+    | ((ColumnBase & (TemplateColumn | FormatterColumn)) &
         (
           | NoneFilter
           | BooleanFilter

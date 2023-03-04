@@ -7,9 +7,10 @@ namespace NetHub.Shared.Services;
 public interface IFilterService
 {
     Task<TModel[]> FilterAsync<TEntity, TModel>(
-        FilterRequest request, CancellationToken ct = default, params Expression<Func<TEntity, object>>[]? includes)
+        FilterRequest request, CancellationToken ct = default, params Expression<Func<TEntity, object>>[] includes)
         where TEntity : class, IEntity;
 
-    Task<Filtered<TModel>> FilterWithCountAsync<TEntity, TModel>(FilterRequest request, CancellationToken ct = default)
+    Task<Filtered<TModel>> FilterWithCountAsync<TEntity, TModel>(
+        FilterRequest request, CancellationToken ct = default, params Expression<Func<TEntity, object>>[] includes)
         where TEntity : class, IEntity;
 }

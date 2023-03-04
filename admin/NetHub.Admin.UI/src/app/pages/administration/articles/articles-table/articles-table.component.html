@@ -36,7 +36,20 @@
                         [columns]="columns"
                         [columnChooser]="true"
                         columnChooserSequence="articles"
-                        [onFilter]="fetchFilter.bind(this)"></app-data-table>
+                        [onFilter]="fetchFilter.bind(this)">
+          <ng-container *appCustomColumn="'localizationButtons'; value as val; object as obj">
+            <ng-container *ngFor="let localization of val">
+              <span [id]="'flag_' + localization.articleId + '_' + localization.id + '_' + localization.languageCode"
+                    class="btn article-flag-button"
+              (click)="onLocalizationClick(obj)">
+                <img class="flag-img"
+                     [src]="articlesService.flags[localization.languageCode]"
+                     [alt]="localization.languageCode" />
+                <span class="flag-filler"></span>
+              </span>
+            </ng-container>
+          </ng-container>
+        </app-data-table>
 
       </div>
     </as-split-area>

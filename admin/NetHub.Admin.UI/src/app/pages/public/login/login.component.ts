@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthRequest, JWTApi } from '../../../api';
-import { UserService } from '../../../services/auth';
+import { UserService } from '../../../services/user.service';
 import { ToasterService } from '../../../services/viewport';
 
 @Component({

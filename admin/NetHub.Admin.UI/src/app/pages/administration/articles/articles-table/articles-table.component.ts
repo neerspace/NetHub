@@ -1,4 +1,4 @@
-import { Component, Injector, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
 import { ArticleLocalizationModel, ArticleModel } from 'src/app/api';
 import { TabsComponent } from 'src/app/components/core/tabs/tabs.component';
@@ -13,16 +13,21 @@ import { ArticlesService } from '../article.service';
   templateUrl: './articles-table.component.html',
   styleUrls: ['./articles-table.component.scss'],
 })
-export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> {
+export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> implements OnInit {
   @ViewChild(TabsComponent) tabsComponent!: TabsComponent;
   @ViewChild('article') articleTemplate!: TemplateRef<any>;
   @ViewChild('localization') localizationTemplate!: TemplateRef<any>;
+  @ViewChild('localizationsColumn') localizationsColumnTemplate!: TemplateRef<any>;
 
-  columns: ColumnInfo[];
+  columns: ColumnInfo[] = [];
 
   constructor(injector: Injector, public articlesService: ArticlesService) {
     super(injector, 'users');
     this.columns = articleColumns(this);
+  }
+
+  ngOnInit(): void {
+    this.articlesService.getFlags();
   }
 
   fetchDelete(model: ArticleModel): void {
@@ -36,7 +41,6 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> {
   }
 
   onLocalizationClick(model: ArticleModel) {
-    console.log('titile:::', model);
     const tabTitle = limitStringLength(model.name, 20, 'Untitled');
     this.tabsComponent.openTab(tabTitle, this.localizationTemplate, 'aoa', true);
   }

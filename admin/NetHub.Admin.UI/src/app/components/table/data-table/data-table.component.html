@@ -38,7 +38,8 @@
     <th *ngFor="let col of $any(columns)"
         [formGroup]="filtersForm"
         [class.hidden]="col.hidden">
-      <app-table-filter-field [column]="col"></app-table-filter-field>
+      <app-table-filter-field *ngIf="col.key && col.filter && col.filter !== 'none'"
+                              [column]="col"></app-table-filter-field>
     </th>
     <!--<th *ngIf="buttons.length > 0"-->
     <!--    class="table-buttons">-->
@@ -51,23 +52,49 @@
   </tr>
   </thead>
   <tbody>
+  <!--<tr *ngFor="let item of data">-->
+  <!--  <td *ngFor="let col of $any(columns)"-->
+  <!--      [class.table-buttons]="!!col.actions"-->
+  <!--      [class.table-active]="col.key === sorts"-->
+  <!--      [class.hidden]="col.hidden">-->
+  <!--    <ng-container *ngIf="!col.actions; else actionButtonsColumn">-->
+  <!--      <div [innerHTML]="col.formatter ? col.formatter(item[col.key], item) : item[col.key]"></div>-->
+  <!--    </ng-container>-->
+  <!--    <ng-template #actionButtonsColumn>-->
+  <!--      <button *ngFor="let btn of col.actions"-->
+  <!--              class="btn {{btn.button.class}}"-->
+  <!--              (click)="btn.onClick(item)">-->
+  <!--      <span *ngIf="btn.button.text"-->
+  <!--            class="text">{{btn.button.text}}</span>-->
+  <!--        <i *ngIf="btn.button.icon"-->
+  <!--           class="las {{btn.button.icon}}"></i>-->
+  <!--      </button>-->
+  <!--    </ng-template>-->
+  <!--  </td>-->
+  <!--</tr>-->
   <tr *ngFor="let item of data">
     <td *ngFor="let col of $any(columns)"
         [class.table-buttons]="!!col.actions"
         [class.table-active]="col.key === sorts"
         [class.hidden]="col.hidden">
-      <ng-container *ngIf="!col.actions; else actionButtonsColumn">
-        <div [innerHTML]="col.formatter ? col.formatter(item[col.key], item) : item[col.key]"></div>
+      <ng-container *ngIf="col.template; else formatterColumn">
+        <ng-container [ngTemplateOutlet]="getCustomColumnByName(col.template).templateRef"
+                      [ngTemplateOutletContext]="{value: item[col.key], object: item}"></ng-container>
       </ng-container>
-      <ng-template #actionButtonsColumn>
-        <button *ngFor="let btn of col.actions"
-                class="btn {{btn.button.class}}"
-                (click)="btn.onClick(item)">
+      <ng-template #formatterColumn>
+        <ng-container *ngIf="!col.actions; else actionButtonsColumn">
+          <div [innerHTML]="col.formatter ? col.formatter(item[col.key], item) : item[col.key]"></div>
+        </ng-container>
+        <ng-template #actionButtonsColumn>
+          <button *ngFor="let btn of col.actions"
+                  class="btn {{btn.button.class}}"
+                  (click)="btn.onClick(item)">
         <span *ngIf="btn.button.text"
               class="text">{{btn.button.text}}</span>
-          <i *ngIf="btn.button.icon"
-             class="las {{btn.button.icon}}"></i>
-        </button>
+            <i *ngIf="btn.button.icon"
+               class="las {{btn.button.icon}}"></i>
+          </button>
+        </ng-template>
       </ng-template>
     </td>
   </tr>
