@@ -4,8 +4,8 @@ import { ApiError } from "../../../types/ApiError";
 import { UkrainianLanguage } from "../../../utils/constants";
 import { useAppStore } from "../../../store/config";
 import { _localizationsApi } from "../../../api";
-import { FilterInfo } from "../../../types/api/IFilterInfo";
 import { ISimpleLocalization } from "../../../types/api/ISimpleLocalization";
+import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
 
 type ContextType = {
   languages: { title: string, value: string }[],
@@ -32,19 +32,19 @@ const ArticlesThreadSpaceProvider: FC<PropsWithChildren> = ({children}) => {
   const queryClient = useQueryClient();
   const isLogin = useAppStore(state => state.isLogin);
 
+
   const languages = [{title: 'UA', value: 'ua'}, {title: 'EN', value: 'en'}]
   const [articlesLanguage, setArticlesLanguage] = useState<string>(localStorage.getItem('articlesLanguage') ?? UkrainianLanguage);
 
-  const articlesAccessor: any = useQuery<ISimpleLocalization[], ApiError>(['articles', articlesLanguage, isLogin],
-    () => loadArticles()
-  );
+  const articlesAccessor = useQuery<ISimpleLocalization[], ApiError>(QueryClientKeysHelper.ArticlesThread(articlesLanguage, isLogin),
+    () => loadArticles(), {refetchIntervalInBackground: true});
 
   const loadArticles = async () => {
     return await _localizationsApi.search(articlesLanguage, undefined);
   }
 
   const handleSetArticles = (newArticles: ISimpleLocalization[]) => {
-    queryClient.setQueryData(['articles', articlesLanguage, isLogin], newArticles);
+    queryClient.setQueryData(QueryClientKeysHelper.ArticlesThread(articlesLanguage, isLogin), newArticles);
   }
 
   const handleSetArticlesLanguage = (value: string) => {

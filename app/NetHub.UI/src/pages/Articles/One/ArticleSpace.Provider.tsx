@@ -2,7 +2,6 @@ import React, { FC, PropsWithChildren } from 'react';
 import { useQuery, useQueryClient, UseQueryResult } from "react-query";
 import { useParams } from "react-router-dom";
 import { ApiError } from "../../../types/ApiError";
-import { QueryClientConstants } from "../../../constants/queryClientConstants";
 import { _articlesApi, _localizationsApi } from "../../../api";
 import {
   ArticleLocalizationModel,
@@ -10,6 +9,7 @@ import {
   IArticleLocalizationModel,
   IArticleModelExtended
 } from "../../../api/_api";
+import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
 
 type ContextType = {
   articleAccessor: UseQueryResult<IArticleModelExtended, ApiError>,
@@ -36,13 +36,18 @@ const ArticleSpaceProvider: FC<PropsWithChildren> = ({children}) => {
 
   const {id, code} = useParams();
 
-  const articleAccessor = useQuery<ArticleModelExtended, ApiError>([QueryClientConstants.article, +id!], () => _articlesApi.getById(+id!));
-  const localizationAccessor = useQuery<ArticleLocalizationModel, ApiError>([QueryClientConstants.articleLocalization, +id!, code],
-    () => _localizationsApi.getByIdAndCode(+id!, code!));
+  const articleAccessor = useQuery<ArticleModelExtended, ApiError>(QueryClientKeysHelper.Article(+id!),
+    () => _articlesApi.getById(+id!),
+    {refetchIntervalInBackground: true});
+  const localizationAccessor = useQuery<ArticleLocalizationModel, ApiError>(QueryClientKeysHelper.ArticleLocalization(+id!, code!),
+    () => _localizationsApi.getByIdAndCode(+id!, code!),
+    {refetchIntervalInBackground: true});
 
 
-  const setArticle = (article: IArticleModelExtended) => queryClient.setQueryData([QueryClientConstants.article, +id!], article);
-  const setLocalization = (localization: IArticleLocalizationModel) => queryClient.setQueryData([QueryClientConstants.articleLocalization, +id!, code], localization);
+  const setArticle = (article: IArticleModelExtended) =>
+    queryClient.setQueryData(QueryClientKeysHelper.Article(+id!), article);
+  const setLocalization = (localization: IArticleLocalizationModel) =>
+    queryClient.setQueryData(QueryClientKeysHelper.ArticleLocalization(+id!, code!), localization);
 
   const value: ContextType = React.useMemo(
     () => ({

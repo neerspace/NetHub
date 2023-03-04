@@ -2,7 +2,6 @@ import { Badge, Box, Button, Skeleton, Text, } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from "react-router-dom";
-import { QueryClientConstants } from '../../../../constants/queryClientConstants';
 import {
   getArticleContributors,
   getAuthor,
@@ -15,6 +14,7 @@ import ArticlesRateCounter from '../../Shared/ArticlesRateCounter';
 import cl from './ArticleBody.module.sass';
 import { _myArticlesApi } from "../../../../api";
 import { ArticleLocalizationModel, ArticleModelExtended, Vote } from "../../../../api/_api";
+import { QueryClientKeysHelper } from '../../../../utils/QueryClientKeysHelper';
 
 const ArticleBody = () => {
   const { articleAccessor, setArticle, localizationAccessor, setLocalization } =
@@ -35,20 +35,15 @@ const ArticleBody = () => {
   }
 
   async function afterCounter() {
-    await queryClient.invalidateQueries(QueryClientConstants.savedArticles);
-    await queryClient.invalidateQueries(QueryClientConstants.articles);
+    await queryClient.invalidateQueries(QueryClientKeysHelper.Keys.savedArticles);
+    await queryClient.invalidateQueries(QueryClientKeysHelper.Keys.articles);
   }
 
   const contributors = useQuery(
-    [
-      QueryClientConstants.contributors,
-      localization.articleId,
-      localization.languageCode,
-    ],
+    QueryClientKeysHelper.Contributors(localization.articleId, localization.languageCode),
     () => getArticleContributors(localization.contributors)
   );
 
-  // const viewsBlockBg = useColorModeValue('whiteLight', 'whiteDark');
   const navigate = useNavigate();
 
   const getDate = useCallback(() => {

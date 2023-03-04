@@ -1,7 +1,6 @@
 import React from 'react';
 import { useQueryClient } from 'react-query';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { QueryClientConstants } from '../../../constants/queryClientConstants';
 import { useSavedArticlesContext } from '../../../pages/Saved/SavedSpace.Provider';
 import ErrorBlock from '../../Layout/ErrorBlock';
 import ArticleShort from '../Shared/ArticleShort';
@@ -9,9 +8,8 @@ import cl from './SavedArticles.module.sass';
 import SavedArticlesSkeleton from './SavedArticlesSkeleton';
 import './transitions.css';
 import { _myArticlesApi } from "../../../api";
-import { ILocalizationExtended } from "../../../types/api/ILocalizationExtended";
-import { IViewLocalizationModel, ViewLocalizationModel } from "../../../api/_api";
 import { ISimpleLocalization } from "../../../types/api/ISimpleLocalization";
+import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
 
 const SavedArticles = () => {
   const { savedArticles, setSavedArticles } = useSavedArticlesContext();
@@ -37,17 +35,9 @@ const SavedArticles = () => {
 
   const afterCounterRequest = (article: ISimpleLocalization) =>
     async function () {
-      await queryClient.invalidateQueries(QueryClientConstants.articles);
-      await queryClient.invalidateQueries([
-        QueryClientConstants.article,
-        article.articleId,
-      ]);
-
-      await queryClient.invalidateQueries([
-        QueryClientConstants.articleLocalization,
-        article.articleId,
-        article.languageCode,
-      ]);
+      await queryClient.invalidateQueries(QueryClientKeysHelper.Keys.articles);
+      await queryClient.invalidateQueries(QueryClientKeysHelper.Article(article.articleId));
+      await queryClient.invalidateQueries(QueryClientKeysHelper.ArticleLocalization(article.articleId, article.languageCode));
     };
 
   return !savedArticles.isSuccess ? (

@@ -3,9 +3,9 @@ import classes from './ArticlesThread.module.sass';
 import { useQueryClient } from "react-query";
 import ErrorBlock from "../../Layout/ErrorBlock";
 import ArticleShort from "../Shared/ArticleShort";
-import { QueryClientConstants } from "../../../constants/queryClientConstants";
 import { _myArticlesApi } from "../../../api";
 import { ISimpleLocalization } from "../../../types/api/ISimpleLocalization";
+import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
 
 interface IArticlesThreadProps {
   articles: ISimpleLocalization[],
@@ -21,8 +21,8 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles, byUser
     await _myArticlesApi.toggleSave(localization.articleId, localization.languageCode);
     setArticles(articles.map((a) => a.id === localization.id
       ? {...a, isSaved: !a.isSaved} : a));
-    await queryClient.invalidateQueries(QueryClientConstants.savedArticles);
-    await queryClient.invalidateQueries([QueryClientConstants.articleLocalization, localization.articleId, localization.languageCode]);
+    await queryClient.invalidateQueries(QueryClientKeysHelper.SavedArticles());
+    await queryClient.invalidateQueries(QueryClientKeysHelper.ArticleLocalization(localization.articleId, localization.languageCode));
   }
 
   const handleSetLocalization = (localization: ISimpleLocalization) => {
@@ -30,9 +30,9 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles, byUser
   }
 
   const afterRequest = (item: ISimpleLocalization) => async function () {
-    await queryClient.invalidateQueries(QueryClientConstants.savedArticles);
-    await queryClient.invalidateQueries([QueryClientConstants.articleLocalization, item.articleId, item.languageCode]);
-    await queryClient.invalidateQueries([QueryClientConstants.article, item.articleId]);
+    await queryClient.invalidateQueries(QueryClientKeysHelper.SavedArticles());
+    await queryClient.invalidateQueries(QueryClientKeysHelper.ArticleLocalization(item.articleId, item.languageCode));
+    await queryClient.invalidateQueries(QueryClientKeysHelper.Article(item.articleId));
   }
 
   return (

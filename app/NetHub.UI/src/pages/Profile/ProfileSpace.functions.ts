@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { useQueryClient } from 'react-query';
-import { QueryClientConstants } from '../../constants/queryClientConstants';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useAppStore } from '../../store/config';
@@ -10,7 +9,7 @@ import { JWTStorage } from '../../utils/localStorageProvider';
 import { ExtendedRequest, useProfileContext } from './ProfileSpace.Provider';
 import { _currentUserApi, _jwtApi, _usersApi } from "../../api";
 import { FileParameter, MeProfileUpdateRequest, UserResult } from "../../api/_api";
-import { FilterInfo } from "../../types/api/IFilterInfo";
+import { QueryClientKeysHelper } from "../../utils/QueryClientKeysHelper";
 
 export async function getUserDashboard(username?: string) {
   return username ?
@@ -169,7 +168,7 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
         return;
       }
 
-      await queryClient.invalidateQueries([QueryClientConstants.user, oldUserInfo.userName]);
+      await queryClient.invalidateQueries(QueryClientKeysHelper.Profile(oldUserInfo.userName));
       setChanges([]);
       handleSettingsButton();
       enqueueSuccess('Зміни застосовані');
