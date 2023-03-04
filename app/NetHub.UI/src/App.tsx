@@ -9,7 +9,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './components/AppRouter';
 import theme from './constants/themes';
-import { useAppStore } from './store/config';
+import { useAppStore } from './store/store';
 import { switchLocal } from './utils/localization';
 
 function App() {

@@ -3,6 +3,7 @@ import Localizations from "../constants/localizations";
 import { JWTStorage } from "../utils/localStorageProvider";
 import { IReduxUser } from "../types/IReduxUser";
 import { ILanguage } from "../vite-env";
+import { mountStoreDevtool } from "simple-zustand-devtools";
 
 interface IStoreInitialState {
   isLogin: boolean | null,
@@ -30,3 +31,9 @@ export const useAppStore = create<IStoreInitialState>(set => ({
   updateProfile: (reduxUser: IReduxUser) => set({user: reduxUser}),
   setLanguage: (language: ILanguage) => set({language})
 }));
+
+const isTest = import.meta.env.VITE_IS_DEVELOPMENT === 'true';
+
+if (isTest) {
+  mountStoreDevtool('Store', useAppStore);
+}

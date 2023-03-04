@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { useQueryClient } from 'react-query';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useDebounce } from '../../hooks/useDebounce';
-import { useAppStore } from '../../store/config';
 import { ProfileSchema } from '../../types/schemas/Profile/ProfileSchema';
 import { usernameDebounce } from '../../utils/debounceHelper';
 import { JWTStorage } from '../../utils/localStorageProvider';
@@ -10,6 +9,7 @@ import { ExtendedRequest, useProfileContext } from './ProfileSpace.Provider';
 import { _currentUserApi, _jwtApi, _usersApi } from "../../api";
 import { FileParameter, MeProfileUpdateRequest, UserResult } from "../../api/_api";
 import { QueryClientKeysHelper } from "../../utils/QueryClientKeysHelper";
+import { useAppStore } from "../../store/store";
 
 export async function getUserDashboard(username?: string) {
   return username ?

@@ -4,9 +4,9 @@ import { ApiError } from "../../types/ApiError";
 import { getUserDashboard, getUserInfo } from "./ProfileSpace.functions";
 import { useParams } from "react-router-dom";
 import IUpdateProfileRequest from "../../types/api/Profile/IUpdateProfileRequest";
-import { useAppStore } from "../../store/config";
 import { DashboardResult, PrivateUserResult, UserResult } from "../../api/_api";
 import { QueryClientKeysHelper } from "../../utils/QueryClientKeysHelper";
+import { useAppStore } from '../../store/store';
 
 export type ProfileChangesType = 'profile' | 'photo' | 'username';
 

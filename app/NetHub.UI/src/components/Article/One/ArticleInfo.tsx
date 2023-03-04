@@ -9,6 +9,7 @@ import ContributorsSkeleton from "./ContributorsSkeleton";
 import FilledDiv from '../../UI/FilledDiv';
 import {Button, Link, Skeleton, Text, useColorModeValue} from "@chakra-ui/react";
 import {useArticleContext} from "../../../pages/Articles/One/ArticleSpace.Provider";
+import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
 
 const ArticleInfo = () => {
   const {articleAccessor, localizationAccessor} = useArticleContext();
@@ -16,7 +17,8 @@ const ArticleInfo = () => {
   const navigate = useNavigate();
   const whiteTextColor = useColorModeValue('whiteLight', 'whiteDark');
 
-  const contributors = useQuery(['contributors', localizationAccessor.data!.articleId, localizationAccessor.data!.languageCode],
+
+  const contributors = useQuery(QueryClientKeysHelper.Contributors(localizationAccessor.data!.articleId, localizationAccessor.data!.languageCode),
     () => getArticleContributors(localizationAccessor.data!.contributors));
 
   const getDomain = (link: string) => {
@@ -72,7 +74,12 @@ const ArticleInfo = () => {
                       <Text as={'p'} color={whiteTextColor}>{contributor.role}</Text>
                       <Text as={'p'} color={whiteTextColor}>{contributor.userName}</Text>
                     </div>
-                    <img src={contributor.profilePhotoUrl ?? createImageFromInitials(25, contributor.userName)} alt={'damaged'}/>
+                    <img src={contributor.profilePhotoUrl ?? createImageFromInitials(25, contributor.userName)}
+                         alt={'damaged'}
+                         onError={e => {
+                           e.currentTarget.src = createImageFromInitials(25, contributor.userName)
+                         }}
+                    />
                   </Button>
                 )}
               </div>

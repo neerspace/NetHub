@@ -2,10 +2,10 @@ import React, { createContext, FC, PropsWithChildren, useContext, useMemo, useSt
 import { useQuery, useQueryClient, UseQueryResult } from "react-query";
 import { ApiError } from "../../../types/ApiError";
 import { UkrainianLanguage } from "../../../utils/constants";
-import { useAppStore } from "../../../store/config";
 import { _localizationsApi } from "../../../api";
 import { ISimpleLocalization } from "../../../types/api/ISimpleLocalization";
 import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
+import { useAppStore } from "../../../store/store";
 
 type ContextType = {
   languages: { title: string, value: string }[],

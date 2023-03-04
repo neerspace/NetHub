@@ -2,10 +2,10 @@ import jwtDecode from 'jwt-decode';
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Layout, { Page } from '../components/Layout/Layout';
-import { useAppStore } from '../store/config';
 import IJwtPayload from '../types/IJwtPayload';
 import { getOrRefreshAccessToken } from '../utils/JwtService';
 import { JWTStorage } from '../utils/localStorageProvider';
+import { useAppStore } from "../store/store";
 
 interface IAuthorizedProps {
   children: Page,
