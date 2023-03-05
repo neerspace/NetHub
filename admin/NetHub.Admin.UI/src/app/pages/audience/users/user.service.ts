@@ -4,21 +4,13 @@ import { Observable } from 'rxjs';
 import { ErrorDto, UserCreateRequest, UserModel, UsersApi, UserUpdateRequest } from '../../../api';
 import { FormId } from '../../../components/form/types';
 import { IFiltered, IFilterInfo } from '../../../components/table/types';
-import { FormServiceBase } from '../../../services/abstractions/form-service-base';
-import { ModalsService } from '../../../services/modals.service';
-import { LoaderService, ToasterService } from '../../../services/viewport';
+import { FormServiceBase } from '../../../services/abstractions';
 
 @Injectable({ providedIn: 'root' })
 export class UserService extends FormServiceBase {
   public lastFormId?: FormId;
 
-  constructor(
-    injector: Injector,
-    private usersApi: UsersApi,
-    private modals: ModalsService,
-    private loader: LoaderService,
-    private toaster: ToasterService,
-  ) {
+  constructor(injector: Injector, private readonly usersApi: UsersApi) {
     super(injector, {
       id: new FormControl(),
       userName: new FormControl(),
@@ -109,7 +101,6 @@ export class UserService extends FormServiceBase {
 
   private onRequestStart() {
     // console.log('request started');
-    this.loader.show();
     if (this.isReady) {
       this.setReady('loading');
     }
@@ -117,13 +108,11 @@ export class UserService extends FormServiceBase {
 
   private onRequestSuccess() {
     // console.log('request succeed');
-    this.loader.hide();
     this.setReady('ready');
   }
 
   private onRequestError(error: ErrorDto) {
     // console.log('request error');
-    this.loader.hide();
     this.setReady('404');
     this.toaster.showFail(error.message);
   }

@@ -1,5 +1,4 @@
 ﻿import { Injectable, Injector } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import {
   ArticleLocalizationModel,
@@ -10,9 +9,7 @@ import {
 } from 'src/app/api';
 import { FormId, FormReady } from 'src/app/components/form/types';
 import { IFiltered, IFilterInfo } from 'src/app/components/table/types';
-import { ModalsService } from 'src/app/services/modals.service';
-import { LoaderService, ToasterService } from 'src/app/services/viewport';
-import { FormServiceBase } from '../../../services/abstractions/form-service-base';
+import { FormServiceBase } from '../../../services/abstractions';
 import { IDictionary } from '../../../shared/types';
 
 @Injectable()
@@ -21,12 +18,8 @@ export class ArticlesService extends FormServiceBase {
 
   constructor(
     injector: Injector,
-    formBuilder: FormBuilder,
-    private articlesApi: ArticlesApi,
-    private languagesApi: LanguagesApi,
-    private modals: ModalsService,
-    private loader: LoaderService,
-    private toaster: ToasterService,
+    private readonly articlesApi: ArticlesApi,
+    private readonly languagesApi: LanguagesApi,
   ) {
     super(injector, {
       ready: [null as FormReady, []],
@@ -113,7 +106,6 @@ export class ArticlesService extends FormServiceBase {
 
   private onRequestStart() {
     // console.log('request started');
-    this.loader.show();
     if (this.isReady) {
       this.setReady('loading');
     }
@@ -121,13 +113,11 @@ export class ArticlesService extends FormServiceBase {
 
   private onRequestSuccess() {
     // console.log('request succeed');
-    this.loader.hide();
     this.setReady('ready');
   }
 
   private onRequestError(error: ErrorDto) {
     // console.log('request error');
-    this.loader.hide();
     this.setReady('404');
     this.toaster.showFail(error.message);
   }

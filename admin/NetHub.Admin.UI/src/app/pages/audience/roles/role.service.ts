@@ -1,13 +1,9 @@
 import { Injectable, Injector } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ErrorDto, PermissionModel, PermissionsApi, RoleModel, RolesApi } from 'src/app/api';
 import { FormId, FormReady } from 'src/app/components/form/types';
 import { IFiltered, IFilterInfo } from 'src/app/components/table/types';
-import { ModalsService } from 'src/app/services/modals.service';
-import { LoaderService, ToasterService } from 'src/app/services/viewport';
-import { FormServiceBase } from '../../../services/abstractions/form-service-base';
+import { FormServiceBase } from '../../../services/abstractions';
 
 export enum PermissionState {
   none = 0,
@@ -27,13 +23,8 @@ export class RoleService extends FormServiceBase {
 
   constructor(
     injector: Injector,
-    route: ActivatedRoute,
-    formBuilder: FormBuilder,
     private readonly rolesApi: RolesApi,
     private readonly permissionsApi: PermissionsApi,
-    private readonly modals: ModalsService,
-    private readonly loader: LoaderService,
-    private readonly toaster: ToasterService,
   ) {
     super(injector, {
       ready: [null as FormReady, []],
@@ -140,7 +131,6 @@ export class RoleService extends FormServiceBase {
 
   private onRequestStart() {
     // console.log('request started');
-    this.loader.show();
     if (this.isReady) {
       this.setReady('loading');
     }
@@ -148,13 +138,11 @@ export class RoleService extends FormServiceBase {
 
   private onRequestSuccess() {
     // console.log('request succeed');
-    this.loader.hide();
     this.setReady('ready');
   }
 
   private onRequestError(error: ErrorDto) {
     // console.log('request error');
-    this.loader.hide();
     this.setReady('404');
     this.toaster.showFail(error.message);
   }

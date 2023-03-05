@@ -8,7 +8,7 @@ import {
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { finalize, Observable, tap, throwError } from 'rxjs';
+import { Observable, tap, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { SecuredStorage } from '../../services/storage';
@@ -35,18 +35,11 @@ export class TokenInterceptor implements HttpInterceptor {
    * @memberof TokenInterceptor
    */
   public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this.loader.show();
-    console.log('[inter] showing loader');
     // console.log('[JWT] Token start');
 
     if (this.isSecureUrl(request.url)) {
       // console.log('[JWT] Secured case');
-      return this.tokenService.handleRequest(request, next).pipe(
-        finalize(() => {
-          this.loader.hide();
-          console.log('[inter] hiding loader');
-        }),
-      );
+      return this.tokenService.handleRequest(request, next);
     }
 
     // console.log('[JWT] Alt case');

@@ -29,7 +29,7 @@ public class LanguageUploadFlagEndpoint : ActionEndpoint<LanguageFlagUploadReque
 
     [HttpPost("languages/{code:alpha:length(2)}/upload-flag"), ClientSide(ActionName = "uploadFlag")]
     [Consumes("multipart/form-data")]
-    public override async Task HandleAsync([FromForm] LanguageFlagUploadRequest request, CancellationToken ct)
+    public override async Task HandleAsync(LanguageFlagUploadRequest request, CancellationToken ct)
     {
         var languagesDb = _database.Set<Language>();
         var language = await languagesDb.AsNoTracking()

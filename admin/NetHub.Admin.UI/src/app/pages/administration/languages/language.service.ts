@@ -3,22 +3,14 @@ import { Observable } from 'rxjs';
 import { ErrorDto, LanguageModel, LanguagesApi } from '../../../api';
 import { FormId } from '../../../components/form/types';
 import { IFiltered, IFilterInfo } from '../../../components/table/types';
-import { FormServiceBase } from '../../../services/abstractions/form-service-base';
-import { ModalsService } from '../../../services/modals.service';
-import { LoaderService, ToasterService } from '../../../services/viewport';
+import { FormServiceBase } from '../../../services/abstractions';
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService extends FormServiceBase {
   flagFile?: File;
   public lastFormId?: FormId<string>;
 
-  constructor(
-    injector: Injector,
-    private readonly modals: ModalsService,
-    private readonly loader: LoaderService,
-    private readonly toaster: ToasterService,
-    private readonly languagesApi: LanguagesApi,
-  ) {
+  constructor(injector: Injector, private readonly languagesApi: LanguagesApi) {
     super(injector, {
       code: ['', []],
       name: ['', []],
@@ -123,7 +115,6 @@ export class LanguageService extends FormServiceBase {
 
   private onRequestStart() {
     // console.log('request started');
-    this.loader.show();
     if (this.isReady) {
       this.setReady('loading');
     }
@@ -132,7 +123,6 @@ export class LanguageService extends FormServiceBase {
   private onRequestSuccess(code?: string) {
     // console.log('request succeed');
     this.setReady('ready');
-    this.loader.hide();
 
     if (this.flagFile && code) {
       this.uploadFlagFile(code).subscribe(() => {
@@ -145,8 +135,6 @@ export class LanguageService extends FormServiceBase {
   }
 
   private onRequestError(error: ErrorDto) {
-    this.loader.hide();
-
     if (error.status === 400) {
       this.form.get('code')!.setErrors({
         'api-error': error['errors'].code,

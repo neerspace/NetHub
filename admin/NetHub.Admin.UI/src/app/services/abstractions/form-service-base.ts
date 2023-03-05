@@ -2,16 +2,23 @@ import { Injector } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormReady, FormReadyWrapper } from '../../components/form/types';
+import { ModalsService } from '../modals.service';
+import { ToasterService } from '../viewport';
 
 export abstract class FormServiceBase {
   public readonly form: FormGroup;
   public readonly router: Router;
+  public readonly modals: ModalsService;
+  public readonly toaster: ToasterService;
+
   private readonly formBuilder: FormBuilder;
   private readyWrap: FormReadyWrapper = new FormReadyWrapper();
 
   protected constructor(injector: Injector, controls: object) {
     this.router = injector.get(Router);
     this.formBuilder = injector.get(FormBuilder);
+    this.modals = injector.get(ModalsService);
+    this.toaster = injector.get(ToasterService);
 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 

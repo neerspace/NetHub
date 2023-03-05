@@ -5,10 +5,10 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { logger } from 'src/environments/environment';
 import { ErrorDto } from '../../../api';
 import { StorageService } from '../../../services/storage';
-import { LoaderService, ToasterService } from '../../../services/viewport';
+import { ToasterService } from '../../../services/viewport';
 import { CustomColumnDirective } from '../custom-column.directive';
 import { TablePaginationComponent } from '../pagination/table-pagination.component';
-import { buildFiltersQuery, defaultNumberOperator, defaultTextOperator, postfixes } from '../sieve';
+import { buildFiltersQuery, postfixes } from '../sieve';
 import { ColumnInfo, DataTableError, FetchApiEvent, FilterType, IFilterParams } from '../types';
 
 @Component({
@@ -42,14 +42,11 @@ export class DataTableComponent<T> implements OnInit {
   private filters?: string;
 
   constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private loader: LoaderService,
-    private toaster: ToasterService,
-    private storage: StorageService,
-  ) {
-    this.loader.show();
-  }
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly toaster: ToasterService,
+    private readonly storage: StorageService,
+  ) {}
 
   ngOnInit(): void {
     if (!this.columns || this.columns.length < 1) {
@@ -108,7 +105,6 @@ export class DataTableComponent<T> implements OnInit {
   loadData(updatePaginationInfo: boolean = false): void {
     this.setQueryParams();
     this.loading = true;
-    this.loader.show();
 
     logger.debug('[Data fetching]');
     this.onFilter({
@@ -132,12 +128,10 @@ export class DataTableComponent<T> implements OnInit {
           this.updatePageIndicatorText();
         }
 
-        this.loader.hide();
         setTimeout(() => (this.loading = false), 1200);
       },
       error: (error: ErrorDto) => {
         setTimeout(() => (this.loading = false), 1200);
-        this.loader.hide();
         this.toaster.showFail(error.message);
         this.resetPagination();
       },
@@ -152,17 +146,17 @@ export class DataTableComponent<T> implements OnInit {
     return customColumn;
   }
 
-  setFiltersToDefault(): void {
-    for (const filterKey of Object.keys(this.filtersForm.value)) {
-      if (postfixes.isTextOp(filterKey)) {
-        this.filtersForm.get(filterKey)!.setValue(defaultTextOperator);
-      } else if (postfixes.isNumOp(filterKey)) {
-        this.filtersForm.get(filterKey)!.setValue(defaultNumberOperator);
-      } else {
-        this.filtersForm.get(filterKey)!.setValue(null);
-      }
-    }
-  }
+  // setFiltersToDefault(): void {
+  //   for (const filterKey of Object.keys(this.filtersForm.value)) {
+  //     if (postfixes.isTextOp(filterKey)) {
+  //       this.filtersForm.get(filterKey)!.setValue(defaultTextOperator);
+  //     } else if (postfixes.isNumOp(filterKey)) {
+  //       this.filtersForm.get(filterKey)!.setValue(defaultNumberOperator);
+  //     } else {
+  //       this.filtersForm.get(filterKey)!.setValue(null);
+  //     }
+  //   }
+  // }
 
   changeSorts(key: string, event: MouseEvent): void {
     if (this.sorts === key) {
