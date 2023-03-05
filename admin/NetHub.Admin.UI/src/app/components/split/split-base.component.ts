@@ -9,54 +9,48 @@ export abstract class SplitBaseComponent<T> {
   private storage: StorageService;
   private device: ViewportService;
 
-  firstComponentSize: number = 100;
-  secondComponentSize: number = 0;
+  splitSizes: [number, number] = [100, 0];
 
   protected constructor(injector: Injector, private splitSizesStorageKey: string) {
     this.storage = injector.get(StorageService);
     this.device = injector.get(ViewportService);
-    [this.firstComponentSize, this.secondComponentSize] = this.storage.get(
-      SettingsKey.SplitSizes + this.splitSizesStorageKey,
-    ) || [100, 0];
+
+    this.splitSizes = this.storage.get(SettingsKey.SplitSizes + this.splitSizesStorageKey);
+    if (!this.splitSizes || this.splitSizes.length !== 2) {
+      this.splitSizes = [100, 0];
+    }
   }
 
   abstract get columns(): ColumnInfo[];
 
   resize(newSizes: number[] | IOutputAreaSizes) {
-    const listSize = newSizes[0] as number;
-    const formSize = newSizes[1] as number;
+    const firstSize = newSizes[0] as number;
+    const secondSize = newSizes[1] as number;
 
-    if (listSize < 20 && listSize < this.firstComponentSize) {
-      this.firstComponentSize = 0;
-      this.secondComponentSize = 100;
-    } else if (formSize < 20 && formSize < this.secondComponentSize) {
-      this.firstComponentSize = 100;
-      this.secondComponentSize = 0;
-    } else if (Math.abs(listSize - formSize) < 10) {
-      this.firstComponentSize = 50;
-      this.secondComponentSize = 50;
+    if (firstSize < 20 && firstSize < this.splitSizes[0]) {
+      this.splitSizes = [0, 100];
+    } else if (secondSize < 20 && secondSize < this.splitSizes[1]) {
+      this.splitSizes = [100, 0];
+    } else if (Math.abs(firstSize - secondSize) < 10) {
+      this.splitSizes = [50, 50];
     } else {
-      this.firstComponentSize = listSize;
-      this.secondComponentSize = formSize;
+      this.splitSizes = [firstSize, secondSize];
     }
 
-    this.storage.set(SettingsKey.SplitSizes + this.splitSizesStorageKey, [
-      this.firstComponentSize,
-      this.secondComponentSize,
-    ]);
+    this.storage.set(SettingsKey.SplitSizes + this.splitSizesStorageKey, this.splitSizes);
 
-    return this.firstComponentSize;
+    return this.splitSizes;
   }
 
   maximizeForm() {
     if (this.device.isTablet) {
-      this.firstComponentSize = this.resize([0, 100]);
+      this.splitSizes = this.resize([0, 100]);
     } else {
-      this.firstComponentSize = this.resize([50, 50]);
+      this.splitSizes = this.resize([50, 50]);
     }
   }
 
   closeForm() {
-    this.firstComponentSize = this.resize([100, 0]);
+    this.splitSizes = this.resize([100, 0]);
   }
 }

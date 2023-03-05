@@ -5,7 +5,7 @@ import { ArticleLocalizationModel, ErrorDto, LocalizationsApi } from 'src/app/ap
 import { ModalsService } from 'src/app/services/modals.service';
 import { LoaderService, ToasterService } from 'src/app/services/viewport';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class LocalizationsService {
   constructor(
     formBuilder: FormBuilder,

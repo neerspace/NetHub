@@ -1,6 +1,5 @@
-﻿import { Injectable } from '@angular/core';
+﻿import { Injectable, Injector } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import {
   ArticleLocalizationModel,
@@ -9,32 +8,32 @@ import {
   ErrorDto,
   LanguagesApi,
 } from 'src/app/api';
-import { FormGroupReady, FormId, FormReady } from 'src/app/components/form/types';
+import { FormId, FormReady } from 'src/app/components/form/types';
 import { IFiltered, IFilterInfo } from 'src/app/components/table/types';
 import { ModalsService } from 'src/app/services/modals.service';
 import { LoaderService, ToasterService } from 'src/app/services/viewport';
+import { FormServiceBase } from '../../../services/abstractions/form-service-base';
 import { IDictionary } from '../../../shared/types';
 
-@Injectable({ providedIn: 'root' })
-export class ArticlesService {
-  readonly form: FormGroupReady;
+@Injectable()
+export class ArticlesService extends FormServiceBase {
   flags: IDictionary<string> = {};
 
   constructor(
+    injector: Injector,
     formBuilder: FormBuilder,
-    private router: Router,
     private articlesApi: ArticlesApi,
     private languagesApi: LanguagesApi,
     private modals: ModalsService,
     private loader: LoaderService,
     private toaster: ToasterService,
   ) {
-    this.form = formBuilder.group({
+    super(injector, {
       ready: [null as FormReady, []],
       id: ['', []],
       name: ['', []],
       permissions: [[], []],
-    }) as any;
+    });
   }
 
   public lastFormId?: FormId;
@@ -115,21 +114,21 @@ export class ArticlesService {
   private onRequestStart() {
     // console.log('request started');
     this.loader.show();
-    if (this.form.ready.value === 'ready') {
-      this.form.ready.setValue('loading');
+    if (this.isReady) {
+      this.setReady('loading');
     }
   }
 
   private onRequestSuccess() {
     // console.log('request succeed');
     this.loader.hide();
-    this.form.ready.setValue('ready');
+    this.setReady('ready');
   }
 
   private onRequestError(error: ErrorDto) {
     // console.log('request error');
     this.loader.hide();
-    this.form.ready.setValue('404');
+    this.setReady('404');
     this.toaster.showFail(error.message);
   }
 }

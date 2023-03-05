@@ -1,43 +1,30 @@
-import { Injectable } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ErrorDto, LanguageModel, LanguagesApi } from '../../../api';
-import { FormGroupReady, FormId, FormReady } from '../../../components/form/types';
+import { FormId } from '../../../components/form/types';
 import { IFiltered, IFilterInfo } from '../../../components/table/types';
+import { FormServiceBase } from '../../../services/abstractions/form-service-base';
 import { ModalsService } from '../../../services/modals.service';
 import { LoaderService, ToasterService } from '../../../services/viewport';
 
 @Injectable({ providedIn: 'root' })
-export class LanguageService {
-  readonly form: FormGroupReady;
+export class LanguageService extends FormServiceBase {
   flagFile?: File;
   public lastFormId?: FormId<string>;
 
   constructor(
-    route: ActivatedRoute,
-    formBuilder: FormBuilder,
-    private router: Router,
-    private modals: ModalsService,
-    private loader: LoaderService,
-    private toaster: ToasterService,
-    private languagesApi: LanguagesApi,
+    injector: Injector,
+    private readonly modals: ModalsService,
+    private readonly loader: LoaderService,
+    private readonly toaster: ToasterService,
+    private readonly languagesApi: LanguagesApi,
   ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-
-    this.form = formBuilder.group({
-      ready: [<FormReady>null, []],
+    super(injector, {
       code: ['', []],
       name: ['', []],
       nameLocal: ['', []],
       flagUrl: [<string | null>null, []],
-    }) as any;
-
-    this.form.ready = this.form.get('ready') as FormControl;
-  }
-
-  get onReadyChanges(): Observable<FormReady> {
-    return this.form.ready.valueChanges;
+    });
   }
 
   showForm(): void {
@@ -48,7 +35,6 @@ export class LanguageService {
     this.onRequestStart();
     this.languagesApi.getByCode(code).subscribe({
       next: (lang: LanguageModel | any) => {
-        lang.ready = true;
         lang.nameLocal = lang.name[code] || '';
         lang.name = lang.name.en;
         this.form.setValue(lang);
@@ -138,14 +124,14 @@ export class LanguageService {
   private onRequestStart() {
     // console.log('request started');
     this.loader.show();
-    if (this.form.ready.value === 'ready') {
-      this.form.ready.setValue('loading');
+    if (this.isReady) {
+      this.setReady('loading');
     }
   }
 
   private onRequestSuccess(code?: string) {
     // console.log('request succeed');
-    this.form.ready.setValue('ready');
+    this.setReady('ready');
     this.loader.hide();
 
     if (this.flagFile && code) {
@@ -166,13 +152,13 @@ export class LanguageService {
         'api-error': error['errors'].code,
       });
       this.toaster.showFail(error.message);
-      this.form.ready.setValue('ready');
+      this.setReady('ready');
     } else if (error.status === 500) {
       this.toaster.showFail(error['errors'].exception);
-      this.form.ready.setValue('ready');
+      this.setReady('ready');
     } else {
       this.toaster.showFail(error.message);
-      this.form.ready.setValue('404');
+      this.setReady('404');
     }
   }
 }

@@ -29,7 +29,7 @@
             direction="vertical"
             [gutterSize]="4"
             (dragEnd)="resize($event.sizes)">
-    <as-split-area [size]="firstComponentSize">
+    <as-split-area [size]="splitSizes[0]">
       <div class="split-area-content">
         <app-data-table #table
                         defaultSorting="-created"
@@ -39,9 +39,8 @@
                         [onFilter]="fetchFilter.bind(this)">
           <ng-container *appCustomColumn="'localizationButtons'; value as val; object as obj">
             <ng-container *ngFor="let localization of val">
-              <span [id]="'flag_' + localization.articleId + '_' + localization.id + '_' + localization.languageCode"
-                    class="btn article-flag-button"
-              (click)="onLocalizationClick(obj)">
+              <span class="btn article-flag-button"
+                    (click)="onLocalizationClick(localization)">
                 <img class="flag-img"
                      [src]="articlesService.flags[localization.languageCode]"
                      [alt]="localization.languageCode" />
@@ -50,19 +49,18 @@
             </ng-container>
           </ng-container>
         </app-data-table>
-
       </div>
     </as-split-area>
-    <as-split-area [size]="secondComponentSize">
+    <as-split-area [size]="splitSizes[1]">
       <div class="split-area-content">
         <app-tabs></app-tabs>
         <ng-template let-data="data"
-                     #article>
+                     #articleForm>
           <app-article-form [article]="data"></app-article-form>
         </ng-template>
         <ng-template let-data="data"
-                     #localization>
-          <app-localization-form [localization]="data"></app-localization-form>
+                     #localizationForm>
+          <app-localization-form [model]="data"></app-localization-form>
         </ng-template>
       </div>
     </as-split-area>

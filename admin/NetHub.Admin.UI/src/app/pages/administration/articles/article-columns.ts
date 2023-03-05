@@ -26,7 +26,7 @@ export function articleColumns(context: ArticlesTableComponent): ColumnInfo[] {
             text: 'Details',
           },
           onClick: model => {
-            context.onLocalizationClick(model);
+            context.onDetailsClick(model);
           },
         },
       ],

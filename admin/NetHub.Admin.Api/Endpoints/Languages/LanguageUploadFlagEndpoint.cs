@@ -14,7 +14,7 @@ namespace NetHub.Admin.Api.Endpoints.Languages;
 
 [ApiVersion(Versions.V1)]
 [Tags(TagNames.Languages)]
-[Authorize(Policy = Policies.HasManageResourcesPermission)]
+[Authorize(Policy = Policies.HasManageLanguagesPermission)]
 public class LanguageUploadFlagEndpoint : ActionEndpoint<LanguageFlagUploadRequest>
 {
     private readonly IResourceService _resourceService;

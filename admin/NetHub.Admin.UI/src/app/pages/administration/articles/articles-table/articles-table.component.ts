@@ -15,8 +15,8 @@ import { ArticlesService } from '../article.service';
 })
 export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> implements OnInit {
   @ViewChild(TabsComponent) tabsComponent!: TabsComponent;
-  @ViewChild('article') articleTemplate!: TemplateRef<any>;
-  @ViewChild('localization') localizationTemplate!: TemplateRef<any>;
+  @ViewChild('articleForm') articleTemplate!: TemplateRef<any>;
+  @ViewChild('localizationForm') localizationTemplate!: TemplateRef<any>;
   @ViewChild('localizationsColumn') localizationsColumnTemplate!: TemplateRef<any>;
 
   columns: ColumnInfo[] = [];
@@ -40,12 +40,19 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> imp
     return this.articlesService.filter(params);
   }
 
-  onLocalizationClick(model: ArticleModel) {
-    const tabTitle = limitStringLength(model.name, 20, 'Untitled');
-    this.tabsComponent.openTab(tabTitle, this.localizationTemplate, 'aoa', true);
+  onLocalizationClick(model: ArticleLocalizationModel) {
+    console.log(model);
+    const tabTitle = model.articleId + ' | ' + limitStringLength(model.title, 20, 'Untitled');
+    this.tabsComponent.openTab(tabTitle, this.localizationTemplate, model);
   }
 
   onDetailsClick(model: ArticleModel) {
+    console.log(model);
+    const tabTitle = model.id + ' | ' + limitStringLength(model.name, 20, 'Untitled');
+    this.tabsComponent.openTab(tabTitle, this.articleTemplate, model);
+  }
+
+  onDetailsClick2(model: ArticleModel) {
     const article$ = this.articlesService.getById(model.id);
     const localizations$ = this.articlesService.getLocalizations(model.id);
 

@@ -10,14 +10,14 @@
           *ngIf="!isCreating"
           icon="la-ban"
           variant="danger"
-          [disabled]="ready !== 'ready'"
+          [disabled]="!roleService.ready"
           (onclick)="roleService.delete(id)">
     Delete
   </button>
   <button app-icon-button
           icon="la-save"
           variant="success"
-          [disabled]="ready !== 'ready'"
+          [disabled]="!roleService.ready"
           (onclick)="submit()">
     {{isCreating ? 'Create' : 'Save'}}
   </button>
@@ -26,7 +26,7 @@
 <app-main-content>
   <form app-form-layout
         [formGroup]="roleService.form"
-        [ready]="ready">
+        [ready]="roleService.ready">
 
     <app-number-field *ngIf="!isCreating"
                       label="ID"

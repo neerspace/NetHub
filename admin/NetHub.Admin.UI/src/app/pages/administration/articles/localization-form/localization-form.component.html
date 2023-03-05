@@ -1,5 +1,78 @@
-<div class="data">
-  <p>Localization ID: {{localization.id}}</p>
-  <p>Article ID: {{localization.articleId}}</p>
-  <p>Localization Code: {{localization.languageCode}}</p>
-</div>
+<!--<div class="data">-->
+<!--  <p>Localization ID: {{model.id}}</p>-->
+<!--  <p>Article ID: {{model.articleId}}</p>-->
+<!--  <p>Localization Code: {{model.languageCode}}</p>-->
+<!--</div>-->
+<!--<app-main-header short="true"-->
+<!--                 [pageTitle]="'Article Localization: ' + model.articleId + '-' + model.id">-->
+<!--  <button app-icon-button-->
+<!--          icon="la-ban"-->
+<!--          variant="danger"-->
+<!--          [disabled]="ready !== 'ready'"-->
+<!--          (onclick)="localizationsService.delete(model.id)">-->
+<!--    Delete-->
+<!--  </button>-->
+<!--  <button app-icon-button-->
+<!--          icon="la-save"-->
+<!--          variant="success"-->
+<!--          [disabled]="ready !== 'ready'"-->
+<!--          (onclick)="submit()">-->
+<!--    Save-->
+<!--  </button>-->
+<!--</app-main-header>-->
+
+<!--<app-main-content>-->
+<!--  <form app-form-layout-->
+<!--        enctype="multipart/form-data"-->
+<!--        [formGroup]="localizationsService.form"-->
+<!--        [ready]="ready">-->
+
+<!--    <app-text-field label="Two-letter ISO Code"-->
+<!--                    controlName="code"-->
+<!--                    [maxLength]="2"-->
+<!--                    [disabled]="!isCreating"-->
+<!--                    [allowCopy]="!isCreating"></app-text-field>-->
+<!--    <app-form-content *ngIf="isCreating">-->
+<!--      <div>-->
+<!--        {{suggestedLanguageName ? 'Suggested language: ' + suggestedLanguageName : 'Language code is invalid'}}-->
+<!--      </div>-->
+<!--      <button app-icon-button-->
+<!--              variant="secondary"-->
+<!--              [disabled]="!suggestedLanguageName"-->
+<!--              (onclick)="applySuggestedLanguage()">-->
+<!--        Apply Suggestion-->
+<!--      </button>-->
+<!--    </app-form-content>-->
+<!--    <hr />-->
+
+<!--    <app-text-field label="International Name"-->
+<!--                    controlName="name"-->
+<!--                    [maxLength]="50"-->
+<!--                    [required]="true"></app-text-field>-->
+<!--    <app-text-field label="Local Name"-->
+<!--                    controlName="nameLocal"-->
+<!--                    [maxLength]="50"></app-text-field>-->
+
+<!--    <div class="form-group flag-wrapper">-->
+<!--      <label class="input-group-btn">-->
+<!--        <span class="btn btn-icon btn-outline-secondary">-->
+<!--          <span>-->
+<!--            {{!languagesService.form.get('flagUrl') ? 'Upload flag' : 'Change Flag' }} (svg)-->
+<!--            <input type="file"-->
+<!--                   id="file"-->
+<!--                   style="display: none;"-->
+<!--                   accept=".svg"-->
+<!--                   (change)="handleFileChange($event)">-->
+<!--          </span>-->
+<!--        </span>-->
+<!--      </label>-->
+<!--    </div>-->
+
+<!--    <div class="preview-container">-->
+<!--      <img class="preview-image"-->
+<!--           [src]="languagesService.form.get('flagUrl')!.value"-->
+<!--           alt="" />-->
+<!--    </div>-->
+<!--  </form>-->
+
+<!--</app-main-content>-->

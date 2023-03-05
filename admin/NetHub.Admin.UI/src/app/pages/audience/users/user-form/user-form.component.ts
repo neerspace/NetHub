@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormReady } from 'src/app/components/form/types';
 import { getRandomInt } from 'src/app/shared/utilities';
 import { UserService } from '../user.service';
 
@@ -11,12 +10,11 @@ import { UserService } from '../user.service';
 export class UserFormComponent implements OnInit {
   readonly id: number;
   readonly isCreating: boolean;
-  ready: FormReady = null;
 
   constructor(
     route: ActivatedRoute,
-    private router: Router,
-    public usersService: UserService, //
+    private readonly router: Router,
+    public readonly usersService: UserService,
   ) {
     const routeId = route.snapshot.params['id'];
     this.isCreating = routeId === 'create';
@@ -24,10 +22,9 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.usersService.onReadyChanges.subscribe(x => (this.ready = x));
-    if (this.isCreating) {
-      this.usersService.form.ready.setValue('ready');
-    } else {
+    this.usersService.init(this.isCreating);
+
+    if (!this.isCreating) {
       this.usersService.getById(this.id);
     }
   }

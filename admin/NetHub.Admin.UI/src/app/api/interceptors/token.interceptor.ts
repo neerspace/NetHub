@@ -8,7 +8,7 @@ import {
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Observable, tap, throwError } from 'rxjs';
+import { finalize, Observable, tap, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { SecuredStorage } from '../../services/storage';
@@ -19,12 +19,12 @@ import { RequestTokenService } from '../request-token.service';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   constructor(
-    private jwtApi: JWTApi,
-    private router: Router,
-    private route: ActivatedRoute,
-    private loader: LoaderService,
-    private securedStorage: SecuredStorage,
-    private tokenService: RequestTokenService,
+    private readonly jwtApi: JWTApi,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly loader: LoaderService,
+    private readonly securedStorage: SecuredStorage,
+    private readonly tokenService: RequestTokenService,
   ) {}
 
   /**
@@ -36,11 +36,17 @@ export class TokenInterceptor implements HttpInterceptor {
    */
   public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.loader.show();
+    console.log('[inter] showing loader');
     // console.log('[JWT] Token start');
 
     if (this.isSecureUrl(request.url)) {
       // console.log('[JWT] Secured case');
-      return this.tokenService.handleRequest(request, next).pipe(tap(_ => this.loader.hide()));
+      return this.tokenService.handleRequest(request, next).pipe(
+        finalize(() => {
+          this.loader.hide();
+          console.log('[inter] hiding loader');
+        }),
+      );
     }
 
     // console.log('[JWT] Alt case');

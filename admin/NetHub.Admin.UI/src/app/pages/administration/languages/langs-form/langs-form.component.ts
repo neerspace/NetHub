@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { FormReady } from 'src/app/components/form/types';
 import { capitalizeFirstLetter } from 'src/app/shared/utilities';
 import { LanguageService } from '../language.service';
+
+// TODO: Add validation if language is already exists
 
 @Component({
   selector: 'app-langs-form',
@@ -13,7 +14,6 @@ import { LanguageService } from '../language.service';
 export class LangsFormComponent implements OnInit {
   readonly code: string;
   readonly isCreating: boolean;
-  ready: FormReady = null;
   suggestedLanguageName?: string;
   languageNames: Intl.DisplayNames;
 
@@ -29,9 +29,10 @@ export class LangsFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.languagesService.onReadyChanges.subscribe(x => (this.ready = x));
+    this.languagesService.init(this.isCreating);
+
     if (this.isCreating) {
-      this.languagesService.form.ready.setValue('ready');
+      // Add listener on 'code' changes
       this.languagesService.form
         .get('code')!
         .valueChanges.pipe(debounceTime(300))

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormReady } from 'src/app/components/form/types';
 import { PermissionModelExtended, PermissionState, RoleService } from '../role.service';
 
 @Component({
@@ -11,19 +10,20 @@ import { PermissionModelExtended, PermissionState, RoleService } from '../role.s
 export class RolesFormComponent implements OnInit {
   readonly id: number;
   readonly isCreating: boolean;
-  ready: FormReady = null;
 
-  constructor(route: ActivatedRoute, private router: Router, public roleService: RoleService) {
+  constructor(
+    route: ActivatedRoute,
+    private readonly router: Router,
+    public readonly roleService: RoleService,
+  ) {
     const routeId = route.snapshot.params['id'];
     this.isCreating = routeId === 'create';
     this.id = this.isCreating ? -1 : +routeId;
   }
 
   ngOnInit(): void {
-    this.roleService.onReadyChanges.subscribe(x => (this.ready = x));
-    if (this.isCreating) {
-      this.roleService.form.ready.setValue('ready');
-    } else {
+    this.roleService.init(this.isCreating);
+    if (!this.isCreating) {
       this.roleService.getAllPermissions();
       this.roleService.getById(this.id);
     }

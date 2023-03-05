@@ -1,90 +1,81 @@
-<app-main-header short="true" [pageTitle]="isCreating ? 'Create User' : 'Edit User'">
-  <button app-icon-button icon="la-undo" variant="secondary"
+<app-main-header short="true"
+                 [pageTitle]="isCreating ? 'Create User' : 'Edit User'">
+  <button app-icon-button
+          icon="la-undo"
+          variant="secondary"
           (onclick)="backToTable()">
     Back
   </button>
-  <button app-icon-button *ngIf="!isCreating" icon="la-ban" variant="danger"
-          [disabled]="ready !== 'ready'" (onclick)="usersService.delete(id)">
+  <button app-icon-button
+          *ngIf="!isCreating"
+          icon="la-ban"
+          variant="danger"
+          [disabled]="!usersService.ready"
+          (onclick)="usersService.delete(id)">
     Delete
   </button>
-  <button app-icon-button icon="la-save" variant="success"
-          [disabled]="ready !== 'ready'" (onclick)="submit()">
+  <button app-icon-button
+          icon="la-save"
+          variant="success"
+          [disabled]="!usersService.ready"
+          (onclick)="submit()">
     {{isCreating ? 'Create' : 'Save'}}
   </button>
 </app-main-header>
 
 <app-main-content>
-  <form app-form-layout [formGroup]="usersService.form" [ready]="ready" [disableBrowserSecurity]="true">
+  <form app-form-layout
+        [formGroup]="usersService.form"
+        [ready]="usersService.ready"
+        [disableBrowserSecurity]="true">
 
-    <app-number-field *ngIf="!isCreating" label="ID" controlName="id"
-                      disabled="true" [allowCopy]="true">
-    </app-number-field>
-    <app-text-field label="User Name" controlName="userName"
-                    [maxLength]="50" [required]="true" [allowCopy]="!isCreating">
-    </app-text-field>
-    <app-text-field label="First Name" controlName="firstName"
-                    [maxLength]="50" [required]="true">
-    </app-text-field>
-    <app-text-field label="Middle Name" controlName="middleName"
-                    [maxLength]="50">
-    </app-text-field>
-    <app-text-field label="Last Name" controlName="lastName"
-                    [maxLength]="50" [required]="true">
-    </app-text-field>
+    <app-number-field *ngIf="!isCreating"
+                      label="ID"
+                      controlName="id"
+                      disabled="true"
+                      [allowCopy]="true"></app-number-field>
+    <app-text-field label="User Name"
+                    controlName="userName"
+                    [maxLength]="50"
+                    [required]="true"
+                    [allowCopy]="!isCreating"></app-text-field>
+    <app-text-field label="First Name"
+                    controlName="firstName"
+                    [maxLength]="50"
+                    [required]="true"></app-text-field>
+    <app-text-field label="Middle Name"
+                    controlName="middleName"
+                    [maxLength]="50"></app-text-field>
+    <app-text-field label="Last Name"
+                    controlName="lastName"
+                    [maxLength]="50"
+                    [required]="true"></app-text-field>
 
-    <hr/>
-    <app-password-field label="Password" controlName="password"
-                        [required]="false">
-    </app-password-field>
+    <hr />
+    <app-password-field label="Password"
+                        controlName="password"
+                        [required]="false"></app-password-field>
     <app-main-header>
-      <button app-icon-button variant="secondary" (click)="setRandomPassword()">
+      <button app-icon-button
+              variant="secondary"
+              (click)="setRandomPassword()">
         Seed Random Password
       </button>
     </app-main-header>
-    <hr/>
+    <hr />
 
-    <app-text-field label="Email" controlName="email"
-                    type="email" [maxLength]="200" [required]="true">
-    </app-text-field>
+    <app-text-field label="Email"
+                    controlName="email"
+                    type="email"
+                    [maxLength]="200"
+                    [required]="true"></app-text-field>
 
-    <!-- TODO: Add checkbox -->
+    <!-- TODO: Add checkbox: Email is confirmed -->
 
-    <hr/>
+    <hr />
 
-    <app-text-area-field label="Description" controlName="description"
-                         size="medium">
-    </app-text-area-field>
-
-    <!--    <app-text-field-->
-    <!--      label="Password"-->
-    <!--      controlName="password"-->
-    <!--      type="password"-->
-    <!--      [required]="true">-->
-    <!--    </app-text-field>-->
-
-    <!--    <app-number-field-->
-    <!--      label="Person Age"-->
-    <!--      controlName="age"-->
-    <!--      format="float(2)"-->
-    <!--      [minValue]="0"-->
-    <!--      [maxValue]="120"-->
-    <!--      [required]="true">-->
-    <!--    </app-number-field>-->
-
-    <!--    <app-date-field-->
-    <!--      type="date-time"-->
-    <!--      label="Date of a Birth"-->
-    <!--      controlName="dateOfBirth"-->
-    <!--      controlEndName="dateOfEndBirth">-->
-    <!--    </app-date-field>-->
-
-    <!--    <app-text-area-field-->
-    <!--      label="Description"-->
-    <!--      controlName="description"-->
-    <!--      size="small"-->
-    <!--      [maxLength]="300">-->
-    <!--    </app-text-area-field>-->
-
-    <pre>{{usersService.form.value | json}}</pre>
+    <app-text-area-field label="Description"
+                         controlName="description"
+                         size="medium"></app-text-area-field>
   </form>
 </app-main-content>

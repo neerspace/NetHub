@@ -10,14 +10,14 @@
           *ngIf="!isCreating"
           icon="la-ban"
           variant="danger"
-          [disabled]="ready !== 'ready'"
+          [disabled]="!languagesService.isReady"
           (onclick)="languagesService.delete(code)">
     Delete
   </button>
   <button app-icon-button
           icon="la-save"
           variant="success"
-          [disabled]="ready !== 'ready'"
+          [disabled]="!languagesService.isReady"
           (onclick)="submit()">
     {{isCreating ? 'Create' : 'Save'}}
   </button>
@@ -27,7 +27,7 @@
   <form app-form-layout
         enctype="multipart/form-data"
         [formGroup]="languagesService.form"
-        [ready]="ready">
+        [ready]="languagesService.ready">
 
     <app-text-field label="Two-letter ISO Code"
                     controlName="code"
