@@ -30,7 +30,7 @@ const ExchangeRate: FC<IExchangeProps> = ({rate}) => {
           <Text as={'p'} fontWeight={'bold'} color={useColorModeValue('purpleLight', 'purpleDark')}>USD</Text>,
           <Text as={'p'} fontWeight={'bold'}>{formatNumber(rate.usd.rateBuy)}</Text>,
           <Text as={'p'} fontWeight={'bold'} color={headersColor}>/</Text>,
-          <Text as={'p'} fontWeight={'bold'}>{formatNumber(rate.usd.rateSell)}</Text>
+          <Text as={'p'} fontWeight={'bold'}>{formatNumber(rate.usd.rateSell)}</Text>//add zeros
         ]}
       />
       <CurrencyRow

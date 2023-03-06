@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NeerCore.Exceptions;
 using NetHub.Data.SqlServer.Context;
+using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Models.Users;
 using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
@@ -19,11 +21,13 @@ public sealed class MeProfilePhotoUpdateEndpoint : Endpoint<MeProfilePhotoUpdate
 {
     private readonly ISqlServerDatabase _database;
     private readonly IResourceService _resourceService;
+    private readonly UserManager<AppUser> _userManager;
 
-    public MeProfilePhotoUpdateEndpoint(ISqlServerDatabase database, IResourceService resourceService)
+    public MeProfilePhotoUpdateEndpoint(ISqlServerDatabase database, IResourceService resourceService, UserManager<AppUser> userManager)
     {
         _database = database;
         _resourceService = resourceService;
+        _userManager = userManager;
     }
 
 
@@ -33,7 +37,10 @@ public sealed class MeProfilePhotoUpdateEndpoint : Endpoint<MeProfilePhotoUpdate
         var user = await UserProvider.GetUserAsync();
 
         if (user.PhotoId is not null)
-            await _resourceService.DeleteResourceFromDb(user.PhotoId.Value);
+        {
+            var photoId = user.PhotoId;
+            await _resourceService.DeleteResourceFromDb(photoId.Value);
+        }
 
         if (updateRequest.File is not null)
         {
@@ -51,6 +58,7 @@ public sealed class MeProfilePhotoUpdateEndpoint : Endpoint<MeProfilePhotoUpdate
             throw new ValidationFailedException("No photo provided");
         }
 
+        await _userManager.UpdateAsync(user);
         await _database.SaveChangesAsync(ct);
 
         return new(user.ProfilePhotoUrl);

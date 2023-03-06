@@ -27,10 +27,10 @@ export class ArticleLocalizationsApi {
     }
 
     /**
-     * @param body (optional) 
+     * @param body (optional)
      * @return Created
      */
-    create(id: string, lang: string, body: ArticleLocalizationCreateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel> {
+    create(id: string, lang: string, body: ArticleLocalizationCreateRequest | null | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel | null> {
         let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -64,7 +64,7 @@ export class ArticleLocalizationsApi {
         });
     }
 
-    protected processCreate(response: AxiosResponse): Promise<ArticleLocalizationModel> {
+    protected processCreate(response: AxiosResponse): Promise<ArticleLocalizationModel | null> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -78,8 +78,8 @@ export class ArticleLocalizationsApi {
             const _responseText = response.data;
             let result201: any = null;
             let resultData201  = _responseText;
-            result201 = ArticleLocalizationModel.fromJS(resultData201);
-            return Promise.resolve<ArticleLocalizationModel>(result201);
+            result201 = resultData201 ? ArticleLocalizationModel.fromJS(resultData201) : <any>null;
+            return Promise.resolve<ArticleLocalizationModel | null>(result201);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -120,13 +120,13 @@ export class ArticleLocalizationsApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ArticleLocalizationModel>(null as any);
+        return Promise.resolve<ArticleLocalizationModel | null>(null as any);
     }
 
     /**
      * @return No Content
      */
-    delete(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<void> {
+    delete(id: number, lang: string | null , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -214,7 +214,7 @@ export class ArticleLocalizationsApi {
     /**
      * @return Success
      */
-    getByIdAndCode(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel> {
+    getByIdAndCode(id: number, lang: string | null , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel | null> {
         let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -244,7 +244,7 @@ export class ArticleLocalizationsApi {
         });
     }
 
-    protected processGetByIdAndCode(response: AxiosResponse): Promise<ArticleLocalizationModel> {
+    protected processGetByIdAndCode(response: AxiosResponse): Promise<ArticleLocalizationModel | null> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -258,8 +258,8 @@ export class ArticleLocalizationsApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = ArticleLocalizationModel.fromJS(resultData200);
-            return Promise.resolve<ArticleLocalizationModel>(result200);
+            result200 = resultData200 ? ArticleLocalizationModel.fromJS(resultData200) : <any>null;
+            return Promise.resolve<ArticleLocalizationModel | null>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -300,14 +300,14 @@ export class ArticleLocalizationsApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ArticleLocalizationModel>(null as any);
+        return Promise.resolve<ArticleLocalizationModel | null>(null as any);
     }
 
     /**
-     * @param body (optional) 
+     * @param body (optional)
      * @return No Content
      */
-    put(id: string, lang: string, body: ArticleLocalizationUpdateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    put(id: string, lang: string, body: ArticleLocalizationUpdateRequest | null | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -397,17 +397,15 @@ export class ArticleLocalizationsApi {
     }
 
     /**
-     * @param contributorUsername (optional) 
+     * @param contributorUsername (optional)
      * @return Success
      */
-    search(lang: string, contributorUsername: string | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel[]> {
+    search(lang: string | null, contributorUsername: string | null | undefined , cancelToken?: CancelToken | undefined): Promise<(ArticleLocalizationModel | null)[]> {
         let url_ = this.baseUrl + "/v1/articles/{Lang}/search?";
         if (lang === undefined || lang === null)
             throw new Error("The parameter 'lang' must be defined.");
         url_ = url_.replace("{Lang}", encodeURIComponent("" + lang));
-        if (contributorUsername === null)
-            throw new Error("The parameter 'contributorUsername' cannot be null.");
-        else if (contributorUsername !== undefined)
+        if (contributorUsername !== undefined && contributorUsername !== null)
             url_ += "ContributorUsername=" + encodeURIComponent("" + contributorUsername) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -431,7 +429,7 @@ export class ArticleLocalizationsApi {
         });
     }
 
-    protected processSearch(response: AxiosResponse): Promise<ArticleLocalizationModel[]> {
+    protected processSearch(response: AxiosResponse): Promise<(ArticleLocalizationModel | null)[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -453,7 +451,7 @@ export class ArticleLocalizationsApi {
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<ArticleLocalizationModel[]>(result200);
+            return Promise.resolve<(ArticleLocalizationModel | null)[]>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -494,14 +492,14 @@ export class ArticleLocalizationsApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ArticleLocalizationModel[]>(null as any);
+        return Promise.resolve<(ArticleLocalizationModel | null)[]>(null as any);
     }
 
     /**
-     * @param status (optional) 
+     * @param status (optional)
      * @return No Content
      */
-    updateStatus(id: number, language: string, status: ArticleStatusActions | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    updateStatus(id: number, language: string | null, status: ArticleStatusActions | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/articles/{Id}/{Language}/status?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -605,10 +603,10 @@ export class ArticlesApi {
     }
 
     /**
-     * @param body (optional) 
+     * @param body (optional)
      * @return Created
      */
-    create(body: ArticleCreateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtended> {
+    create(body: ArticleCreateRequest | null | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtended> {
         let url_ = this.baseUrl + "/v1/articles";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -696,10 +694,10 @@ export class ArticlesApi {
     }
 
     /**
-     * @param body (optional) 
+     * @param body (optional)
      * @return No Content
      */
-    update(body: ArticleUpdateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    update(body: ArticleUpdateRequest | null | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/articles";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -957,10 +955,10 @@ export class ArticlesApi {
     }
 
     /**
-     * @param file (optional) 
+     * @param file (optional)
      * @return Created
      */
-    uploadImage(id: number, file: FileParameter | undefined , cancelToken?: CancelToken | undefined): Promise<AddArticleImageResult> {
+    uploadImage(id: number, file: FileParameter | null | undefined , cancelToken?: CancelToken | undefined): Promise<AddArticleImageResult | null> {
         let url_ = this.baseUrl + "/v1/articles/{id}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -968,9 +966,7 @@ export class ArticlesApi {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = new FormData();
-        if (file === null || file === undefined)
-            throw new Error("The parameter 'file' cannot be null.");
-        else
+        if (file !== null && file !== undefined)
             content_.append("File", file.data, file.fileName ? file.fileName : "File");
 
         let options_: AxiosRequestConfig = {
@@ -994,7 +990,7 @@ export class ArticlesApi {
         });
     }
 
-    protected processUploadImage(response: AxiosResponse): Promise<AddArticleImageResult> {
+    protected processUploadImage(response: AxiosResponse): Promise<AddArticleImageResult | null> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1008,8 +1004,8 @@ export class ArticlesApi {
             const _responseText = response.data;
             let result201: any = null;
             let resultData201  = _responseText;
-            result201 = AddArticleImageResult.fromJS(resultData201);
-            return Promise.resolve<AddArticleImageResult>(result201);
+            result201 = resultData201 ? AddArticleImageResult.fromJS(resultData201) : <any>null;
+            return Promise.resolve<AddArticleImageResult | null>(result201);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -1050,7 +1046,7 @@ export class ArticlesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<AddArticleImageResult>(null as any);
+        return Promise.resolve<AddArticleImageResult | null>(null as any);
     }
 }
 
@@ -1070,7 +1066,7 @@ export class CurrencyApi {
     /**
      * @return Success
      */
-    get(  cancelToken?: CancelToken | undefined): Promise<CurrenciesResponse> {
+    get(  cancelToken?: CancelToken | undefined): Promise<CurrenciesResponse | null> {
         let url_ = this.baseUrl + "/v1/currency-rates";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1094,7 +1090,7 @@ export class CurrencyApi {
         });
     }
 
-    protected processGet(response: AxiosResponse): Promise<CurrenciesResponse> {
+    protected processGet(response: AxiosResponse): Promise<CurrenciesResponse | null> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1108,8 +1104,8 @@ export class CurrencyApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = CurrenciesResponse.fromJS(resultData200);
-            return Promise.resolve<CurrenciesResponse>(result200);
+            result200 = resultData200 ? CurrenciesResponse.fromJS(resultData200) : <any>null;
+            return Promise.resolve<CurrenciesResponse | null>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -1150,7 +1146,7 @@ export class CurrencyApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<CurrenciesResponse>(null as any);
+        return Promise.resolve<CurrenciesResponse | null>(null as any);
     }
 }
 
@@ -1170,7 +1166,7 @@ export class CurrentUserApi {
     /**
      * @return Success
      */
-    dashboard(  cancelToken?: CancelToken | undefined): Promise<DashboardResult> {
+    dashboard(  cancelToken?: CancelToken | undefined): Promise<DashboardResult | null> {
         let url_ = this.baseUrl + "/v1/me/dashboard";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1194,7 +1190,7 @@ export class CurrentUserApi {
         });
     }
 
-    protected processDashboard(response: AxiosResponse): Promise<DashboardResult> {
+    protected processDashboard(response: AxiosResponse): Promise<DashboardResult | null> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1208,8 +1204,8 @@ export class CurrentUserApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = DashboardResult.fromJS(resultData200);
-            return Promise.resolve<DashboardResult>(result200);
+            result200 = resultData200 ? DashboardResult.fromJS(resultData200) : <any>null;
+            return Promise.resolve<DashboardResult | null>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -1250,13 +1246,13 @@ export class CurrentUserApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<DashboardResult>(null as any);
+        return Promise.resolve<DashboardResult | null>(null as any);
     }
 
     /**
      * @return Success
      */
-    me(  cancelToken?: CancelToken | undefined): Promise<UserResult> {
+    me(  cancelToken?: CancelToken | undefined): Promise<UserResult | null> {
         let url_ = this.baseUrl + "/v1/me";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1280,7 +1276,7 @@ export class CurrentUserApi {
         });
     }
 
-    protected processMe(response: AxiosResponse): Promise<UserResult> {
+    protected processMe(response: AxiosResponse): Promise<UserResult | null> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1294,8 +1290,8 @@ export class CurrentUserApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = UserResult.fromJS(resultData200);
-            return Promise.resolve<UserResult>(result200);
+            result200 = resultData200 ? UserResult.fromJS(resultData200) : <any>null;
+            return Promise.resolve<UserResult | null>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -1336,26 +1332,22 @@ export class CurrentUserApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<UserResult>(null as any);
+        return Promise.resolve<UserResult | null>(null as any);
     }
 
     /**
-     * @param link (optional) 
-     * @param file (optional) 
+     * @param link (optional)
+     * @param file (optional)
      * @return Success
      */
-    updateProfilePhoto(link: string | undefined, file: FileParameter | undefined , cancelToken?: CancelToken | undefined): Promise<MeProfilePhotoUpdateResult> {
+    updateProfilePhoto(link: string | null | undefined, file: FileParameter | null | undefined , cancelToken?: CancelToken | undefined): Promise<MeProfilePhotoUpdateResult | null> {
         let url_ = this.baseUrl + "/v1/me/profile-picture?";
-        if (link === null)
-            throw new Error("The parameter 'link' cannot be null.");
-        else if (link !== undefined)
+        if (link !== undefined && link !== null)
             url_ += "Link=" + encodeURIComponent("" + link) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = new FormData();
-        if (file === null || file === undefined)
-            throw new Error("The parameter 'file' cannot be null.");
-        else
+        if (file !== null && file !== undefined)
             content_.append("File", file.data, file.fileName ? file.fileName : "File");
 
         let options_: AxiosRequestConfig = {
@@ -1379,7 +1371,7 @@ export class CurrentUserApi {
         });
     }
 
-    protected processUpdateProfilePhoto(response: AxiosResponse): Promise<MeProfilePhotoUpdateResult> {
+    protected processUpdateProfilePhoto(response: AxiosResponse): Promise<MeProfilePhotoUpdateResult | null> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1393,8 +1385,8 @@ export class CurrentUserApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = MeProfilePhotoUpdateResult.fromJS(resultData200);
-            return Promise.resolve<MeProfilePhotoUpdateResult>(result200);
+            result200 = resultData200 ? MeProfilePhotoUpdateResult.fromJS(resultData200) : <any>null;
+            return Promise.resolve<MeProfilePhotoUpdateResult | null>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -1408,21 +1400,20 @@ export class CurrentUserApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<MeProfilePhotoUpdateResult>(null as any);
+        return Promise.resolve<MeProfilePhotoUpdateResult | null>(null as any);
     }
 
     /**
-     * @param body (optional) 
+     * @param body (optional)
      * @return No Content
      */
-    updateProfile(body: MeProfileUpdateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    updateProfile(body: MeProfileUpdateRequest | null | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/me/profile";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
 
         let options_: AxiosRequestConfig = {
-            data: content_,
+            data: body,
             method: "PUT",
             url: url_,
             headers: {
@@ -1497,6 +1488,91 @@ export class CurrentUserApi {
         }
         return Promise.resolve<void>(null as any);
     }
+
+    /**
+     * @param username (optional)
+     * @return No Content
+     */
+    updateProfileUsername(username: string | null | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/v1/me/profile-username?";
+        if (username !== undefined && username !== null)
+            url_ += "Username=" + encodeURIComponent("" + username) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "PUT",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUpdateProfileUsername(_response);
+        });
+    }
+
+    protected processUpdateProfileUsername(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 204) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500  = _responseText;
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
 }
 
 export class JwtApi {
@@ -1513,10 +1589,10 @@ export class JwtApi {
     }
 
     /**
-     * @param body (optional) 
+     * @param body (optional)
      * @return Created
      */
-    authenticate(body: JwtAuthenticateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<JwtResult> {
+    authenticate(body: JwtAuthenticateRequest | null | undefined , cancelToken?: CancelToken | undefined): Promise<JwtResult | null> {
         let url_ = this.baseUrl + "/v1/jwt/authenticate";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1544,7 +1620,7 @@ export class JwtApi {
         });
     }
 
-    protected processAuthenticate(response: AxiosResponse): Promise<JwtResult> {
+    protected processAuthenticate(response: AxiosResponse): Promise<JwtResult | null> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1558,8 +1634,8 @@ export class JwtApi {
             const _responseText = response.data;
             let result201: any = null;
             let resultData201  = _responseText;
-            result201 = JwtResult.fromJS(resultData201);
-            return Promise.resolve<JwtResult>(result201);
+            result201 = resultData201 ? JwtResult.fromJS(resultData201) : <any>null;
+            return Promise.resolve<JwtResult | null>(result201);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -1600,13 +1676,13 @@ export class JwtApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<JwtResult>(null as any);
+        return Promise.resolve<JwtResult | null>(null as any);
     }
 
     /**
      * @return Created
      */
-    refresh(  cancelToken?: CancelToken | undefined): Promise<JwtResult> {
+    refresh(  cancelToken?: CancelToken | undefined): Promise<JwtResult | null> {
         let url_ = this.baseUrl + "/v1/jwt/refresh";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1630,7 +1706,7 @@ export class JwtApi {
         });
     }
 
-    protected processRefresh(response: AxiosResponse): Promise<JwtResult> {
+    protected processRefresh(response: AxiosResponse): Promise<JwtResult | null> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1644,8 +1720,8 @@ export class JwtApi {
             const _responseText = response.data;
             let result201: any = null;
             let resultData201  = _responseText;
-            result201 = JwtResult.fromJS(resultData201);
-            return Promise.resolve<JwtResult>(result201);
+            result201 = resultData201 ? JwtResult.fromJS(resultData201) : <any>null;
+            return Promise.resolve<JwtResult | null>(result201);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -1686,7 +1762,7 @@ export class JwtApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<JwtResult>(null as any);
+        return Promise.resolve<JwtResult | null>(null as any);
     }
 
     /**
@@ -1788,7 +1864,7 @@ export class LanguagesApi {
     /**
      * @return Success
      */
-    getAll(  cancelToken?: CancelToken | undefined): Promise<LanguageModel[]> {
+    getAll(  cancelToken?: CancelToken | undefined): Promise<(LanguageModel | null)[]> {
         let url_ = this.baseUrl + "/v1/languages";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1812,7 +1888,7 @@ export class LanguagesApi {
         });
     }
 
-    protected processGetAll(response: AxiosResponse): Promise<LanguageModel[]> {
+    protected processGetAll(response: AxiosResponse): Promise<(LanguageModel | null)[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1834,7 +1910,7 @@ export class LanguagesApi {
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<LanguageModel[]>(result200);
+            return Promise.resolve<(LanguageModel | null)[]>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -1875,7 +1951,7 @@ export class LanguagesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<LanguageModel[]>(null as any);
+        return Promise.resolve<(LanguageModel | null)[]>(null as any);
     }
 }
 
@@ -1895,7 +1971,7 @@ export class MyArticlesApi {
     /**
      * @return Success
      */
-    isSaved(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<IsSavedLocalizationResult> {
+    isSaved(id: number, lang: string | null , cancelToken?: CancelToken | undefined): Promise<IsSavedLocalizationResult | null> {
         let url_ = this.baseUrl + "/v1/me/saved-articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1925,7 +2001,7 @@ export class MyArticlesApi {
         });
     }
 
-    protected processIsSaved(response: AxiosResponse): Promise<IsSavedLocalizationResult> {
+    protected processIsSaved(response: AxiosResponse): Promise<IsSavedLocalizationResult | null> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1939,8 +2015,8 @@ export class MyArticlesApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = IsSavedLocalizationResult.fromJS(resultData200);
-            return Promise.resolve<IsSavedLocalizationResult>(result200);
+            result200 = resultData200 ? IsSavedLocalizationResult.fromJS(resultData200) : <any>null;
+            return Promise.resolve<IsSavedLocalizationResult | null>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -1981,13 +2057,13 @@ export class MyArticlesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<IsSavedLocalizationResult>(null as any);
+        return Promise.resolve<IsSavedLocalizationResult | null>(null as any);
     }
 
     /**
      * @return No Content
      */
-    toggleSave(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<void> {
+    toggleSave(id: number, lang: string | null , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/me/saved-articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2075,7 +2151,7 @@ export class MyArticlesApi {
     /**
      * @return Success
      */
-    savedArticles(  cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel[]> {
+    savedArticles(  cancelToken?: CancelToken | undefined): Promise<(ArticleLocalizationModel | null)[]> {
         let url_ = this.baseUrl + "/v1/me/saved-articles";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2099,7 +2175,7 @@ export class MyArticlesApi {
         });
     }
 
-    protected processSavedArticles(response: AxiosResponse): Promise<ArticleLocalizationModel[]> {
+    protected processSavedArticles(response: AxiosResponse): Promise<(ArticleLocalizationModel | null)[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2121,7 +2197,7 @@ export class MyArticlesApi {
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<ArticleLocalizationModel[]>(result200);
+            return Promise.resolve<(ArticleLocalizationModel | null)[]>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -2162,13 +2238,13 @@ export class MyArticlesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ArticleLocalizationModel[]>(null as any);
+        return Promise.resolve<(ArticleLocalizationModel | null)[]>(null as any);
     }
 
     /**
      * @return Success
      */
-    getVote(id: number, articleId: string , cancelToken?: CancelToken | undefined): Promise<RatingModel> {
+    getVote(id: number, articleId: string , cancelToken?: CancelToken | undefined): Promise<RatingModel | null> {
         let url_ = this.baseUrl + "/v1/me/articles/{articleId}/vote";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2198,7 +2274,7 @@ export class MyArticlesApi {
         });
     }
 
-    protected processGetVote(response: AxiosResponse): Promise<RatingModel> {
+    protected processGetVote(response: AxiosResponse): Promise<RatingModel | null> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2212,8 +2288,8 @@ export class MyArticlesApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = RatingModel.fromJS(resultData200);
-            return Promise.resolve<RatingModel>(result200);
+            result200 = resultData200 ? RatingModel.fromJS(resultData200) : <any>null;
+            return Promise.resolve<RatingModel | null>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2254,11 +2330,11 @@ export class MyArticlesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<RatingModel>(null as any);
+        return Promise.resolve<RatingModel | null>(null as any);
     }
 
     /**
-     * @param vote (optional) 
+     * @param vote (optional)
      * @return Created
      */
     updateVote(id: number, vote: Vote | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
@@ -2463,7 +2539,7 @@ export class TestApi {
     /**
      * @return Success
      */
-    get(  cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel[]> {
+    get(  cancelToken?: CancelToken | undefined): Promise<(ArticleLocalizationModel | null)[]> {
         let url_ = this.baseUrl + "/v1/test-extended-articles";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2487,7 +2563,7 @@ export class TestApi {
         });
     }
 
-    protected processGet(response: AxiosResponse): Promise<ArticleLocalizationModel[]> {
+    protected processGet(response: AxiosResponse): Promise<(ArticleLocalizationModel | null)[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2509,7 +2585,7 @@ export class TestApi {
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<ArticleLocalizationModel[]>(result200);
+            return Promise.resolve<(ArticleLocalizationModel | null)[]>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2550,7 +2626,7 @@ export class TestApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ArticleLocalizationModel[]>(null as any);
+        return Promise.resolve<(ArticleLocalizationModel | null)[]>(null as any);
     }
 }
 
@@ -2568,15 +2644,13 @@ export class UsersApi {
     }
 
     /**
-     * @param key (optional) 
-     * @param provider (optional) 
+     * @param key (optional)
+     * @param provider (optional)
      * @return Success
      */
-    checkIfExists(key: string | undefined, provider: ProviderType | undefined , cancelToken?: CancelToken | undefined): Promise<UserCheckIfExistsResult> {
+    checkIfExists(key: string | null | undefined, provider: ProviderType | undefined , cancelToken?: CancelToken | undefined): Promise<UserCheckIfExistsResult | null> {
         let url_ = this.baseUrl + "/v1/users/check-if-exists?";
-        if (key === null)
-            throw new Error("The parameter 'key' cannot be null.");
-        else if (key !== undefined)
+        if (key !== undefined && key !== null)
             url_ += "Key=" + encodeURIComponent("" + key) + "&";
         if (provider === null)
             throw new Error("The parameter 'provider' cannot be null.");
@@ -2604,7 +2678,7 @@ export class UsersApi {
         });
     }
 
-    protected processCheckIfExists(response: AxiosResponse): Promise<UserCheckIfExistsResult> {
+    protected processCheckIfExists(response: AxiosResponse): Promise<UserCheckIfExistsResult | null> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2618,8 +2692,8 @@ export class UsersApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = UserCheckIfExistsResult.fromJS(resultData200);
-            return Promise.resolve<UserCheckIfExistsResult>(result200);
+            result200 = resultData200 ? UserCheckIfExistsResult.fromJS(resultData200) : <any>null;
+            return Promise.resolve<UserCheckIfExistsResult | null>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2660,13 +2734,13 @@ export class UsersApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<UserCheckIfExistsResult>(null as any);
+        return Promise.resolve<UserCheckIfExistsResult | null>(null as any);
     }
 
     /**
      * @return Success
      */
-    checkUsername(username: string , cancelToken?: CancelToken | undefined): Promise<CheckUsernameResult> {
+    checkUsername(username: string | null , cancelToken?: CancelToken | undefined): Promise<CheckUsernameResult | null> {
         let url_ = this.baseUrl + "/v1/users/{username}";
         if (username === undefined || username === null)
             throw new Error("The parameter 'username' must be defined.");
@@ -2693,7 +2767,7 @@ export class UsersApi {
         });
     }
 
-    protected processCheckUsername(response: AxiosResponse): Promise<CheckUsernameResult> {
+    protected processCheckUsername(response: AxiosResponse): Promise<CheckUsernameResult | null> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2707,8 +2781,8 @@ export class UsersApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = CheckUsernameResult.fromJS(resultData200);
-            return Promise.resolve<CheckUsernameResult>(result200);
+            result200 = resultData200 ? CheckUsernameResult.fromJS(resultData200) : <any>null;
+            return Promise.resolve<CheckUsernameResult | null>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2749,13 +2823,13 @@ export class UsersApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<CheckUsernameResult>(null as any);
+        return Promise.resolve<CheckUsernameResult | null>(null as any);
     }
 
     /**
      * @return Success
      */
-    dashboard(username: string , cancelToken?: CancelToken | undefined): Promise<DashboardResult> {
+    dashboard(username: string | null , cancelToken?: CancelToken | undefined): Promise<DashboardResult | null> {
         let url_ = this.baseUrl + "/v1/users/{username}/dashboard";
         if (username === undefined || username === null)
             throw new Error("The parameter 'username' must be defined.");
@@ -2782,7 +2856,7 @@ export class UsersApi {
         });
     }
 
-    protected processDashboard(response: AxiosResponse): Promise<DashboardResult> {
+    protected processDashboard(response: AxiosResponse): Promise<DashboardResult | null> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2796,8 +2870,8 @@ export class UsersApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = DashboardResult.fromJS(resultData200);
-            return Promise.resolve<DashboardResult>(result200);
+            result200 = resultData200 ? DashboardResult.fromJS(resultData200) : <any>null;
+            return Promise.resolve<DashboardResult | null>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2838,15 +2912,15 @@ export class UsersApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<DashboardResult>(null as any);
+        return Promise.resolve<DashboardResult | null>(null as any);
     }
 
     /**
-     * @param page (optional) 
-     * @param perPage (optional) 
+     * @param page (optional)
+     * @param perPage (optional)
      * @return Success
      */
-    userArticles(userName: string, page: number | undefined, perPage: number | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleModel[]> {
+    userArticles(userName: string | null, page: number | undefined, perPage: number | undefined , cancelToken?: CancelToken | undefined): Promise<(ArticleModel | null)[]> {
         let url_ = this.baseUrl + "/v1/users/{username}/articles?";
         if (userName === undefined || userName === null)
             throw new Error("The parameter 'userName' must be defined.");
@@ -2881,7 +2955,7 @@ export class UsersApi {
         });
     }
 
-    protected processUserArticles(response: AxiosResponse): Promise<ArticleModel[]> {
+    protected processUserArticles(response: AxiosResponse): Promise<(ArticleModel | null)[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2903,7 +2977,7 @@ export class UsersApi {
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<ArticleModel[]>(result200);
+            return Promise.resolve<(ArticleModel | null)[]>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2944,14 +3018,14 @@ export class UsersApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ArticleModel[]>(null as any);
+        return Promise.resolve<(ArticleModel | null)[]>(null as any);
     }
 
     /**
-     * @param usernames (optional) 
+     * @param usernames (optional)
      * @return Success
      */
-    usersInfo(usernames: string[] | undefined , cancelToken?: CancelToken | undefined): Promise<PrivateUserResult[]> {
+    usersInfo(usernames: (string | null)[] | undefined , cancelToken?: CancelToken | undefined): Promise<(PrivateUserResult | null)[]> {
         let url_ = this.baseUrl + "/v1/users/search?";
         if (usernames === null)
             throw new Error("The parameter 'usernames' cannot be null.");
@@ -2979,7 +3053,7 @@ export class UsersApi {
         });
     }
 
-    protected processUsersInfo(response: AxiosResponse): Promise<PrivateUserResult[]> {
+    protected processUsersInfo(response: AxiosResponse): Promise<(PrivateUserResult | null)[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3001,7 +3075,7 @@ export class UsersApi {
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<PrivateUserResult[]>(result200);
+            return Promise.resolve<(PrivateUserResult | null)[]>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -3042,12 +3116,12 @@ export class UsersApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<PrivateUserResult[]>(null as any);
+        return Promise.resolve<(PrivateUserResult | null)[]>(null as any);
     }
 }
 
 export class AddArticleImageResult implements IAddArticleImageResult {
-    location!: string;
+    location!: string | null;
 
     constructor(data?: IAddArticleImageResult) {
         if (data) {
@@ -3079,12 +3153,12 @@ export class AddArticleImageResult implements IAddArticleImageResult {
 }
 
 export interface IAddArticleImageResult {
-    location: string;
+    location: string | null;
 }
 
 export class ArticleContributorModel implements IArticleContributorModel {
     role!: ArticleContributorRole;
-    userName!: string;
+    userName!: string | null;
     profilePhotoUrl!: string | null;
 
     constructor(data?: IArticleContributorModel) {
@@ -3122,7 +3196,7 @@ export class ArticleContributorModel implements IArticleContributorModel {
 
 export interface IArticleContributorModel {
     role: ArticleContributorRole;
-    userName: string;
+    userName: string | null;
     profilePhotoUrl: string | null;
 }
 
@@ -3135,8 +3209,8 @@ export enum ArticleContributorRole {
 }
 
 export class ArticleCreateRequest implements IArticleCreateRequest {
-    name!: string;
-    tags!: string[] | null;
+    name!: string | null;
+    tags!: (string | null)[] | null;
     originalArticleLink!: string | null;
 
     constructor(data?: IArticleCreateRequest) {
@@ -3184,18 +3258,18 @@ export class ArticleCreateRequest implements IArticleCreateRequest {
 }
 
 export interface IArticleCreateRequest {
-    name: string;
-    tags: string[] | null;
+    name: string | null;
+    tags: (string | null)[] | null;
     originalArticleLink: string | null;
 }
 
 export class ArticleLocalizationCreateRequest implements IArticleLocalizationCreateRequest {
     id!: number;
-    languageCode!: string;
-    title!: string;
-    description!: string;
-    html!: string;
-    contributors!: ArticleContributorModel[] | null;
+    languageCode!: string | null;
+    title!: string | null;
+    description!: string | null;
+    html!: string | null;
+    contributors!: (ArticleContributorModel | null)[] | null;
 
     constructor(data?: IArticleLocalizationCreateRequest) {
         if (data) {
@@ -3256,21 +3330,21 @@ export class ArticleLocalizationCreateRequest implements IArticleLocalizationCre
 
 export interface IArticleLocalizationCreateRequest {
     id: number;
-    languageCode: string;
-    title: string;
-    description: string;
-    html: string;
-    contributors: IArticleContributorModel[] | null;
+    languageCode: string | null;
+    title: string | null;
+    description: string | null;
+    html: string | null;
+    contributors: (IArticleContributorModel | null)[] | null;
 }
 
 export class ArticleLocalizationModel implements IArticleLocalizationModel {
     id!: number;
     articleId!: number;
-    languageCode!: string;
-    contributors!: ArticleContributorModel[];
-    title!: string;
-    description!: string;
-    html!: string;
+    languageCode!: string | null;
+    contributors!: (ArticleContributorModel | null)[];
+    title!: string | null;
+    description!: string | null;
+    html!: string | null;
     status!: ContentStatus;
     views!: number;
     rate!: number;
@@ -3364,11 +3438,11 @@ export class ArticleLocalizationModel implements IArticleLocalizationModel {
 export interface IArticleLocalizationModel {
     id: number;
     articleId: number;
-    languageCode: string;
-    contributors: IArticleContributorModel[];
-    title: string;
-    description: string;
-    html: string;
+    languageCode: string | null;
+    contributors: (IArticleContributorModel | null)[];
+    title: string | null;
+    description: string | null;
+    html: string | null;
     status: ContentStatus;
     views: number;
     rate: number;
@@ -3383,12 +3457,12 @@ export interface IArticleLocalizationModel {
 
 export class ArticleLocalizationUpdateRequest implements IArticleLocalizationUpdateRequest {
     id!: number;
-    languageCode!: string;
+    languageCode!: string | null;
     newLanguageCode!: string | null;
     title!: string | null;
     description!: string | null;
     html!: string | null;
-    contributors!: ArticleContributorModel[] | null;
+    contributors!: (ArticleContributorModel | null)[] | null;
 
     constructor(data?: IArticleLocalizationUpdateRequest) {
         if (data) {
@@ -3451,17 +3525,17 @@ export class ArticleLocalizationUpdateRequest implements IArticleLocalizationUpd
 
 export interface IArticleLocalizationUpdateRequest {
     id: number;
-    languageCode: string;
+    languageCode: string | null;
     newLanguageCode: string | null;
     title: string | null;
     description: string | null;
     html: string | null;
-    contributors: IArticleContributorModel[] | null;
+    contributors: (IArticleContributorModel | null)[] | null;
 }
 
 export class ArticleModel implements IArticleModel {
     id!: number;
-    name!: string;
+    name!: string | null;
     authorId!: number;
     created!: DateTime;
     updated!: DateTime | null;
@@ -3469,8 +3543,8 @@ export class ArticleModel implements IArticleModel {
     banned!: DateTime | null;
     originalArticleLink!: string | null;
     rate!: number;
-    localizations!: ArticleLocalizationModel[] | null;
-    tags!: string[];
+    localizations!: (ArticleLocalizationModel | null)[] | null;
+    tags!: (string | null)[];
 
     constructor(data?: IArticleModel) {
         if (data) {
@@ -3552,7 +3626,7 @@ export class ArticleModel implements IArticleModel {
 
 export interface IArticleModel {
     id: number;
-    name: string;
+    name: string | null;
     authorId: number;
     created: DateTime;
     updated: DateTime | null;
@@ -3560,13 +3634,13 @@ export interface IArticleModel {
     banned: DateTime | null;
     originalArticleLink: string | null;
     rate: number;
-    localizations: IArticleLocalizationModel[] | null;
-    tags: string[];
+    localizations: (IArticleLocalizationModel | null)[] | null;
+    tags: (string | null)[];
 }
 
 export class ArticleModelExtended implements IArticleModelExtended {
     id!: number;
-    name!: string;
+    name!: string | null;
     authorId!: number;
     created!: DateTime;
     updated!: DateTime | null;
@@ -3574,9 +3648,9 @@ export class ArticleModelExtended implements IArticleModelExtended {
     banned!: DateTime | null;
     originalArticleLink!: string | null;
     rate!: number;
-    localizations!: ArticleLocalizationModel[] | null;
-    tags!: string[];
-    imagesLinks!: string[] | null;
+    localizations!: (ArticleLocalizationModel | null)[] | null;
+    tags!: (string | null)[];
+    imagesLinks!: (string | null)[] | null;
 
     constructor(data?: IArticleModelExtended) {
         if (data) {
@@ -3671,7 +3745,7 @@ export class ArticleModelExtended implements IArticleModelExtended {
 
 export interface IArticleModelExtended {
     id: number;
-    name: string;
+    name: string | null;
     authorId: number;
     created: DateTime;
     updated: DateTime | null;
@@ -3679,9 +3753,9 @@ export interface IArticleModelExtended {
     banned: DateTime | null;
     originalArticleLink: string | null;
     rate: number;
-    localizations: IArticleLocalizationModel[] | null;
-    tags: string[];
-    imagesLinks: string[] | null;
+    localizations: (IArticleLocalizationModel | null)[] | null;
+    tags: (string | null)[];
+    imagesLinks: (string | null)[] | null;
 }
 
 export enum ArticleStatusActions {
@@ -3827,8 +3901,8 @@ export interface ICryptoResponseDto {
 }
 
 export class CurrenciesResponse implements ICurrenciesResponse {
-    exchanges!: ExchangeResponseModel;
-    crypto!: CryptoResponseDto;
+    exchanges!: ExchangeResponseModel | null;
+    crypto!: CryptoResponseDto | null;
     updated!: DateTime;
 
     constructor(data?: ICurrenciesResponse) {
@@ -3867,8 +3941,8 @@ export class CurrenciesResponse implements ICurrenciesResponse {
 }
 
 export interface ICurrenciesResponse {
-    exchanges: IExchangeResponseModel;
-    crypto: ICryptoResponseDto;
+    exchanges: IExchangeResponseModel | null;
+    crypto: ICryptoResponseDto | null;
     updated: DateTime;
 }
 
@@ -4021,8 +4095,8 @@ export interface IErrorDetails {
 }
 
 export class ExchangeResponseModel implements IExchangeResponseModel {
-    usd!: OneExchangeModel;
-    euro!: OneExchangeModel;
+    usd!: OneExchangeModel | null;
+    euro!: OneExchangeModel | null;
     error!: string | null;
 
     constructor(data?: IExchangeResponseModel) {
@@ -4061,8 +4135,8 @@ export class ExchangeResponseModel implements IExchangeResponseModel {
 }
 
 export interface IExchangeResponseModel {
-    usd: IOneExchangeModel;
-    euro: IOneExchangeModel;
+    usd: IOneExchangeModel | null;
+    euro: IOneExchangeModel | null;
     error: string | null;
 }
 
@@ -4103,15 +4177,15 @@ export interface IIsSavedLocalizationResult {
 }
 
 export class JwtAuthenticateRequest implements IJwtAuthenticateRequest {
-    username!: string;
+    username!: string | null;
     email!: string | null;
     firstName!: string | null;
     lastName!: string | null;
     middleName!: string | null;
     profilePhotoUrl!: string | null;
-    providerMetadata!: { [key: string]: string; };
+    providerMetadata!: { [key: string]: string; } | null;
     provider!: ProviderType;
-    providerKey!: string;
+    providerKey!: string | null;
     type!: SsoType;
 
     constructor(data?: IJwtAuthenticateRequest) {
@@ -4177,23 +4251,23 @@ export class JwtAuthenticateRequest implements IJwtAuthenticateRequest {
 }
 
 export interface IJwtAuthenticateRequest {
-    username: string;
+    username: string | null;
     email: string | null;
     firstName: string | null;
     lastName: string | null;
     middleName: string | null;
     profilePhotoUrl: string | null;
-    providerMetadata: { [key: string]: string; };
+    providerMetadata: { [key: string]: string; } | null;
     provider: ProviderType;
-    providerKey: string;
+    providerKey: string | null;
     type: SsoType;
 }
 
 export class JwtResult implements IJwtResult {
-    username!: string;
-    firstName!: string;
+    username!: string | null;
+    firstName!: string | null;
     lastName!: string | null;
-    token!: string;
+    token!: string | null;
     tokenExpires!: DateTime;
     refreshTokenExpires!: DateTime;
     profilePhotoUrl!: string | null;
@@ -4240,18 +4314,18 @@ export class JwtResult implements IJwtResult {
 }
 
 export interface IJwtResult {
-    username: string;
-    firstName: string;
+    username: string | null;
+    firstName: string | null;
     lastName: string | null;
-    token: string;
+    token: string | null;
     tokenExpires: DateTime;
     refreshTokenExpires: DateTime;
     profilePhotoUrl: string | null;
 }
 
 export class LanguageModel implements ILanguageModel {
-    code!: string;
-    name!: string;
+    code!: string | null;
+    name!: string | null;
 
     constructor(data?: ILanguageModel) {
         if (data) {
@@ -4285,12 +4359,12 @@ export class LanguageModel implements ILanguageModel {
 }
 
 export interface ILanguageModel {
-    code: string;
-    name: string;
+    code: string | null;
+    name: string | null;
 }
 
 export class MeProfilePhotoUpdateResult implements IMeProfilePhotoUpdateResult {
-    link!: string;
+    link!: string | null;
 
     constructor(data?: IMeProfilePhotoUpdateResult) {
         if (data) {
@@ -4322,11 +4396,10 @@ export class MeProfilePhotoUpdateResult implements IMeProfilePhotoUpdateResult {
 }
 
 export interface IMeProfilePhotoUpdateResult {
-    link: string;
+    link: string | null;
 }
 
 export class MeProfileUpdateRequest implements IMeProfileUpdateRequest {
-    username!: string | null;
     firstName!: string | null;
     lastName!: string | null;
     middleName!: string | null;
@@ -4343,7 +4416,6 @@ export class MeProfileUpdateRequest implements IMeProfileUpdateRequest {
 
     init(_data?: any) {
         if (_data) {
-            this.username = _data["username"] !== undefined ? _data["username"] : <any>null;
             this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
             this.lastName = _data["lastName"] !== undefined ? _data["lastName"] : <any>null;
             this.middleName = _data["middleName"] !== undefined ? _data["middleName"] : <any>null;
@@ -4360,7 +4432,6 @@ export class MeProfileUpdateRequest implements IMeProfileUpdateRequest {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["username"] = this.username !== undefined ? this.username : <any>null;
         data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
         data["lastName"] = this.lastName !== undefined ? this.lastName : <any>null;
         data["middleName"] = this.middleName !== undefined ? this.middleName : <any>null;
@@ -4370,7 +4441,6 @@ export class MeProfileUpdateRequest implements IMeProfileUpdateRequest {
 }
 
 export interface IMeProfileUpdateRequest {
-    username: string | null;
     firstName: string | null;
     lastName: string | null;
     middleName: string | null;
@@ -4426,8 +4496,8 @@ export interface IOneCryptoDto {
 }
 
 export class OneExchangeModel implements IOneExchangeModel {
-    currencyFrom!: string;
-    currencyTo!: string;
+    currencyFrom!: string | null;
+    currencyTo!: string | null;
     date!: number;
     rateBuy!: number;
     rateSell!: number;
@@ -4470,8 +4540,8 @@ export class OneExchangeModel implements IOneExchangeModel {
 }
 
 export interface IOneExchangeModel {
-    currencyFrom: string;
-    currencyTo: string;
+    currencyFrom: string | null;
+    currencyTo: string | null;
     date: number;
     rateBuy: number;
     rateSell: number;
@@ -4479,7 +4549,7 @@ export interface IOneExchangeModel {
 
 export class PrivateUserResult implements IPrivateUserResult {
     id!: number;
-    userName!: string;
+    userName!: string | null;
     description!: string | null;
     profilePhotoUrl!: string | null;
     registered!: DateTime;
@@ -4523,7 +4593,7 @@ export class PrivateUserResult implements IPrivateUserResult {
 
 export interface IPrivateUserResult {
     id: number;
-    userName: string;
+    userName: string | null;
     description: string | null;
     profilePhotoUrl: string | null;
     registered: DateTime;
@@ -4616,11 +4686,11 @@ export interface IUserCheckIfExistsResult {
 
 export class UserResult implements IUserResult {
     id!: number;
-    userName!: string;
-    firstName!: string;
-    lastName!: string;
-    middleName!: string;
-    email!: string;
+    userName!: string | null;
+    firstName!: string | null;
+    lastName!: string | null;
+    middleName!: string | null;
+    email!: string | null;
     profilePhotoUrl!: string | null;
     emailConfirmed!: boolean;
     description!: string | null;
@@ -4675,11 +4745,11 @@ export class UserResult implements IUserResult {
 
 export interface IUserResult {
     id: number;
-    userName: string;
-    firstName: string;
-    lastName: string;
-    middleName: string;
-    email: string;
+    userName: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    middleName: string | null;
+    email: string | null;
     profilePhotoUrl: string | null;
     emailConfirmed: boolean;
     description: string | null;
@@ -4791,3 +4861,5 @@ function throwException(message: string, status: number, response: string, heade
 function isAxiosError(obj: any | undefined): obj is AxiosError {
     return obj && obj.isAxiosError === true;
 }
+
+// @ts-nocheck

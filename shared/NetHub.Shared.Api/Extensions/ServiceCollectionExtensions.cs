@@ -16,8 +16,10 @@ public static class ServiceCollectionExtensions
         {
             options.CustomOperationIds(NSwagEndpointNameFactory.Create);
             options.DocumentFilter<ResponsesFilter>();
+            options.SchemaFilter<FormFileFilter>();
             options.EnableAnnotations();
             options.SupportNonNullableReferenceTypes();
+            options.UseAllOfToExtendReferenceSchemas();
         });
     }
 

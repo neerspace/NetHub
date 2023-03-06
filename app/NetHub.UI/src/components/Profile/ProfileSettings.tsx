@@ -35,7 +35,7 @@ const ProfileSettings = () => {
 
   const handleSettingsButton = () => {
     setIsSettingsExpanded(!isSettingsExpanded)
-    accordionButtonRef?.current!.click();
+    accordionButtonRef?.current?.click();
   }
 
   const {
@@ -92,6 +92,7 @@ const ProfileSettings = () => {
               />
               <TitleInput
                 title={'Email'} placeholder={'Електронна пошта'} defaultValue={changeRequest.email}
+                isDisabled={true}
                 isInvalid={!!errors.email}
                 errorMessage={errors.email?._errors?.join(', ')}
                 width={'100%'}

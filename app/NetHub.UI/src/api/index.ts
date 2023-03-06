@@ -12,7 +12,13 @@ import {
 
 export const baseApiUrl = 'https://api.nethub.local:9010';
 
-const _apiInstance = axios.create();
+const _apiInstance = axios.create(
+  {
+    headers:{
+      'Content-Type': 'application/json'
+    }
+  }
+);
 
 const _jwtApiInstance = axios.create({
   withCredentials: true

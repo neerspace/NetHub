@@ -28,7 +28,7 @@ export async function getUserInfo(setRequest: (value: ExtendedRequest) => void, 
     image: '',
     firstName: me.firstName,
     lastName: me.lastName,
-    middleName: me.middleName,
+    middleName: me.middleName ?? '',
     description: me.description ?? ''
   })
 
@@ -103,77 +103,70 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
   };
 
   const updateProfile = async () => {
-      if (changes.length === 0) return;
+    if (changes.length === 0) return;
 
-      enqueueSnackBar('Завантаження...');
-      const isProfileValid = await handleValidateUpdate();
+    enqueueSnackBar('Завантаження...');
+    const isProfileValid = await handleValidateUpdate();
 
-      if (!isProfileValid) {
-        enqueueError('Перевірте дані та спробуйте ще раз');
-        return;
-      }
-
-      let newProfileImage = '';
-      try {
-        for (const change of changes) {
-          switch (change) {
-            case 'profile':
-              await _currentUserApi.updateProfile(new MeProfileUpdateRequest(
-                {
-                  username: null,
-                  firstName: changeRequest.firstName,
-                  lastName: changeRequest.lastName,
-                  middleName: changeRequest.middleName ?? null,
-                  description: changeRequest.description ?? null
-                })
-              );
-              break;
-            case 'photo':
-              if (typeof (changeRequest.image) === 'string') {
-                newProfileImage = (await _currentUserApi.updateProfilePhoto(changeRequest.image, undefined)).link;
-              } else {
-                const request: FileParameter = {
-                  data: changeRequest.image,
-                  fileName: `${oldUserInfo.userName}-ProfilePhoto`
-                }
-
-                newProfileImage = (await _currentUserApi.updateProfilePhoto(undefined, request)).link;
-              }
-              break;
-            case 'username':
-              await _currentUserApi.updateProfile(new MeProfileUpdateRequest(
-                {
-                  username: changeRequest.username,
-                  firstName: null,
-                  lastName: null,
-                  middleName: null,
-                  description: null
-                }
-              ));
-              break;
-          }
-        }
-        updateProfileAction({
-          ...reduxUser,
-          firstName: changes.includes('profile') ? changeRequest.firstName : reduxUser.firstName,
-          username: changes.includes('username') ? changeRequest.username : reduxUser.username,
-          profilePhotoUrl: newProfileImage === '' ? reduxUser.profilePhotoUrl : newProfileImage
-        });
-
-        const jwt = await _jwtApi.refresh();
-        JWTStorage.setTokensData(jwt);
-      } catch
-        (e) {
-        enqueueError('Помилка оновлення');
-        return;
-      }
-
-      await queryClient.invalidateQueries(QueryClientKeysHelper.Profile(oldUserInfo.userName));
-      setChanges([]);
-      handleSettingsButton();
-      enqueueSuccess('Зміни застосовані');
+    if (!isProfileValid) {
+      enqueueError('Перевірте дані та спробуйте ще раз');
+      return;
     }
-  ;
+
+    let newProfileImage = '';
+    try {
+      for (const change of changes) {
+        switch (change) {
+          case 'profile':
+            await _currentUserApi.updateProfile(new MeProfileUpdateRequest(
+              {
+                firstName: changeRequest.firstName,
+                lastName: changeRequest.lastName,
+                middleName: changeRequest.middleName ? changeRequest.middleName : null,
+                description: changeRequest.description ? changeRequest.description : null
+              })
+            );
+            break;
+          case 'photo':
+            if (typeof (changeRequest.image) === 'string') {
+              newProfileImage = (await _currentUserApi.updateProfilePhoto(changeRequest.image, undefined)).link;
+            } else {
+              const request: FileParameter = {
+                data: changeRequest.image,
+                fileName: `${oldUserInfo.userName}-ProfilePhoto`
+              }
+
+              newProfileImage = (await _currentUserApi.updateProfilePhoto(undefined, request)).link;
+            }
+            break;
+          case 'username':
+            await _currentUserApi.updateProfileUsername(changeRequest.username);
+            break;
+        }
+      }
+
+      const newReduxUser = {
+        ...reduxUser,
+        firstName: changes.includes('profile') ? changeRequest.firstName : reduxUser.firstName,
+        username: changes.includes('username') ? changeRequest.username : reduxUser.username,
+        profilePhotoUrl: newProfileImage === '' ? reduxUser.profilePhotoUrl : newProfileImage
+      }
+
+      updateProfileAction(newReduxUser);
+
+      const jwt = await _jwtApi.refresh();
+      JWTStorage.setTokensData(jwt);
+    } catch
+      (e) {
+      enqueueError('Помилка оновлення');
+      return;
+    }
+
+    await queryClient.invalidateQueries(QueryClientKeysHelper.Profile(oldUserInfo.userName));
+    setChanges([]);
+    handleSettingsButton();
+    enqueueSuccess('Зміни застосовані');
+  }
 
   return {
     handleUpdateUsername,
