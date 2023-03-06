@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LanguageModel } from 'src/app/api';
 import { ColumnInfo, IFiltered, IFilterInfo } from 'src/app/components/table/types';
-import { DownloadService } from 'src/app/services/download.service';
 import { languageColumns } from '../language-columns';
 import { LanguageService } from '../language.service';
 
@@ -14,12 +13,15 @@ import { LanguageService } from '../language.service';
 export class LangsTableComponent {
   columns: ColumnInfo[];
 
-  constructor(private downloadService: DownloadService, public languagesService: LanguageService) {
+  constructor(
+    // private readonly downloadService: DownloadService,
+    public readonly languageService: LanguageService,
+  ) {
     this.columns = languageColumns(this);
   }
 
   fetchFilter(params: IFilterInfo): Observable<IFiltered<LanguageModel>> {
-    return this.languagesService.filter(params);
+    return this.languageService.filter(params);
   }
 
   downloadJson() {
@@ -27,16 +29,16 @@ export class LangsTableComponent {
   }
 
   fetchDelete(model: LanguageModel): void {
-    this.languagesService.delete(model.code);
+    this.languageService.delete(model.code);
   }
 
   showForm(model?: LanguageModel | 'create'): void {
     if (model === 'create') {
-      this.languagesService.form.reset();
-      this.languagesService.lastFormId = 'create';
+      this.languageService.form.reset();
+      this.languageService.lastFormId = 'create';
     } else {
-      this.languagesService.lastFormId = model?.code;
+      this.languageService.lastFormId = model?.code;
     }
-    this.languagesService.showForm();
+    this.languageService.showForm();
   }
 }

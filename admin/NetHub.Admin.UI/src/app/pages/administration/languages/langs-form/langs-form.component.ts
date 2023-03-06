@@ -20,7 +20,7 @@ export class LangsFormComponent implements OnInit {
   constructor(
     route: ActivatedRoute,
     private router: Router,
-    public languagesService: LanguageService,
+    public languageService: LanguageService,
   ) {
     const routeCode = route.snapshot.params['code'];
     this.isCreating = routeCode === 'create';
@@ -29,11 +29,11 @@ export class LangsFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.languagesService.init(this.isCreating);
+    this.languageService.init(this.isCreating);
 
     if (this.isCreating) {
       // Add listener on 'code' changes
-      this.languagesService.form
+      this.languageService.form
         .get('code')!
         .valueChanges.pipe(debounceTime(300))
         .pipe(distinctUntilChanged())
@@ -41,7 +41,7 @@ export class LangsFormComponent implements OnInit {
           this.tryGetLanguageNameByCode(code);
         });
     } else {
-      this.languagesService.getByCode(this.code);
+      this.languageService.getByCode(this.code);
     }
   }
 
@@ -51,9 +51,9 @@ export class LangsFormComponent implements OnInit {
 
   submit(): void {
     if (this.isCreating) {
-      this.languagesService.create();
+      this.languageService.create();
     } else {
-      this.languagesService.update(this.code);
+      this.languageService.update(this.code);
     }
   }
 
@@ -72,9 +72,9 @@ export class LangsFormComponent implements OnInit {
   }
 
   applySuggestedLanguage() {
-    const code = this.languagesService.form.get('code')!.value!;
+    const code = this.languageService.form.get('code')!.value!;
     const localLanguageNames = new Intl.DisplayNames([code], { type: 'language' });
-    this.languagesService.form.patchValue({
+    this.languageService.form.patchValue({
       name: this.suggestedLanguageName,
       nameLocal: capitalizeFirstLetter(localLanguageNames.of(code)),
     });
@@ -87,11 +87,11 @@ export class LangsFormComponent implements OnInit {
       return;
     }
 
-    this.languagesService.flagFile = file;
+    this.languageService.flagFile = file;
     const reader = new FileReader();
 
     reader.onload = e => {
-      this.languagesService.form.get('flagUrl')!.setValue(e.target!.result as string);
+      this.languageService.form.get('flagUrl')!.setValue(e.target!.result as string);
     };
 
     reader.readAsDataURL(file);

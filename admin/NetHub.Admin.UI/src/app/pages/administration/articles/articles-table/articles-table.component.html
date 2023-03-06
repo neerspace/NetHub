@@ -6,20 +6,13 @@
           (click)="table.loadData()">
     Refresh
   </button>
-  <button app-icon-button
-          icon="la-download"
-          variant="primary"
-          [disabled]="table.loading"
-          (click)="downloadJson()">
-    JSON
-  </button>
-  <button app-icon-button
-          *ngIf="articlesService.lastFormId"
-          icon="la-undo"
-          variant="secondary"
-          (click)="articlesService.showForm()">
-    Back to Editor
-  </button>
+  <!--<button app-icon-button-->
+  <!--        icon="la-download"-->
+  <!--        variant="primary"-->
+  <!--        [disabled]="table.loading"-->
+  <!--        (click)="downloadJson()">-->
+  <!--  JSON-->
+  <!--</button>-->
 </app-main-header>
 
 <app-main-content>
@@ -29,6 +22,7 @@
             direction="vertical"
             [gutterSize]="4"
             (dragEnd)="resize($event.sizes)">
+
     <as-split-area [size]="splitSizes[0]">
       <div class="split-area-content">
         <app-data-table #table
@@ -37,20 +31,25 @@
                         [columnChooser]="true"
                         columnChooserSequence="articles"
                         [onFilter]="fetchFilter.bind(this)">
+
           <ng-container *appCustomColumn="'localizationButtons'; value as val; object as obj">
-            <ng-container *ngFor="let localization of val">
-              <span class="btn article-flag-button"
+            <button class="btn btn-secondary neutral general-button"
+                    (click)="onDetailsClick(obj)">
+              <span class="text">Edit</span>
+            </button>
+            <button class="btn neutral flag-button"
+                    *ngFor="let localization of val"
                     (click)="onLocalizationClick(localization)">
-                <img class="flag-img"
-                     [src]="articlesService.flags[localization.languageCode]"
-                     [alt]="localization.languageCode" />
-                <span class="flag-filler"></span>
-              </span>
-            </ng-container>
+              <!--<span class="text">{{localization.languageCode.toUpperCase()}}</span>-->
+              <span style="background-image: url({{articleSharedService.flags[localization.languageCode]}})"
+                    class="flag-img"></span>
+            </button>
           </ng-container>
+
         </app-data-table>
       </div>
     </as-split-area>
+
     <as-split-area [size]="splitSizes[1]">
       <div class="split-area-content">
         <app-tabs></app-tabs>
@@ -64,5 +63,6 @@
         </ng-template>
       </div>
     </as-split-area>
+
   </as-split>
 </app-main-content>

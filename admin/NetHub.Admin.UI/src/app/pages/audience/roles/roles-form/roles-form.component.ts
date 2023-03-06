@@ -5,7 +5,6 @@ import { PermissionModelExtended, PermissionState, RoleService } from '../role.s
 @Component({
   selector: 'app-roles-form',
   templateUrl: './roles-form.component.html',
-  styleUrls: ['./roles-form.component.scss'],
 })
 export class RolesFormComponent implements OnInit {
   readonly id: number;

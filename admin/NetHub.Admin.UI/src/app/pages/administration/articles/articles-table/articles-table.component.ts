@@ -1,12 +1,12 @@
 import { Component, Injector, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ArticleLocalizationModel, ArticleModel } from 'src/app/api';
 import { TabsComponent } from 'src/app/components/core/tabs/tabs.component';
 import { SplitBaseComponent } from 'src/app/components/split/split-base.component';
 import { ColumnInfo, IFiltered, IFilterInfo } from 'src/app/components/table/types';
 import { limitStringLength } from '../../../../components/table/formatters';
+import { ArticleSharedService } from '../../article-shared.service';
 import { articleColumns } from '../article-columns';
-import { ArticlesService } from '../article.service';
 
 @Component({
   selector: 'app-articles-table',
@@ -21,23 +21,17 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> imp
 
   columns: ColumnInfo[] = [];
 
-  constructor(injector: Injector, public articlesService: ArticlesService) {
+  constructor(injector: Injector, public readonly articleSharedService: ArticleSharedService) {
     super(injector, 'users');
     this.columns = articleColumns(this);
   }
 
   ngOnInit(): void {
-    this.articlesService.getFlags();
+    this.articleSharedService.getFlags();
   }
-
-  fetchDelete(model: ArticleModel): void {
-    this.articlesService.delete(model.id);
-  }
-
-  downloadJson() {}
 
   fetchFilter(params: IFilterInfo): Observable<IFiltered<ArticleModel>> {
-    return this.articlesService.filter(params);
+    return this.articleSharedService.filter(params);
   }
 
   onLocalizationClick(model: ArticleLocalizationModel) {
@@ -52,27 +46,27 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> imp
     this.tabsComponent.openTab(tabTitle, this.articleTemplate, model);
   }
 
-  onDetailsClick2(model: ArticleModel) {
-    const article$ = this.articlesService.getById(model.id);
-    const localizations$ = this.articlesService.getLocalizations(model.id);
-
-    combineLatest([article$, localizations$]).subscribe(([article, localizations]) => {
-      this.tabsComponent.closeAllTabs();
-
-      this.tabsComponent.openTab(this.generateTabName(article), this.articleTemplate, article);
-
-      for (let localization of localizations) {
-        this.tabsComponent.openTab(
-          this.generateTabName(localization),
-          this.localizationTemplate,
-          localization,
-          true,
-        );
-      }
-
-      // this.loaderService.hide();
-    });
-  }
+  // onDetailsClick2(model: ArticleModel) {
+  //   const article$ = this.articlesService.getById(model.id);
+  //   const localizations$ = this.articlesService.getLocalizations(model.id);
+  //
+  //   combineLatest([article$, localizations$]).subscribe(([article, localizations]) => {
+  //     this.tabsComponent.closeAllTabs();
+  //
+  //     this.tabsComponent.openTab(this.generateTabName(article), this.articleTemplate, article);
+  //
+  //     for (let localization of localizations) {
+  //       this.tabsComponent.openTab(
+  //         this.generateTabName(localization),
+  //         this.localizationTemplate,
+  //         localization,
+  //         true,
+  //       );
+  //     }
+  //
+  //     // this.loaderService.hide();
+  //   });
+  // }
 
   private generateTabName(data: ArticleModel | ArticleLocalizationModel): string {
     if (data instanceof ArticleModel) {

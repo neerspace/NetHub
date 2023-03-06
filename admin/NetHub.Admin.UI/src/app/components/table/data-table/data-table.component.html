@@ -22,7 +22,7 @@
       </button>
       <ng-template #notSortable>
         <div class="col-header"
-             [class.table-buttons]="!!col.actions">
+             [class.col-fullsized]="!!col.actions">
           {{col.title}}
         </div>
       </ng-template>
@@ -74,7 +74,7 @@
   <!--</tr>-->
   <tr *ngFor="let item of data">
     <td *ngFor="let col of $any(columns)"
-        [class.table-buttons]="!!col.actions"
+        [class.col-fullsized]="col.style === 1 || !!col.actions"
         [class.table-active]="col.key === sorts"
         [class.hidden]="col.hidden">
       <ng-container *ngIf="col.template; else formatterColumn">
@@ -89,8 +89,8 @@
           <button *ngFor="let btn of col.actions"
                   class="btn {{btn.button.class}}"
                   (click)="btn.onClick(item)">
-        <span *ngIf="btn.button.text"
-              class="text">{{btn.button.text}}</span>
+            <span *ngIf="btn.button.text"
+                  class="text">{{btn.button.text}}</span>
             <i *ngIf="btn.button.icon"
                class="las {{btn.button.icon}}"></i>
           </button>

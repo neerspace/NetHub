@@ -14,7 +14,7 @@ export class UserFormComponent implements OnInit {
   constructor(
     route: ActivatedRoute,
     private readonly router: Router,
-    public readonly usersService: UserService,
+    public readonly userService: UserService,
   ) {
     const routeId = route.snapshot.params['id'];
     this.isCreating = routeId === 'create';
@@ -22,10 +22,10 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.usersService.init(this.isCreating);
+    this.userService.init(this.isCreating);
 
     if (!this.isCreating) {
-      this.usersService.getById(this.id);
+      this.userService.getById(this.id);
     }
   }
 
@@ -35,15 +35,15 @@ export class UserFormComponent implements OnInit {
 
   submit(): void {
     if (this.isCreating) {
-      this.usersService.create();
+      this.userService.create();
     } else {
-      this.usersService.update(this.id);
+      this.userService.update(this.id);
     }
   }
 
   setRandomPassword() {
     const password = this.generatePassword();
-    this.usersService.form.get('password')?.setValue(password);
+    this.userService.form.get('password')?.setValue(password);
   }
 
   private generatePassword() {

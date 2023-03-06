@@ -15,12 +15,15 @@ export class UsersTableComponent {
   columns: ColumnInfo[];
   ready: FormReady = null;
 
-  constructor(private downloadService: DownloadService, public usersService: UserService) {
+  constructor(
+    // private readonly downloadService: DownloadService,
+    public readonly userService: UserService,
+  ) {
     this.columns = userColumns(this);
   }
 
   fetchFilter(params: IFilterInfo): Observable<IFiltered<UserModel>> {
-    return this.usersService.filter(params);
+    return this.userService.filter(params);
   }
 
   downloadJson() {
@@ -28,11 +31,11 @@ export class UsersTableComponent {
   }
 
   fetchDelete(model: UserModel): void {
-    this.usersService.delete(model.id);
+    this.userService.delete(model.id);
   }
 
   showForm(model?: UserModel | 'create'): void {
-    this.usersService.lastFormId = model === 'create' ? 'create' : model?.id;
-    this.usersService.showForm();
+    this.userService.lastFormId = model === 'create' ? 'create' : model?.id;
+    this.userService.showForm();
   }
 }

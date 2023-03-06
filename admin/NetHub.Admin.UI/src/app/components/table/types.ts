@@ -29,6 +29,11 @@ export enum FilterType {
   boolDropdown = 'boolDropdown',
 }
 
+export enum ColumnStyle {
+  default,
+  fillSized,
+}
+
 export interface IRange<T> {
   from?: T;
   to?: T;
@@ -81,6 +86,7 @@ export interface ColumnBase {
   title: string;
   sortable?: boolean;
   filter: FilterType;
+  style?: ColumnStyle;
 }
 
 interface TemplateColumn {

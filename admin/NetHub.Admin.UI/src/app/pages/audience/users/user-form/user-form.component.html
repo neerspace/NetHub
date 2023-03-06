@@ -10,14 +10,14 @@
           *ngIf="!isCreating"
           icon="la-ban"
           variant="danger"
-          [disabled]="!usersService.ready"
-          (onclick)="usersService.delete(id)">
+          [disabled]="!userService.ready"
+          (onclick)="userService.delete(id)">
     Delete
   </button>
   <button app-icon-button
           icon="la-save"
           variant="success"
-          [disabled]="!usersService.ready"
+          [disabled]="!userService.ready"
           (onclick)="submit()">
     {{isCreating ? 'Create' : 'Save'}}
   </button>
@@ -25,8 +25,8 @@
 
 <app-main-content>
   <form app-form-layout
-        [formGroup]="usersService.form"
-        [ready]="usersService.ready"
+        [formGroup]="userService.form"
+        [ready]="userService.ready"
         [disableBrowserSecurity]="true">
 
     <app-number-field *ngIf="!isCreating"

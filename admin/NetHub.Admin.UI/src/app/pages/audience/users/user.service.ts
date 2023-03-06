@@ -1,10 +1,10 @@
 import { Injectable, Injector } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { ErrorDto, UserCreateRequest, UserModel, UsersApi, UserUpdateRequest } from '../../../api';
-import { FormId } from '../../../components/form/types';
-import { IFiltered, IFilterInfo } from '../../../components/table/types';
-import { FormServiceBase } from '../../../services/abstractions';
+import { ErrorDto, UserCreateRequest, UserModel, UsersApi, UserUpdateRequest } from 'src/app/api';
+import { FormId } from 'src/app/components/form/types';
+import { IFiltered, IFilterInfo } from 'src/app/components/table/types';
+import { FormServiceBase } from 'src/app/services/abstractions';
 
 @Injectable({ providedIn: 'root' })
 export class UserService extends FormServiceBase {

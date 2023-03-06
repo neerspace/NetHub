@@ -6,15 +6,15 @@
           (click)="table.loadData()">
     Refresh
   </button>
+  <!--<button app-icon-button-->
+  <!--        icon="la-download"-->
+  <!--        variant="primary"-->
+  <!--        [disabled]="table.loading"-->
+  <!--        (click)="downloadJson()">-->
+  <!--  JSON-->
+  <!--</button>-->
   <button app-icon-button
-          icon="la-download"
-          variant="primary"
-          [disabled]="table.loading"
-          (click)="downloadJson()">
-    JSON
-  </button>
-  <button app-icon-button
-          *ngIf="languagesService.lastFormId"
+          *ngIf="languageService.lastFormId"
           icon="la-undo"
           variant="secondary"
           (click)="showForm()">

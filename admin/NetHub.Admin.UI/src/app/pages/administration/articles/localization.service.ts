@@ -3,7 +3,7 @@ import { ArticleLocalizationModel, ErrorDto, LocalizationsApi } from 'src/app/ap
 import { FormServiceBase } from '../../../services/abstractions';
 
 @Injectable()
-export class LocalizationsService extends FormServiceBase {
+export class LocalizationService extends FormServiceBase {
   constructor(injector: Injector, private readonly localizationsApi: LocalizationsApi) {
     super(injector, {
       id: ['', []],

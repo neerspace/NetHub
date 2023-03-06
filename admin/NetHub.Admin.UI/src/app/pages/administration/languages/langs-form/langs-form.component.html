@@ -10,14 +10,14 @@
           *ngIf="!isCreating"
           icon="la-ban"
           variant="danger"
-          [disabled]="!languagesService.isReady"
-          (onclick)="languagesService.delete(code)">
+          [disabled]="!languageService.isReady"
+          (onclick)="languageService.delete(code)">
     Delete
   </button>
   <button app-icon-button
           icon="la-save"
           variant="success"
-          [disabled]="!languagesService.isReady"
+          [disabled]="!languageService.isReady"
           (onclick)="submit()">
     {{isCreating ? 'Create' : 'Save'}}
   </button>
@@ -26,8 +26,8 @@
 <app-main-content>
   <form app-form-layout
         enctype="multipart/form-data"
-        [formGroup]="languagesService.form"
-        [ready]="languagesService.ready">
+        [formGroup]="languageService.form"
+        [ready]="languageService.ready">
 
     <app-text-field label="Two-letter ISO Code"
                     controlName="code"
@@ -59,7 +59,7 @@
       <label class="input-group-btn">
         <span class="btn btn-icon btn-outline-secondary">
           <span>
-            {{!languagesService.form.get('flagUrl') ? 'Upload flag' : 'Change Flag' }} (svg)
+            {{!languageService.form.get('flagUrl') ? 'Upload flag' : 'Change Flag' }} (svg)
             <input type="file"
                    id="file"
                    style="display: none;"
@@ -72,7 +72,7 @@
 
     <div class="preview-container">
       <img class="preview-image"
-           [src]="languagesService.form.get('flagUrl')!.value"
+           [src]="languageService.form.get('flagUrl')!.value"
            alt="" />
     </div>
   </form>

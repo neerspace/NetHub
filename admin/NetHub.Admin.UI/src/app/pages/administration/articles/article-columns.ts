@@ -1,12 +1,10 @@
-﻿import { ArticleLocalizationModel, ArticleModel } from '../../../api';
-import { deleteButton } from '../../../components/table/buttons';
-import {
+﻿import {
   formatAsDate,
   formatAsText,
   formatCounter,
   formatLink,
 } from '../../../components/table/formatters';
-import { ColumnInfo, FilterType, FormatterFunc } from '../../../components/table/types';
+import { ColumnInfo, ColumnStyle, FilterType } from '../../../components/table/types';
 import { ArticlesTableComponent } from './articles-table/articles-table.component';
 
 export function articleColumns(context: ArticlesTableComponent): ColumnInfo[] {
@@ -17,19 +15,7 @@ export function articleColumns(context: ArticlesTableComponent): ColumnInfo[] {
       sortable: false,
       filter: FilterType.none,
       template: 'localizationButtons',
-    },
-    {
-      actions: [
-        {
-          button: {
-            class: 'details-button',
-            text: 'Details',
-          },
-          onClick: model => {
-            context.onDetailsClick(model);
-          },
-        },
-      ],
+      style: ColumnStyle.fillSized,
     },
     {
       key: 'id',
@@ -95,16 +81,16 @@ export function articleColumns(context: ArticlesTableComponent): ColumnInfo[] {
       numberPattern: 'integer',
       formatter: formatCounter,
     },
-    {
-      actions: [
-        {
-          button: deleteButton(),
-          onClick: (model: ArticleModel) => {
-            context.fetchDelete(model);
-          },
-        },
-      ],
-    },
+    // {
+    //   actions: [
+    //     {
+    //       button: deleteButton(),
+    //       onClick: (model: ArticleModel) => {
+    //         context.fetchDelete(model);
+    //       },
+    //     },
+    //   ],
+    // },
     // {
     //   key: 'tags',
     //   title: 'Tags',
@@ -121,46 +107,4 @@ export function articleColumns(context: ArticlesTableComponent): ColumnInfo[] {
     //   }
     // }
   ];
-}
-
-function localizationButtons(context: ArticlesTableComponent): FormatterFunc {
-  return (value: ArticleLocalizationModel[]) => {
-    let result = '';
-    for (const localization of value.sort(
-      (a, b) => a.languageCode[0].charCodeAt(0) - b.languageCode[0].charCodeAt(0),
-    )) {
-      console.log('localization', getArticleLocalizationId(localization));
-      const url = context.articlesService.flags[localization.languageCode];
-      result += `
-<span id="${getArticleLocalizationId(localization)}" class="btn article-flag-button">
-  <img class="flag-img" src="${url}" alt="${localization.languageCode}" />
-  <span class="flag-filler"></span>
-</span>`;
-    }
-    console.log(result);
-    return result;
-  };
-}
-
-function localizationButtonsAfterDraw(context: ArticlesTableComponent): FormatterFunc {
-  return (value: ArticleLocalizationModel[]) => {
-    if (!value) {
-      return '';
-    }
-
-    let result = '';
-    for (const localization of value) {
-      const element = document.getElementById(
-        getArticleLocalizationId(localization),
-      ) as HTMLElement;
-      element.onclick = () => {
-        console.log('Click!');
-      };
-    }
-    return result;
-  };
-}
-
-function getArticleLocalizationId(localization: ArticleLocalizationModel): string {
-  return ``;
 }

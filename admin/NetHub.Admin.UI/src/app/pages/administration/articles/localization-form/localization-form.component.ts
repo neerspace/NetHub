@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ArticleLocalizationModel } from 'src/app/api';
 import { FormReady } from '../../../../components/form/types';
-import { LocalizationsService } from '../localization.service';
+import { LocalizationService } from '../localization.service';
 
 @Component({
   selector: 'app-localization-form',
@@ -13,7 +13,7 @@ export class LocalizationFormComponent {
 
   ready: FormReady = null;
 
-  constructor(public readonly localizationsService: LocalizationsService) {}
+  constructor(public readonly localizationsService: LocalizationService) {}
 
   submit() {}
 }
