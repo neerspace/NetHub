@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { FormControl, FormGroupDirective } from '@angular/forms';
+import { Component, Injector, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { FieldBaseComponent } from '../field-base.component';
 import { DateTimeMode } from '../types';
@@ -16,8 +16,8 @@ export class DateFieldComponent extends FieldBaseComponent {
   date!: DateTime;
   formControlEnd!: FormControl;
 
-  constructor(form: FormGroupDirective) {
-    super(form);
+  constructor(injector: Injector) {
+    super(injector);
   }
 
   override afterInit() {

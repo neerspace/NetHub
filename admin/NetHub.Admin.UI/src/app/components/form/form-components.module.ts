@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { FieldMessageComponent } from './core/field-message/field-message.component';
+import { FieldsetComponent } from './core/fieldset/fieldset.component';
 import { NotFoundComponent } from './core/not-found/not-found.component';
 import { DateFieldComponent } from './date/date-field.component';
 import { DatePickerComponent } from './date/date-picker.component';
@@ -13,6 +14,7 @@ import { NumberFieldComponent } from './number/number-field.component';
 import { PasswordFieldComponent } from './password/password-field.component';
 import { TextAreaFieldComponent } from './text-area/text-area-field.component';
 import { TextAreaInputComponent } from './text-area/text-area-input.component';
+import { TextInputConditionalComponent } from './text-input-conditional/text-input-conditional.component';
 import { TextFieldComponent } from './text/text-field.component';
 
 @NgModule({
@@ -26,6 +28,7 @@ import { TextFieldComponent } from './text/text-field.component';
     DateFieldComponent,
 
     TextFieldComponent,
+    TextInputConditionalComponent,
     PasswordFieldComponent,
 
     TextAreaInputComponent,
@@ -33,6 +36,7 @@ import { TextFieldComponent } from './text/text-field.component';
 
     NumberFieldComponent,
     FormContentComponent,
+    FieldsetComponent,
   ],
   exports: [
     FormLayoutComponent,
@@ -47,6 +51,7 @@ import { TextFieldComponent } from './text/text-field.component';
     NumberFieldComponent,
     DatePickerComponent,
     FormContentComponent,
+    FieldsetComponent,
   ],
   imports: [
     CommonModule,

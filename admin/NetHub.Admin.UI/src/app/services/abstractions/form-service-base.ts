@@ -28,6 +28,9 @@ export abstract class FormServiceBase {
   init(isCreating: boolean): void {}
 
   get ready(): FormReadyWrapper {
+    if (!this.readyWrap) {
+      throw new Error('Form ready contains an invalid value');
+    }
     return this.readyWrap;
   }
 

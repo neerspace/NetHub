@@ -28,54 +28,55 @@
         [formGroup]="userService.form"
         [ready]="userService.ready"
         [disableBrowserSecurity]="true">
+    <app-fieldset size="small">
+      <app-number-field *ngIf="!isCreating"
+                        label="ID"
+                        controlName="id"
+                        disabled="true"
+                        [allowCopy]="true"></app-number-field>
+      <app-text-field label="User Name"
+                      controlName="userName"
+                      [maxLength]="50"
+                      [required]="true"
+                      [allowCopy]="!isCreating"></app-text-field>
+      <app-text-field label="First Name"
+                      controlName="firstName"
+                      [maxLength]="50"
+                      [required]="true"></app-text-field>
+      <app-text-field label="Middle Name"
+                      controlName="middleName"
+                      [maxLength]="50"></app-text-field>
+      <app-text-field label="Last Name"
+                      controlName="lastName"
+                      [maxLength]="50"
+                      [required]="true"></app-text-field>
 
-    <app-number-field *ngIf="!isCreating"
-                      label="ID"
-                      controlName="id"
-                      disabled="true"
-                      [allowCopy]="true"></app-number-field>
-    <app-text-field label="User Name"
-                    controlName="userName"
-                    [maxLength]="50"
-                    [required]="true"
-                    [allowCopy]="!isCreating"></app-text-field>
-    <app-text-field label="First Name"
-                    controlName="firstName"
-                    [maxLength]="50"
-                    [required]="true"></app-text-field>
-    <app-text-field label="Middle Name"
-                    controlName="middleName"
-                    [maxLength]="50"></app-text-field>
-    <app-text-field label="Last Name"
-                    controlName="lastName"
-                    [maxLength]="50"
-                    [required]="true"></app-text-field>
+      <hr />
+      <app-password-field label="Password"
+                          controlName="password"
+                          [required]="false"></app-password-field>
+      <app-main-header>
+        <button app-icon-button
+                variant="secondary"
+                (click)="setRandomPassword()">
+          Seed Random Password
+        </button>
+      </app-main-header>
+      <hr />
 
-    <hr />
-    <app-password-field label="Password"
-                        controlName="password"
-                        [required]="false"></app-password-field>
-    <app-main-header>
-      <button app-icon-button
-              variant="secondary"
-              (click)="setRandomPassword()">
-        Seed Random Password
-      </button>
-    </app-main-header>
-    <hr />
+      <app-text-field label="Email"
+                      controlName="email"
+                      type="email"
+                      [maxLength]="200"
+                      [required]="true"></app-text-field>
 
-    <app-text-field label="Email"
-                    controlName="email"
-                    type="email"
-                    [maxLength]="200"
-                    [required]="true"></app-text-field>
+      <!-- TODO: Add checkbox: Email is confirmed -->
 
-    <!-- TODO: Add checkbox: Email is confirmed -->
+      <hr />
 
-    <hr />
-
-    <app-text-area-field label="Description"
-                         controlName="description"
-                         size="medium"></app-text-area-field>
+      <app-text-area-field label="Description"
+                           controlName="description"
+                           size="medium"></app-text-area-field>
+    </app-fieldset>
   </form>
 </app-main-content>

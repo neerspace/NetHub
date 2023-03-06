@@ -1,7 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { ArticlesApi, JWTApi, LanguagesApi, PermissionsApi, RolesApi, UsersApi } from './index';
+import {
+  ArticlesApi,
+  JWTApi,
+  LanguagesApi,
+  LocalizationsApi,
+  PermissionsApi,
+  RolesApi,
+  UsersApi,
+} from './index';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 
@@ -13,12 +21,13 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
 
     // App
-    JWTApi,
-    UsersApi,
-    RolesApi,
-    PermissionsApi,
-    LanguagesApi,
     ArticlesApi,
+    JWTApi,
+    LanguagesApi,
+    LocalizationsApi,
+    PermissionsApi,
+    RolesApi,
+    UsersApi,
   ],
 })
 export class ApiModule {}

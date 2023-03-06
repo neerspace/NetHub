@@ -1,6 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { FormGroupDirective, Validators } from '@angular/forms';
-import { CopyPasteService } from '../../../services/copy-paste.service';
+import { Component, Injector, Input } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { BoolInput } from '../../../shared/types';
 import { FieldBaseComponent } from '../field-base.component';
 import { InputType } from '../types';
@@ -14,10 +13,9 @@ export class TextFieldComponent extends FieldBaseComponent {
   @Input() type: InputType = 'text';
   @Input() maxLength: number = -1;
   @Input() autocomplete: BoolInput = false;
-  @Input() allowCopy: BoolInput = false;
 
-  constructor(form: FormGroupDirective, public copyPaste: CopyPasteService) {
-    super(form);
+  constructor(injector: Injector) {
+    super(injector);
   }
 
   override afterInit() {

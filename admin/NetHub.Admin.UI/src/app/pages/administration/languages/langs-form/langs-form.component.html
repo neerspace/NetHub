@@ -28,35 +28,35 @@
         enctype="multipart/form-data"
         [formGroup]="languageService.form"
         [ready]="languageService.ready">
+    <app-fieldset size="small">
+      <app-text-field label="Two-letter ISO Code"
+                      controlName="code"
+                      [maxLength]="2"
+                      [disabled]="!isCreating"
+                      [allowCopy]="!isCreating"></app-text-field>
+      <app-form-content *ngIf="isCreating">
+        <div>
+          {{suggestedLanguageName ? 'Suggested language: ' + suggestedLanguageName : 'Language code is invalid'}}
+        </div>
+        <button app-icon-button
+                variant="secondary"
+                [disabled]="!suggestedLanguageName"
+                (onclick)="applySuggestedLanguage()">
+          Apply Suggestion
+        </button>
+      </app-form-content>
+      <hr />
 
-    <app-text-field label="Two-letter ISO Code"
-                    controlName="code"
-                    [maxLength]="2"
-                    [disabled]="!isCreating"
-                    [allowCopy]="!isCreating"></app-text-field>
-    <app-form-content *ngIf="isCreating">
-      <div>
-        {{suggestedLanguageName ? 'Suggested language: ' + suggestedLanguageName : 'Language code is invalid'}}
-      </div>
-      <button app-icon-button
-              variant="secondary"
-              [disabled]="!suggestedLanguageName"
-              (onclick)="applySuggestedLanguage()">
-        Apply Suggestion
-      </button>
-    </app-form-content>
-    <hr />
+      <app-text-field label="International Name"
+                      controlName="name"
+                      [maxLength]="50"
+                      [required]="true"></app-text-field>
+      <app-text-field label="Local Name"
+                      controlName="nameLocal"
+                      [maxLength]="50"></app-text-field>
 
-    <app-text-field label="International Name"
-                    controlName="name"
-                    [maxLength]="50"
-                    [required]="true"></app-text-field>
-    <app-text-field label="Local Name"
-                    controlName="nameLocal"
-                    [maxLength]="50"></app-text-field>
-
-    <div class="form-group flag-wrapper">
-      <label class="input-group-btn">
+      <div class="form-group flag-wrapper">
+        <label class="input-group-btn">
         <span class="btn btn-icon btn-outline-secondary">
           <span>
             {{!languageService.form.get('flagUrl') ? 'Upload flag' : 'Change Flag' }} (svg)
@@ -67,14 +67,15 @@
                    (change)="handleFileChange($event)">
           </span>
         </span>
-      </label>
-    </div>
+        </label>
+      </div>
 
-    <div class="preview-container">
-      <img class="preview-image"
-           [src]="languageService.form.get('flagUrl')!.value"
-           alt="" />
-    </div>
+      <div class="preview-container">
+        <img class="preview-image"
+             [src]="languageService.form.get('flagUrl')!.value"
+             alt="" />
+      </div>
+    </app-fieldset>
   </form>
 
 </app-main-content>

@@ -87,3 +87,7 @@ select:-webkit-autofill {
 .text-dimmed {
   color: var(--c-text-dim);
 }
+
+.split-area-content {
+  overflow: hidden !important;
+}

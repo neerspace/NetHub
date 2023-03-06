@@ -1,78 +1,89 @@
-<!--<div class="data">-->
-<!--  <p>Localization ID: {{model.id}}</p>-->
-<!--  <p>Article ID: {{model.articleId}}</p>-->
-<!--  <p>Localization Code: {{model.languageCode}}</p>-->
-<!--</div>-->
-<!--<app-main-header short="true"-->
-<!--                 [pageTitle]="'Article Localization: ' + model.articleId + '-' + model.id">-->
-<!--  <button app-icon-button-->
-<!--          icon="la-ban"-->
-<!--          variant="danger"-->
-<!--          [disabled]="ready !== 'ready'"-->
-<!--          (onclick)="localizationsService.delete(model.id)">-->
-<!--    Delete-->
-<!--  </button>-->
-<!--  <button app-icon-button-->
-<!--          icon="la-save"-->
-<!--          variant="success"-->
-<!--          [disabled]="ready !== 'ready'"-->
-<!--          (onclick)="submit()">-->
-<!--    Save-->
-<!--  </button>-->
-<!--</app-main-header>-->
+<app-main-header pageTitle="Article Localization">
+  <button app-icon-button
+          [icon]="locked ? 'la-lock' : 'la-unlock'"
+          variant="secondary"
+          (onclick)="locked = !locked">
+    {{locked ? 'Locked' : 'Unlocked'}}
+  </button>
+  <button app-icon-button
+          icon="la-ban"
+          variant="danger"
+          [disabled]="!localizationsService.ready || locked"
+          (onclick)="localizationsService.delete(model.id)">
+    Delete
+  </button>
+  <button app-icon-button
+          icon="la-save"
+          variant="success"
+          [disabled]="!localizationsService.ready || locked"
+          (onclick)="submit()">
+    Save
+  </button>
+</app-main-header>
 
-<!--<app-main-content>-->
-<!--  <form app-form-layout-->
-<!--        enctype="multipart/form-data"-->
-<!--        [formGroup]="localizationsService.form"-->
-<!--        [ready]="ready">-->
+<app-main-content>
+  <form app-form-layout
+        [formGroup]="localizationsService.form"
+        [ready]="localizationsService.ready">
+    <app-fieldset size="small">
+      <app-number-field label="ID"
+                        controlName="id"
+                        [disabled]="true"
+                        [allowCopy]="true"></app-number-field>
+      <app-number-field label="Linked Article ID"
+                        controlName="articleId"
+                        [disabled]="true"
+                        [allowCopy]="true"></app-number-field>
+      <app-text-field label="Language Code"
+                      controlName="languageCode"
+                      [disabled]="true"
+                      [allowCopy]="true"></app-text-field>
+      <app-date-field label="Created At"
+                      controlName="created"
+                      [disabled]="true"></app-date-field>
+      <app-date-field *ngIf="model.updated"
+                      label="Updated At"
+                      controlName="updated"
+                      [disabled]="true"></app-date-field>
+      <app-date-field *ngIf="model.banned"
+                      label="Banned At"
+                      controlName="banned"
+                      [disabled]="true"></app-date-field>
 
-<!--    <app-text-field label="Two-letter ISO Code"-->
-<!--                    controlName="code"-->
-<!--                    [maxLength]="2"-->
-<!--                    [disabled]="!isCreating"-->
-<!--                    [allowCopy]="!isCreating"></app-text-field>-->
-<!--    <app-form-content *ngIf="isCreating">-->
-<!--      <div>-->
-<!--        {{suggestedLanguageName ? 'Suggested language: ' + suggestedLanguageName : 'Language code is invalid'}}-->
-<!--      </div>-->
-<!--      <button app-icon-button-->
-<!--              variant="secondary"-->
-<!--              [disabled]="!suggestedLanguageName"-->
-<!--              (onclick)="applySuggestedLanguage()">-->
-<!--        Apply Suggestion-->
-<!--      </button>-->
-<!--    </app-form-content>-->
-<!--    <hr />-->
+      <div class="article-statistics">
+        <div>Views: {{model.views}}</div>
+        <div>Rating: {{model.rate}}</div>
+      </div>
+    </app-fieldset>
 
-<!--    <app-text-field label="International Name"-->
-<!--                    controlName="name"-->
-<!--                    [maxLength]="50"-->
-<!--                    [required]="true"></app-text-field>-->
-<!--    <app-text-field label="Local Name"-->
-<!--                    controlName="nameLocal"-->
-<!--                    [maxLength]="50"></app-text-field>-->
+    <hr />
 
-<!--    <div class="form-group flag-wrapper">-->
-<!--      <label class="input-group-btn">-->
-<!--        <span class="btn btn-icon btn-outline-secondary">-->
-<!--          <span>-->
-<!--            {{!languagesService.form.get('flagUrl') ? 'Upload flag' : 'Change Flag' }} (svg)-->
-<!--            <input type="file"-->
-<!--                   id="file"-->
-<!--                   style="display: none;"-->
-<!--                   accept=".svg"-->
-<!--                   (change)="handleFileChange($event)">-->
-<!--          </span>-->
-<!--        </span>-->
-<!--      </label>-->
-<!--    </div>-->
+    <!--<app-text-field label="Title"-->
+    <!--                controlName="title"-->
+    <!--                [disabled]="locked"></app-text-field>-->
 
-<!--    <div class="preview-container">-->
-<!--      <img class="preview-image"-->
-<!--           [src]="languagesService.form.get('flagUrl')!.value"-->
-<!--           alt="" />-->
-<!--    </div>-->
-<!--  </form>-->
+    <app-fieldset size="large">
+      <app-text-area-field label="Title"
+                           controlName="title"
+                           size="small"
+                           [disabled]="locked"></app-text-area-field>
+      <app-text-area-field label="Description"
+                           controlName="description"
+                           size="medium"
+                           [disabled]="locked"></app-text-area-field>
+      <app-text-area-field label="Content (HTML)"
+                           controlName="html"
+                           size="large"
+                           [disabled]="locked"></app-text-area-field>
+    </app-fieldset>
 
-<!--</app-main-content>-->
+    <!--<app-text-field label="Title"-->
+    <!--                controlName="name"-->
+    <!--                [maxLength]="50"-->
+    <!--                [required]="true"></app-text-field>-->
+    <!--<app-text-field label=""-->
+    <!--                controlName="nameLocal"-->
+    <!--                [maxLength]="50"></app-text-field>-->
+    <!--<pre>{{model|json}}</pre>-->
+  </form>
+</app-main-content>

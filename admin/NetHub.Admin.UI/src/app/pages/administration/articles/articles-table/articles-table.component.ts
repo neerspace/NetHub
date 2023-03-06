@@ -1,9 +1,10 @@
 import { Component, Injector, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 import { ArticleLocalizationModel, ArticleModel } from 'src/app/api';
 import { TabsComponent } from 'src/app/components/core/tabs/tabs.component';
 import { SplitBaseComponent } from 'src/app/components/split/split-base.component';
 import { ColumnInfo, IFiltered, IFilterInfo } from 'src/app/components/table/types';
+import { DataTableComponent } from '../../../../components/table/data-table/data-table.component';
 import { limitStringLength } from '../../../../components/table/formatters';
 import { ArticleSharedService } from '../../article-shared.service';
 import { articleColumns } from '../article-columns';
@@ -15,6 +16,7 @@ import { articleColumns } from '../article-columns';
 })
 export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> implements OnInit {
   @ViewChild(TabsComponent) tabsComponent!: TabsComponent;
+  @ViewChild('table') table!: DataTableComponent<ArticleModel>;
   @ViewChild('articleForm') articleTemplate!: TemplateRef<any>;
   @ViewChild('localizationForm') localizationTemplate!: TemplateRef<any>;
   @ViewChild('localizationsColumn') localizationsColumnTemplate!: TemplateRef<any>;
@@ -31,11 +33,17 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> imp
   }
 
   fetchFilter(params: IFilterInfo): Observable<IFiltered<ArticleModel>> {
-    return this.articleSharedService.filter(params);
+    return this.articleSharedService.filter(params).pipe(
+      finalize(() => {
+        const item = this.table.data?.[0].localizations[0];
+        console.log('item:', item);
+        this.onLocalizationClick(item);
+        this.onLocalizationClick(this.table.data?.[0].localizations[2]);
+      }),
+    );
   }
 
   onLocalizationClick(model: ArticleLocalizationModel) {
-    console.log(model);
     const tabTitle = model.articleId + ' | ' + limitStringLength(model.title, 20, 'Untitled');
     this.tabsComponent.openTab(tabTitle, this.localizationTemplate, model);
   }
