@@ -1,8 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { FormGroupDirective } from '@angular/forms';
-import { CopyPasteService } from '../../../services/copy-paste.service';
-import { NumberInputProcessorService } from '../../../services/number-input-processor.service';
-import { BoolInput } from '../../../shared/types';
+import { Component, Injector, Input } from '@angular/core';
+import { NumberInputProcessorService } from 'src/app/services/number-input-processor.service';
 import { FieldBaseComponent } from '../field-base.component';
 import { NumberPattern } from '../types';
 
@@ -15,16 +12,14 @@ export class NumberFieldComponent extends FieldBaseComponent {
   @Input() format: NumberPattern = 'integer';
   @Input() minValue: number = -Infinity;
   @Input() maxValue: number = Infinity;
-  @Input() allowCopy: BoolInput = false;
 
   mask!: string;
 
   constructor(
-    form: FormGroupDirective,
-    private numberInputProcessor: NumberInputProcessorService,
-    public copyPaste: CopyPasteService,
+    injector: Injector,
+    private readonly numberInputProcessor: NumberInputProcessorService,
   ) {
-    super(form);
+    super(injector);
   }
 
   override afterInit() {

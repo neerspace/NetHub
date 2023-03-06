@@ -1,8 +1,7 @@
-<button class="btn btn-sm btn-outline-dark dropdown-button" id="tableSize" data-bs-toggle="dropdown">
-  <strong>{{pageSize}}</strong>
-</button>
-<ul class="dropdown-menu dropdown-menu-dark text-small" aria-labelledby="tableSize">
+<app-dropdown key="tableSize"
+              [buttonText]="pageSize">
   <li *ngFor="let option of pageSizeOptions">
-    <button class="dropdown-item" (click)="setPageSize(option)">{{option}}</button>
+    <button class="dropdown-item"
+            (click)="setPageSize(option)">{{option}}</button>
   </li>
-</ul>
+</app-dropdown>

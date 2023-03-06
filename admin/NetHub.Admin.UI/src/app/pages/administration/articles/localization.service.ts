@@ -1,21 +1,30 @@
-﻿import {Injectable} from "@angular/core";
-import {FormBuilder} from "@angular/forms";
-import {Router} from "@angular/router";
-import {ArticleLocalizationModel, ErrorDto, LocalizationsApi} from "../../../../api";
-import {ModalsService} from "../../../../services/modals.service";
-import {LoaderService, ToasterService} from "../../../../services/viewport";
+﻿import { Injectable, Injector } from '@angular/core';
+import { ArticleLocalizationModel, ErrorDto, LocalizationsApi } from 'src/app/api';
+import { FormServiceBase } from '../../../services/abstractions';
 
-@Injectable({providedIn: 'root'})
-export class LocalizationsService{
-  constructor(
-    formBuilder: FormBuilder,
-    private router: Router,
-    private localizationsApi: LocalizationsApi,
-    private modals: ModalsService,
-    private loader: LoaderService,
-    private toaster: ToasterService
-  ) {}
-
+@Injectable()
+export class LocalizationService extends FormServiceBase {
+  constructor(injector: Injector, private readonly localizationsApi: LocalizationsApi) {
+    super(injector, {
+      id: ['', []],
+      articleId: ['', []],
+      languageCode: ['', []],
+      contributors: ['', []],
+      title: ['', []],
+      description: ['', []],
+      html: ['', []],
+      status: ['', []],
+      views: ['', []],
+      rate: ['', []],
+      created: ['', []],
+      updated: ['', []],
+      published: ['', []],
+      banned: ['', []],
+      isSaved: ['', []],
+      savedDate: ['', []],
+      vote: ['', []],
+    });
+  }
 
   getById(id: number): void {
     this.onRequestStart();
@@ -65,17 +74,14 @@ export class LocalizationsService{
 
   private onRequestStart() {
     // console.log('request started');
-    this.loader.show();
   }
 
   private onRequestSuccess() {
     // console.log('request succeed');
-    this.loader.hide();
   }
 
   private onRequestError(error: ErrorDto) {
     // console.log('request error');
-    this.loader.hide();
     this.toaster.showFail(error.message);
   }
 }

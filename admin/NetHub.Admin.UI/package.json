@@ -1,15 +1,17 @@
 {
-  "name": "nethub.admin.ui",
+  "name": "nethub-admin",
   "version": "0.3.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host admin.nethub.local --port 9100 --disable-host-check",
     "build": "ng build",
-    "build:ssr": "ng run NetHub.Admin.UI:server:dev",
+    "build:ssr": "ng run nethub-admin:server:dev",
     "watch": "ng build --watch --configuration development",
     "lint": "ng lint",
     "nswag": "\"node_modules/.bin/nswag\"",
-    "nswag:gen": "npm run nswag run /runtime:Net70 /variables:ApiVersion=v1,OutputFile=index,BaseUrlToken=API_URL"
+    "nswag:gen": "npm run nswag run /runtime:Net70",
+    "nginx:start": "brew services start nginx",
+    "nginx:restart": "brew services restart nginx"
   },
   "private": true,
   "dependencies": {

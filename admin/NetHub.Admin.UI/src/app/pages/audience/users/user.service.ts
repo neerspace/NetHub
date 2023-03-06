@@ -1,30 +1,17 @@
-import { Injectable } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Injectable, Injector } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { ErrorDto, UserCreateRequest, UserModel, UsersApi, UserUpdateRequest } from '../../../api';
-import { FormGroupReady, FormId, FormReady } from '../../../components/form/types';
-import { IFiltered, IFilterInfo } from '../../../components/table/types';
-import { ModalsService } from '../../../services/modals.service';
-import { LoaderService, ToasterService } from '../../../services/viewport';
+import { ErrorDto, UserCreateRequest, UserModel, UsersApi, UserUpdateRequest } from 'src/app/api';
+import { FormId } from 'src/app/components/form/types';
+import { IFiltered, IFilterInfo } from 'src/app/components/table/types';
+import { FormServiceBase } from 'src/app/services/abstractions';
 
 @Injectable({ providedIn: 'root' })
-export class UserService {
-  readonly form: FormGroupReady;
+export class UserService extends FormServiceBase {
   public lastFormId?: FormId;
 
-  constructor(
-    route: ActivatedRoute,
-    private router: Router,
-    private usersApi: UsersApi,
-    private modals: ModalsService,
-    private loader: LoaderService,
-    private toaster: ToasterService,
-  ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-
-    this.form = new FormGroup({
-      ready: new FormControl<FormReady>(null),
+  constructor(injector: Injector, private readonly usersApi: UsersApi) {
+    super(injector, {
       id: new FormControl(),
       userName: new FormControl(),
       firstName: new FormControl(),
@@ -36,12 +23,7 @@ export class UserService {
       emailConfirmed: new FormControl(),
       description: new FormControl(),
       registered: new FormControl(),
-    }) as any;
-    this.form.ready = this.form.get('ready') as FormControl;
-  }
-
-  get onReadyChanges(): Observable<FormReady> {
-    return this.form.ready.valueChanges;
+    });
   }
 
   showForm(): void {
@@ -54,7 +36,6 @@ export class UserService {
       next: (user: UserModel | any) => {
         user.password = user.hasPassword ? '********' : null;
         delete user.hasPassword;
-        user.ready = true;
         this.form.setValue(user);
         this.onRequestSuccess();
         this.lastFormId = id;
@@ -120,22 +101,19 @@ export class UserService {
 
   private onRequestStart() {
     // console.log('request started');
-    this.loader.show();
-    if (this.form.ready.value === 'ready') {
-      this.form.ready.setValue('loading');
+    if (this.isReady) {
+      this.setReady('loading');
     }
   }
 
   private onRequestSuccess() {
     // console.log('request succeed');
-    this.loader.hide();
-    this.form.ready.setValue('ready');
+    this.setReady('ready');
   }
 
   private onRequestError(error: ErrorDto) {
     // console.log('request error');
-    this.loader.hide();
-    this.form.ready.setValue('404');
+    this.setReady('404');
     this.toaster.showFail(error.message);
   }
 }

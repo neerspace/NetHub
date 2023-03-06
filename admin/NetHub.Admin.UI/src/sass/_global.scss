@@ -1,4 +1,6 @@
-app-main-header button {
+@import 'mixins';
+
+app-main-header .btn {
   margin-left: .5rem;
 }
 
@@ -46,14 +48,16 @@ select:-webkit-autofill {
   }
 }
 
-.counter{
-    &.counter-positive{
-        color: var(--c-success);
-    }
+.counter {
+  color: var(--c-text-dim);
 
-    &.counter-negative{
-        color: var(--c-danger);
-    }
+  &.counter-positive {
+    color: var(--c-success);
+  }
+
+  &.counter-negative {
+    color: var(--c-danger);
+  }
 }
 
 .toast {
@@ -74,4 +78,16 @@ select:-webkit-autofill {
   &[data-color=info] {
     background-color: var(--c-accent);
   }
+}
+
+.disable-browser-security {
+  @include disable-browser-security;
+}
+
+.text-dimmed {
+  color: var(--c-text-dim);
+}
+
+.split-area-content {
+  overflow: hidden !important;
 }

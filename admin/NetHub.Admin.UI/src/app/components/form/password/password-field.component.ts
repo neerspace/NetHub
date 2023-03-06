@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { FormGroupDirective } from '@angular/forms';
+import { Component, Injector } from '@angular/core';
 import { FieldBaseComponent } from '../field-base.component';
 
 @Component({
@@ -10,8 +9,8 @@ import { FieldBaseComponent } from '../field-base.component';
 export class PasswordFieldComponent extends FieldBaseComponent {
   showText: boolean = false;
 
-  constructor(form: FormGroupDirective) {
-    super(form);
+  constructor(injector: Injector) {
+    super(injector);
   }
 
   override afterInit() {}

@@ -12,7 +12,7 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
-      "launchUrl": "https://admin-api.nethub.local:9110",
+      "launchUrl": "",
       "applicationUrl": "https://localhost:9110",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

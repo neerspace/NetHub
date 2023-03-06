@@ -15,7 +15,10 @@ public static class ServiceCollectionExtensions
         services.Configure<SwaggerGenOptions>(options =>
         {
             options.CustomOperationIds(NSwagEndpointNameFactory.Create);
+            // Document Filters
             options.DocumentFilter<ResponsesFilter>();
+            // Operation Filters
+            options.OperationFilter<FormContentTypeSchemaOperationFilter>();
             options.EnableAnnotations();
             options.SupportNonNullableReferenceTypes();
         });

@@ -1,9 +1,7 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using NeerCore.Data.Abstractions;
 
 namespace NetHub.Data.SqlServer.Entities;
 
-[Table($"{nameof(Resource)}s")]
 public class Resource : IEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();

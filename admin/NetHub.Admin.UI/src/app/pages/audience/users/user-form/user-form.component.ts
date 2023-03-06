@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormReady } from 'src/app/components/form/types';
 import { getRandomInt } from 'src/app/shared/utilities';
 import { UserService } from '../user.service';
 
@@ -11,12 +10,11 @@ import { UserService } from '../user.service';
 export class UserFormComponent implements OnInit {
   readonly id: number;
   readonly isCreating: boolean;
-  ready: FormReady = null;
 
   constructor(
     route: ActivatedRoute,
-    private router: Router,
-    public usersService: UserService, //
+    private readonly router: Router,
+    public readonly userService: UserService,
   ) {
     const routeId = route.snapshot.params['id'];
     this.isCreating = routeId === 'create';
@@ -24,11 +22,10 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.usersService.onReadyChanges.subscribe(x => (this.ready = x));
-    if (this.isCreating) {
-      this.usersService.form.ready.setValue('ready');
-    } else {
-      this.usersService.getById(this.id);
+    this.userService.init(this.isCreating);
+
+    if (!this.isCreating) {
+      this.userService.getById(this.id);
     }
   }
 
@@ -38,15 +35,15 @@ export class UserFormComponent implements OnInit {
 
   submit(): void {
     if (this.isCreating) {
-      this.usersService.create();
+      this.userService.create();
     } else {
-      this.usersService.update(this.id);
+      this.userService.update(this.id);
     }
   }
 
   setRandomPassword() {
     const password = this.generatePassword();
-    this.usersService.form.get('password')?.setValue(password);
+    this.userService.form.get('password')?.setValue(password);
   }
 
   private generatePassword() {

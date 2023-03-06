@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "NetHub.Admin.UI": {
+    "nethub-admin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -77,12 +77,16 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "nethub-admin:build",
+            "ssl": true
+          },
           "configurations": {
             "production": {
-              "browserTarget": "NetHub.Admin.UI:build:production"
+              "browserTarget": "nethub-admin:build:production"
             },
             "development": {
-              "browserTarget": "NetHub.Admin.UI:build:development",
+              "browserTarget": "nethub-admin:build:development",
               "proxyConfig": "proxy.conf.js"
             }
           },
@@ -91,7 +95,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "NetHub.Admin.UI:build"
+            "browserTarget": "nethub-admin:build"
           }
         },
         "server": {
@@ -133,7 +137,7 @@
       }
     }
   },
-  "defaultProject": "NetHub.Admin.UI",
+  "defaultProject": "nethub-admin",
   "cli": {
     "analytics": false
   }

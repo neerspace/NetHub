@@ -27,7 +27,7 @@ export class ArticleLocalizationsApi {
     }
 
     /**
-     * @param body (optional) 
+     * @param body (optional)
      * @return Created
      */
     create(id: string, lang: string, body: ArticleLocalizationCreateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel> {
@@ -212,6 +212,7 @@ export class ArticleLocalizationsApi {
     }
 
     /**
+     * @param body (optional)
      * @return Success
      */
     getByIdAndCode(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel> {
@@ -304,7 +305,7 @@ export class ArticleLocalizationsApi {
     }
 
     /**
-     * @param body (optional) 
+     * @param body (optional)
      * @return No Content
      */
     put(id: string, lang: string, body: ArticleLocalizationUpdateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
@@ -397,7 +398,7 @@ export class ArticleLocalizationsApi {
     }
 
     /**
-     * @param contributorUsername (optional) 
+     * @param contributorUsername (optional)
      * @return Success
      */
     search(lang: string, contributorUsername: string | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel[]> {
@@ -498,7 +499,7 @@ export class ArticleLocalizationsApi {
     }
 
     /**
-     * @param status (optional) 
+     * @param status (optional)
      * @return No Content
      */
     updateStatus(id: number, language: string, status: ArticleStatusActions | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
@@ -605,7 +606,7 @@ export class ArticlesApi {
     }
 
     /**
-     * @param body (optional) 
+     * @param body (optional)
      * @return Created
      */
     create(body: ArticleCreateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtended> {
@@ -696,7 +697,7 @@ export class ArticlesApi {
     }
 
     /**
-     * @param body (optional) 
+     * @param body (optional)
      * @return No Content
      */
     update(body: ArticleUpdateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
@@ -957,7 +958,7 @@ export class ArticlesApi {
     }
 
     /**
-     * @param file (optional) 
+     * @param file (optional)
      * @return Created
      */
     uploadImage(id: number, file: FileParameter | undefined , cancelToken?: CancelToken | undefined): Promise<AddArticleImageResult> {
@@ -1340,8 +1341,8 @@ export class CurrentUserApi {
     }
 
     /**
-     * @param link (optional) 
-     * @param file (optional) 
+     * @param link (optional)
+     * @param file (optional)
      * @return Success
      */
     updateProfilePhoto(link: string | undefined, file: FileParameter | undefined , cancelToken?: CancelToken | undefined): Promise<MeProfilePhotoUpdateResult> {
@@ -1412,7 +1413,7 @@ export class CurrentUserApi {
     }
 
     /**
-     * @param body (optional) 
+     * @param body (optional)
      * @return No Content
      */
     updateProfile(body: MeProfileUpdateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
@@ -1513,7 +1514,7 @@ export class JwtApi {
     }
 
     /**
-     * @param body (optional) 
+     * @param body (optional)
      * @return Created
      */
     authenticate(body: JwtAuthenticateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<JwtResult> {
@@ -2258,7 +2259,7 @@ export class MyArticlesApi {
     }
 
     /**
-     * @param vote (optional) 
+     * @param vote (optional)
      * @return Created
      */
     updateVote(id: number, vote: Vote | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
@@ -2568,8 +2569,8 @@ export class UsersApi {
     }
 
     /**
-     * @param key (optional) 
-     * @param provider (optional) 
+     * @param key (optional)
+     * @param provider (optional)
      * @return Success
      */
     checkIfExists(key: string | undefined, provider: ProviderType | undefined , cancelToken?: CancelToken | undefined): Promise<UserCheckIfExistsResult> {
@@ -2842,8 +2843,8 @@ export class UsersApi {
     }
 
     /**
-     * @param page (optional) 
-     * @param perPage (optional) 
+     * @param page (optional)
+     * @param perPage (optional)
      * @return Success
      */
     userArticles(userName: string, page: number | undefined, perPage: number | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleModel[]> {
@@ -2948,7 +2949,7 @@ export class UsersApi {
     }
 
     /**
-     * @param usernames (optional) 
+     * @param usernames (optional)
      * @return Success
      */
     usersInfo(usernames: string[] | undefined , cancelToken?: CancelToken | undefined): Promise<PrivateUserResult[]> {
@@ -3098,8 +3099,8 @@ export class ArticleContributorModel implements IArticleContributorModel {
 
     init(_data?: any) {
         if (_data) {
-            this.role = _data["role"] !== undefined ? _data["role"] : <any>null;
-            this.userName = _data["userName"] !== undefined ? _data["userName"] : <any>null;
+            this.role = _data["role"];
+            this.userName = _data["userName"];
             this.profilePhotoUrl = _data["profilePhotoUrl"] !== undefined ? _data["profilePhotoUrl"] : <any>null;
         }
     }
@@ -3113,8 +3114,8 @@ export class ArticleContributorModel implements IArticleContributorModel {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["role"] = this.role !== undefined ? this.role : <any>null;
-        data["userName"] = this.userName !== undefined ? this.userName : <any>null;
+        data["role"] = this.role;
+        data["userName"] = this.userName;
         data["profilePhotoUrl"] = this.profilePhotoUrl !== undefined ? this.profilePhotoUrl : <any>null;
         return data;
     }
@@ -3136,7 +3137,7 @@ export enum ArticleContributorRole {
 
 export class ArticleCreateRequest implements IArticleCreateRequest {
     name!: string;
-    tags!: string[] | null;
+    tags!: string[] | undefined;
     originalArticleLink!: string | null;
 
     constructor(data?: IArticleCreateRequest) {
@@ -3275,11 +3276,11 @@ export class ArticleLocalizationModel implements IArticleLocalizationModel {
     views!: number;
     rate!: number;
     created!: DateTime;
-    updated!: DateTime | null;
-    published!: DateTime | null;
-    banned!: DateTime | null;
+    updated!: DateTime | undefined;
+    published!: DateTime | undefined;
+    banned!: DateTime | undefined;
     isSaved!: boolean;
-    savedDate!: DateTime | null;
+    savedDate!: DateTime | undefined;
     vote!: Vote | null;
 
     constructor(data?: IArticleLocalizationModel) {
@@ -3300,30 +3301,27 @@ export class ArticleLocalizationModel implements IArticleLocalizationModel {
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.articleId = _data["articleId"] !== undefined ? _data["articleId"] : <any>null;
-            this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
+            this.id = _data["id"];
+            this.articleId = _data["articleId"];
+            this.languageCode = _data["languageCode"];
             if (Array.isArray(_data["contributors"])) {
                 this.contributors = [] as any;
                 for (let item of _data["contributors"])
                     this.contributors!.push(ArticleContributorModel.fromJS(item));
             }
-            else {
-                this.contributors = <any>null;
-            }
-            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
-            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
-            this.html = _data["html"] !== undefined ? _data["html"] : <any>null;
-            this.status = _data["status"] !== undefined ? _data["status"] : <any>null;
-            this.views = _data["views"] !== undefined ? _data["views"] : <any>null;
-            this.rate = _data["rate"] !== undefined ? _data["rate"] : <any>null;
-            this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>null;
-            this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>null;
-            this.published = _data["published"] ? DateTime.fromISO(_data["published"].toString()) : <any>null;
-            this.banned = _data["banned"] ? DateTime.fromISO(_data["banned"].toString()) : <any>null;
-            this.isSaved = _data["isSaved"] !== undefined ? _data["isSaved"] : <any>null;
-            this.savedDate = _data["savedDate"] ? DateTime.fromISO(_data["savedDate"].toString()) : <any>null;
-            this.vote = _data["vote"] !== undefined ? _data["vote"] : <any>null;
+            this.title = _data["title"];
+            this.description = _data["description"];
+            this.html = _data["html"];
+            this.status = _data["status"];
+            this.views = _data["views"];
+            this.rate = _data["rate"];
+            this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>undefined;
+            this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>undefined;
+            this.published = _data["published"] ? DateTime.fromISO(_data["published"].toString()) : <any>undefined;
+            this.banned = _data["banned"] ? DateTime.fromISO(_data["banned"].toString()) : <any>undefined;
+            this.isSaved = _data["isSaved"];
+            this.savedDate = _data["savedDate"] ? DateTime.fromISO(_data["savedDate"].toString()) : <any>undefined;
+            this.vote = _data["vote"];
         }
     }
 
@@ -3336,27 +3334,27 @@ export class ArticleLocalizationModel implements IArticleLocalizationModel {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["articleId"] = this.articleId !== undefined ? this.articleId : <any>null;
-        data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
+        data["id"] = this.id;
+        data["articleId"] = this.articleId;
+        data["languageCode"] = this.languageCode;
         if (Array.isArray(this.contributors)) {
             data["contributors"] = [];
             for (let item of this.contributors)
                 data["contributors"].push(item.toJSON());
         }
-        data["title"] = this.title !== undefined ? this.title : <any>null;
-        data["description"] = this.description !== undefined ? this.description : <any>null;
-        data["html"] = this.html !== undefined ? this.html : <any>null;
-        data["status"] = this.status !== undefined ? this.status : <any>null;
-        data["views"] = this.views !== undefined ? this.views : <any>null;
-        data["rate"] = this.rate !== undefined ? this.rate : <any>null;
-        data["created"] = this.created ? this.created.toString() : <any>null;
-        data["updated"] = this.updated ? this.updated.toString() : <any>null;
-        data["published"] = this.published ? this.published.toString() : <any>null;
-        data["banned"] = this.banned ? this.banned.toString() : <any>null;
-        data["isSaved"] = this.isSaved !== undefined ? this.isSaved : <any>null;
-        data["savedDate"] = this.savedDate ? this.savedDate.toString() : <any>null;
-        data["vote"] = this.vote !== undefined ? this.vote : <any>null;
+        data["title"] = this.title;
+        data["description"] = this.description;
+        data["html"] = this.html;
+        data["status"] = this.status;
+        data["views"] = this.views;
+        data["rate"] = this.rate;
+        data["created"] = this.created ? this.created.toString() : <any>undefined;
+        data["updated"] = this.updated ? this.updated.toString() : <any>undefined;
+        data["published"] = this.published ? this.published.toString() : <any>undefined;
+        data["banned"] = this.banned ? this.banned.toString() : <any>undefined;
+        data["isSaved"] = this.isSaved;
+        data["savedDate"] = this.savedDate ? this.savedDate.toString() : <any>undefined;
+        data["vote"] = this.vote;
         return data;
     }
 }
@@ -3373,11 +3371,11 @@ export interface IArticleLocalizationModel {
     views: number;
     rate: number;
     created: DateTime;
-    updated: DateTime | null;
-    published: DateTime | null;
-    banned: DateTime | null;
+    updated: DateTime | undefined;
+    published: DateTime | undefined;
+    banned: DateTime | undefined;
     isSaved: boolean;
-    savedDate: DateTime | null;
+    savedDate: DateTime | undefined;
     vote: Vote | null;
 }
 
@@ -3408,8 +3406,8 @@ export class ArticleLocalizationUpdateRequest implements IArticleLocalizationUpd
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
+            this.id = _data["id"];
+            this.languageCode = _data["languageCode"];
             this.newLanguageCode = _data["newLanguageCode"] !== undefined ? _data["newLanguageCode"] : <any>null;
             this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
@@ -3434,8 +3432,8 @@ export class ArticleLocalizationUpdateRequest implements IArticleLocalizationUpd
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
+        data["id"] = this.id;
+        data["languageCode"] = this.languageCode;
         data["newLanguageCode"] = this.newLanguageCode !== undefined ? this.newLanguageCode : <any>null;
         data["title"] = this.title !== undefined ? this.title : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
@@ -3569,14 +3567,14 @@ export class ArticleModelExtended implements IArticleModelExtended {
     name!: string;
     authorId!: number;
     created!: DateTime;
-    updated!: DateTime | null;
-    published!: DateTime | null;
-    banned!: DateTime | null;
-    originalArticleLink!: string | null;
+    updated!: DateTime | undefined;
+    published!: DateTime | undefined;
+    banned!: DateTime | undefined;
+    originalArticleLink!: string | undefined;
     rate!: number;
-    localizations!: ArticleLocalizationModel[] | null;
+    localizations!: ArticleLocalizationModel[] | undefined;
     tags!: string[];
-    imagesLinks!: string[] | null;
+    imagesLinks!: string[] | undefined;
 
     constructor(data?: IArticleModelExtended) {
         if (data) {
@@ -3596,38 +3594,29 @@ export class ArticleModelExtended implements IArticleModelExtended {
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
-            this.authorId = _data["authorId"] !== undefined ? _data["authorId"] : <any>null;
-            this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>null;
-            this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>null;
-            this.published = _data["published"] ? DateTime.fromISO(_data["published"].toString()) : <any>null;
-            this.banned = _data["banned"] ? DateTime.fromISO(_data["banned"].toString()) : <any>null;
-            this.originalArticleLink = _data["originalArticleLink"] !== undefined ? _data["originalArticleLink"] : <any>null;
-            this.rate = _data["rate"] !== undefined ? _data["rate"] : <any>null;
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.authorId = _data["authorId"];
+            this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>undefined;
+            this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>undefined;
+            this.published = _data["published"] ? DateTime.fromISO(_data["published"].toString()) : <any>undefined;
+            this.banned = _data["banned"] ? DateTime.fromISO(_data["banned"].toString()) : <any>undefined;
+            this.originalArticleLink = _data["originalArticleLink"];
+            this.rate = _data["rate"];
             if (Array.isArray(_data["localizations"])) {
                 this.localizations = [] as any;
                 for (let item of _data["localizations"])
                     this.localizations!.push(ArticleLocalizationModel.fromJS(item));
-            }
-            else {
-                this.localizations = <any>null;
             }
             if (Array.isArray(_data["tags"])) {
                 this.tags = [] as any;
                 for (let item of _data["tags"])
                     this.tags!.push(item);
             }
-            else {
-                this.tags = <any>null;
-            }
             if (Array.isArray(_data["imagesLinks"])) {
                 this.imagesLinks = [] as any;
                 for (let item of _data["imagesLinks"])
                     this.imagesLinks!.push(item);
-            }
-            else {
-                this.imagesLinks = <any>null;
             }
         }
     }
@@ -3641,15 +3630,15 @@ export class ArticleModelExtended implements IArticleModelExtended {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["name"] = this.name !== undefined ? this.name : <any>null;
-        data["authorId"] = this.authorId !== undefined ? this.authorId : <any>null;
-        data["created"] = this.created ? this.created.toString() : <any>null;
-        data["updated"] = this.updated ? this.updated.toString() : <any>null;
-        data["published"] = this.published ? this.published.toString() : <any>null;
-        data["banned"] = this.banned ? this.banned.toString() : <any>null;
-        data["originalArticleLink"] = this.originalArticleLink !== undefined ? this.originalArticleLink : <any>null;
-        data["rate"] = this.rate !== undefined ? this.rate : <any>null;
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["authorId"] = this.authorId;
+        data["created"] = this.created ? this.created.toString() : <any>undefined;
+        data["updated"] = this.updated ? this.updated.toString() : <any>undefined;
+        data["published"] = this.published ? this.published.toString() : <any>undefined;
+        data["banned"] = this.banned ? this.banned.toString() : <any>undefined;
+        data["originalArticleLink"] = this.originalArticleLink;
+        data["rate"] = this.rate;
         if (Array.isArray(this.localizations)) {
             data["localizations"] = [];
             for (let item of this.localizations)
@@ -3674,14 +3663,14 @@ export interface IArticleModelExtended {
     name: string;
     authorId: number;
     created: DateTime;
-    updated: DateTime | null;
-    published: DateTime | null;
-    banned: DateTime | null;
-    originalArticleLink: string | null;
+    updated: DateTime | undefined;
+    published: DateTime | undefined;
+    banned: DateTime | undefined;
+    originalArticleLink: string | undefined;
     rate: number;
-    localizations: IArticleLocalizationModel[] | null;
+    localizations: IArticleLocalizationModel[] | undefined;
     tags: string[];
-    imagesLinks: string[] | null;
+    imagesLinks: string[] | undefined;
 }
 
 export enum ArticleStatusActions {
@@ -3751,7 +3740,7 @@ export class CheckUsernameResult implements ICheckUsernameResult {
 
     init(_data?: any) {
         if (_data) {
-            this.isAvailable = _data["isAvailable"] !== undefined ? _data["isAvailable"] : <any>null;
+            this.isAvailable = _data["isAvailable"];
         }
     }
 
@@ -3764,7 +3753,7 @@ export class CheckUsernameResult implements ICheckUsernameResult {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["isAvailable"] = this.isAvailable !== undefined ? this.isAvailable : <any>null;
+        data["isAvailable"] = this.isAvailable;
         return data;
     }
 }
@@ -3798,8 +3787,9 @@ export class CryptoResponseDto implements ICryptoResponseDto {
 
     init(_data?: any) {
         if (_data) {
-            this.btc = _data["btc"] ? OneCryptoDto.fromJS(_data["btc"]) : <any>null;
-            this.ton = _data["ton"] ? OneCryptoDto.fromJS(_data["ton"]) : <any>null;
+            this.btc = _data["btc"] ? OneCryptoDto.fromJS(_data["btc"]) : <any>undefined;
+            this.ton = _data["ton"] ? OneCryptoDto.fromJS(_data["ton"]) : <any>undefined;
+            this.error = _data["error"];
             this.error = _data["error"] !== undefined ? _data["error"] : <any>null;
         }
     }
@@ -3813,8 +3803,9 @@ export class CryptoResponseDto implements ICryptoResponseDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["btc"] = this.btc ? this.btc.toJSON() : <any>null;
-        data["ton"] = this.ton ? this.ton.toJSON() : <any>null;
+        data["btc"] = this.btc ? this.btc.toJSON() : <any>undefined;
+        data["ton"] = this.ton ? this.ton.toJSON() : <any>undefined;
+        data["error"] = this.error;
         data["error"] = this.error !== undefined ? this.error : <any>null;
         return data;
     }
@@ -3844,9 +3835,9 @@ export class CurrenciesResponse implements ICurrenciesResponse {
 
     init(_data?: any) {
         if (_data) {
-            this.exchanges = _data["exchanges"] ? ExchangeResponseModel.fromJS(_data["exchanges"]) : <any>null;
-            this.crypto = _data["crypto"] ? CryptoResponseDto.fromJS(_data["crypto"]) : <any>null;
-            this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>null;
+            this.exchanges = _data["exchanges"] ? ExchangeResponseModel.fromJS(_data["exchanges"]) : <any>undefined;
+            this.crypto = _data["crypto"] ? CryptoResponseDto.fromJS(_data["crypto"]) : <any>undefined;
+            this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>undefined;
         }
     }
 
@@ -3859,9 +3850,9 @@ export class CurrenciesResponse implements ICurrenciesResponse {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["exchanges"] = this.exchanges ? this.exchanges.toJSON() : <any>null;
-        data["crypto"] = this.crypto ? this.crypto.toJSON() : <any>null;
-        data["updated"] = this.updated ? this.updated.toString() : <any>null;
+        data["exchanges"] = this.exchanges ? this.exchanges.toJSON() : <any>undefined;
+        data["crypto"] = this.crypto ? this.crypto.toJSON() : <any>undefined;
+        data["updated"] = this.updated ? this.updated.toString() : <any>undefined;
         return data;
     }
 }
@@ -3887,8 +3878,8 @@ export class DashboardResult implements IDashboardResult {
 
     init(_data?: any) {
         if (_data) {
-            this.articlesCount = _data["articlesCount"] !== undefined ? _data["articlesCount"] : <any>null;
-            this.articlesViews = _data["articlesViews"] !== undefined ? _data["articlesViews"] : <any>null;
+            this.articlesCount = _data["articlesCount"];
+            this.articlesViews = _data["articlesViews"];
         }
     }
 
@@ -3901,8 +3892,8 @@ export class DashboardResult implements IDashboardResult {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["articlesCount"] = this.articlesCount !== undefined ? this.articlesCount : <any>null;
-        data["articlesViews"] = this.articlesViews !== undefined ? this.articlesViews : <any>null;
+        data["articlesCount"] = this.articlesCount;
+        data["articlesViews"] = this.articlesViews;
         return data;
     }
 }
@@ -3934,9 +3925,9 @@ export class ErrorDto implements IErrorDto {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.status = _data["status"] !== undefined ? _data["status"] : <any>null;
-            this.type = _data["type"] !== undefined ? _data["type"] : <any>null;
-            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.status = _data["status"];
+            this.type = _data["type"];
+            this.message = _data["message"];
         }
     }
 
@@ -3953,9 +3944,9 @@ export class ErrorDto implements IErrorDto {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["status"] = this.status !== undefined ? this.status : <any>null;
-        data["type"] = this.type !== undefined ? this.type : <any>null;
-        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["status"] = this.status;
+        data["type"] = this.type;
+        data["message"] = this.message;
         return data;
     }
 }
@@ -3989,8 +3980,8 @@ export class ErrorDetails implements IErrorDetails {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.field = _data["field"] !== undefined ? _data["field"] : <any>null;
-            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.field = _data["field"];
+            this.message = _data["message"];
         }
     }
 
@@ -4007,8 +3998,8 @@ export class ErrorDetails implements IErrorDetails {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["field"] = this.field !== undefined ? this.field : <any>null;
-        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["field"] = this.field;
+        data["message"] = this.message;
         return data;
     }
 }
@@ -4038,8 +4029,9 @@ export class ExchangeResponseModel implements IExchangeResponseModel {
 
     init(_data?: any) {
         if (_data) {
-            this.usd = _data["usd"] ? OneExchangeModel.fromJS(_data["usd"]) : <any>null;
-            this.euro = _data["euro"] ? OneExchangeModel.fromJS(_data["euro"]) : <any>null;
+            this.usd = _data["usd"] ? OneExchangeModel.fromJS(_data["usd"]) : <any>undefined;
+            this.euro = _data["euro"] ? OneExchangeModel.fromJS(_data["euro"]) : <any>undefined;
+            this.error = _data["error"];
             this.error = _data["error"] !== undefined ? _data["error"] : <any>null;
         }
     }
@@ -4053,8 +4045,9 @@ export class ExchangeResponseModel implements IExchangeResponseModel {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["usd"] = this.usd ? this.usd.toJSON() : <any>null;
-        data["euro"] = this.euro ? this.euro.toJSON() : <any>null;
+        data["usd"] = this.usd ? this.usd.toJSON() : <any>undefined;
+        data["euro"] = this.euro ? this.euro.toJSON() : <any>undefined;
+        data["error"] = this.error;
         data["error"] = this.error !== undefined ? this.error : <any>null;
         return data;
     }
@@ -4080,7 +4073,7 @@ export class IsSavedLocalizationResult implements IIsSavedLocalizationResult {
 
     init(_data?: any) {
         if (_data) {
-            this.isSaved = _data["isSaved"] !== undefined ? _data["isSaved"] : <any>null;
+            this.isSaved = _data["isSaved"];
         }
     }
 
@@ -4093,7 +4086,7 @@ export class IsSavedLocalizationResult implements IIsSavedLocalizationResult {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["isSaved"] = this.isSaved !== undefined ? this.isSaved : <any>null;
+        data["isSaved"] = this.isSaved;
         return data;
     }
 }
@@ -4105,7 +4098,7 @@ export interface IIsSavedLocalizationResult {
 export class JwtAuthenticateRequest implements IJwtAuthenticateRequest {
     username!: string;
     email!: string | null;
-    firstName!: string | null;
+    firstName!: string | undefined;
     lastName!: string | null;
     middleName!: string | null;
     profilePhotoUrl!: string | null;
@@ -4242,7 +4235,7 @@ export class JwtResult implements IJwtResult {
 export interface IJwtResult {
     username: string;
     firstName: string;
-    lastName: string | null;
+    lastName: string | undefined;
     token: string;
     tokenExpires: DateTime;
     refreshTokenExpires: DateTime;
@@ -4264,8 +4257,8 @@ export class LanguageModel implements ILanguageModel {
 
     init(_data?: any) {
         if (_data) {
-            this.code = _data["code"] !== undefined ? _data["code"] : <any>null;
-            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.code = _data["code"];
+            this.name = _data["name"];
         }
     }
 
@@ -4278,8 +4271,8 @@ export class LanguageModel implements ILanguageModel {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["code"] = this.code !== undefined ? this.code : <any>null;
-        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["code"] = this.code;
+        data["name"] = this.name;
         return data;
     }
 }
@@ -4394,10 +4387,10 @@ export class OneCryptoDto implements IOneCryptoDto {
 
     init(_data?: any) {
         if (_data) {
-            this.usd = _data["usd"] !== undefined ? _data["usd"] : <any>null;
-            this.usd24Change = _data["usd24Change"] !== undefined ? _data["usd24Change"] : <any>null;
-            this.uah = _data["uah"] !== undefined ? _data["uah"] : <any>null;
-            this.uah24Change = _data["uah24Change"] !== undefined ? _data["uah24Change"] : <any>null;
+            this.usd = _data["usd"];
+            this.usd24Change = _data["usd24Change"];
+            this.uah = _data["uah"];
+            this.uah24Change = _data["uah24Change"];
         }
     }
 
@@ -4410,10 +4403,10 @@ export class OneCryptoDto implements IOneCryptoDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["usd"] = this.usd !== undefined ? this.usd : <any>null;
-        data["usd24Change"] = this.usd24Change !== undefined ? this.usd24Change : <any>null;
-        data["uah"] = this.uah !== undefined ? this.uah : <any>null;
-        data["uah24Change"] = this.uah24Change !== undefined ? this.uah24Change : <any>null;
+        data["usd"] = this.usd;
+        data["usd24Change"] = this.usd24Change;
+        data["uah"] = this.uah;
+        data["uah24Change"] = this.uah24Change;
         return data;
     }
 }
@@ -4443,11 +4436,11 @@ export class OneExchangeModel implements IOneExchangeModel {
 
     init(_data?: any) {
         if (_data) {
-            this.currencyFrom = _data["currencyFrom"] !== undefined ? _data["currencyFrom"] : <any>null;
-            this.currencyTo = _data["currencyTo"] !== undefined ? _data["currencyTo"] : <any>null;
-            this.date = _data["date"] !== undefined ? _data["date"] : <any>null;
-            this.rateBuy = _data["rateBuy"] !== undefined ? _data["rateBuy"] : <any>null;
-            this.rateSell = _data["rateSell"] !== undefined ? _data["rateSell"] : <any>null;
+            this.currencyFrom = _data["currencyFrom"];
+            this.currencyTo = _data["currencyTo"];
+            this.date = _data["date"];
+            this.rateBuy = _data["rateBuy"];
+            this.rateSell = _data["rateSell"];
         }
     }
 
@@ -4460,11 +4453,11 @@ export class OneExchangeModel implements IOneExchangeModel {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["currencyFrom"] = this.currencyFrom !== undefined ? this.currencyFrom : <any>null;
-        data["currencyTo"] = this.currencyTo !== undefined ? this.currencyTo : <any>null;
-        data["date"] = this.date !== undefined ? this.date : <any>null;
-        data["rateBuy"] = this.rateBuy !== undefined ? this.rateBuy : <any>null;
-        data["rateSell"] = this.rateSell !== undefined ? this.rateSell : <any>null;
+        data["currencyFrom"] = this.currencyFrom;
+        data["currencyTo"] = this.currencyTo;
+        data["date"] = this.date;
+        data["rateBuy"] = this.rateBuy;
+        data["rateSell"] = this.rateSell;
         return data;
     }
 }
@@ -4481,7 +4474,7 @@ export class PrivateUserResult implements IPrivateUserResult {
     id!: number;
     userName!: string;
     description!: string | null;
-    profilePhotoUrl!: string | null;
+    profilePhotoUrl!: string | undefined;
     registered!: DateTime;
 
     constructor(data?: IPrivateUserResult) {
@@ -4495,10 +4488,10 @@ export class PrivateUserResult implements IPrivateUserResult {
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.userName = _data["userName"] !== undefined ? _data["userName"] : <any>null;
+            this.id = _data["id"];
+            this.userName = _data["userName"];
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
-            this.profilePhotoUrl = _data["profilePhotoUrl"] !== undefined ? _data["profilePhotoUrl"] : <any>null;
+            this.profilePhotoUrl = _data["profilePhotoUrl"];
             this.registered = _data["registered"] ? DateTime.fromISO(_data["registered"].toString()) : <any>null;
         }
     }
@@ -4512,10 +4505,10 @@ export class PrivateUserResult implements IPrivateUserResult {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["userName"] = this.userName !== undefined ? this.userName : <any>null;
+        data["id"] = this.id;
+        data["userName"] = this.userName;
         data["description"] = this.description !== undefined ? this.description : <any>null;
-        data["profilePhotoUrl"] = this.profilePhotoUrl !== undefined ? this.profilePhotoUrl : <any>null;
+        data["profilePhotoUrl"] = this.profilePhotoUrl;
         data["registered"] = this.registered ? this.registered.toString() : <any>null;
         return data;
     }
@@ -4525,7 +4518,7 @@ export interface IPrivateUserResult {
     id: number;
     userName: string;
     description: string | null;
-    profilePhotoUrl: string | null;
+    profilePhotoUrl: string | undefined;
     registered: DateTime;
 }
 
@@ -4551,7 +4544,7 @@ export class RatingModel implements IRatingModel {
 
     init(_data?: any) {
         if (_data) {
-            this.vote = _data["vote"] !== undefined ? _data["vote"] : <any>null;
+            this.vote = _data["vote"];
         }
     }
 
@@ -4564,7 +4557,7 @@ export class RatingModel implements IRatingModel {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["vote"] = this.vote !== undefined ? this.vote : <any>null;
+        data["vote"] = this.vote;
         return data;
     }
 }
@@ -4621,9 +4614,9 @@ export class UserResult implements IUserResult {
     lastName!: string;
     middleName!: string;
     email!: string;
-    profilePhotoUrl!: string | null;
+    profilePhotoUrl!: string | undefined;
     emailConfirmed!: boolean;
-    description!: string | null;
+    description!: string | undefined;
     registered!: DateTime;
 
     constructor(data?: IUserResult) {
@@ -4637,16 +4630,16 @@ export class UserResult implements IUserResult {
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.userName = _data["userName"] !== undefined ? _data["userName"] : <any>null;
-            this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
-            this.lastName = _data["lastName"] !== undefined ? _data["lastName"] : <any>null;
-            this.middleName = _data["middleName"] !== undefined ? _data["middleName"] : <any>null;
-            this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
-            this.profilePhotoUrl = _data["profilePhotoUrl"] !== undefined ? _data["profilePhotoUrl"] : <any>null;
-            this.emailConfirmed = _data["emailConfirmed"] !== undefined ? _data["emailConfirmed"] : <any>null;
-            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
-            this.registered = _data["registered"] ? DateTime.fromISO(_data["registered"].toString()) : <any>null;
+            this.id = _data["id"];
+            this.userName = _data["userName"];
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.middleName = _data["middleName"];
+            this.email = _data["email"];
+            this.profilePhotoUrl = _data["profilePhotoUrl"];
+            this.emailConfirmed = _data["emailConfirmed"];
+            this.description = _data["description"];
+            this.registered = _data["registered"] ? DateTime.fromISO(_data["registered"].toString()) : <any>undefined;
         }
     }
 
@@ -4659,16 +4652,16 @@ export class UserResult implements IUserResult {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["userName"] = this.userName !== undefined ? this.userName : <any>null;
-        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
-        data["lastName"] = this.lastName !== undefined ? this.lastName : <any>null;
-        data["middleName"] = this.middleName !== undefined ? this.middleName : <any>null;
-        data["email"] = this.email !== undefined ? this.email : <any>null;
-        data["profilePhotoUrl"] = this.profilePhotoUrl !== undefined ? this.profilePhotoUrl : <any>null;
-        data["emailConfirmed"] = this.emailConfirmed !== undefined ? this.emailConfirmed : <any>null;
-        data["description"] = this.description !== undefined ? this.description : <any>null;
-        data["registered"] = this.registered ? this.registered.toString() : <any>null;
+        data["id"] = this.id;
+        data["userName"] = this.userName;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["middleName"] = this.middleName;
+        data["email"] = this.email;
+        data["profilePhotoUrl"] = this.profilePhotoUrl;
+        data["emailConfirmed"] = this.emailConfirmed;
+        data["description"] = this.description;
+        data["registered"] = this.registered ? this.registered.toString() : <any>undefined;
         return data;
     }
 }
@@ -4680,9 +4673,9 @@ export interface IUserResult {
     lastName: string;
     middleName: string;
     email: string;
-    profilePhotoUrl: string | null;
+    profilePhotoUrl: string | undefined;
     emailConfirmed: boolean;
-    description: string | null;
+    description: string | undefined;
     registered: DateTime;
 }
 
@@ -4710,10 +4703,10 @@ export class ValidationError implements IValidationError {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.status = _data["status"] !== undefined ? _data["status"] : <any>null;
-            this.type = _data["type"] !== undefined ? _data["type"] : <any>null;
-            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
-            this.errors = _data["errors"] ? ErrorDetails.fromJS(_data["errors"]) : <any>null;
+            this.status = _data["status"];
+            this.type = _data["type"];
+            this.message = _data["message"];
+            this.errors = _data["errors"] ? ErrorDetails.fromJS(_data["errors"]) : <any>undefined;
         }
     }
 
@@ -4730,10 +4723,10 @@ export class ValidationError implements IValidationError {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["status"] = this.status !== undefined ? this.status : <any>null;
-        data["type"] = this.type !== undefined ? this.type : <any>null;
-        data["message"] = this.message !== undefined ? this.message : <any>null;
-        data["errors"] = this.errors ? this.errors.toJSON() : <any>null;
+        data["status"] = this.status;
+        data["type"] = this.type;
+        data["message"] = this.message;
+        data["errors"] = this.errors ? this.errors.toJSON() : <any>undefined;
         return data;
     }
 }

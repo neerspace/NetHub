@@ -1,26 +1,29 @@
 import {
   AfterContentInit,
-  Component, ComponentFactoryResolver,
+  Component,
+  ComponentFactoryResolver,
   ContentChildren,
   OnInit,
-  QueryList, TemplateRef, Type,
-  ViewChild, ViewContainerRef
+  QueryList,
+  TemplateRef,
+  Type,
+  ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
-import {TabComponent} from "./tab/tab.component";
+import { TabComponent } from './tab/tab.component';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: './tabs.component.html',
-  styleUrls: ['./tabs.component.scss']
+  styleUrls: ['./tabs.component.scss'],
 })
 export class TabsComponent implements AfterContentInit {
   @ContentChildren(TabComponent) tabs: QueryList<TabComponent> = new QueryList<TabComponent>();
-  @ViewChild('container', {read: ViewContainerRef}) dynamicTabsContainer!: ViewContainerRef;
+  @ViewChild('container', { read: ViewContainerRef }) dynamicTabsContainer!: ViewContainerRef;
   dynamicTabs: TabComponent[] = [];
 
   ngAfterContentInit(): void {
-
-    let activeTabs = this.tabs.filter((tab) => tab.active);
+    let activeTabs = this.tabs.filter(tab => tab.active);
 
     if (activeTabs.length === 0 && this.tabs.first) {
       this.selectTab(this.tabs.first);
@@ -34,8 +37,7 @@ export class TabsComponent implements AfterContentInit {
     tab.active = true;
   }
 
-  openTab(title: string, template: TemplateRef<any>, data: any, isCloseable = false) {
-
+  openTab(title: string, template: TemplateRef<any>, data: any, isCloseable = true) {
     const tabType: Type<TabComponent> = TabComponent;
     const componentRef = this.dynamicTabsContainer.createComponent<TabComponent>(tabType);
     const instance: TabComponent = componentRef.instance as TabComponent;
@@ -60,7 +62,7 @@ export class TabsComponent implements AfterContentInit {
         if (this.tabs.first) {
           this.selectTab(this.tabs.first);
         } else if (this.dynamicTabs.length > 0) {
-          this.selectTab(this.dynamicTabs[0])
+          this.selectTab(this.dynamicTabs[0]);
         }
 
         break;
@@ -70,6 +72,6 @@ export class TabsComponent implements AfterContentInit {
 
   closeAllTabs() {
     this.dynamicTabs = [];
-    this.dynamicTabsContainer.clear()
+    this.dynamicTabsContainer.clear();
   }
 }

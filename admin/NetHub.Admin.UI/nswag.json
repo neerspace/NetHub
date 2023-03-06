@@ -3,12 +3,13 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "https://localhost:9110/swagger/$(ApiVersion)/swagger.json",
+      "url": "https://localhost:9110/swagger/v1/swagger.json",
       "output": null
     }
   },
   "codeGenerators": {
     "openApiToTypeScriptClient": {
+      "output": "./src/app/api/index.ts",
       "className": "{controller}Api",
       "moduleName": "",
       "namespace": "",
@@ -56,8 +57,8 @@
       "convertConstructorInterfaceData": true,
       "importRequiredTypes": true,
       "useGetBaseUrlMethod": false,
-      "baseUrlTokenName": "$(BaseUrlToken)",
-      "queryNullValue": "null",
+      "baseUrlTokenName": "API_URL",
+      "queryNullValue": "",
       "inlineNamedDictionaries": false,
       "inlineNamedAny": false,
       "templateDirectory": null,
@@ -65,8 +66,7 @@
       "propertyNameGeneratorType": null,
       "enumNameGeneratorType": null,
       "serviceHost": null,
-      "serviceSchemes": null,
-      "output": "./src/app/api/$(OutputFile).ts"
+      "serviceSchemes": null
     }
   }
 }

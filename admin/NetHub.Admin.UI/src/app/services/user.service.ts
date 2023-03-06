@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import jwtDecode from 'jwt-decode';
 import { DateTime } from 'luxon';
 import { map, Observable, of, Subscription } from 'rxjs';
-import { logger } from '../../../environments/environment';
-import { AuthResult, JWTApi, UserModel, UsersApi } from '../../api';
-import { UnauthorizedError } from '../../shared/errors';
-import { IJwtPayload } from '../../shared/types';
-import { SecuredStorage } from '../storage';
+import { logger } from '../../environments/environment';
+import { JWTApi, JwtResult, UserModel, UsersApi } from '../api';
+import { UnauthorizedError } from '../shared/errors';
+import { IJwtPayload } from '../shared/types';
+import { SecuredStorage } from './storage';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -61,20 +61,20 @@ export class UserService {
     });
   }
 
-  setUserData(authResult: AuthResult): void {
-    console.log('token payload:', jwtDecode(authResult.token));
+  setUserData(authResult: JwtResult | null): void {
+    // console.log('token payload:', jwtDecode(authResult.token));
     this.securedStorage.jwtPayload = authResult;
   }
 
   refresh(redirectUrl: string): Observable<boolean> {
     const refreshExpires = this.securedStorage.jwtPayload?.refreshTokenExpires;
-    if (!refreshExpires) {
+    if (this.securedStorage.jwtPayload && !refreshExpires) {
       this.router.navigateByUrl('/login');
       return of(false);
     }
 
     return this.jwtApi.refresh().pipe(
-      map((result: AuthResult) => {
+      map((result: JwtResult) => {
         if (result) {
           logger.debug('guard refresh');
           this.setUserData(result);

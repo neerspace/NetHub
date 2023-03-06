@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthRequest, JWTApi } from '../../../api';
-import { UserService } from '../../../services/auth';
+import { UserService } from '../../../services/user.service';
 import { ToasterService } from '../../../services/viewport';
 
 @Component({
@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
     if (this.logout) {
       this.jwtApi.revokeToken().subscribe({
         next: () => {
+          this.userService.setUserData(null);
           this.toaster.showInfo('Logout succeeded');
         },
         error: error => {

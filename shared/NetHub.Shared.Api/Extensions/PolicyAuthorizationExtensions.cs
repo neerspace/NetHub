@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using NetHub.Core.Constants;
 using NetHub.Shared.Api.Constants;
 
 namespace NetHub.Shared.Api.Extensions;
@@ -42,5 +43,12 @@ public static class PolicyAuthorizationExtensions
                 readPermission: Permission.ReadArticles,
                 managePolicy: Policies.HasManageArticlesPermission,
                 managePermission: Permission.ManageArticles);
+
+            // /resources
+            options.AddReadManagePolicy(
+                readPolicy: Policies.HasReadResourcesPermission,
+                readPermissions: new[] { Permission.ReadLanguages },
+                managePolicy: Policies.HasManageResourcesPermission,
+                managePermissions: new[] { Permission.ManageLanguages });
         });
 }

@@ -3,14 +3,14 @@
       (click)="selectTab(tab)"
       [class.active]="tab.active"
       class="tab">
-    <button>{{tab.title}}</button>
+    <button class="btn btn-outline-secondary">{{tab.title}}</button>
   </li>
   <!-- dynamic tabs -->
   <li *ngFor="let tab of dynamicTabs"
       (click)="selectTab(tab)"
       [class.active]="tab.active"
       class="tab">
-    <button>{{tab.title}}
+    <button class="btn btn-outline-secondary">{{tab.title}}
       <i *ngIf="tab.isCloseable"
          (click)="closeTab(tab)"
          class="las la-times"></i>

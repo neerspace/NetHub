@@ -17,7 +17,7 @@ namespace NetHub.Data.SqlServer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.1")
+                .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -59,7 +59,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Articles", (string)null);
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Articles.ArticleContributor", b =>
@@ -86,7 +86,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ArticleContributors", (string)null);
+                    b.ToTable("ArticleContributors");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Articles.ArticleLocalization", b =>
@@ -151,7 +151,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("LastContributorId");
 
-                    b.ToTable("ArticleLocalizations", (string)null);
+                    b.ToTable("ArticleLocalizations");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Articles.ArticleResource", b =>
@@ -166,7 +166,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.ToTable("ArticleResources", (string)null);
+                    b.ToTable("ArticleResources");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Articles.ArticleTag", b =>
@@ -181,7 +181,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.ToTable("ArticleTags", (string)null);
+                    b.ToTable("ArticleTags");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Articles.ArticleVote", b =>
@@ -200,7 +200,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ArticleVotes", (string)null);
+                    b.ToTable("ArticleVotes");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Identity.AppDevice", b =>
@@ -329,7 +329,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         {
                             Id = 3,
                             ClaimType = "Permissions",
-                            ClaimValue = "mt",
+                            ClaimValue = "*",
                             RoleId = 2L
                         });
                 });
@@ -340,9 +340,6 @@ namespace NetHub.Data.SqlServer.Migrations
                         .HasMaxLength(128)
                         .IsUnicode(false)
                         .HasColumnType("varchar(128)");
-
-                    b.Property<long?>("AppUserId")
-                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Created")
                         .ValueGeneratedOnAdd()
@@ -366,8 +363,6 @@ namespace NetHub.Data.SqlServer.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Value");
-
-                    b.HasIndex("AppUserId");
 
                     b.HasIndex("DeviceId");
 
@@ -548,12 +543,19 @@ namespace NetHub.Data.SqlServer.Migrations
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
+                    b.Property<Guid?>("FlagId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.HasKey("Code");
+
+                    b.HasIndex("FlagId")
+                        .IsUnique()
+                        .HasFilter("[FlagId] IS NOT NULL");
 
                     b.ToTable("Languages", (string)null);
                 });
@@ -584,7 +586,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Resources", (string)null);
+                    b.ToTable("Resource");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.SavedArticle", b =>
@@ -602,7 +604,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("LocalizationId");
 
-                    b.ToTable("SavedArticles", (string)null);
+                    b.ToTable("SavedArticles");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Tag", b =>
@@ -621,79 +623,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("Tags", (string)null);
-                });
-
-            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Views.ExtendedUserArticle", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("LocalizationId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ArticleId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("Banned")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("ContributorId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("ContributorRole")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Html")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsSaved")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LanguageCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Published")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Rate")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("SavedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Views")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Vote")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LocalizationId");
-
-                    b.ToTable((string)null);
-
-                    b.ToView("v_ExtendedUserArticle", (string)null);
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Articles.Article", b =>
@@ -821,16 +751,12 @@ namespace NetHub.Data.SqlServer.Migrations
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Identity.AppToken", b =>
                 {
-                    b.HasOne("NetHub.Data.SqlServer.Entities.Identity.AppUser", null)
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("NetHub.Data.SqlServer.Entities.Identity.AppDevice", "Device")
                         .WithMany()
                         .HasForeignKey("DeviceId");
 
                     b.HasOne("NetHub.Data.SqlServer.Entities.Identity.AppUser", "User")
-                        .WithMany()
+                        .WithMany("Tokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -846,7 +772,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .WithMany()
                         .HasForeignKey("PhotoId");
 
-                    b.OwnsOne("NetHub.Data.SqlServer.Entities.Identity.AppUser.UsernameChanges#NetHub.Data.SqlServer.Entities.UsernameChange", "UsernameChanges", b1 =>
+                    b.OwnsOne("NetHub.Data.SqlServer.Entities.UsernameChange", "UsernameChanges", b1 =>
                         {
                             b1.Property<long>("AppUserId")
                                 .HasColumnType("bigint");
@@ -859,7 +785,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                             b1.HasKey("AppUserId");
 
-                            b1.ToTable("AppUsers", (string)null);
+                            b1.ToTable("AppUsers");
 
                             b1.WithOwner()
                                 .HasForeignKey("AppUserId");
@@ -910,6 +836,16 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Language", b =>
+                {
+                    b.HasOne("NetHub.Data.SqlServer.Entities.Resource", "Flag")
+                        .WithOne()
+                        .HasForeignKey("NetHub.Data.SqlServer.Entities.Language", "FlagId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Flag");
+                });
+
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.SavedArticle", b =>
                 {
                     b.HasOne("NetHub.Data.SqlServer.Entities.Articles.ArticleLocalization", "Localization")
@@ -954,9 +890,9 @@ namespace NetHub.Data.SqlServer.Migrations
                 {
                     b.Navigation("Articles");
 
-                    b.Navigation("RefreshTokens");
-
                     b.Navigation("SavedArticles");
+
+                    b.Navigation("Tokens");
 
                     b.Navigation("UserClaims");
 

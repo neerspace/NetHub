@@ -8,7 +8,7 @@ import {
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Observable, throwError } from 'rxjs';
+import { Observable, tap, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { SecuredStorage } from '../../services/storage';
@@ -19,12 +19,12 @@ import { RequestTokenService } from '../request-token.service';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   constructor(
-    private jwtApi: JWTApi,
-    private router: Router,
-    private route: ActivatedRoute,
-    private loader: LoaderService,
-    private securedStorage: SecuredStorage,
-    private tokenService: RequestTokenService,
+    private readonly jwtApi: JWTApi,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly loader: LoaderService,
+    private readonly securedStorage: SecuredStorage,
+    private readonly tokenService: RequestTokenService,
   ) {}
 
   /**
@@ -35,15 +35,14 @@ export class TokenInterceptor implements HttpInterceptor {
    * @memberof TokenInterceptor
    */
   public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this.loader.show();
-    console.log('token start');
+    // console.log('[JWT] Token start');
 
     if (this.isSecureUrl(request.url)) {
-      console.log('secured case');
+      // console.log('[JWT] Secured case');
       return this.tokenService.handleRequest(request, next);
     }
 
-    console.log('alt case');
+    // console.log('[JWT] Alt case');
     return this.invokeRequest(next, request);
   }
 
@@ -52,26 +51,27 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private invokeRequest(next: HttpHandler, request: HttpRequest<any>): Observable<HttpEvent<any>> {
-    return next.handle(request).pipe(
-      catchError(error => {
-        if (error instanceof HttpErrorResponse) {
-          if (request.url.endsWith('/jwt/refresh')) {
-            this.securedStorage.jwtPayload = null;
-            this.loader.hide();
-            this.router.navigateByUrl('/login', { state: { redirect: this.route.url } });
-          } else if (error.status === 403) {
-            this.loader.hide();
-            this.router.navigateByUrl('/error/403', { skipLocationChange: true });
-          } else if (error.status === 401) {
-            const observer = this.tokenService.handleRequest(request, next);
-            if (observer) {
-              return observer;
+    return next
+      .handle(request)
+      .pipe(tap(_ => this.loader.hide()))
+      .pipe(
+        catchError(error => {
+          if (error instanceof HttpErrorResponse) {
+            if (request.url.endsWith('/jwt/refresh')) {
+              this.securedStorage.jwtPayload = null;
+              // this.router.navigateByUrl('/login', { state: { redirect: this.route.url } });
+            } else if (error.status === 403) {
+              this.router.navigateByUrl('/error/403', { skipLocationChange: true });
+            } else if (error.status === 401) {
+              const observer = this.tokenService.handleRequest(request, next);
+              if (observer) {
+                return observer;
+              }
             }
           }
-        }
 
-        return throwError(error);
-      }),
-    );
+          return throwError(error);
+        }),
+      );
   }
 }

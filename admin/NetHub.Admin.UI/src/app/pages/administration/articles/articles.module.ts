@@ -1,24 +1,20 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {RouterModule, Routes} from "@angular/router";
-import {ArticlesTableComponent} from './articles-table/articles-table.component';
-import {LayoutComponentsModule} from "../../../components/layout/layout-components.module";
-import {TableComponentsModule} from "../../../components/table/table-components.module";
-import {CoreComponentsModule} from "../../../components/core/core-components.module";
-import {AngularSplitModule} from "angular-split";
-import { LocalizationViewComponent } from './components/localization-view/localization-view.component';
-import { ArticleViewComponent } from './components/article-view/article-view.component';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
+import { AngularSplitModule } from 'angular-split';
+import { CoreComponentsModule } from 'src/app/components/core/core-components.module';
+import { LayoutComponentsModule } from 'src/app/components/layout/layout-components.module';
+import { TableComponentsModule } from 'src/app/components/table/table-components.module';
+import { FormComponentsModule } from '../../../components/form/form-components.module';
+import { ArticleFormComponent } from './article-form/article-form.component';
+import { ArticlesTableComponent } from './articles-table/articles-table.component';
+import { LocalizationFormComponent } from './localization-form/localization-form.component';
 
-const routes: Routes = [
-  { path: '', component: ArticlesTableComponent },
-];
+const routes: Routes = [{ path: '', component: ArticlesTableComponent }];
 
 @NgModule({
-  declarations: [
-    ArticlesTableComponent,
-    LocalizationViewComponent,
-    ArticleViewComponent
-  ],
+  declarations: [ArticlesTableComponent, LocalizationFormComponent, ArticleFormComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -26,7 +22,8 @@ const routes: Routes = [
     TableComponentsModule,
     CoreComponentsModule,
     AngularSplitModule,
-  ]
+    FormComponentsModule,
+    ReactiveFormsModule,
+  ],
 })
-export class ArticlesModule {
-}
+export class ArticlesModule {}

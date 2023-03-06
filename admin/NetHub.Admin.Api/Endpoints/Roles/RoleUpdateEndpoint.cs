@@ -5,11 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.EntityFramework.Extensions;
 using NeerCore.Exceptions;
 using NetHub.Admin.Models.Roles;
+using NetHub.Shared.Api.Abstractions;
 using NetHub.Core.Constants;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities.Identity;
-using NetHub.Shared.Api;
-using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
 
 namespace NetHub.Admin.Api.Endpoints.Roles;
@@ -37,7 +36,7 @@ public class RoleUpdateEndpoint : ActionEndpoint<RoleModel>
         if (await _roles.CountAsync(r => r.NormalizedName == request.Name, ct) > 1)
             throw new ValidationFailedException("name", "Role with the same name already exists");
 
-        var role = await _roles.Include(r => r.RoleClaims!.Where(rc => rc.ClaimType == Claims.Permission))
+        var role = await _roles.Include(r => r.RoleClaims!.Where(rc => rc.ClaimType == Claims.Permissions))
             .FirstOr404Async(r => r.Id == request.Id, ct);
 
         var prevPermissions = role.RoleClaims!;

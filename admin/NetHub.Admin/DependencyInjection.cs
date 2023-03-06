@@ -10,9 +10,6 @@ public static class DependencyInjection
 {
     public static void AddAdminApplication(this IServiceCollection services)
     {
-        services.AddAllMappers();
         services.AddAllServices(options => options.ResolveInternalImplementations = true);
-        services.ConfigureAllOptions();
-        services.AddTransient<SignInManager<AppUser>>();
     }
 }

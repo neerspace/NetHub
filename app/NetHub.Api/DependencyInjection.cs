@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
 using NetHub.Core.Constants;
-using NetHub.Shared.Api;
 using NetHub.Shared.Api.Extensions;
 using NetHub.Shared.Options;
 
@@ -8,11 +7,9 @@ namespace NetHub.Api;
 
 public static class DependencyInjection
 {
-    public static void AddWebApi(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
+    public static void AddWebApi(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddHttpClient();
-
-        services.AddSharedApi(configuration, environment);
 
         services.AddJwtAuthentication().WithGoogleAuthProvider(configuration);
         services.AddAuthorization();

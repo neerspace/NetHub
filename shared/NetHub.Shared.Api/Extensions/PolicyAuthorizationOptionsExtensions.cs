@@ -8,32 +8,57 @@ namespace NetHub.Shared.Api.Extensions;
 internal static class PolicyAuthorizationOptionsExtensions
 {
     private static readonly Type s_permissionType = typeof(Permission);
-    private static readonly string s_masterPermission = Permission.Master.GetPermissionInfo().Key;
 
-    public static PermissionInfoAttribute GetPermissionInfo(this Permission permission) =>
+    internal static PermissionInfoAttribute GetPermissionInfo(this Permission permission) =>
         s_permissionType
             .GetMember(permission.ToString()).Single()
             .GetCustomAttribute<PermissionInfoAttribute>()!;
 
-    public static void AddReadManagePolicy(
-        this AuthorizationOptions options, string readPolicy,
-        string managePolicy, Permission readPermission, Permission managePermission)
+
+    internal static void AddReadManagePolicy(
+        this AuthorizationOptions options,
+        string readPolicy,
+        Permission readPermission,
+        string managePolicy,
+        Permission managePermission)
     {
-        options.AddReadPolicy(readPolicy, readPermission, managePermission);
-        options.AddManagePolicy(managePolicy, managePermission);
+        var managePermissionName = managePermission.GetPermissionInfo().Key;
+        var readPermissionName = readPermission.GetPermissionInfo().Key;
+
+        // READ
+        options.AddPolicy(readPolicy,
+            p => p.RequireClaim(Claims.Permissions,
+                readPermissionName,
+                managePermissionName,
+                PermissionsMetadata.MasterPermission));
+
+        // MANAGE
+        options.AddPolicy(managePolicy,
+            p => p.RequireClaim(Claims.Permissions,
+                managePermissionName,
+                PermissionsMetadata.MasterPermission));
     }
 
-    private static void AddManagePolicy(this AuthorizationOptions options, string policy, Permission permission) =>
-        options.AddManagePolicy(policy, permission.GetPermissionInfo().Key);
+    internal static void AddReadManagePolicy(
+        this AuthorizationOptions options,
+        string readPolicy,
+        IEnumerable<Permission> readPermissions,
+        string managePolicy,
+        IEnumerable<Permission> managePermissions)
+    {
+        var managePermissionNames = managePermissions
+            .Select(p => p.GetPermissionInfo().Key)
+            .Append(PermissionsMetadata.MasterPermission).ToArray();
+        var readPermissionNames = readPermissions
+            .Select(p => p.GetPermissionInfo().Key)
+            .Union(managePermissionNames).ToArray();
 
-    private static void AddReadPolicy(this AuthorizationOptions options, string policy, Permission permission, Permission altPermission) =>
-        options.AddReadPolicy(policy, permission.GetPermissionInfo().Key, altPermission.GetPermissionInfo().Key);
+        // READ
+        options.AddPolicy(readPolicy,
+            p => p.RequireClaim(Claims.Permissions, readPermissionNames));
 
-    private static void AddReadPolicy(this AuthorizationOptions options, string policy, string permission, string altPermission) =>
-        options.AddPolicy(policy, p => p.RequireClaim(Claims.Permission,
-            permission, altPermission, s_masterPermission));
-
-    private static void AddManagePolicy(this AuthorizationOptions options, string policy, string permission) =>
-        options.AddPolicy(policy, p => p.RequireClaim(Claims.Permission,
-            permission, s_masterPermission));
+        // MANAGE
+        options.AddPolicy(managePolicy,
+            p => p.RequireClaim(Claims.Permissions, managePermissionNames));
+    }
 }

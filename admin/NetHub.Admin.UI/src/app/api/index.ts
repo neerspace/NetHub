@@ -512,7 +512,7 @@ export class JWTApi {
      * @param body (optional) 
      * @return Created
      */
-    authenticate(body: AuthRequest | undefined): Observable<AuthResult> {
+    authenticate(body: AuthRequest | undefined): Observable<JwtResult> {
         let url_ = this.baseUrl + "/v1/jwt/authenticate";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -536,14 +536,14 @@ export class JWTApi {
                 try {
                     return this.processAuthenticate(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<AuthResult>;
+                    return _observableThrow(e) as any as Observable<JwtResult>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<AuthResult>;
+                return _observableThrow(response_) as any as Observable<JwtResult>;
         }));
     }
 
-    protected processAuthenticate(response: HttpResponseBase): Observable<AuthResult> {
+    protected processAuthenticate(response: HttpResponseBase): Observable<JwtResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -554,7 +554,7 @@ export class JWTApi {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result201: any = null;
             let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result201 = AuthResult.fromJS(resultData201);
+            result201 = JwtResult.fromJS(resultData201);
             return _observableOf(result201);
             }));
         } else if (status === 400) {
@@ -603,7 +603,7 @@ export class JWTApi {
     /**
      * @return Created
      */
-    refresh(): Observable<AuthResult> {
+    refresh(): Observable<JwtResult> {
         let url_ = this.baseUrl + "/v1/jwt/refresh";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -623,14 +623,14 @@ export class JWTApi {
                 try {
                     return this.processRefresh(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<AuthResult>;
+                    return _observableThrow(e) as any as Observable<JwtResult>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<AuthResult>;
+                return _observableThrow(response_) as any as Observable<JwtResult>;
         }));
     }
 
-    protected processRefresh(response: HttpResponseBase): Observable<AuthResult> {
+    protected processRefresh(response: HttpResponseBase): Observable<JwtResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -641,7 +641,7 @@ export class JWTApi {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result201: any = null;
             let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result201 = AuthResult.fromJS(resultData201);
+            result201 = JwtResult.fromJS(resultData201);
             return _observableOf(result201);
             }));
         } else if (status === 400) {
@@ -1244,6 +1244,100 @@ export class LanguagesApi {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param file (optional) 
+     * @return Created
+     */
+    uploadFlag(code: string, file: FileParameter | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/v1/languages/{code}/upload-flag";
+        if (code === undefined || code === null)
+            throw new Error("The parameter 'code' must be defined.");
+        url_ = url_.replace("{code}", encodeURIComponent("" + code));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file === null || file === undefined)
+            throw new Error("The parameter 'file' cannot be null.");
+        else
+            content_.append("File", file.data, file.fileName ? file.fileName : "File");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            withCredentials: true,
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUploadFlag(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUploadFlag(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUploadFlag(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -1604,6 +1698,104 @@ export class PermissionsApi {
             let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result400 = ErrorDto.fromJS(resultData400);
             return throwException("Validation Failed", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class ResourcesApi {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getById(id: string): Observable<void> {
+        let url_ = this.baseUrl + "/v1/resources/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            withCredentials: true,
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processGetById(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
             }));
         } else if (status === 404) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -3460,6 +3652,7 @@ export interface IArticleContributor {
 export class ArticleContributorModel implements IArticleContributorModel {
     role!: ArticleContributorRole;
     userName!: string;
+    profilePhotoUrl!: string | null;
 
     constructor(data?: IArticleContributorModel) {
         if (data) {
@@ -3474,6 +3667,7 @@ export class ArticleContributorModel implements IArticleContributorModel {
         if (_data) {
             this.role = _data["role"] !== undefined ? _data["role"] : <any>null;
             this.userName = _data["userName"] !== undefined ? _data["userName"] : <any>null;
+            this.profilePhotoUrl = _data["profilePhotoUrl"] !== undefined ? _data["profilePhotoUrl"] : <any>null;
         }
     }
 
@@ -3488,6 +3682,7 @@ export class ArticleContributorModel implements IArticleContributorModel {
         data = typeof data === 'object' ? data : {};
         data["role"] = this.role !== undefined ? this.role : <any>null;
         data["userName"] = this.userName !== undefined ? this.userName : <any>null;
+        data["profilePhotoUrl"] = this.profilePhotoUrl !== undefined ? this.profilePhotoUrl : <any>null;
         return data;
     }
 }
@@ -3495,6 +3690,7 @@ export class ArticleContributorModel implements IArticleContributorModel {
 export interface IArticleContributorModel {
     role: ArticleContributorRole;
     userName: string;
+    profilePhotoUrl: string | null;
 }
 
 export enum ArticleContributorRole {
@@ -4051,66 +4247,6 @@ export interface IAuthRequest {
     password: string | null;
 }
 
-export class AuthResult implements IAuthResult {
-    username!: string;
-    firstName!: string;
-    lastName!: string | null;
-    token!: string;
-    tokenExpires!: DateTime;
-    refreshTokenExpires!: DateTime;
-    profilePhotoUrl!: string | null;
-
-    constructor(data?: IAuthResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.username = _data["username"] !== undefined ? _data["username"] : <any>null;
-            this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
-            this.lastName = _data["lastName"] !== undefined ? _data["lastName"] : <any>null;
-            this.token = _data["token"] !== undefined ? _data["token"] : <any>null;
-            this.tokenExpires = _data["tokenExpires"] ? DateTime.fromISO(_data["tokenExpires"].toString()) : <any>null;
-            this.refreshTokenExpires = _data["refreshTokenExpires"] ? DateTime.fromISO(_data["refreshTokenExpires"].toString()) : <any>null;
-            this.profilePhotoUrl = _data["profilePhotoUrl"] !== undefined ? _data["profilePhotoUrl"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): AuthResult {
-        data = typeof data === 'object' ? data : {};
-        let result = new AuthResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["username"] = this.username !== undefined ? this.username : <any>null;
-        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
-        data["lastName"] = this.lastName !== undefined ? this.lastName : <any>null;
-        data["token"] = this.token !== undefined ? this.token : <any>null;
-        data["tokenExpires"] = this.tokenExpires ? this.tokenExpires.toString() : <any>null;
-        data["refreshTokenExpires"] = this.refreshTokenExpires ? this.refreshTokenExpires.toString() : <any>null;
-        data["profilePhotoUrl"] = this.profilePhotoUrl !== undefined ? this.profilePhotoUrl : <any>null;
-        return data;
-    }
-}
-
-export interface IAuthResult {
-    username: string;
-    firstName: string;
-    lastName: string | null;
-    token: string;
-    tokenExpires: DateTime;
-    refreshTokenExpires: DateTime;
-    profilePhotoUrl: string | null;
-}
-
 export enum ContentStatus {
     Draft = "Draft",
     Pending = "Pending",
@@ -4236,11 +4372,16 @@ export enum InternalStatus {
     AddedHtml = "AddedHtml",
 }
 
-export class Language implements ILanguage {
-    code!: string;
-    name!: string;
+export class JwtResult implements IJwtResult {
+    username!: string;
+    firstName!: string;
+    lastName!: string | null;
+    token!: string;
+    tokenExpires!: DateTime;
+    refreshTokenExpires!: DateTime;
+    profilePhotoUrl!: string | null;
 
-    constructor(data?: ILanguage) {
+    constructor(data?: IJwtResult) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -4251,8 +4392,68 @@ export class Language implements ILanguage {
 
     init(_data?: any) {
         if (_data) {
+            this.username = _data["username"] !== undefined ? _data["username"] : <any>null;
+            this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
+            this.lastName = _data["lastName"] !== undefined ? _data["lastName"] : <any>null;
+            this.token = _data["token"] !== undefined ? _data["token"] : <any>null;
+            this.tokenExpires = _data["tokenExpires"] ? DateTime.fromISO(_data["tokenExpires"].toString()) : <any>null;
+            this.refreshTokenExpires = _data["refreshTokenExpires"] ? DateTime.fromISO(_data["refreshTokenExpires"].toString()) : <any>null;
+            this.profilePhotoUrl = _data["profilePhotoUrl"] !== undefined ? _data["profilePhotoUrl"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): JwtResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new JwtResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["username"] = this.username !== undefined ? this.username : <any>null;
+        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
+        data["lastName"] = this.lastName !== undefined ? this.lastName : <any>null;
+        data["token"] = this.token !== undefined ? this.token : <any>null;
+        data["tokenExpires"] = this.tokenExpires ? this.tokenExpires.toString() : <any>null;
+        data["refreshTokenExpires"] = this.refreshTokenExpires ? this.refreshTokenExpires.toString() : <any>null;
+        data["profilePhotoUrl"] = this.profilePhotoUrl !== undefined ? this.profilePhotoUrl : <any>null;
+        return data;
+    }
+}
+
+export interface IJwtResult {
+    username: string;
+    firstName: string;
+    lastName: string | null;
+    token: string;
+    tokenExpires: DateTime;
+    refreshTokenExpires: DateTime;
+    profilePhotoUrl: string | null;
+}
+
+export class Language implements ILanguage {
+    code!: string;
+    name!: string;
+    flagId!: string | null;
+    flag!: Resource;
+
+    constructor(data?: ILanguage) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.flag = data.flag && !(<any>data.flag).toJSON ? new Resource(data.flag) : <Resource>this.flag;
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
             this.code = _data["code"] !== undefined ? _data["code"] : <any>null;
             this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.flagId = _data["flagId"] !== undefined ? _data["flagId"] : <any>null;
+            this.flag = _data["flag"] ? Resource.fromJS(_data["flag"]) : <any>null;
         }
     }
 
@@ -4267,6 +4468,8 @@ export class Language implements ILanguage {
         data = typeof data === 'object' ? data : {};
         data["code"] = this.code !== undefined ? this.code : <any>null;
         data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["flagId"] = this.flagId !== undefined ? this.flagId : <any>null;
+        data["flag"] = this.flag ? this.flag.toJSON() : <any>null;
         return data;
     }
 }
@@ -4274,11 +4477,14 @@ export class Language implements ILanguage {
 export interface ILanguage {
     code: string;
     name: string;
+    flagId: string | null;
+    flag: IResource;
 }
 
 export class LanguageModel implements ILanguageModel {
     code!: string;
     name!: string;
+    flagUrl!: string | null;
 
     constructor(data?: ILanguageModel) {
         if (data) {
@@ -4293,6 +4499,7 @@ export class LanguageModel implements ILanguageModel {
         if (_data) {
             this.code = _data["code"] !== undefined ? _data["code"] : <any>null;
             this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.flagUrl = _data["flagUrl"] !== undefined ? _data["flagUrl"] : <any>null;
         }
     }
 
@@ -4307,6 +4514,7 @@ export class LanguageModel implements ILanguageModel {
         data = typeof data === 'object' ? data : {};
         data["code"] = this.code !== undefined ? this.code : <any>null;
         data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["flagUrl"] = this.flagUrl !== undefined ? this.flagUrl : <any>null;
         return data;
     }
 }
@@ -4314,6 +4522,7 @@ export class LanguageModel implements ILanguageModel {
 export interface ILanguageModel {
     code: string;
     name: string;
+    flagUrl: string | null;
 }
 
 export class LanguageModelFiltered implements ILanguageModelFiltered {
@@ -5057,6 +5266,11 @@ export interface IValidationError {
 export enum Vote {
     Up = "Up",
     Down = "Down",
+}
+
+export interface FileParameter {
+    data: any;
+    fileName: string;
 }
 
 export class ApiException extends Error {

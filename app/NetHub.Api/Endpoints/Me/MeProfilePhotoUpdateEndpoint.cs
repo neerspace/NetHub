@@ -33,11 +33,11 @@ public sealed class MeProfilePhotoUpdateEndpoint : Endpoint<MeProfilePhotoUpdate
         var user = await UserProvider.GetUserAsync();
 
         if (user.PhotoId is not null)
-            await _resourceService.DeleteResourceFromDb(user.PhotoId.Value);
+            await _resourceService.DeleteAsync(user.PhotoId.Value);
 
         if (updateRequest.File is not null)
         {
-            var photoId = await _resourceService.SaveResourceToDb(updateRequest.File);
+            var photoId = await _resourceService.UploadAsync(updateRequest.File);
 
             user.PhotoId = photoId;
             user.ProfilePhotoUrl = Request.GetResourceUrl(photoId);

@@ -12,5 +12,5 @@ public struct Claims
     public const string Email = ClaimTypes.Email;
     public const string Registered = nameof(Registered);
     public const string PhoneNumber = nameof(PhoneNumber);
-    public const string Permission = nameof(Permission);
+    public const string Permissions = nameof(Permissions);
 }
