@@ -11,6 +11,7 @@ import { FormControl, FormGroupDirective, Validators } from '@angular/forms';
 import { errorMessages } from '../../error-messages';
 import { CopyPasteService } from '../../services/copy-paste.service';
 import { BoolInput } from '../../shared/types';
+import { FormError } from './types';
 
 type FormBaseChanges = SimpleChanges & { disabled: SimpleChange };
 
@@ -42,6 +43,9 @@ export abstract class FieldBaseComponent implements OnInit, OnChanges {
     // this.formGroup.form.error
 
     this.formControl ??= this.formGroup.form.get(this.controlName) as FormControl;
+    if (!this.formControl) {
+      throw new FormError(`Form control for '${this.controlName}' not exists in FormGroup`);
+    }
 
     setTimeout(() => {
       if (this.required === true || this.required === 'true') {

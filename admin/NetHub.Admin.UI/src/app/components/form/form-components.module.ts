@@ -16,6 +16,8 @@ import { TextAreaFieldComponent } from './text-area/text-area-field.component';
 import { TextAreaInputComponent } from './text-area/text-area-input.component';
 import { TextInputConditionalComponent } from './text-input-conditional/text-input-conditional.component';
 import { TextFieldComponent } from './text/text-field.component';
+import { SelectFieldComponent } from './select/select-field.component';
+import { CheckboxFieldComponent } from './checkbox/checkbox-field.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { TextFieldComponent } from './text/text-field.component';
     NumberFieldComponent,
     FormContentComponent,
     FieldsetComponent,
+    SelectFieldComponent,
+    CheckboxFieldComponent,
   ],
   exports: [
     FormLayoutComponent,
@@ -52,6 +56,7 @@ import { TextFieldComponent } from './text/text-field.component';
     DatePickerComponent,
     FormContentComponent,
     FieldsetComponent,
+    SelectFieldComponent,
   ],
   imports: [
     CommonModule,

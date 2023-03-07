@@ -9,6 +9,7 @@ export class TabComponent {
   @Input('tabTitle') title: string = 'title';
   @Input() active: boolean = false;
   @Input() isCloseable = false;
+  @Input() key!: string;
   @Input() template!: TemplateRef<any>;
   @Input() dataContext!: any;
 }
