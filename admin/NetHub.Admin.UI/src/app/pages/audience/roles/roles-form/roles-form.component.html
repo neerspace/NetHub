@@ -39,6 +39,10 @@
                       [maxLength]="50"
                       [required]="true"></app-text-field>
 
+      <app-select-field label="Role Custom Select"
+                        controlName="name"
+                        [options]="[{key: 'user', text: 'User', icon: 'fa-user'}, {key: 'admin', text: 'Admin'}, {key: 'super', text: 'Super Admin', icon: 'fa-key'}]"></app-select-field>
+
       <ul>
         <ng-container *ngFor="let pem of roleService.permissions"
                       [ngTemplateOutlet]="permissionItem"
@@ -46,6 +50,8 @@
       </ul>
     </app-fieldset>
   </form>
+
+  <pre>{{roleService.form.value | json}}</pre>
 
 </app-main-content>
 

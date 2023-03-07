@@ -1,4 +1,3 @@
-import { TemplateRef } from '@angular/core';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { NumberPattern } from '../form/types';
@@ -6,7 +5,7 @@ import { NumberPattern } from '../form/types';
 export class DataTableError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'DataTableERROR';
+    this.name = 'Custom Error of DataTable';
   }
 }
 
