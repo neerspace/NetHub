@@ -1,44 +1,68 @@
 <app-main-header pageTitle="Articles">
-  <button app-icon-button icon="la-sync" variant="primary"
-          [disabled]="table.loading" (click)="table.loadData()">
+  <button app-icon-button
+          icon="la-sync"
+          variant="primary"
+          [disabled]="table.loading"
+          (click)="table.loadData()">
     Refresh
   </button>
-  <button app-icon-button icon="la-download" variant="primary"
-          [disabled]="table.loading" (click)="downloadJson()">
-    JSON
-  </button>
-  <button app-icon-button *ngIf="articlesService.lastFormId"
-          icon="la-undo" variant="secondary" (click)="articlesService.showForm()">
-    Back to Editor
-  </button>
+  <!--<button app-icon-button-->
+  <!--        icon="la-download"-->
+  <!--        variant="primary"-->
+  <!--        [disabled]="table.loading"-->
+  <!--        (click)="downloadJson()">-->
+  <!--  JSON-->
+  <!--</button>-->
 </app-main-header>
 
 <app-main-content>
 
-  <as-split class="split-view" unit="percent" direction="vertical" [gutterSize]="4" (dragEnd)="resize($event.sizes)">
-    <as-split-area [size]="firstComponentSize">
+  <as-split class="split-view"
+            unit="percent"
+            direction="vertical"
+            [gutterSize]="4"
+            (dragEnd)="resize($event.sizes)">
+
+    <as-split-area [size]="splitSizes[0]">
       <div class="split-area-content">
-        <app-data-table
-          #table
-          defaultSorting="-created"
-          [additionColumns]="additionColumns"
-          [columns]="columns"
-          [buttons]="buttons"
-          [onFilter]="fetchFilter.bind(this)">
+        <app-data-table #table
+                        defaultSorting="-created"
+                        [columns]="columns"
+                        [columnChooser]="true"
+                        columnChooserSequence="articles"
+                        [onFilter]="fetchFilter.bind(this)">
+
+          <ng-container *appCustomColumn="'localizationButtons'; value as val; object as obj">
+            <button class="btn btn-secondary neutral general-button"
+                    (click)="onDetailsClick(obj)">
+              <span class="text">Edit</span>
+            </button>
+            <button class="btn neutral flag-button"
+                    *ngFor="let localization of val"
+                    (click)="onLocalizationClick(localization)">
+              <!--<span class="text">{{localization.languageCode.toUpperCase()}}</span>-->
+              <span style="background-image: url({{articleSharedService.flags[localization.languageCode]}})"
+                    class="flag-img"></span>
+            </button>
+          </ng-container>
+
         </app-data-table>
-        <button (click)="onLocalizationClick()">Add Tab</button>
       </div>
     </as-split-area>
-    <as-split-area [size]="secondComponentSize">
-      <div class="split-area-content">
-        <app-tabs>
-          <app-tab tabTitle="First tab">Hello</app-tab>
-        </app-tabs>
 
-        <ng-template #localization>
-          I'm localization
+    <as-split-area [size]="splitSizes[1]">
+      <div class="split-area-content">
+        <app-tabs></app-tabs>
+        <ng-template let-data="data"
+                     #articleForm>
+          <app-article-form [article]="data"></app-article-form>
+        </ng-template>
+        <ng-template let-data="data"
+                     #localizationForm>
+          <app-localization-form [model]="data"></app-localization-form>
         </ng-template>
       </div>
     </as-split-area>
+
   </as-split>
 </app-main-content>

@@ -15,11 +15,12 @@ public static class ServiceCollectionExtensions
         services.Configure<SwaggerGenOptions>(options =>
         {
             options.CustomOperationIds(NSwagEndpointNameFactory.Create);
+            // Document Filters
             options.DocumentFilter<ResponsesFilter>();
-            options.SchemaFilter<FormFileFilter>();
+            // Operation Filters
+            options.OperationFilter<FormContentTypeSchemaOperationFilter>();
             options.EnableAnnotations();
             options.SupportNonNullableReferenceTypes();
-            options.UseAllOfToExtendReferenceSchemas();
         });
     }
 

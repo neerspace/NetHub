@@ -3,7 +3,6 @@ using NeerCore.Api.Swagger.Extensions;
 using NeerCore.Exceptions;
 using NeerCore.Logging;
 using NeerCore.Logging.Extensions;
-using NetHub;
 using NetHub.Admin;
 using NetHub.Admin.Api;
 using NetHub.Data.SqlServer;
@@ -52,8 +51,8 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
     builder.Services.AddAdminApplication();
     builder.Services.AddSharedApplication(builder.Configuration);
     // Api
-    builder.Services.AddSharedApi(builder.Configuration, builder.Environment);
     builder.Services.AddWebAdminApi();
+    builder.Services.AddSharedApi(builder.Configuration, builder.Environment);
 }
 
 // Configure the HTTP request pipeline

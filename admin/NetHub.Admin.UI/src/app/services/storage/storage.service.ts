@@ -5,7 +5,7 @@ import { SettingsKey, StorageKey } from './types';
 
 @Injectable({ providedIn: 'root' })
 export class StorageService extends StorageBase {
-  set(key: SettingsKey, value: any | null) {
+  set(key: SettingsKey | string, value: any | null) {
     let settings = this.getItem(StorageKey.Settings);
     const json = settings ? JSON.parse(settings) : {};
     json[key] = value;
@@ -13,9 +13,17 @@ export class StorageService extends StorageBase {
     this.setItem(StorageKey.Settings, settings);
   }
 
-  get(key: SettingsKey): any | null {
+  get(key: SettingsKey | string): any | null {
     let settings = this.getItem(StorageKey.Settings);
     return settings ? JSON.parse(settings)[key] : null;
+  }
+
+  setColumnSequence(sequenceName: string, sequence: string[] | null) {
+    this.set(SettingsKey.ColumnSequence + sequenceName, sequence);
+  }
+
+  getColumnSequence(sequenceName: string): string[] | null {
+    return this.get(SettingsKey.ColumnSequence + sequenceName);
   }
 
   get language(): string | null {

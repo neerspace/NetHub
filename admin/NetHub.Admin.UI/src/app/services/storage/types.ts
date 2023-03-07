@@ -10,7 +10,8 @@ export enum StorageKey {
 }
 
 export enum SettingsKey {
-  UsersSplitSizes = 'usr_sps',
+  SplitSizes = 'sps:',
+  ColumnSequence = 'seq:',
 }
 
 export interface IJwtData {

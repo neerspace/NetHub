@@ -24,6 +24,10 @@ i, .nav-image {
   color: var(--c-text);
   transition: background-color .05s ease;
 
+  &.active {
+    background-color: var(--c-bg-2);
+  }
+
   &:hover {
     background-color: var(--c-primary);
   }

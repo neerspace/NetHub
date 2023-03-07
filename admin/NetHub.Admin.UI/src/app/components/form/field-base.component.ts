@@ -1,24 +1,42 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Injector,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChange,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl, FormGroupDirective, Validators } from '@angular/forms';
 import { errorMessages } from '../../error-messages';
+import { CopyPasteService } from '../../services/copy-paste.service';
 import { BoolInput } from '../../shared/types';
+
+type FormBaseChanges = SimpleChanges & { disabled: SimpleChange };
 
 @Component({
   selector: 'field-base',
   template: ``,
 })
-export abstract class FieldBaseComponent implements OnInit {
+export abstract class FieldBaseComponent implements OnInit, OnChanges {
   @Input() label!: string;
   @Input() controlName!: string;
   @Input() required: BoolInput = false;
   @Input() disabled: BoolInput = false;
+  @Input() allowCopy: BoolInput = false;
 
   errors = errorMessages;
   formControl!: FormControl;
   changed: boolean = false;
   focused: boolean = false;
 
-  protected constructor(protected formGroup: FormGroupDirective) {}
+  public readonly copyPaste: CopyPasteService;
+  public readonly formGroup: FormGroupDirective;
+
+  protected constructor(injector: Injector) {
+    this.copyPaste = injector.get(CopyPasteService);
+    this.formGroup = injector.get(FormGroupDirective);
+  }
 
   ngOnInit(): void {
     // this.formGroup.form.error
@@ -37,6 +55,16 @@ export abstract class FieldBaseComponent implements OnInit {
       }
     });
     this.afterInit();
+  }
+
+  ngOnChanges(changes: FormBaseChanges): void {
+    if (changes.disabled && this.formControl) {
+      if (this.isTrue(this.disabled)) {
+        this.formControl.disable();
+      } else {
+        this.formControl.enable();
+      }
+    }
   }
 
   onChange(event?: Event): void {

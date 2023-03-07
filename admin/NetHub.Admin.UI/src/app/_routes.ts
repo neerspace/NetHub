@@ -1,9 +1,11 @@
-import { Routes } from "@angular/router";
-import { AdminLayoutComponent } from "./components/layout/admin-layout/admin-layout.component";
-import { DashboardComponent } from "./pages/dashboard/dashboard.component";
-import { ErrorComponent } from "./pages/public/error/error.component";
-import { LoginComponent } from "./pages/public/login/login.component";
-import { buildTitle } from "./shared/utilities";
+import { Routes } from '@angular/router';
+import { AuthorizedGuard } from './api/guards/authorized.guard';
+import { EnsurePermissionsGuard } from './api/guards/ensure-permissions.guard';
+import { AdminLayoutComponent } from './components/layout/admin-layout/admin-layout.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { ErrorComponent } from './pages/public/error/error.component';
+import { LoginComponent } from './pages/public/login/login.component';
+import { buildTitle } from './shared/utilities';
 
 const adminRouters: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -41,8 +43,8 @@ export const routes: Routes = [
   {
     path: '',
     component: AdminLayoutComponent,
-    // canActivate: [AdminGuard],
-    // canActivateChild: [AdminGuard],
+    canActivate: [AuthorizedGuard],
+    canActivateChild: [EnsurePermissionsGuard],
     children: adminRouters,
   },
 

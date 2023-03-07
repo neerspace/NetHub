@@ -32,7 +32,7 @@ public class ArticleUploadImageEndpoint : Endpoint<AddArticleImageRequest, AddAr
         if (article.AuthorId != userId)
             throw new PermissionsException();
 
-        var resourceId = await _resourceService.SaveResourceToDb(request.File);
+        var resourceId = await _resourceService.UploadAsync(request.File, ct);
 
         await Database.Set<ArticleResource>().AddAsync(new ArticleResource
         {

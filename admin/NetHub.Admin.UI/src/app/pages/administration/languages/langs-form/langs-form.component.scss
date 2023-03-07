@@ -1,5 +1,23 @@
-.wiki-link {
-  display: inline-block;
-  //margin: 3rem 0 0 1.5rem;
-  color: var(--c-accent);
+.flag-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.preview-container {
+  height: 180px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+  .preview-image {
+    margin: 1rem 0;
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+    border: 4px solid var(--c-bg-5);
+
+    &[src=""] {
+      border: none;
+    }
+  }
 }

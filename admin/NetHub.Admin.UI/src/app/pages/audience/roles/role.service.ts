@@ -1,42 +1,37 @@
-import { Injectable } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ErrorDto, PermissionModel, PermissionsApi, RoleModel, RolesApi } from 'src/app/api';
-import { FormGroupReady, FormId, FormReady } from 'src/app/components/form/types';
+import { FormId, FormReady } from 'src/app/components/form/types';
 import { IFiltered, IFilterInfo } from 'src/app/components/table/types';
-import { ModalsService } from 'src/app/services/modals.service';
-import { LoaderService, ToasterService } from 'src/app/services/viewport';
+import { FormServiceBase } from '../../../services/abstractions';
+
+export enum PermissionState {
+  none = 0,
+  read = 1,
+  manage = 2,
+}
+
+export type PermissionModelExtended = PermissionModel & {
+  state: PermissionState;
+  parent: PermissionModelExtended | null;
+};
 
 @Injectable({ providedIn: 'root' })
-export class RoleService {
-  readonly form: FormGroupReady;
+export class RoleService extends FormServiceBase {
   public lastFormId?: FormId;
   public permissions?: PermissionModel[];
 
   constructor(
-    route: ActivatedRoute,
-    formBuilder: FormBuilder,
-    private router: Router,
-    private rolesApi: RolesApi,
-    private permissionsApi: PermissionsApi,
-    private modals: ModalsService,
-    private loader: LoaderService,
-    private toaster: ToasterService,
+    injector: Injector,
+    private readonly rolesApi: RolesApi,
+    private readonly permissionsApi: PermissionsApi,
   ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-
-    this.form = formBuilder.group({
+    super(injector, {
       ready: [null as FormReady, []],
       id: ['', []],
       name: ['', []],
-      permissions: [[], []],
-    }) as any;
-    this.form.ready = this.form.get('ready') as FormControl;
-  }
-
-  get onReadyChanges(): Observable<FormReady> {
-    return this.form.ready.valueChanges;
+      permissions: [[] as string[], []],
+    });
   }
 
   showForm(): void {
@@ -52,6 +47,18 @@ export class RoleService {
         this.onRequestError(error);
       },
     });
+  }
+
+  private extendPermissions(sourcePermissions: PermissionModel[]): PermissionModelExtended[] {
+    const result: PermissionModelExtended[] = [];
+
+    for (const permission of sourcePermissions as PermissionModelExtended[]) {
+      // permission.state = ;
+      //   ? PermissionState.manage
+      //   : permission.result.push(permission);
+    }
+
+    return result;
   }
 
   getById(id: number): void {
@@ -124,22 +131,19 @@ export class RoleService {
 
   private onRequestStart() {
     // console.log('request started');
-    this.loader.show();
-    if (this.form.ready.value === 'ready') {
-      this.form.ready.setValue('loading');
+    if (this.isReady) {
+      this.setReady('loading');
     }
   }
 
   private onRequestSuccess() {
     // console.log('request succeed');
-    this.loader.hide();
-    this.form.ready.setValue('ready');
+    this.setReady('ready');
   }
 
   private onRequestError(error: ErrorDto) {
     // console.log('request error');
-    this.loader.hide();
-    this.form.ready.setValue('404');
+    this.setReady('404');
     this.toaster.showFail(error.message);
   }
 }

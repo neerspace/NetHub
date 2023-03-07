@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { FormGroupDirective, Validators } from '@angular/forms';
+import { textOperators } from '../../table/sieve';
 import { InputBaseComponent } from '../input-base.component';
 import { InputType } from '../types';
-import { textOperators } from '../../table/sieve';
 
 @Component({
   selector: 'app-text-input-conditional',

@@ -1,4 +1,4 @@
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 
 export type InputType =
   | 'text'
@@ -20,6 +20,24 @@ export type PickrMode = 'time' | 'single' | 'multiple' | 'range' | undefined;
 
 export type FormReady = null | 'ready' | 'loading' | '404';
 
-export type FormGroupReady = FormGroup<any> & { ready: FormControl<FormReady> };
+export class FormReadyWrapper {
+  private _state: FormReady = null;
+
+  get state(): FormReady {
+    return this._state;
+  }
+
+  set state(value: FormReady) {
+    this._state = value;
+  }
+
+  toString() {
+    return this._state;
+  }
+
+  valueOf() {
+    return this._state === 'ready';
+  }
+}
 
 export type FormId<T = number> = 'create' | T;

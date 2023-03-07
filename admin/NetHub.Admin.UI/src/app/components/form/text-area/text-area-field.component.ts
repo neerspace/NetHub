@@ -1,5 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { FormGroupDirective } from '@angular/forms';
+import { Component, Injector, Input } from '@angular/core';
 import { FieldBaseComponent } from '../field-base.component';
 import { Size } from '../types';
 
@@ -12,7 +11,7 @@ export class TextAreaFieldComponent extends FieldBaseComponent {
   @Input() size: Size = 'medium';
   @Input() maxLength: number = -1;
 
-  constructor(form: FormGroupDirective) {
-    super(form);
+  constructor(injector: Injector) {
+    super(injector);
   }
 }

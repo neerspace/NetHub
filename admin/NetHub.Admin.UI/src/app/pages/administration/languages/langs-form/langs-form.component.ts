@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { FormReady } from 'src/app/components/form/types';
 import { capitalizeFirstLetter } from 'src/app/shared/utilities';
 import { LanguageService } from '../language.service';
+
+// TODO: Add validation if language is already exists
 
 @Component({
   selector: 'app-langs-form',
@@ -13,14 +14,13 @@ import { LanguageService } from '../language.service';
 export class LangsFormComponent implements OnInit {
   readonly code: string;
   readonly isCreating: boolean;
-  ready: FormReady = null;
   suggestedLanguageName?: string;
   languageNames: Intl.DisplayNames;
 
   constructor(
     route: ActivatedRoute,
     private router: Router,
-    public languagesService: LanguageService,
+    public languageService: LanguageService,
   ) {
     const routeCode = route.snapshot.params['code'];
     this.isCreating = routeCode === 'create';
@@ -29,10 +29,11 @@ export class LangsFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.languagesService.onReadyChanges.subscribe(x => (this.ready = x));
+    this.languageService.init(this.isCreating);
+
     if (this.isCreating) {
-      this.languagesService.form.ready.setValue('ready');
-      this.languagesService.form
+      // Add listener on 'code' changes
+      this.languageService.form
         .get('code')!
         .valueChanges.pipe(debounceTime(300))
         .pipe(distinctUntilChanged())
@@ -40,7 +41,7 @@ export class LangsFormComponent implements OnInit {
           this.tryGetLanguageNameByCode(code);
         });
     } else {
-      this.languagesService.getByCode(this.code);
+      this.languageService.getByCode(this.code);
     }
   }
 
@@ -50,9 +51,9 @@ export class LangsFormComponent implements OnInit {
 
   submit(): void {
     if (this.isCreating) {
-      this.languagesService.create();
+      this.languageService.create();
     } else {
-      this.languagesService.update(this.code);
+      this.languageService.update(this.code);
     }
   }
 
@@ -71,11 +72,28 @@ export class LangsFormComponent implements OnInit {
   }
 
   applySuggestedLanguage() {
-    const code = this.languagesService.form.get('code')!.value!;
+    const code = this.languageService.form.get('code')!.value!;
     const localLanguageNames = new Intl.DisplayNames([code], { type: 'language' });
-    this.languagesService.form.patchValue({
+    this.languageService.form.patchValue({
       name: this.suggestedLanguageName,
       nameLocal: capitalizeFirstLetter(localLanguageNames.of(code)),
     });
+  }
+
+  handleFileChange(event: Event) {
+    const inputTarget = event.target as HTMLInputElement;
+    const file = inputTarget.files![0];
+    if (!file) {
+      return;
+    }
+
+    this.languageService.flagFile = file;
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      this.languageService.form.get('flagUrl')!.setValue(e.target!.result as string);
+    };
+
+    reader.readAsDataURL(file);
   }
 }

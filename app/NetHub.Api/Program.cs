@@ -6,6 +6,7 @@ using NetHub;
 using NetHub.Api;
 using NetHub.Data.SqlServer;
 using NetHub.Shared;
+using NetHub.Shared.Api;
 using NetHub.Shared.Api.Extensions;
 
 var logger = LoggerInstaller.InitFromCurrentEnvironment();
@@ -42,10 +43,14 @@ static void ConfigureBuilder(WebApplicationBuilder builder)
     builder.Configuration.AddJsonFile("appsettings.Secrets.json");
     builder.Configuration.AddJsonFile("appsettings.Development.json");
 
+    // Database
     builder.Services.AddSqlServerDatabase(builder.Configuration);
-    builder.Services.AddApplication(builder.Configuration);
+    // Application
     builder.Services.AddSharedApplication(builder.Configuration);
-    builder.Services.AddWebApi(builder.Configuration, builder.Environment);
+    builder.Services.AddApplication(builder.Configuration);
+    // Api
+    builder.Services.AddSharedApi(builder.Configuration, builder.Environment);
+    builder.Services.AddWebApi(builder.Configuration);
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();

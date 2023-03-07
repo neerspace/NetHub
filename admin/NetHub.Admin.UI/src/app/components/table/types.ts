@@ -1,6 +1,14 @@
+import { TemplateRef } from '@angular/core';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { NumberPattern } from '../form/types';
+
+export class DataTableError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'DataTableERROR';
+  }
+}
 
 export interface IFiltered<TModel> {
   total: number;
@@ -21,6 +29,11 @@ export enum FilterType {
   boolDropdown = 'boolDropdown',
 }
 
+export enum ColumnStyle {
+  default,
+  fillSized,
+}
+
 export interface IRange<T> {
   from?: T;
   to?: T;
@@ -34,7 +47,7 @@ export interface IButtonInfo {
 
 export interface ITableAction<T> {
   button: IButtonInfo;
-  onClick: (val: T) => Observable<void> | void;
+  onClick: (context: any, val: T) => Observable<void> | void;
 }
 
 export type FetchApiEvent<T> = (params: IFilterInfo) => Observable<IFiltered<T>>;
@@ -57,12 +70,37 @@ export interface IFilterInfo {
 
 export type FormatterFunc = (el: any, obj?: any) => string;
 
+export interface Hideable {
+  hideable?: boolean;
+  hidden?: boolean;
+}
+
+export interface ActionButtonsColumn<T> {
+  key?: string;
+  title?: string;
+  actions: ITableAction<T>[];
+}
+
 export interface ColumnBase {
   key: string;
   title: string;
   sortable?: boolean;
   filter: FilterType;
+  style?: ColumnStyle;
+}
+
+interface TemplateColumn {
+  template?: string;
+  formatter?: never;
+}
+
+interface FormatterColumn {
+  template?: never;
   formatter?: FormatterFunc;
+}
+
+export interface NoneFilter {
+  filter: FilterType.none;
 }
 
 export interface BooleanFilter {
@@ -97,12 +135,17 @@ export interface DateRangeFilter {
   filterValueRange?: IRange<DateTime>;
 }
 
-export type ColumnInfo = ColumnBase &
+export type ColumnInfo = Hideable &
   (
-    | BooleanFilter
-    | DropdownFilter
-    /*| DropdownFilterWithEnum*/
-    | TextFilter
-    | NumberFilter
-    | DateRangeFilter
+    | ActionButtonsColumn<any>
+    | ((ColumnBase & (TemplateColumn | FormatterColumn)) &
+        (
+          | NoneFilter
+          | BooleanFilter
+          | DropdownFilter
+          /*| DropdownFilterWithEnum*/
+          | TextFilter
+          | NumberFilter
+          | DateRangeFilter
+        ))
   );

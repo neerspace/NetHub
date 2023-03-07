@@ -1,11 +1,17 @@
 import { IButtonInfo } from './types';
 
-export const editButton: IButtonInfo = {
-  class: 'edit',
-  icon: 'la-edit',
-};
+export function editButton(text?: string): IButtonInfo {
+  return {
+    class: 'edit',
+    text: text,
+    icon: 'la-edit',
+  };
+}
 
-export const deleteButton: IButtonInfo = {
-  class: 'delete',
-  icon: 'la-backspace',
-};
+export function deleteButton(text?: string): IButtonInfo {
+  return {
+    class: 'delete',
+    text: text,
+    icon: 'la-backspace',
+  };
+}

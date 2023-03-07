@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="jwt">
+    <option name="rs256PrivateKeyFile" value="" />
+    <option name="rs256PublicKeyFile" value="" />
+  </component>
+</project>

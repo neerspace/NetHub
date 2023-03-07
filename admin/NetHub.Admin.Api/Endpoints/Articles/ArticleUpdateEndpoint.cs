@@ -21,8 +21,8 @@ public class ArticleUpdateEndpoint : ActionEndpoint<ArticleModel>
     [HttpPut("articles")]
     public override async Task HandleAsync([FromBody] ArticleModel request, CancellationToken ct)
     {
-        var language = await _database.Set<Article>().FirstOr404Async(l => l.Id == request.Id, ct);
-        request.Adapt(language);
+        var article = await _database.Set<Article>().FirstOr404Async(l => l.Id == request.Id, ct);
+        request.Adapt(article);
         await _database.SaveChangesAsync(ct);
     }
 }

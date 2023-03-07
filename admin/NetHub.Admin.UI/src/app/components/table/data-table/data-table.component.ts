@@ -1,13 +1,15 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {debounceTime, distinctUntilChanged} from 'rxjs';
-import {logger} from 'src/environments/environment';
-import {ErrorDto} from '../../../api';
-import {LoaderService, ToasterService} from '../../../services/viewport';
-import {TablePaginationComponent} from '../pagination/table-pagination.component';
-import {buildFiltersQuery, defaultNumberOperator, defaultTextOperator, postfixes} from '../sieve';
-import {ColumnInfo, FetchApiEvent, FilterType, IFilterParams, ITableAction} from '../types';
+import { Component, ContentChildren, Input, OnInit, QueryList, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { logger } from 'src/environments/environment';
+import { ErrorDto } from '../../../api';
+import { StorageService } from '../../../services/storage';
+import { ToasterService } from '../../../services/viewport';
+import { CustomColumnDirective } from '../custom-column.directive';
+import { TablePaginationComponent } from '../pagination/table-pagination.component';
+import { buildFiltersQuery, postfixes } from '../sieve';
+import { ColumnInfo, DataTableError, FetchApiEvent, FilterType, IFilterParams } from '../types';
 
 @Component({
   selector: 'app-data-table',
@@ -17,10 +19,13 @@ import {ColumnInfo, FetchApiEvent, FilterType, IFilterParams, ITableAction} from
 export class DataTableComponent<T> implements OnInit {
   @ViewChild('pagination') pagination!: TablePaginationComponent;
 
+  @ContentChildren(CustomColumnDirective, { descendants: true })
+  customColumnTemplates!: QueryList<CustomColumnDirective<T>>;
+
   @Input() defaultSorting: string | null = 'id';
-  @Input() additionColumns: ITableAction<T>[] = [];
   @Input() columns: ColumnInfo[] = [];
-  @Input() buttons: ITableAction<T>[] = [];
+  @Input() columnChooser: boolean = false;
+  @Input() columnChooserSequence?: string;
   @Input() onFilter!: FetchApiEvent<T>;
 
   sortsAsc = true;
@@ -31,24 +36,38 @@ export class DataTableComponent<T> implements OnInit {
   data?: any[];
   loading: boolean = true;
   pageIndicatorText: string = '';
+  columnSequence: string[] = [];
 
   filtersForm!: FormGroup;
   private filters?: string;
 
   constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private loader: LoaderService,
-    private toaster: ToasterService,
-  ) {
-    this.loader.show();
-  }
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly toaster: ToasterService,
+    private readonly storage: StorageService,
+  ) {}
 
   ngOnInit(): void {
+    if (!this.columns || this.columns.length < 1) {
+      throw new DataTableError("Param 'columns' must be specified and has at least one element!");
+    }
+
     this.extractSorts(this.defaultSorting);
     this.filtersForm = new FormGroup({});
+    if (this.columnChooser) {
+      if (!this.columnChooserSequence) {
+        throw new DataTableError(
+          "Param 'columnChooserSequence' is required when 'columnChooser' enabled.",
+        );
+      }
 
-    for (const col of this.columns) {
+      this.columnSequence = this.storage.getColumnSequence(this.columnChooserSequence) || [];
+    }
+
+    for (const col of this.columns as any[]) {
+      col.hidden = col.hideable && !this.columnSequence.includes(col.key);
+
       if (col.filter) {
         if (col.filter === FilterType.optText) {
           this.filtersForm.addControl(col.key + postfixes.textOp, new FormControl());
@@ -77,6 +96,7 @@ export class DataTableComponent<T> implements OnInit {
         const newFilters = buildFiltersQuery(this.filtersForm.value);
         if (this.filters !== newFilters) {
           this.filters = newFilters;
+          this.resetPagination();
           this.loadData();
         }
       });
@@ -85,7 +105,6 @@ export class DataTableComponent<T> implements OnInit {
   loadData(updatePaginationInfo: boolean = false): void {
     this.setQueryParams();
     this.loading = true;
-    this.loader.show();
 
     logger.debug('[Data fetching]');
     this.onFilter({
@@ -109,31 +128,35 @@ export class DataTableComponent<T> implements OnInit {
           this.updatePageIndicatorText();
         }
 
-        this.loader.hide();
         setTimeout(() => (this.loading = false), 1200);
       },
       error: (error: ErrorDto) => {
         setTimeout(() => (this.loading = false), 1200);
-        this.loader.hide();
         this.toaster.showFail(error.message);
-        this.total = 0;
-        this.pagination.setPage(1);
-        this.updatePageIndicatorText();
+        this.resetPagination();
       },
     });
   }
 
-  setFiltersToDefault(): void {
-    for (const filterKey of Object.keys(this.filtersForm.value)) {
-      if (postfixes.isTextOp(filterKey)) {
-        this.filtersForm.get(filterKey)!.setValue(defaultTextOperator);
-      } else if (postfixes.isNumOp(filterKey)) {
-        this.filtersForm.get(filterKey)!.setValue(defaultNumberOperator);
-      } else {
-        this.filtersForm.get(filterKey)!.setValue(null);
-      }
+  getCustomColumnByName(templateName: string): CustomColumnDirective<T> {
+    const customColumn = this.customColumnTemplates.find(x => x.templateName === templateName);
+    if (!customColumn) {
+      throw new DataTableError(`Custom column not found: "${templateName}"`);
     }
+    return customColumn;
   }
+
+  // setFiltersToDefault(): void {
+  //   for (const filterKey of Object.keys(this.filtersForm.value)) {
+  //     if (postfixes.isTextOp(filterKey)) {
+  //       this.filtersForm.get(filterKey)!.setValue(defaultTextOperator);
+  //     } else if (postfixes.isNumOp(filterKey)) {
+  //       this.filtersForm.get(filterKey)!.setValue(defaultNumberOperator);
+  //     } else {
+  //       this.filtersForm.get(filterKey)!.setValue(null);
+  //     }
+  //   }
+  // }
 
   changeSorts(key: string, event: MouseEvent): void {
     if (this.sorts === key) {
@@ -163,6 +186,7 @@ export class DataTableComponent<T> implements OnInit {
   changePage(newPage: number): void {
     if (this.page !== newPage) {
       this.page = newPage;
+      this.updatePageIndicatorText();
       this.loadData();
     }
   }
@@ -173,6 +197,12 @@ export class DataTableComponent<T> implements OnInit {
       this.pagination.setPage(1);
       this.loadData(true);
     }
+  }
+
+  private resetPagination() {
+    this.total = 0;
+    this.pagination.setPage(1);
+    this.updatePageIndicatorText();
   }
 
   private updatePageIndicatorText(): void {
@@ -240,6 +270,3 @@ export class DataTableComponent<T> implements OnInit {
     // }
   }
 }
-
-
-type A = {};
