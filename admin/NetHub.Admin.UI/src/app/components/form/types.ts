@@ -1,5 +1,3 @@
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
-
 export type InputType =
   | 'text'
   | 'password'
@@ -41,3 +39,17 @@ export class FormReadyWrapper {
 }
 
 export type FormId<T = number> = 'create' | T;
+
+export interface ISelectOption {
+  key: string | number;
+  text: string;
+  icon?: string;
+  onSelected?: (option: ISelectOption) => void;
+}
+
+export class FormError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'Custom Error of Form';
+  }
+}
