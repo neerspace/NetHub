@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
+import { CoreComponentsModule } from '../core/core-components.module';
 import { FieldMessageComponent } from './core/field-message/field-message.component';
 import { FieldsetComponent } from './core/fieldset/fieldset.component';
 import { NotFoundComponent } from './core/not-found/not-found.component';
@@ -65,6 +66,7 @@ import { CheckboxFieldComponent } from './checkbox/checkbox-field.component';
     }),
     ReactiveFormsModule,
     FormsModule,
+    CoreComponentsModule,
   ],
 })
 export class FormComponentsModule {}

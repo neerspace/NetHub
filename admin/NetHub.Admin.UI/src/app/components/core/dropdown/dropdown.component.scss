@@ -48,3 +48,20 @@
   padding-right: 0.6rem;
   vertical-align: text-bottom;
 }
+
+:host.full {
+  display: block;
+
+  > * {
+    width: 100%;
+  }
+
+  .dropdown-button, .dropdown-item {
+    height: 2.3835rem;
+    padding-top: .4rem;
+  }
+
+  .dropdown-button-text {
+    vertical-align: inherit;
+  }
+}

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
 
 @Component({
   selector: 'app-dropdown',
@@ -9,7 +9,8 @@ import { Component, Input } from '@angular/core';
   },
 })
 export class DropdownComponent {
-  @Input() key!: string;
+  @Input() key: string = '';
   @Input() buttonIcon?: string;
   @Input() buttonText!: any;
+  @HostBinding('class.full') @Input() fullSized!: boolean;
 }

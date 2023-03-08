@@ -8,14 +8,14 @@
   <button app-icon-button
           icon="la-ban"
           variant="danger"
-          [disabled]="!localizationsService.ready || locked"
+          [disabled]="locked"
           (onclick)="localizationsService.delete(model.id)">
     Delete
   </button>
   <button app-icon-button
           icon="la-save"
           variant="success"
-          [disabled]="!localizationsService.ready || locked"
+          [disabled]="locked"
           (onclick)="submit()">
     Save
   </button>

@@ -7,7 +7,6 @@ import { ModalConfirmComponent } from './modal-confirm/modal-confirm.component';
 import { TabComponent } from './tabs/tab/tab.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { ToastAreaComponent } from './toast/toast-area.component';
-import { DropdownButtonComponent } from './dropdown/dropdown-button/dropdown-button.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +17,6 @@ import { DropdownButtonComponent } from './dropdown/dropdown-button/dropdown-but
     ToastAreaComponent,
     TabComponent,
     TabsComponent,
-    DropdownButtonComponent,
   ],
   exports: [
     LoadingBarComponent,

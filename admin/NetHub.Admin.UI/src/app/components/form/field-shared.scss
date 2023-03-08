@@ -14,8 +14,8 @@ label {
   padding-left: .15rem;
 }
 
-input, textarea {
-  border-color: var(--c-bg-1);
+input, textarea, .dropdown-button {
+  border-color: var(--c-bg-1) !important;
 }
 
 .input-wrapper {
