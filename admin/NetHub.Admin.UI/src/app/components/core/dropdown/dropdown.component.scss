@@ -36,6 +36,7 @@
 .dropdown-menu {
   width: auto;
   min-width: auto;
+  cursor: pointer;
 }
 
 .dropdown-button-icon {
@@ -49,11 +50,26 @@
   vertical-align: text-bottom;
 }
 
-:host.full {
+:host.form-fit {
   display: block;
 
   > * {
     width: 100%;
+  }
+
+  .dropdown-button {
+    background-color: #33363a;
+    border-color: var(--c-bg-1);
+    font-size: 1rem;
+    vertical-align: baseline;
+    font-weight: lighter;
+    //border: none;
+
+    &.disabled {
+      color: var(--c-text);
+      background-color: var(--c-bg-1);
+      opacity: 100%;
+    }
   }
 
   .dropdown-button, .dropdown-item {

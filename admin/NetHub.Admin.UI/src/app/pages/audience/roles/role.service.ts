@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { ErrorDto, PermissionModel, PermissionsApi, RoleModel, RolesApi } from 'src/app/api';
 import { FormId, FormReady } from 'src/app/components/form/types';
 import { IFiltered, IFilterInfo } from 'src/app/components/table/types';
-import { FormServiceBase } from '../../../services/abstractions';
+import { FormServiceBase } from 'src/app/services/abstractions';
 
 export enum PermissionState {
   none = 0,

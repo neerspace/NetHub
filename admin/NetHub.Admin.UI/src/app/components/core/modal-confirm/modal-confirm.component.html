@@ -5,12 +5,20 @@
     </div>
     <div class="modal-body">
       <p>{{info.text}}</p>
+      <textarea #input
+                *ngIf="info.showTextArea"
+                class="form-control medium">{{text}}</textarea>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-{{info.closeVariant}}" data-bs-dismiss="modal"
+      <button type="button"
+              class="btn btn-outline-{{info.closeVariant}}"
+              data-bs-dismiss="modal"
               (click)="close()">{{info.closeText}}</button>
-      <button type="button" class="btn btn-{{info.confirmVariant}}" (click)="confirm()">{{info.confirmText}}</button>
+      <button type="button"
+              class="btn btn-{{info.confirmVariant}}"
+              (click)="confirm()">{{info.confirmText}}</button>
     </div>
   </div>
 </div>
-<div class="backdrop" (click)="close()"></div>
+<div class="backdrop"
+     (click)="close()"></div>

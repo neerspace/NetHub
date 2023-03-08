@@ -1,4 +1,5 @@
 <button class="btn btn-sm btn-outline-dark dropdown-button"
+        [class.disabled]="disabled === true || disabled === 'true'"
         [id]="key"
         data-bs-toggle="dropdown">
   <i *ngIf="!!buttonIcon"

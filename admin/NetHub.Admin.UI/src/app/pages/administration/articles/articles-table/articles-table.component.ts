@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 import { ArticleLocalizationModel, ArticleModel } from 'src/app/api';
 import { TabsComponent } from 'src/app/components/core/tabs/tabs.component';
 import { SplitBaseComponent } from 'src/app/components/split/split-base.component';
@@ -32,15 +32,14 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> imp
   }
 
   fetchFilter(params: IFilterInfo): Observable<IFiltered<ArticleModel>> {
-    return this.articleSharedService.filter(params);
-    // .pipe(
-    // finalize(() => {
-    //   const item = this.table.data?.[0].localizations[0];
-    //   console.log('item:', item);
-    //   this.onLocalizationClick(item);
-    //   this.onLocalizationClick(this.table.data?.[0].localizations[2]);
-    // }),
-    // );
+    return this.articleSharedService.filter(params).pipe(
+      finalize(() => {
+        const item = this.table.data?.[0].localizations[0];
+        console.log('item:', item);
+        this.onLocalizationClick(item);
+        this.onLocalizationClick(this.table.data?.[0].localizations[2]);
+      }),
+    );
   }
 
   onLocalizationClick(model: ArticleLocalizationModel) {

@@ -1,4 +1,4 @@
-<app-main-header pageTitle="Article Localization">
+<app-main-header pageTitle="Article Localization: {{model.status}}">
   <button app-icon-button
           [icon]="locked ? 'la-lock' : 'la-unlock'"
           variant="secondary"
@@ -18,6 +18,26 @@
           [disabled]="locked"
           (onclick)="submit()">
     Save
+  </button>
+</app-main-header>
+<app-main-header>
+  <button app-icon-button
+          *ngIf="model.status !== Status.Banned"
+          variant="danger"
+          (click)="onHotButtonPress(Status.Banned)">
+    BAN
+  </button>
+  <button app-icon-button
+          *ngIf="model.status === Status.Banned"
+          variant="warning"
+          (click)="onHotButtonPress(Status.Draft)">
+    Lift the BAN
+  </button>
+  <button app-icon-button
+          *ngIf="model.status !== Status.Published && model.status !== Status.Banned"
+          variant="success"
+          (click)="onHotButtonPress(Status.Published)">
+    Publish
   </button>
 </app-main-header>
 
@@ -40,15 +60,22 @@
                       [allowCopy]="true"></app-text-field>
       <app-date-field label="Created At"
                       controlName="created"
+                      type="date-time"
                       [disabled]="true"></app-date-field>
       <app-date-field *ngIf="model.updated"
                       label="Updated At"
                       controlName="updated"
+                      type="date-time"
                       [disabled]="true"></app-date-field>
       <app-date-field *ngIf="model.banned"
                       label="Banned At"
                       controlName="banned"
+                      type="date-time"
                       [disabled]="true"></app-date-field>
+      <app-select-field label="Content Status"
+                        controlName="status"
+                        [options]="localizationsService.contentStatuses"
+                        [disabled]="locked"></app-select-field>
 
       <div class="article-statistics">
         <div>Views: {{model.views}}</div>
@@ -84,6 +111,5 @@
     <!--<app-text-field label=""-->
     <!--                controlName="nameLocal"-->
     <!--                [maxLength]="50"></app-text-field>-->
-    <!--<pre>{{model|json}}</pre>-->
   </form>
 </app-main-content>

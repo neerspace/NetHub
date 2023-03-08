@@ -18,3 +18,8 @@ h2 {
   display: flex;
   flex-direction: row;
 }
+
+p[dimmed] {
+  display: inline;
+  color: var(--c-text-dim);
+}

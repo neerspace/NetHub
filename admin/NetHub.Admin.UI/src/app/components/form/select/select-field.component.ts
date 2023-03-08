@@ -1,13 +1,28 @@
-import { Component, EventEmitter, Injector, Input, Output } from '@angular/core';
-import { FieldBaseComponent } from '../field-base.component';
-import { FormError, ISelectOption } from '../types';
+import {
+  Component,
+  EventEmitter,
+  Injector,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChange,
+} from '@angular/core';
+import { FieldBaseComponent, FormBaseChanges } from '../field-base.component';
+import { ISelectOption } from '../types';
+
+type SelectFieldChanges = FormBaseChanges & { options: SimpleChange };
 
 @Component({
   selector: 'app-select-field',
   templateUrl: './select-field.component.html',
   styleUrls: ['./select-field.component.scss', '../field-shared.scss'],
 })
-export class SelectFieldComponent extends FieldBaseComponent {
+export class SelectFieldComponent extends FieldBaseComponent implements OnChanges {
+  private static notSelectedOption: ISelectOption = {
+    key: null,
+    title: 'Not Selected',
+  };
+
   @Input() options: ISelectOption[] = [];
   @Input() selected!: ISelectOption;
 
@@ -17,14 +32,31 @@ export class SelectFieldComponent extends FieldBaseComponent {
     super(injector);
   }
 
+  override ngOnChanges(changes: SelectFieldChanges) {
+    super.ngOnChanges(changes);
+    if (changes.options) {
+      if (!this.isTrue(this.required)) {
+        this.options.unshift();
+      }
+
+      this.getOptionByFormValue();
+    }
+  }
+
   override afterInit() {
-    if (!this.options || this.options.length === 0) {
-      throw new FormError(`Select field '${this.controlName}' has no options passed`);
+    if (!this.options) {
+      this.selected = {
+        key: null,
+        title: 'No Options Provided',
+      };
+    } else {
+      this.getOptionByFormValue();
     }
 
-    if (!this.selected) {
-      this.selected = this.options[0];
-    }
+    this.formControl.valueChanges.subscribe(v => {
+      console.log('select changed!:', v);
+      this.getOptionByFormValue();
+    });
   }
 
   onOptionSelect(option: ISelectOption) {
@@ -32,5 +64,17 @@ export class SelectFieldComponent extends FieldBaseComponent {
     this.selectedChange.emit(option);
     this.formControl.setValue(option.key);
     option.onSelected?.(option);
+  }
+
+  private getOptionByFormValue() {
+    const formValue = this.formControl?.value?.toString().toLowerCase();
+
+    if (formValue && (!this.selected || this.selected.key !== formValue)) {
+      this.selected =
+        this.options.find(x => x.key?.toString().toLowerCase() === formValue) ??
+        SelectFieldComponent.notSelectedOption;
+    } else if (!this.selected) {
+      this.selected = this.options[0];
+    }
   }
 }

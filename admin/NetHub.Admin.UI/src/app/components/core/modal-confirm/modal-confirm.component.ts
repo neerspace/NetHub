@@ -1,6 +1,6 @@
 import { Component, HostBinding, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { ModalsService } from '../../../services/modals.service';
-import { IModalInfo } from './types';
+import { ModalsService } from 'src/app/services/viewport';
+import { IModalInfo } from '../types';
 
 @Component({
   selector: 'app-modal-confirm',
@@ -22,7 +22,9 @@ export class ModalConfirmComponent implements OnInit, OnDestroy {
     confirmVariant: 'primary',
   };
 
-  constructor(private modals: ModalsService) {}
+  text?: string;
+
+  constructor(private readonly modals: ModalsService) {}
 
   ngOnInit(): void {
     this.modals.current.subscribe(event => {
@@ -49,7 +51,7 @@ export class ModalConfirmComponent implements OnInit, OnDestroy {
   confirm() {
     setTimeout(() => (this.show = false));
     if (this.info.confirmed) {
-      this.info.confirmed();
+      this.info.confirmed({ text: this.text });
     }
   }
 

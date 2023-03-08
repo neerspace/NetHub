@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, HostBinding, Input, Output } from '@angular/core';
-import { Variant } from './types';
+import { Variant } from '../types';
 
 @Component({
   selector: 'button[app-icon-button]',

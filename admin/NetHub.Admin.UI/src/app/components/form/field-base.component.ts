@@ -13,7 +13,7 @@ import { CopyPasteService } from '../../services/copy-paste.service';
 import { BoolInput } from '../../shared/types';
 import { FormError } from './types';
 
-type FormBaseChanges = SimpleChanges & { disabled: SimpleChange };
+export type FormBaseChanges = SimpleChanges & { disabled: SimpleChange };
 
 @Component({
   selector: 'field-base',
@@ -52,21 +52,24 @@ export abstract class FieldBaseComponent implements OnInit, OnChanges {
         this.formControl.addValidators(Validators.required);
       }
 
+      // TODO: disable() disables formControl and it becomes inaccessible
       if (this.isTrue(this.disabled)) {
-        this.formControl.disable();
+        // this.formControl.disable({ onlySelf: true, emitEvent: false });
       } else {
-        this.formControl.enable();
+        // this.formControl.enable({ onlySelf: true, emitEvent: false });
       }
     });
     this.afterInit();
   }
 
   ngOnChanges(changes: FormBaseChanges): void {
+    if (this.formControl) {
+    }
     if (changes.disabled && this.formControl) {
       if (this.isTrue(this.disabled)) {
-        this.formControl.disable();
+        // this.formControl.disable({ onlySelf: true });
       } else {
-        this.formControl.enable();
+        // this.formControl.enable({ onlySelf: true, emitEvent: false });
       }
     }
   }

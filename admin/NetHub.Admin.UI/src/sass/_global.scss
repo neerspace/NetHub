@@ -91,3 +91,9 @@ select:-webkit-autofill {
 .split-area-content {
   overflow: hidden !important;
 }
+
+textarea {
+  height: 8.25rem;
+  min-height: 3.75rem;
+  max-height: 20.25rem;
+}

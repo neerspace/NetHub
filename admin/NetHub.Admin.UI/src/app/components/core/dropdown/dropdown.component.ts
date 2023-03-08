@@ -1,4 +1,5 @@
 import { Component, HostBinding, Input } from '@angular/core';
+import { BoolInput } from '../../../shared/types';
 
 @Component({
   selector: 'app-dropdown',
@@ -12,5 +13,6 @@ export class DropdownComponent {
   @Input() key: string = '';
   @Input() buttonIcon?: string;
   @Input() buttonText!: any;
-  @HostBinding('class.full') @Input() fullSized!: boolean;
+  @HostBinding('class.form-fit') @Input() formFit!: boolean;
+  @Input() disabled: BoolInput = false;
 }

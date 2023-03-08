@@ -1,3 +1,5 @@
+import { color } from '../../shared/types';
+
 export type InputType =
   | 'text'
   | 'password'
@@ -41,9 +43,10 @@ export class FormReadyWrapper {
 export type FormId<T = number> = 'create' | T;
 
 export interface ISelectOption {
-  key: string | number;
-  text: string;
+  key: string | number | null;
+  title: string;
   icon?: string;
+  markerColor?: color | string;
   onSelected?: (option: ISelectOption) => void;
 }
 
