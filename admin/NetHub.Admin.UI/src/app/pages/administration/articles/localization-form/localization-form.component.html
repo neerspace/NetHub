@@ -24,19 +24,19 @@
   <button app-icon-button
           *ngIf="model.status !== Status.Banned"
           variant="danger"
-          (click)="onHotButtonPress(Status.Banned)">
+          (click)="onHotButton(Status.Banned)">
     BAN
   </button>
   <button app-icon-button
           *ngIf="model.status === Status.Banned"
           variant="warning"
-          (click)="onHotButtonPress(Status.Draft)">
+          (click)="onHotButton(Status.Draft)">
     Lift the BAN
   </button>
   <button app-icon-button
           *ngIf="model.status !== Status.Published && model.status !== Status.Banned"
           variant="success"
-          (click)="onHotButtonPress(Status.Published)">
+          (click)="onHotButton(Status.Published)">
     Publish
   </button>
 </app-main-header>

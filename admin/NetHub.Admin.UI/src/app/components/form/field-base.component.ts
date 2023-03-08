@@ -52,11 +52,10 @@ export abstract class FieldBaseComponent implements OnInit, OnChanges {
         this.formControl.addValidators(Validators.required);
       }
 
-      // TODO: disable() disables formControl and it becomes inaccessible
       if (this.isTrue(this.disabled)) {
-        // this.formControl.disable({ onlySelf: true, emitEvent: false });
+        this.formControl.disable({ onlySelf: true });
       } else {
-        // this.formControl.enable({ onlySelf: true, emitEvent: false });
+        this.formControl.enable({ onlySelf: true });
       }
     });
     this.afterInit();
@@ -67,9 +66,9 @@ export abstract class FieldBaseComponent implements OnInit, OnChanges {
     }
     if (changes.disabled && this.formControl) {
       if (this.isTrue(this.disabled)) {
-        // this.formControl.disable({ onlySelf: true });
+        this.formControl.disable({ onlySelf: true });
       } else {
-        // this.formControl.enable({ onlySelf: true, emitEvent: false });
+        this.formControl.enable({ onlySelf: true });
       }
     }
   }

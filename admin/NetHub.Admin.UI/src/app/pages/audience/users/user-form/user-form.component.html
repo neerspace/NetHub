@@ -32,7 +32,7 @@
       <app-number-field *ngIf="!isCreating"
                         label="ID"
                         controlName="id"
-                        disabled="true"
+                        [disabled]="true"
                         [allowCopy]="true"></app-number-field>
       <app-text-field label="User Name"
                       controlName="userName"

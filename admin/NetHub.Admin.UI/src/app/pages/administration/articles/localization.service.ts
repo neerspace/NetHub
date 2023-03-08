@@ -56,25 +56,26 @@ export class LocalizationService extends FormServiceBase {
     });
   }
 
-  // getById(id: number): void {
-  //   this.onRequestStart();
-  //   this.localizationsApi.getById(id).subscribe({
-  //     next: (localization: ArticleLocalizationModel | any) => {
-  //       localization.ready = true;
-  //       this.onRequestSuccess();
-  //     },
-  //     error: (error: ErrorDto) => {
-  //       this.onRequestError(error);
-  //     },
-  //   });
-  // }
+  getById(id: number): void {
+    this.onRequestStart();
+    this.localizationsApi.getById(id).subscribe({
+      next: (localization: ArticleLocalization | any) => {
+        localization.ready = true;
+        this.form.setValue(localization);
+        this.onRequestSuccess();
+      },
+      error: (error: ErrorDto) => {
+        this.onRequestError(error);
+      },
+    });
+  }
 
-  update(id: number): void {
-    const request = this.form.value as ArticleLocalization;
-    request.id = id;
+  update(): void {
+    const request = this.form.getRawValue() as ArticleLocalization;
     this.onRequestStart();
     this.localizationsApi.update(request).subscribe({
       next: () => {
+        this.getById(request.id);
         this.toaster.showSuccess('Localization successfully updated');
         this.onRequestSuccess();
       },
