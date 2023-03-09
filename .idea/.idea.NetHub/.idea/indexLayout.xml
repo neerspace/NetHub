@@ -4,6 +4,7 @@
     <attachedFolders>
       <Path>admin/NetHub.Admin.UI</Path>
       <Path>app/NetHub.UI</Path>
+      <Path>../neercore-admin</Path>
     </attachedFolders>
     <explicitIncludes />
     <explicitExcludes />

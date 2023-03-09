@@ -56,6 +56,7 @@
     "@typescript-eslint/parser": "5.37.0",
     "eslint": "^8.23.1",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-no-relative-import-paths": "^1.5.2",
     "eslint-plugin-prettier": "^4.2.1",
     "nswag": "^13.17.0",
     "prettier-eslint": "^15.0.1",

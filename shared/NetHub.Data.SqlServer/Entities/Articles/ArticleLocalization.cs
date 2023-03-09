@@ -39,6 +39,7 @@ public record ArticleLocalization : IEntity
 
     [Sieve(CanFilter = true)]
     public ContentStatus Status { get; set; }
+
     public InternalStatus InternalStatus { get; set; }
 
     [Sieve(CanSort = true)]
@@ -52,6 +53,8 @@ public record ArticleLocalization : IEntity
 
     [Sieve(CanSort = true)]
     public DateTimeOffset? Banned { get; set; }
+
+    public string? BanReason { get; set; }
 
     public long? LastContributorId { get; set; }
     public AppUser? LastContributor { get; set; }

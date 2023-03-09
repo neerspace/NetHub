@@ -3,11 +3,11 @@
   formatAsText,
   formatCounter,
   formatLink,
-} from '../../../components/table/formatters';
-import { ColumnInfo, ColumnStyle, FilterType } from '../../../components/table/types';
-import { ArticlesTableComponent } from './articles-table/articles-table.component';
+} from 'src/app/components/table/formatters';
+import { ColumnInfo, ColumnStyle, FilterType } from 'src/app/components/table/types';
+import { ArticleTableComponent } from './article-table/article-table.component';
 
-export function articleColumns(context: ArticlesTableComponent): ColumnInfo[] {
+export function articleColumns(context: ArticleTableComponent): ColumnInfo[] {
   return [
     {
       key: 'localizations',

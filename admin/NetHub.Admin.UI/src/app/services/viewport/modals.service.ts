@@ -50,7 +50,7 @@ export class ModalsService {
     return {
       title: `Confirm ${modelName} Lift the BAN`,
       text: `Are you sure that you want to lift the BAN from this ${modelName.toLowerCase()}?`,
-      confirmVariant: 'danger',
+      confirmVariant: 'warning',
       confirmText: 'Lift the BAN',
     };
   }

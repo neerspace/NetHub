@@ -6,13 +6,14 @@ using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Enums;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Models.Localizations;
 
 namespace NetHub.Admin.Api.Endpoints.Localizations;
 
 [ApiVersion(Versions.V1)]
 [Tags(TagNames.Localizations)]
 [Authorize(Policy = Policies.HasManageArticlesPermission)]
-public class LocalizationUpdateEndpoint : ActionEndpoint<ArticleLocalization>
+public class LocalizationUpdateEndpoint : ActionEndpoint<ArticleLocalizationModel>
 {
     private readonly ISqlServerDatabase _database;
 
@@ -20,7 +21,7 @@ public class LocalizationUpdateEndpoint : ActionEndpoint<ArticleLocalization>
 
 
     [HttpPut("localizations")]
-    public override async Task HandleAsync([FromBody] ArticleLocalization request, CancellationToken ct)
+    public override async Task HandleAsync([FromBody] ArticleLocalizationModel request, CancellationToken ct)
     {
         var localization = await _database.Set<ArticleLocalization>().FirstOr404Async(l => l.Id == request.Id, ct);
         var now = DateTimeOffset.UtcNow;
@@ -31,6 +32,7 @@ public class LocalizationUpdateEndpoint : ActionEndpoint<ArticleLocalization>
             localization.Published = now;
 
         localization.Status = request.Status;
+        localization.BanReason = request.Status is ContentStatus.Banned ? request.BanReason : null;
         localization.Title = request.Title;
         localization.Description = request.Description;
         localization.Html = request.Html;

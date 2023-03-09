@@ -5,9 +5,9 @@
     </div>
     <div class="modal-body">
       <p>{{info.text}}</p>
-      <textarea #input
-                *ngIf="info.showTextArea"
-                class="form-control medium">{{text}}</textarea>
+      <textarea *ngIf="info.showTextArea"
+                class="form-control medium"
+                (input)="text = $any($event.target).value"></textarea>
     </div>
     <div class="modal-footer">
       <button type="button"

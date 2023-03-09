@@ -54,7 +54,6 @@ export class SelectFieldComponent extends FieldBaseComponent implements OnChange
     }
 
     this.formControl.valueChanges.subscribe(v => {
-      console.log('select changed!:', v);
       this.getOptionByFormValue();
     });
   }

@@ -1,5 +1,5 @@
 ﻿import { Injectable, Injector } from '@angular/core';
-import { ArticleLocalization, ArticleModel, ErrorDto, LocalizationsApi } from 'src/app/api';
+import { ArticleLocalizationModel, ErrorDto, LocalizationsApi } from 'src/app/api';
 import { ISelectOption } from 'src/app/components/form/types';
 import { MetadataService } from 'src/app/services';
 import { FormServiceBase } from 'src/app/services/abstractions';
@@ -28,6 +28,7 @@ export class LocalizationService extends FormServiceBase {
       updated: ['', []],
       published: ['', []],
       banned: ['', []],
+      banReason: ['', []],
       isSaved: ['', []],
       savedDate: ['', []],
       vote: ['', []],
@@ -59,8 +60,7 @@ export class LocalizationService extends FormServiceBase {
   getById(id: number): void {
     this.onRequestStart();
     this.localizationsApi.getById(id).subscribe({
-      next: (localization: ArticleLocalization | any) => {
-        localization.ready = true;
+      next: (localization: ArticleLocalizationModel) => {
         this.form.setValue(localization);
         this.onRequestSuccess();
       },
@@ -71,7 +71,7 @@ export class LocalizationService extends FormServiceBase {
   }
 
   update(): void {
-    const request = this.form.getRawValue() as ArticleLocalization;
+    const request = this.form.getRawValue() as ArticleLocalizationModel;
     this.onRequestStart();
     this.localizationsApi.update(request).subscribe({
       next: () => {

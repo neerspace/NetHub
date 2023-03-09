@@ -64,8 +64,7 @@ export class RoleService extends FormServiceBase {
   getById(id: number): void {
     this.onRequestStart();
     this.rolesApi.getById(id).subscribe({
-      next: (role: RoleModel | any) => {
-        role.ready = true;
+      next: (role: RoleModel) => {
         this.form.setValue(role);
         this.onRequestSuccess();
         this.lastFormId = id;

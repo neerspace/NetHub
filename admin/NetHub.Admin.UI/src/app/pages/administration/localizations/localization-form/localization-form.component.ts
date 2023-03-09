@@ -28,14 +28,16 @@ export class LocalizationFormComponent implements OnInit {
 
   submit() {
     this.localizationsService.update();
-    this.model.status = this.localizationsService.form.get('status')?.value;
+    this.model = this.localizationsService.form.getRawValue();
   }
 
   onHotButton(newStatus: ContentStatus) {
     const modelName = 'Article Localization';
     const handlers: IModalHandlers = {
-      confirmed: () => {
+      confirmed: res => {
+        console.log('reason::::::::', res?.text);
         this.localizationsService.form.get('status')?.setValue(newStatus);
+        this.localizationsService.form.get('banReason')?.setValue(res?.text);
         this.submit();
       },
     };

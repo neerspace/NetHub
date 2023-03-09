@@ -62,8 +62,6 @@ export abstract class FieldBaseComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: FormBaseChanges): void {
-    if (this.formControl) {
-    }
     if (changes.disabled && this.formControl) {
       if (this.isTrue(this.disabled)) {
         this.formControl.disable({ onlySelf: true });

@@ -45,6 +45,7 @@
   <form app-form-layout
         [formGroup]="localizationsService.form"
         [ready]="localizationsService.ready">
+
     <app-fieldset size="small">
       <app-number-field label="ID"
                         controlName="id"
@@ -72,23 +73,28 @@
                       controlName="banned"
                       type="date-time"
                       [disabled]="true"></app-date-field>
+      <app-text-area-field *ngIf="model.status === Status.Banned"
+                           label="Ban Readon"
+                           controlName="banReason"
+                           size="medium"
+                           [disabled]="locked"></app-text-area-field>
+
+    </app-fieldset>
+    <hr />
+    <app-fieldset size="small">
+
       <app-select-field label="Content Status"
                         controlName="status"
                         [options]="localizationsService.contentStatuses"
                         [disabled]="locked"></app-select-field>
-
-      <div class="article-statistics">
-        <div>Views: {{model.views}}</div>
-        <div>Rating: {{model.rate}}</div>
-      </div>
+      <app-text-field label="Views"
+                      controlName="views"
+                      [disabled]="true"></app-text-field>
+      <app-text-field label="Rating"
+                      controlName="rate"
+                      [disabled]="true"></app-text-field>
     </app-fieldset>
-
     <hr />
-
-    <!--<app-text-field label="Title"-->
-    <!--                controlName="title"-->
-    <!--                [disabled]="locked"></app-text-field>-->
-
     <app-fieldset size="large">
       <app-text-area-field label="Title"
                            controlName="title"
@@ -104,12 +110,5 @@
                            [disabled]="locked"></app-text-area-field>
     </app-fieldset>
 
-    <!--<app-text-field label="Title"-->
-    <!--                controlName="name"-->
-    <!--                [maxLength]="50"-->
-    <!--                [required]="true"></app-text-field>-->
-    <!--<app-text-field label=""-->
-    <!--                controlName="nameLocal"-->
-    <!--                [maxLength]="50"></app-text-field>-->
   </form>
 </app-main-content>

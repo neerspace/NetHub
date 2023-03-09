@@ -10,10 +10,10 @@ import { articleColumns } from '../article-columns';
 
 @Component({
   selector: 'app-articles-table',
-  templateUrl: './articles-table.component.html',
-  styleUrls: ['./articles-table.component.scss'],
+  templateUrl: './article-table.component.html',
+  styleUrls: ['./article-table.component.scss'],
 })
-export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> implements OnInit {
+export class ArticleTableComponent extends SplitBaseComponent<ArticleModel> implements OnInit {
   @ViewChild(TabsComponent) tabsComponent!: TabsComponent;
   @ViewChild('table') table!: DataTableComponent<ArticleModel>;
   @ViewChild('articleForm') articleTemplate!: TemplateRef<any>;
@@ -35,7 +35,6 @@ export class ArticlesTableComponent extends SplitBaseComponent<ArticleModel> imp
     return this.articleSharedService.filter(params).pipe(
       finalize(() => {
         const item = this.table.data?.[0].localizations[0];
-        console.log('item:', item);
         this.onLocalizationClick(item);
         this.onLocalizationClick(this.table.data?.[0].localizations[2]);
       }),

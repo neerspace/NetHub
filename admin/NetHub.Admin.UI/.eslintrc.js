@@ -10,6 +10,7 @@ module.exports = {
         project: ['tsconfig.*?.json'],
         createDefaultProgram: true,
       },
+      plugins: ['no-relative-import-paths'],
       extends: [
         'plugin:@angular-eslint/recommended',
         'plugin:@angular-eslint/template/process-inline-templates',
@@ -26,6 +27,13 @@ module.exports = {
           { type: 'element', prefix: 'app', style: 'kebab-case' },
         ],
         '@angular-eslint/no-host-metadata-property': ['error', { allowStatic: true }],
+        'no-relative-import-paths/no-relative-import-paths': [
+          'warn',
+          {
+            allowSameFolder: true,
+            rootDir: 'src',
+          },
+        ],
       },
     },
     {

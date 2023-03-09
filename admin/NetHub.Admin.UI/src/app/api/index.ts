@@ -1528,10 +1528,117 @@ export class LocalizationsApi {
     }
 
     /**
+     * @param filters (optional) 
+     * @param sorts (optional) 
+     * @param page (optional) 
+     * @param pageSize (optional) 
+     * @return Success
+     */
+    filter(filters: string | undefined, sorts: string | undefined, page: number | undefined, pageSize: number | undefined): Observable<ArticleLocalizationModelFiltered> {
+        let url_ = this.baseUrl + "/v1/localizations?";
+        if (filters === null)
+            throw new Error("The parameter 'filters' cannot be null.");
+        else if (filters !== undefined)
+            url_ += "Filters=" + encodeURIComponent("" + filters) + "&";
+        if (sorts === null)
+            throw new Error("The parameter 'sorts' cannot be null.");
+        else if (sorts !== undefined)
+            url_ += "Sorts=" + encodeURIComponent("" + sorts) + "&";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "Page=" + encodeURIComponent("" + page) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            withCredentials: true,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processFilter(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processFilter(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ArticleLocalizationModelFiltered>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ArticleLocalizationModelFiltered>;
+        }));
+    }
+
+    protected processFilter(response: HttpResponseBase): Observable<ArticleLocalizationModelFiltered> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ArticleLocalizationModelFiltered.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return No Content
      */
-    update(body: ArticleLocalization | undefined): Observable<void> {
+    update(body: ArticleLocalizationModel | undefined): Observable<void> {
         let url_ = this.baseUrl + "/v1/localizations";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2940,821 +3047,6 @@ export class UsersApi {
     }
 }
 
-export class AppDevice implements IAppDevice {
-    id!: number;
-    ipAddress!: string;
-    platform!: string;
-    browser!: string;
-    browserVersion!: string;
-    status!: DeviceStatus;
-    attemptCount!: number;
-    lastAttempt!: DateTime | null;
-
-    constructor(data?: IAppDevice) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.ipAddress = _data["ipAddress"] !== undefined ? _data["ipAddress"] : <any>null;
-            this.platform = _data["platform"] !== undefined ? _data["platform"] : <any>null;
-            this.browser = _data["browser"] !== undefined ? _data["browser"] : <any>null;
-            this.browserVersion = _data["browserVersion"] !== undefined ? _data["browserVersion"] : <any>null;
-            this.status = _data["status"] !== undefined ? _data["status"] : <any>null;
-            this.attemptCount = _data["attemptCount"] !== undefined ? _data["attemptCount"] : <any>null;
-            this.lastAttempt = _data["lastAttempt"] ? DateTime.fromISO(_data["lastAttempt"].toString()) : <any>null;
-        }
-    }
-
-    static fromJS(data: any): AppDevice {
-        data = typeof data === 'object' ? data : {};
-        let result = new AppDevice();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["ipAddress"] = this.ipAddress !== undefined ? this.ipAddress : <any>null;
-        data["platform"] = this.platform !== undefined ? this.platform : <any>null;
-        data["browser"] = this.browser !== undefined ? this.browser : <any>null;
-        data["browserVersion"] = this.browserVersion !== undefined ? this.browserVersion : <any>null;
-        data["status"] = this.status !== undefined ? this.status : <any>null;
-        data["attemptCount"] = this.attemptCount !== undefined ? this.attemptCount : <any>null;
-        data["lastAttempt"] = this.lastAttempt ? this.lastAttempt.toString() : <any>null;
-        return data;
-    }
-}
-
-export interface IAppDevice {
-    id: number;
-    ipAddress: string;
-    platform: string;
-    browser: string;
-    browserVersion: string;
-    status: DeviceStatus;
-    attemptCount: number;
-    lastAttempt: DateTime | null;
-}
-
-export class AppRole implements IAppRole {
-    id!: number;
-    name!: string;
-    normalizedName!: string;
-    concurrencyStamp!: string;
-    userRoles!: AppUserRole[] | null;
-    roleClaims!: AppRoleClaim[] | null;
-
-    constructor(data?: IAppRole) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            if (data.userRoles) {
-                this.userRoles = [];
-                for (let i = 0; i < data.userRoles.length; i++) {
-                    let item = data.userRoles[i];
-                    this.userRoles[i] = item && !(<any>item).toJSON ? new AppUserRole(item) : <AppUserRole>item;
-                }
-            }
-            if (data.roleClaims) {
-                this.roleClaims = [];
-                for (let i = 0; i < data.roleClaims.length; i++) {
-                    let item = data.roleClaims[i];
-                    this.roleClaims[i] = item && !(<any>item).toJSON ? new AppRoleClaim(item) : <AppRoleClaim>item;
-                }
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
-            this.normalizedName = _data["normalizedName"] !== undefined ? _data["normalizedName"] : <any>null;
-            this.concurrencyStamp = _data["concurrencyStamp"] !== undefined ? _data["concurrencyStamp"] : <any>null;
-            if (Array.isArray(_data["userRoles"])) {
-                this.userRoles = [] as any;
-                for (let item of _data["userRoles"])
-                    this.userRoles!.push(AppUserRole.fromJS(item));
-            }
-            else {
-                this.userRoles = <any>null;
-            }
-            if (Array.isArray(_data["roleClaims"])) {
-                this.roleClaims = [] as any;
-                for (let item of _data["roleClaims"])
-                    this.roleClaims!.push(AppRoleClaim.fromJS(item));
-            }
-            else {
-                this.roleClaims = <any>null;
-            }
-        }
-    }
-
-    static fromJS(data: any): AppRole {
-        data = typeof data === 'object' ? data : {};
-        let result = new AppRole();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["name"] = this.name !== undefined ? this.name : <any>null;
-        data["normalizedName"] = this.normalizedName !== undefined ? this.normalizedName : <any>null;
-        data["concurrencyStamp"] = this.concurrencyStamp !== undefined ? this.concurrencyStamp : <any>null;
-        if (Array.isArray(this.userRoles)) {
-            data["userRoles"] = [];
-            for (let item of this.userRoles)
-                data["userRoles"].push(item.toJSON());
-        }
-        if (Array.isArray(this.roleClaims)) {
-            data["roleClaims"] = [];
-            for (let item of this.roleClaims)
-                data["roleClaims"].push(item.toJSON());
-        }
-        return data;
-    }
-}
-
-export interface IAppRole {
-    id: number;
-    name: string;
-    normalizedName: string;
-    concurrencyStamp: string;
-    userRoles: IAppUserRole[] | null;
-    roleClaims: IAppRoleClaim[] | null;
-}
-
-export class AppRoleClaim implements IAppRoleClaim {
-    id!: number;
-    roleId!: number;
-    claimType!: string | null;
-    claimValue!: string | null;
-    role!: AppRole;
-
-    constructor(data?: IAppRoleClaim) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.role = data.role && !(<any>data.role).toJSON ? new AppRole(data.role) : <AppRole>this.role;
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.roleId = _data["roleId"] !== undefined ? _data["roleId"] : <any>null;
-            this.claimType = _data["claimType"] !== undefined ? _data["claimType"] : <any>null;
-            this.claimValue = _data["claimValue"] !== undefined ? _data["claimValue"] : <any>null;
-            this.role = _data["role"] ? AppRole.fromJS(_data["role"]) : <any>null;
-        }
-    }
-
-    static fromJS(data: any): AppRoleClaim {
-        data = typeof data === 'object' ? data : {};
-        let result = new AppRoleClaim();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["roleId"] = this.roleId !== undefined ? this.roleId : <any>null;
-        data["claimType"] = this.claimType !== undefined ? this.claimType : <any>null;
-        data["claimValue"] = this.claimValue !== undefined ? this.claimValue : <any>null;
-        data["role"] = this.role ? this.role.toJSON() : <any>null;
-        return data;
-    }
-}
-
-export interface IAppRoleClaim {
-    id: number;
-    roleId: number;
-    claimType: string | null;
-    claimValue: string | null;
-    role: IAppRole;
-}
-
-export class AppToken implements IAppToken {
-    userId!: number;
-    loginProvider!: string;
-    name!: string;
-    value!: string | null;
-    deviceId!: number | null;
-    created!: DateTime;
-    device!: AppDevice;
-    user!: AppUser;
-
-    constructor(data?: IAppToken) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.device = data.device && !(<any>data.device).toJSON ? new AppDevice(data.device) : <AppDevice>this.device;
-            this.user = data.user && !(<any>data.user).toJSON ? new AppUser(data.user) : <AppUser>this.user;
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
-            this.loginProvider = _data["loginProvider"] !== undefined ? _data["loginProvider"] : <any>null;
-            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
-            this.value = _data["value"] !== undefined ? _data["value"] : <any>null;
-            this.deviceId = _data["deviceId"] !== undefined ? _data["deviceId"] : <any>null;
-            this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>null;
-            this.device = _data["device"] ? AppDevice.fromJS(_data["device"]) : <any>null;
-            this.user = _data["user"] ? AppUser.fromJS(_data["user"]) : <any>null;
-        }
-    }
-
-    static fromJS(data: any): AppToken {
-        data = typeof data === 'object' ? data : {};
-        let result = new AppToken();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
-        data["loginProvider"] = this.loginProvider !== undefined ? this.loginProvider : <any>null;
-        data["name"] = this.name !== undefined ? this.name : <any>null;
-        data["value"] = this.value !== undefined ? this.value : <any>null;
-        data["deviceId"] = this.deviceId !== undefined ? this.deviceId : <any>null;
-        data["created"] = this.created ? this.created.toString() : <any>null;
-        data["device"] = this.device ? this.device.toJSON() : <any>null;
-        data["user"] = this.user ? this.user.toJSON() : <any>null;
-        return data;
-    }
-}
-
-export interface IAppToken {
-    userId: number;
-    loginProvider: string;
-    name: string;
-    value: string | null;
-    deviceId: number | null;
-    created: DateTime;
-    device: IAppDevice;
-    user: IAppUser;
-}
-
-export class AppUser implements IAppUser {
-    passwordHash!: string | null;
-    securityStamp!: string | null;
-    concurrencyStamp!: string | null;
-    phoneNumber!: string | null;
-    phoneNumberConfirmed!: boolean;
-    twoFactorEnabled!: boolean;
-    lockoutEnd!: DateTime | null;
-    lockoutEnabled!: boolean;
-    accessFailedCount!: number;
-    id!: number;
-    userName!: string;
-    usernameChanges!: UsernameChange;
-    firstName!: string;
-    lastName!: string | null;
-    middleName!: string | null;
-    normalizedUserName!: string;
-    email!: string;
-    normalizedEmail!: string;
-    emailConfirmed!: boolean;
-    description!: string | null;
-    profilePhotoUrl!: string | null;
-    registered!: DateTime;
-    userRoles!: AppUserRole[] | null;
-    userClaims!: AppUserClaim[] | null;
-    tokens!: AppToken[] | null;
-    articles!: Article[] | null;
-    savedArticles!: SavedArticle[] | null;
-    photoId!: string | null;
-    photo!: Resource;
-
-    constructor(data?: IAppUser) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.usernameChanges = data.usernameChanges && !(<any>data.usernameChanges).toJSON ? new UsernameChange(data.usernameChanges) : <UsernameChange>this.usernameChanges;
-            if (data.userRoles) {
-                this.userRoles = [];
-                for (let i = 0; i < data.userRoles.length; i++) {
-                    let item = data.userRoles[i];
-                    this.userRoles[i] = item && !(<any>item).toJSON ? new AppUserRole(item) : <AppUserRole>item;
-                }
-            }
-            if (data.userClaims) {
-                this.userClaims = [];
-                for (let i = 0; i < data.userClaims.length; i++) {
-                    let item = data.userClaims[i];
-                    this.userClaims[i] = item && !(<any>item).toJSON ? new AppUserClaim(item) : <AppUserClaim>item;
-                }
-            }
-            if (data.tokens) {
-                this.tokens = [];
-                for (let i = 0; i < data.tokens.length; i++) {
-                    let item = data.tokens[i];
-                    this.tokens[i] = item && !(<any>item).toJSON ? new AppToken(item) : <AppToken>item;
-                }
-            }
-            if (data.articles) {
-                this.articles = [];
-                for (let i = 0; i < data.articles.length; i++) {
-                    let item = data.articles[i];
-                    this.articles[i] = item && !(<any>item).toJSON ? new Article(item) : <Article>item;
-                }
-            }
-            if (data.savedArticles) {
-                this.savedArticles = [];
-                for (let i = 0; i < data.savedArticles.length; i++) {
-                    let item = data.savedArticles[i];
-                    this.savedArticles[i] = item && !(<any>item).toJSON ? new SavedArticle(item) : <SavedArticle>item;
-                }
-            }
-            this.photo = data.photo && !(<any>data.photo).toJSON ? new Resource(data.photo) : <Resource>this.photo;
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.passwordHash = _data["passwordHash"] !== undefined ? _data["passwordHash"] : <any>null;
-            this.securityStamp = _data["securityStamp"] !== undefined ? _data["securityStamp"] : <any>null;
-            this.concurrencyStamp = _data["concurrencyStamp"] !== undefined ? _data["concurrencyStamp"] : <any>null;
-            this.phoneNumber = _data["phoneNumber"] !== undefined ? _data["phoneNumber"] : <any>null;
-            this.phoneNumberConfirmed = _data["phoneNumberConfirmed"] !== undefined ? _data["phoneNumberConfirmed"] : <any>null;
-            this.twoFactorEnabled = _data["twoFactorEnabled"] !== undefined ? _data["twoFactorEnabled"] : <any>null;
-            this.lockoutEnd = _data["lockoutEnd"] ? DateTime.fromISO(_data["lockoutEnd"].toString()) : <any>null;
-            this.lockoutEnabled = _data["lockoutEnabled"] !== undefined ? _data["lockoutEnabled"] : <any>null;
-            this.accessFailedCount = _data["accessFailedCount"] !== undefined ? _data["accessFailedCount"] : <any>null;
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.userName = _data["userName"] !== undefined ? _data["userName"] : <any>null;
-            this.usernameChanges = _data["usernameChanges"] ? UsernameChange.fromJS(_data["usernameChanges"]) : <any>null;
-            this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
-            this.lastName = _data["lastName"] !== undefined ? _data["lastName"] : <any>null;
-            this.middleName = _data["middleName"] !== undefined ? _data["middleName"] : <any>null;
-            this.normalizedUserName = _data["normalizedUserName"] !== undefined ? _data["normalizedUserName"] : <any>null;
-            this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
-            this.normalizedEmail = _data["normalizedEmail"] !== undefined ? _data["normalizedEmail"] : <any>null;
-            this.emailConfirmed = _data["emailConfirmed"] !== undefined ? _data["emailConfirmed"] : <any>null;
-            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
-            this.profilePhotoUrl = _data["profilePhotoUrl"] !== undefined ? _data["profilePhotoUrl"] : <any>null;
-            this.registered = _data["registered"] ? DateTime.fromISO(_data["registered"].toString()) : <any>null;
-            if (Array.isArray(_data["userRoles"])) {
-                this.userRoles = [] as any;
-                for (let item of _data["userRoles"])
-                    this.userRoles!.push(AppUserRole.fromJS(item));
-            }
-            else {
-                this.userRoles = <any>null;
-            }
-            if (Array.isArray(_data["userClaims"])) {
-                this.userClaims = [] as any;
-                for (let item of _data["userClaims"])
-                    this.userClaims!.push(AppUserClaim.fromJS(item));
-            }
-            else {
-                this.userClaims = <any>null;
-            }
-            if (Array.isArray(_data["tokens"])) {
-                this.tokens = [] as any;
-                for (let item of _data["tokens"])
-                    this.tokens!.push(AppToken.fromJS(item));
-            }
-            else {
-                this.tokens = <any>null;
-            }
-            if (Array.isArray(_data["articles"])) {
-                this.articles = [] as any;
-                for (let item of _data["articles"])
-                    this.articles!.push(Article.fromJS(item));
-            }
-            else {
-                this.articles = <any>null;
-            }
-            if (Array.isArray(_data["savedArticles"])) {
-                this.savedArticles = [] as any;
-                for (let item of _data["savedArticles"])
-                    this.savedArticles!.push(SavedArticle.fromJS(item));
-            }
-            else {
-                this.savedArticles = <any>null;
-            }
-            this.photoId = _data["photoId"] !== undefined ? _data["photoId"] : <any>null;
-            this.photo = _data["photo"] ? Resource.fromJS(_data["photo"]) : <any>null;
-        }
-    }
-
-    static fromJS(data: any): AppUser {
-        data = typeof data === 'object' ? data : {};
-        let result = new AppUser();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["passwordHash"] = this.passwordHash !== undefined ? this.passwordHash : <any>null;
-        data["securityStamp"] = this.securityStamp !== undefined ? this.securityStamp : <any>null;
-        data["concurrencyStamp"] = this.concurrencyStamp !== undefined ? this.concurrencyStamp : <any>null;
-        data["phoneNumber"] = this.phoneNumber !== undefined ? this.phoneNumber : <any>null;
-        data["phoneNumberConfirmed"] = this.phoneNumberConfirmed !== undefined ? this.phoneNumberConfirmed : <any>null;
-        data["twoFactorEnabled"] = this.twoFactorEnabled !== undefined ? this.twoFactorEnabled : <any>null;
-        data["lockoutEnd"] = this.lockoutEnd ? this.lockoutEnd.toString() : <any>null;
-        data["lockoutEnabled"] = this.lockoutEnabled !== undefined ? this.lockoutEnabled : <any>null;
-        data["accessFailedCount"] = this.accessFailedCount !== undefined ? this.accessFailedCount : <any>null;
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["userName"] = this.userName !== undefined ? this.userName : <any>null;
-        data["usernameChanges"] = this.usernameChanges ? this.usernameChanges.toJSON() : <any>null;
-        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
-        data["lastName"] = this.lastName !== undefined ? this.lastName : <any>null;
-        data["middleName"] = this.middleName !== undefined ? this.middleName : <any>null;
-        data["normalizedUserName"] = this.normalizedUserName !== undefined ? this.normalizedUserName : <any>null;
-        data["email"] = this.email !== undefined ? this.email : <any>null;
-        data["normalizedEmail"] = this.normalizedEmail !== undefined ? this.normalizedEmail : <any>null;
-        data["emailConfirmed"] = this.emailConfirmed !== undefined ? this.emailConfirmed : <any>null;
-        data["description"] = this.description !== undefined ? this.description : <any>null;
-        data["profilePhotoUrl"] = this.profilePhotoUrl !== undefined ? this.profilePhotoUrl : <any>null;
-        data["registered"] = this.registered ? this.registered.toString() : <any>null;
-        if (Array.isArray(this.userRoles)) {
-            data["userRoles"] = [];
-            for (let item of this.userRoles)
-                data["userRoles"].push(item.toJSON());
-        }
-        if (Array.isArray(this.userClaims)) {
-            data["userClaims"] = [];
-            for (let item of this.userClaims)
-                data["userClaims"].push(item.toJSON());
-        }
-        if (Array.isArray(this.tokens)) {
-            data["tokens"] = [];
-            for (let item of this.tokens)
-                data["tokens"].push(item.toJSON());
-        }
-        if (Array.isArray(this.articles)) {
-            data["articles"] = [];
-            for (let item of this.articles)
-                data["articles"].push(item.toJSON());
-        }
-        if (Array.isArray(this.savedArticles)) {
-            data["savedArticles"] = [];
-            for (let item of this.savedArticles)
-                data["savedArticles"].push(item.toJSON());
-        }
-        data["photoId"] = this.photoId !== undefined ? this.photoId : <any>null;
-        data["photo"] = this.photo ? this.photo.toJSON() : <any>null;
-        return data;
-    }
-}
-
-export interface IAppUser {
-    passwordHash: string | null;
-    securityStamp: string | null;
-    concurrencyStamp: string | null;
-    phoneNumber: string | null;
-    phoneNumberConfirmed: boolean;
-    twoFactorEnabled: boolean;
-    lockoutEnd: DateTime | null;
-    lockoutEnabled: boolean;
-    accessFailedCount: number;
-    id: number;
-    userName: string;
-    usernameChanges: IUsernameChange;
-    firstName: string;
-    lastName: string | null;
-    middleName: string | null;
-    normalizedUserName: string;
-    email: string;
-    normalizedEmail: string;
-    emailConfirmed: boolean;
-    description: string | null;
-    profilePhotoUrl: string | null;
-    registered: DateTime;
-    userRoles: IAppUserRole[] | null;
-    userClaims: IAppUserClaim[] | null;
-    tokens: IAppToken[] | null;
-    articles: IArticle[] | null;
-    savedArticles: ISavedArticle[] | null;
-    photoId: string | null;
-    photo: IResource;
-}
-
-export class AppUserClaim implements IAppUserClaim {
-    id!: number;
-    userId!: number;
-    claimType!: string | null;
-    claimValue!: string | null;
-    user!: AppUser;
-
-    constructor(data?: IAppUserClaim) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.user = data.user && !(<any>data.user).toJSON ? new AppUser(data.user) : <AppUser>this.user;
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
-            this.claimType = _data["claimType"] !== undefined ? _data["claimType"] : <any>null;
-            this.claimValue = _data["claimValue"] !== undefined ? _data["claimValue"] : <any>null;
-            this.user = _data["user"] ? AppUser.fromJS(_data["user"]) : <any>null;
-        }
-    }
-
-    static fromJS(data: any): AppUserClaim {
-        data = typeof data === 'object' ? data : {};
-        let result = new AppUserClaim();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
-        data["claimType"] = this.claimType !== undefined ? this.claimType : <any>null;
-        data["claimValue"] = this.claimValue !== undefined ? this.claimValue : <any>null;
-        data["user"] = this.user ? this.user.toJSON() : <any>null;
-        return data;
-    }
-}
-
-export interface IAppUserClaim {
-    id: number;
-    userId: number;
-    claimType: string | null;
-    claimValue: string | null;
-    user: IAppUser;
-}
-
-export class AppUserRole implements IAppUserRole {
-    userId!: number;
-    roleId!: number;
-    user!: AppUser;
-    role!: AppRole;
-
-    constructor(data?: IAppUserRole) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.user = data.user && !(<any>data.user).toJSON ? new AppUser(data.user) : <AppUser>this.user;
-            this.role = data.role && !(<any>data.role).toJSON ? new AppRole(data.role) : <AppRole>this.role;
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
-            this.roleId = _data["roleId"] !== undefined ? _data["roleId"] : <any>null;
-            this.user = _data["user"] ? AppUser.fromJS(_data["user"]) : <any>null;
-            this.role = _data["role"] ? AppRole.fromJS(_data["role"]) : <any>null;
-        }
-    }
-
-    static fromJS(data: any): AppUserRole {
-        data = typeof data === 'object' ? data : {};
-        let result = new AppUserRole();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
-        data["roleId"] = this.roleId !== undefined ? this.roleId : <any>null;
-        data["user"] = this.user ? this.user.toJSON() : <any>null;
-        data["role"] = this.role ? this.role.toJSON() : <any>null;
-        return data;
-    }
-}
-
-export interface IAppUserRole {
-    userId: number;
-    roleId: number;
-    user: IAppUser;
-    role: IAppRole;
-}
-
-export class Article implements IArticle {
-    id!: number;
-    name!: string;
-    originalArticleLink!: string | null;
-    rate!: number;
-    created!: DateTime;
-    updated!: DateTime | null;
-    published!: DateTime | null;
-    banned!: DateTime | null;
-    authorId!: number;
-    author!: AppUser;
-    localizations!: ArticleLocalization[] | null;
-    images!: ArticleResource[] | null;
-    tags!: ArticleTag[] | null;
-
-    constructor(data?: IArticle) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.author = data.author && !(<any>data.author).toJSON ? new AppUser(data.author) : <AppUser>this.author;
-            if (data.localizations) {
-                this.localizations = [];
-                for (let i = 0; i < data.localizations.length; i++) {
-                    let item = data.localizations[i];
-                    this.localizations[i] = item && !(<any>item).toJSON ? new ArticleLocalization(item) : <ArticleLocalization>item;
-                }
-            }
-            if (data.images) {
-                this.images = [];
-                for (let i = 0; i < data.images.length; i++) {
-                    let item = data.images[i];
-                    this.images[i] = item && !(<any>item).toJSON ? new ArticleResource(item) : <ArticleResource>item;
-                }
-            }
-            if (data.tags) {
-                this.tags = [];
-                for (let i = 0; i < data.tags.length; i++) {
-                    let item = data.tags[i];
-                    this.tags[i] = item && !(<any>item).toJSON ? new ArticleTag(item) : <ArticleTag>item;
-                }
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
-            this.originalArticleLink = _data["originalArticleLink"] !== undefined ? _data["originalArticleLink"] : <any>null;
-            this.rate = _data["rate"] !== undefined ? _data["rate"] : <any>null;
-            this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>null;
-            this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>null;
-            this.published = _data["published"] ? DateTime.fromISO(_data["published"].toString()) : <any>null;
-            this.banned = _data["banned"] ? DateTime.fromISO(_data["banned"].toString()) : <any>null;
-            this.authorId = _data["authorId"] !== undefined ? _data["authorId"] : <any>null;
-            this.author = _data["author"] ? AppUser.fromJS(_data["author"]) : <any>null;
-            if (Array.isArray(_data["localizations"])) {
-                this.localizations = [] as any;
-                for (let item of _data["localizations"])
-                    this.localizations!.push(ArticleLocalization.fromJS(item));
-            }
-            else {
-                this.localizations = <any>null;
-            }
-            if (Array.isArray(_data["images"])) {
-                this.images = [] as any;
-                for (let item of _data["images"])
-                    this.images!.push(ArticleResource.fromJS(item));
-            }
-            else {
-                this.images = <any>null;
-            }
-            if (Array.isArray(_data["tags"])) {
-                this.tags = [] as any;
-                for (let item of _data["tags"])
-                    this.tags!.push(ArticleTag.fromJS(item));
-            }
-            else {
-                this.tags = <any>null;
-            }
-        }
-    }
-
-    static fromJS(data: any): Article {
-        data = typeof data === 'object' ? data : {};
-        let result = new Article();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["name"] = this.name !== undefined ? this.name : <any>null;
-        data["originalArticleLink"] = this.originalArticleLink !== undefined ? this.originalArticleLink : <any>null;
-        data["rate"] = this.rate !== undefined ? this.rate : <any>null;
-        data["created"] = this.created ? this.created.toString() : <any>null;
-        data["updated"] = this.updated ? this.updated.toString() : <any>null;
-        data["published"] = this.published ? this.published.toString() : <any>null;
-        data["banned"] = this.banned ? this.banned.toString() : <any>null;
-        data["authorId"] = this.authorId !== undefined ? this.authorId : <any>null;
-        data["author"] = this.author ? this.author.toJSON() : <any>null;
-        if (Array.isArray(this.localizations)) {
-            data["localizations"] = [];
-            for (let item of this.localizations)
-                data["localizations"].push(item.toJSON());
-        }
-        if (Array.isArray(this.images)) {
-            data["images"] = [];
-            for (let item of this.images)
-                data["images"].push(item.toJSON());
-        }
-        if (Array.isArray(this.tags)) {
-            data["tags"] = [];
-            for (let item of this.tags)
-                data["tags"].push(item.toJSON());
-        }
-        return data;
-    }
-}
-
-export interface IArticle {
-    id: number;
-    name: string;
-    originalArticleLink: string | null;
-    rate: number;
-    created: DateTime;
-    updated: DateTime | null;
-    published: DateTime | null;
-    banned: DateTime | null;
-    authorId: number;
-    author: IAppUser;
-    localizations: IArticleLocalization[] | null;
-    images: IArticleResource[] | null;
-    tags: IArticleTag[] | null;
-}
-
-export class ArticleContributor implements IArticleContributor {
-    id!: number;
-    role!: ArticleContributorRole;
-    userId!: number;
-    user!: AppUser;
-    localizationId!: number;
-    localization!: ArticleLocalization;
-
-    constructor(data?: IArticleContributor) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.user = data.user && !(<any>data.user).toJSON ? new AppUser(data.user) : <AppUser>this.user;
-            this.localization = data.localization && !(<any>data.localization).toJSON ? new ArticleLocalization(data.localization) : <ArticleLocalization>this.localization;
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.role = _data["role"] !== undefined ? _data["role"] : <any>null;
-            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
-            this.user = _data["user"] ? AppUser.fromJS(_data["user"]) : <any>null;
-            this.localizationId = _data["localizationId"] !== undefined ? _data["localizationId"] : <any>null;
-            this.localization = _data["localization"] ? ArticleLocalization.fromJS(_data["localization"]) : <any>null;
-        }
-    }
-
-    static fromJS(data: any): ArticleContributor {
-        data = typeof data === 'object' ? data : {};
-        let result = new ArticleContributor();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["role"] = this.role !== undefined ? this.role : <any>null;
-        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
-        data["user"] = this.user ? this.user.toJSON() : <any>null;
-        data["localizationId"] = this.localizationId !== undefined ? this.localizationId : <any>null;
-        data["localization"] = this.localization ? this.localization.toJSON() : <any>null;
-        return data;
-    }
-}
-
-export interface IArticleContributor {
-    id: number;
-    role: ArticleContributorRole;
-    userId: number;
-    user: IAppUser;
-    localizationId: number;
-    localization: IArticleLocalization;
-}
-
 export class ArticleContributorModel implements IArticleContributorModel {
     role!: ArticleContributorRole;
     userName!: string;
@@ -3807,131 +3099,6 @@ export enum ArticleContributorRole {
     Translator = "Translator",
 }
 
-export class ArticleLocalization implements IArticleLocalization {
-    id!: number;
-    articleId!: number;
-    article!: Article;
-    languageCode!: string;
-    language!: Language;
-    title!: string;
-    description!: string;
-    html!: string;
-    views!: number;
-    status!: ContentStatus;
-    internalStatus!: InternalStatus;
-    created!: DateTime;
-    updated!: DateTime | null;
-    published!: DateTime | null;
-    banned!: DateTime | null;
-    lastContributorId!: number | null;
-    lastContributor!: AppUser;
-    contributors!: ArticleContributor[];
-
-    constructor(data?: IArticleLocalization) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.article = data.article && !(<any>data.article).toJSON ? new Article(data.article) : <Article>this.article;
-            this.language = data.language && !(<any>data.language).toJSON ? new Language(data.language) : <Language>this.language;
-            this.lastContributor = data.lastContributor && !(<any>data.lastContributor).toJSON ? new AppUser(data.lastContributor) : <AppUser>this.lastContributor;
-            if (data.contributors) {
-                this.contributors = [];
-                for (let i = 0; i < data.contributors.length; i++) {
-                    let item = data.contributors[i];
-                    this.contributors[i] = item && !(<any>item).toJSON ? new ArticleContributor(item) : <ArticleContributor>item;
-                }
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.articleId = _data["articleId"] !== undefined ? _data["articleId"] : <any>null;
-            this.article = _data["article"] ? Article.fromJS(_data["article"]) : <any>null;
-            this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
-            this.language = _data["language"] ? Language.fromJS(_data["language"]) : <any>null;
-            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
-            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
-            this.html = _data["html"] !== undefined ? _data["html"] : <any>null;
-            this.views = _data["views"] !== undefined ? _data["views"] : <any>null;
-            this.status = _data["status"] !== undefined ? _data["status"] : <any>null;
-            this.internalStatus = _data["internalStatus"] !== undefined ? _data["internalStatus"] : <any>null;
-            this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>null;
-            this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>null;
-            this.published = _data["published"] ? DateTime.fromISO(_data["published"].toString()) : <any>null;
-            this.banned = _data["banned"] ? DateTime.fromISO(_data["banned"].toString()) : <any>null;
-            this.lastContributorId = _data["lastContributorId"] !== undefined ? _data["lastContributorId"] : <any>null;
-            this.lastContributor = _data["lastContributor"] ? AppUser.fromJS(_data["lastContributor"]) : <any>null;
-            if (Array.isArray(_data["contributors"])) {
-                this.contributors = [] as any;
-                for (let item of _data["contributors"])
-                    this.contributors!.push(ArticleContributor.fromJS(item));
-            }
-            else {
-                this.contributors = <any>null;
-            }
-        }
-    }
-
-    static fromJS(data: any): ArticleLocalization {
-        data = typeof data === 'object' ? data : {};
-        let result = new ArticleLocalization();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["articleId"] = this.articleId !== undefined ? this.articleId : <any>null;
-        data["article"] = this.article ? this.article.toJSON() : <any>null;
-        data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
-        data["language"] = this.language ? this.language.toJSON() : <any>null;
-        data["title"] = this.title !== undefined ? this.title : <any>null;
-        data["description"] = this.description !== undefined ? this.description : <any>null;
-        data["html"] = this.html !== undefined ? this.html : <any>null;
-        data["views"] = this.views !== undefined ? this.views : <any>null;
-        data["status"] = this.status !== undefined ? this.status : <any>null;
-        data["internalStatus"] = this.internalStatus !== undefined ? this.internalStatus : <any>null;
-        data["created"] = this.created ? this.created.toString() : <any>null;
-        data["updated"] = this.updated ? this.updated.toString() : <any>null;
-        data["published"] = this.published ? this.published.toString() : <any>null;
-        data["banned"] = this.banned ? this.banned.toString() : <any>null;
-        data["lastContributorId"] = this.lastContributorId !== undefined ? this.lastContributorId : <any>null;
-        data["lastContributor"] = this.lastContributor ? this.lastContributor.toJSON() : <any>null;
-        if (Array.isArray(this.contributors)) {
-            data["contributors"] = [];
-            for (let item of this.contributors)
-                data["contributors"].push(item.toJSON());
-        }
-        return data;
-    }
-}
-
-export interface IArticleLocalization {
-    id: number;
-    articleId: number;
-    article: IArticle;
-    languageCode: string;
-    language: ILanguage;
-    title: string;
-    description: string;
-    html: string;
-    views: number;
-    status: ContentStatus;
-    internalStatus: InternalStatus;
-    created: DateTime;
-    updated: DateTime | null;
-    published: DateTime | null;
-    banned: DateTime | null;
-    lastContributorId: number | null;
-    lastContributor: IAppUser;
-    contributors: IArticleContributor[];
-}
-
 export class ArticleLocalizationModel implements IArticleLocalizationModel {
     id!: number;
     articleId!: number;
@@ -3947,6 +3114,7 @@ export class ArticleLocalizationModel implements IArticleLocalizationModel {
     updated!: DateTime | null;
     published!: DateTime | null;
     banned!: DateTime | null;
+    banReason!: string | null;
     isSaved!: boolean;
     savedDate!: DateTime | null;
     vote!: Vote;
@@ -3990,6 +3158,7 @@ export class ArticleLocalizationModel implements IArticleLocalizationModel {
             this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>null;
             this.published = _data["published"] ? DateTime.fromISO(_data["published"].toString()) : <any>null;
             this.banned = _data["banned"] ? DateTime.fromISO(_data["banned"].toString()) : <any>null;
+            this.banReason = _data["banReason"] !== undefined ? _data["banReason"] : <any>null;
             this.isSaved = _data["isSaved"] !== undefined ? _data["isSaved"] : <any>null;
             this.savedDate = _data["savedDate"] ? DateTime.fromISO(_data["savedDate"].toString()) : <any>null;
             this.vote = _data["vote"] !== undefined ? _data["vote"] : <any>null;
@@ -4023,6 +3192,7 @@ export class ArticleLocalizationModel implements IArticleLocalizationModel {
         data["updated"] = this.updated ? this.updated.toString() : <any>null;
         data["published"] = this.published ? this.published.toString() : <any>null;
         data["banned"] = this.banned ? this.banned.toString() : <any>null;
+        data["banReason"] = this.banReason !== undefined ? this.banReason : <any>null;
         data["isSaved"] = this.isSaved !== undefined ? this.isSaved : <any>null;
         data["savedDate"] = this.savedDate ? this.savedDate.toString() : <any>null;
         data["vote"] = this.vote !== undefined ? this.vote : <any>null;
@@ -4045,9 +3215,68 @@ export interface IArticleLocalizationModel {
     updated: DateTime | null;
     published: DateTime | null;
     banned: DateTime | null;
+    banReason: string | null;
     isSaved: boolean;
     savedDate: DateTime | null;
     vote: Vote;
+}
+
+export class ArticleLocalizationModelFiltered implements IArticleLocalizationModelFiltered {
+    total!: number;
+    data!: ArticleLocalizationModel[];
+
+    constructor(data?: IArticleLocalizationModelFiltered) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.data) {
+                this.data = [];
+                for (let i = 0; i < data.data.length; i++) {
+                    let item = data.data[i];
+                    this.data[i] = item && !(<any>item).toJSON ? new ArticleLocalizationModel(item) : <ArticleLocalizationModel>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"] !== undefined ? _data["total"] : <any>null;
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(ArticleLocalizationModel.fromJS(item));
+            }
+            else {
+                this.data = <any>null;
+            }
+        }
+    }
+
+    static fromJS(data: any): ArticleLocalizationModelFiltered {
+        data = typeof data === 'object' ? data : {};
+        let result = new ArticleLocalizationModelFiltered();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total !== undefined ? this.total : <any>null;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IArticleLocalizationModelFiltered {
+    total: number;
+    data: IArticleLocalizationModel[];
 }
 
 export class ArticleModel implements IArticleModel {
@@ -4213,106 +3442,6 @@ export interface IArticleModelFiltered {
     data: IArticleModel[];
 }
 
-export class ArticleResource implements IArticleResource {
-    articleId!: number;
-    article!: Article;
-    resourceId!: string;
-    resource!: Resource;
-
-    constructor(data?: IArticleResource) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.article = data.article && !(<any>data.article).toJSON ? new Article(data.article) : <Article>this.article;
-            this.resource = data.resource && !(<any>data.resource).toJSON ? new Resource(data.resource) : <Resource>this.resource;
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.articleId = _data["articleId"] !== undefined ? _data["articleId"] : <any>null;
-            this.article = _data["article"] ? Article.fromJS(_data["article"]) : <any>null;
-            this.resourceId = _data["resourceId"] !== undefined ? _data["resourceId"] : <any>null;
-            this.resource = _data["resource"] ? Resource.fromJS(_data["resource"]) : <any>null;
-        }
-    }
-
-    static fromJS(data: any): ArticleResource {
-        data = typeof data === 'object' ? data : {};
-        let result = new ArticleResource();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["articleId"] = this.articleId !== undefined ? this.articleId : <any>null;
-        data["article"] = this.article ? this.article.toJSON() : <any>null;
-        data["resourceId"] = this.resourceId !== undefined ? this.resourceId : <any>null;
-        data["resource"] = this.resource ? this.resource.toJSON() : <any>null;
-        return data;
-    }
-}
-
-export interface IArticleResource {
-    articleId: number;
-    article: IArticle;
-    resourceId: string;
-    resource: IResource;
-}
-
-export class ArticleTag implements IArticleTag {
-    tagId!: number;
-    tag!: Tag;
-    articleId!: number;
-    article!: Article;
-
-    constructor(data?: IArticleTag) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.tag = data.tag && !(<any>data.tag).toJSON ? new Tag(data.tag) : <Tag>this.tag;
-            this.article = data.article && !(<any>data.article).toJSON ? new Article(data.article) : <Article>this.article;
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.tagId = _data["tagId"] !== undefined ? _data["tagId"] : <any>null;
-            this.tag = _data["tag"] ? Tag.fromJS(_data["tag"]) : <any>null;
-            this.articleId = _data["articleId"] !== undefined ? _data["articleId"] : <any>null;
-            this.article = _data["article"] ? Article.fromJS(_data["article"]) : <any>null;
-        }
-    }
-
-    static fromJS(data: any): ArticleTag {
-        data = typeof data === 'object' ? data : {};
-        let result = new ArticleTag();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["tagId"] = this.tagId !== undefined ? this.tagId : <any>null;
-        data["tag"] = this.tag ? this.tag.toJSON() : <any>null;
-        data["articleId"] = this.articleId !== undefined ? this.articleId : <any>null;
-        data["article"] = this.article ? this.article.toJSON() : <any>null;
-        return data;
-    }
-}
-
-export interface IArticleTag {
-    tagId: number;
-    tag: ITag;
-    articleId: number;
-    article: IArticle;
-}
-
 export class AuthRequest implements IAuthRequest {
     login!: string;
     password!: string | null;
@@ -4357,11 +3486,6 @@ export enum ContentStatus {
     Draft = "Draft",
     Pending = "Pending",
     Published = "Published",
-    Banned = "Banned",
-}
-
-export enum DeviceStatus {
-    None = "None",
     Banned = "Banned",
 }
 
@@ -4513,11 +3637,6 @@ export interface IErrorDetails {
     [key: string]: any;
 }
 
-export enum InternalStatus {
-    Created = "Created",
-    AddedHtml = "AddedHtml",
-}
-
 export class JwtResult implements IJwtResult {
     username!: string;
     firstName!: string;
@@ -4576,55 +3695,6 @@ export interface IJwtResult {
     tokenExpires: DateTime;
     refreshTokenExpires: DateTime;
     profilePhotoUrl: string | null;
-}
-
-export class Language implements ILanguage {
-    code!: string;
-    name!: string;
-    flagId!: string | null;
-    flag!: Resource;
-
-    constructor(data?: ILanguage) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.flag = data.flag && !(<any>data.flag).toJSON ? new Resource(data.flag) : <Resource>this.flag;
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.code = _data["code"] !== undefined ? _data["code"] : <any>null;
-            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
-            this.flagId = _data["flagId"] !== undefined ? _data["flagId"] : <any>null;
-            this.flag = _data["flag"] ? Resource.fromJS(_data["flag"]) : <any>null;
-        }
-    }
-
-    static fromJS(data: any): Language {
-        data = typeof data === 'object' ? data : {};
-        let result = new Language();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["code"] = this.code !== undefined ? this.code : <any>null;
-        data["name"] = this.name !== undefined ? this.name : <any>null;
-        data["flagId"] = this.flagId !== undefined ? this.flagId : <any>null;
-        data["flag"] = this.flag ? this.flag.toJSON() : <any>null;
-        return data;
-    }
-}
-
-export interface ILanguage {
-    code: string;
-    name: string;
-    flagId: string | null;
-    flag: IResource;
 }
 
 export class LanguageModel implements ILanguageModel {
@@ -4795,58 +3865,6 @@ export interface IPermissionModel {
     children: IPermissionModel[] | null;
 }
 
-export class Resource implements IResource {
-    id!: string;
-    filename!: string;
-    mimetype!: string;
-    bytes!: string;
-    created!: DateTime;
-
-    constructor(data?: IResource) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.filename = _data["filename"] !== undefined ? _data["filename"] : <any>null;
-            this.mimetype = _data["mimetype"] !== undefined ? _data["mimetype"] : <any>null;
-            this.bytes = _data["bytes"] !== undefined ? _data["bytes"] : <any>null;
-            this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>null;
-        }
-    }
-
-    static fromJS(data: any): Resource {
-        data = typeof data === 'object' ? data : {};
-        let result = new Resource();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["filename"] = this.filename !== undefined ? this.filename : <any>null;
-        data["mimetype"] = this.mimetype !== undefined ? this.mimetype : <any>null;
-        data["bytes"] = this.bytes !== undefined ? this.bytes : <any>null;
-        data["created"] = this.created ? this.created.toString() : <any>null;
-        return data;
-    }
-}
-
-export interface IResource {
-    id: string;
-    filename: string;
-    mimetype: string;
-    bytes: string;
-    created: DateTime;
-}
-
 export class RoleModel implements IRoleModel {
     id!: number;
     name!: string;
@@ -4958,100 +3976,6 @@ export class RoleModelFiltered implements IRoleModelFiltered {
 export interface IRoleModelFiltered {
     total: number;
     data: IRoleModel[];
-}
-
-export class SavedArticle implements ISavedArticle {
-    localizationId!: number;
-    localization!: ArticleLocalization;
-    userId!: number;
-    user!: AppUser;
-    savedDate!: DateTime;
-
-    constructor(data?: ISavedArticle) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.localization = data.localization && !(<any>data.localization).toJSON ? new ArticleLocalization(data.localization) : <ArticleLocalization>this.localization;
-            this.user = data.user && !(<any>data.user).toJSON ? new AppUser(data.user) : <AppUser>this.user;
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.localizationId = _data["localizationId"] !== undefined ? _data["localizationId"] : <any>null;
-            this.localization = _data["localization"] ? ArticleLocalization.fromJS(_data["localization"]) : <any>null;
-            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
-            this.user = _data["user"] ? AppUser.fromJS(_data["user"]) : <any>null;
-            this.savedDate = _data["savedDate"] ? DateTime.fromISO(_data["savedDate"].toString()) : <any>null;
-        }
-    }
-
-    static fromJS(data: any): SavedArticle {
-        data = typeof data === 'object' ? data : {};
-        let result = new SavedArticle();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["localizationId"] = this.localizationId !== undefined ? this.localizationId : <any>null;
-        data["localization"] = this.localization ? this.localization.toJSON() : <any>null;
-        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
-        data["user"] = this.user ? this.user.toJSON() : <any>null;
-        data["savedDate"] = this.savedDate ? this.savedDate.toString() : <any>null;
-        return data;
-    }
-}
-
-export interface ISavedArticle {
-    localizationId: number;
-    localization: IArticleLocalization;
-    userId: number;
-    user: IAppUser;
-    savedDate: DateTime;
-}
-
-export class Tag implements ITag {
-    id!: number;
-    name!: string;
-
-    constructor(data?: ITag) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): Tag {
-        data = typeof data === 'object' ? data : {};
-        let result = new Tag();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["name"] = this.name !== undefined ? this.name : <any>null;
-        return data;
-    }
-}
-
-export interface ITag {
-    id: number;
-    name: string;
 }
 
 export class UserCreateRequest implements IUserCreateRequest {
@@ -5306,46 +4230,6 @@ export interface IUserUpdateRequest {
     lastName: string;
     password: string | null;
     description: string | null;
-}
-
-export class UsernameChange implements IUsernameChange {
-    lastTime!: DateTime | null;
-    count!: number;
-
-    constructor(data?: IUsernameChange) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.lastTime = _data["lastTime"] ? DateTime.fromISO(_data["lastTime"].toString()) : <any>null;
-            this.count = _data["count"] !== undefined ? _data["count"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): UsernameChange {
-        data = typeof data === 'object' ? data : {};
-        let result = new UsernameChange();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["lastTime"] = this.lastTime ? this.lastTime.toString() : <any>null;
-        data["count"] = this.count !== undefined ? this.count : <any>null;
-        return data;
-    }
-}
-
-export interface IUsernameChange {
-    lastTime: DateTime | null;
-    count: number;
 }
 
 export class ValidationError implements IValidationError {
