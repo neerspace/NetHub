@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthorizedGuard } from './api/guards/authorized.guard';
 import { EnsurePermissionsGuard } from './api/guards/ensure-permissions.guard';
-import { AdminLayoutComponent } from './components/layout/admin-layout/admin-layout.component';
+import { AdminLayoutComponent } from '@neerspace/ngx-admin/src/layout/admin-layout/admin-layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ErrorComponent } from './pages/public/error/error.component';
 import { LoginComponent } from './pages/public/login/login.component';
@@ -30,7 +30,7 @@ const adminRouters: Routes = [
     path: 'articles',
     loadChildren: () =>
       import('./pages/administration/articles/articles.module').then(m => m.ArticlesModule),
-    title: buildTitle('Articles')
+    title: buildTitle('Articles'),
   },
   {
     path: 'profile',

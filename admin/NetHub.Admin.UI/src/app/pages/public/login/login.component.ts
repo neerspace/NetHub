@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthRequest, JWTApi } from '../../../api';
-import { UserService } from '../../../services/user.service';
-import { ToasterService } from '../../../services/viewport';
+import { AuthRequest, JWTApi } from 'app/api';
+import { UserService } from 'app/services/user.service';
+import { ToasterService } from 'app/services/viewport';
 
 @Component({
   selector: 'app-login',

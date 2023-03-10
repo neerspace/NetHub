@@ -30,7 +30,7 @@ export const getDomain = (link: string | null) => {
   const url = new URL(link);
   const domain = url.hostname.replace('www.', '');
   return domain;
-}
+};
 
 /* eslint-disable prettier/prettier */
 /* eslint-disable */

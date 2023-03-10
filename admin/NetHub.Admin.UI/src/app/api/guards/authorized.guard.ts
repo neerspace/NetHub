@@ -6,13 +6,12 @@ import {
 } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { logger } from '../../../environments/environment';
+import { logger } from 'app/environments/environment';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthorizedGuard implements CanActivate {
-  constructor(private userService: UserService) {
-  }
+  constructor(private userService: UserService) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,

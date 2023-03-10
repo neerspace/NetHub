@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { getRandomInt } from 'src/app/shared/utilities';
-import { UserService } from '../user.service';
+import { getRandomInt } from 'app/shared/utilities';
+import { UserService } from 'app/pages/audience/users/user.service';
 
 @Component({
   selector: 'app-user-form',

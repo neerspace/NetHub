@@ -7,14 +7,14 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { JWTApi } from 'app/api';
+import { RequestTokenService } from 'app/api/request-token.service';
+import { environment } from 'app/environments/environment';
+import { SecuredStorage } from 'app/services/storage';
+import { LoaderService } from 'app/services/viewport';
 
 import { Observable, tap, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
-import { SecuredStorage } from '../../services/storage';
-import { LoaderService } from '../../services/viewport';
-import { JWTApi } from '../index';
-import { RequestTokenService } from '../request-token.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {

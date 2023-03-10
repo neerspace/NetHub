@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserModel } from 'src/app/api';
-import { FormReady } from 'src/app/components/form/types';
-import { ColumnInfo, IFiltered, IFilterInfo } from 'src/app/components/table/types';
-import { DownloadService } from 'src/app/services/download.service';
-import { userColumns } from '../user-columns';
-import { UserService } from '../user.service';
+import { UserModel } from 'app/api';
+import { FormReady } from 'app/components/form/types';
+import { ColumnInfo, IFiltered, IFilterInfo } from 'app/components/table/types';
+import { DownloadService } from 'app/services/download.service';
+import { userColumns } from 'app/pages/audience/users/user-columns';
+import { UserService } from 'app/pages/audience/users/user.service';
 
 @Component({
   selector: 'app-users-table',

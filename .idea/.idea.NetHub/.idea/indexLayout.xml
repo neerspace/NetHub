@@ -2,9 +2,10 @@
 <project version="4">
   <component name="UserContentModel">
     <attachedFolders>
+      <Path>../neercore-admin</Path>
       <Path>admin/NetHub.Admin.UI</Path>
       <Path>app/NetHub.UI</Path>
-      <Path>../neercore-admin</Path>
+      <Path>../neerspace-angular</Path>
     </attachedFolders>
     <explicitIncludes />
     <explicitExcludes />

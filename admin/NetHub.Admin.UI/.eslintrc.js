@@ -28,7 +28,7 @@ module.exports = {
         ],
         '@angular-eslint/no-host-metadata-property': ['error', { allowStatic: true }],
         'no-relative-import-paths/no-relative-import-paths': [
-          'warn',
+          'error',
           {
             allowSameFolder: true,
             rootDir: 'src',

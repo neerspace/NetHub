@@ -3,8 +3,8 @@
   formatAsText,
   formatCounter,
   formatLink,
-} from 'src/app/components/table/formatters';
-import { ColumnInfo, ColumnStyle, FilterType } from 'src/app/components/table/types';
+} from 'app/components/table/formatters';
+import { ColumnInfo, ColumnStyle, FilterType } from 'app/components/table/types';
 import { ArticleTableComponent } from './article-table/article-table.component';
 
 export function articleColumns(context: ArticleTableComponent): ColumnInfo[] {

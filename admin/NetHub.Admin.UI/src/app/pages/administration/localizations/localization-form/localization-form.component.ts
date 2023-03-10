@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ArticleLocalizationModel, ContentStatus } from 'src/app/api';
-import { IModalHandlers } from 'src/app/components/core/types';
-import { ModalsService } from 'src/app/services/viewport';
-import { LocalizationService } from '../localization.service';
+import { ArticleLocalizationModel, ContentStatus } from 'app/api';
+import { IModalHandlers } from 'app/components/core/types';
+import { ModalsService } from 'app/services/viewport';
+import { LocalizationService } from 'app/pages/administration/localizations/localization.service';
 
 @Component({
   selector: 'app-localization-form',

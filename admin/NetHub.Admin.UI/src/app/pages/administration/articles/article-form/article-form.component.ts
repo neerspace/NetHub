@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ArticleModel } from 'src/app/api';
+import { ArticleModel } from 'app/api';
 
 @Component({
   selector: 'app-article-form',

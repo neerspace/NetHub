@@ -2,7 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Injectable } from '@angular/core';
 
 import { finalize, Observable } from 'rxjs';
-import { LoaderService } from '../../services/viewport';
+import { LoaderService } from 'app/services/viewport';
 
 @Injectable()
 export class LoaderInterceptor implements HttpInterceptor {

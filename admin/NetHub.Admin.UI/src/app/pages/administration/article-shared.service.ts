@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ArticleModel, ArticlesApi, LanguagesApi } from '../../api';
-import { FormId } from '../../components/form/types';
-import { IFiltered, IFilterInfo } from '../../components/table/types';
-import { IDictionary } from '../../shared/types';
+import { ArticleModel, ArticlesApi, LanguagesApi } from 'app/api';
+import { FormId } from 'app/components/form/types';
+import { IFiltered, IFilterInfo } from 'app/components/table/types';
+import { IDictionary } from 'app/shared/types';
 
 @Injectable({ providedIn: 'root' })
 export class ArticleSharedService {

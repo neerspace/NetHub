@@ -1,8 +1,8 @@
 ﻿import { Injectable, Injector } from '@angular/core';
-import { ArticleLocalizationModel, ErrorDto, LocalizationsApi } from 'src/app/api';
-import { ISelectOption } from 'src/app/components/form/types';
-import { MetadataService } from 'src/app/services';
-import { FormServiceBase } from 'src/app/services/abstractions';
+import { ArticleLocalizationModel, ErrorDto, LocalizationsApi } from 'app/api';
+import { ISelectOption } from 'app/components/form/types';
+import { MetadataService } from 'app/services';
+import { FormServiceBase } from 'app/services/abstractions';
 
 @Injectable()
 export class LocalizationService extends FormServiceBase {

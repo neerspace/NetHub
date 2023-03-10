@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RoleModel } from 'src/app/api';
-import { FormReady } from 'src/app/components/form/types';
-import { ColumnInfo, IFiltered, IFilterInfo } from 'src/app/components/table/types';
-import { roleColumns } from '../role-columns';
-import { RoleService } from '../role.service';
+import { RoleModel } from 'app/api';
+import { FormReady } from 'app/components/form/types';
+import { ColumnInfo, IFiltered, IFilterInfo } from 'app/components/table/types';
+import { roleColumns } from 'app/pages/audience/roles/role-columns';
+import { RoleService } from 'app/pages/audience/roles/role.service';
 
 @Component({
   selector: 'app-roles-table',

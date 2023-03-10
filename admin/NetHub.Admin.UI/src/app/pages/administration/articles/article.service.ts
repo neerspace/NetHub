@@ -6,9 +6,9 @@ import {
   ArticlesApi,
   ErrorDto,
   LanguagesApi,
-} from 'src/app/api';
-import { FormReady } from 'src/app/components/form/types';
-import { FormServiceBase } from '../../../services/abstractions';
+} from 'app/api';
+import { FormReady } from 'app/components/form/types';
+import { FormServiceBase } from 'app/services/abstractions';
 
 @Injectable()
 export class ArticleService extends FormServiceBase {

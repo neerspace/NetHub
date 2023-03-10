@@ -1,9 +1,9 @@
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ErrorDto, PermissionModel, PermissionsApi, RoleModel, RolesApi } from 'src/app/api';
-import { FormId, FormReady } from 'src/app/components/form/types';
-import { IFiltered, IFilterInfo } from 'src/app/components/table/types';
-import { FormServiceBase } from 'src/app/services/abstractions';
+import { ErrorDto, PermissionModel, PermissionsApi, RoleModel, RolesApi } from 'app/api';
+import { FormId, FormReady } from 'app/components/form/types';
+import { IFiltered, IFilterInfo } from 'app/components/table/types';
+import { FormServiceBase } from 'app/services/abstractions';
 
 export enum PermissionState {
   none = 0,
