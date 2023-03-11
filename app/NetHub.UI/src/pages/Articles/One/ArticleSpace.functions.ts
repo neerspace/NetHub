@@ -8,7 +8,7 @@ export async function getArticleContributors(contributors: IArticleContributorMo
 
   return contributors.map(c => {
     const user = users.find(u => u.userName === c.userName)!;
-    return {...user, role: articleUserRoles.find(r => r.en.toLowerCase() === c.role.toLowerCase())?.ua ?? c.role}
+    return {...user, role: articleUserRoles.find(r => r.en.toLowerCase() === c.role.toLowerCase())?.uk ?? c.role}
   });
 }
 

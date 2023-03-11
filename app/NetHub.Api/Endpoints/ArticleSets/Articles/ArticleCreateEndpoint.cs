@@ -14,7 +14,7 @@ using NetHub.Models.ArticleSets.Articles;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Api.Swagger;
-using NetHub.Shared.Models.Localizations;
+using NetHub.Shared.Models.Articles;
 
 namespace NetHub.Api.Endpoints.ArticleSets.Articles;
 
@@ -32,7 +32,7 @@ public sealed class ArticleCreateEndpoint : Endpoint<ArticleCreateRequest, Artic
             .Include(a => a.Articles)
             .FirstOr404Async(a => a.Id == request.Id, ct);
 
-        if (articleSet.Articles?.FirstOrDefault(l => l.LanguageCode == ProjectConstants.UA) is null && request.LanguageCode != ProjectConstants.UA)
+        if (articleSet.Articles?.FirstOrDefault(l => l.LanguageCode == ProjectConstants.UK) is null && request.LanguageCode != ProjectConstants.UK)
             throw new ApiException("First article must be ukrainian");
 
         if (articleSet.Articles?.FirstOrDefault(l => l.LanguageCode == request.LanguageCode) is not null)

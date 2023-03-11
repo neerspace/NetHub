@@ -1,4 +1,4 @@
-using NetHub.Shared.Models.Articles;
+using NetHub.Shared.Models.ArticleSets;
 
 namespace NetHub.Models.ArticleSets;
 

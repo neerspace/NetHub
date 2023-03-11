@@ -2,25 +2,25 @@ using Microsoft.EntityFrameworkCore;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.Articles;
-using NetHub.Shared.Models.Localizations;
+using NetHub.Shared.Models.Articles;
 
 namespace NetHub.Extensions;
 
 public static class ArticlesExtensions
 {
     public static IQueryable<ArticleModel> GetExtendedArticles(
-        this ISqlServerDatabase database, long? userId = null, bool loadBody = false, bool loadContributors = false, bool loadLocalizations = false)
+        this ISqlServerDatabase database, long? userId = null, bool loadBody = false, bool loadContributors = false)
     {
-        IQueryable<Article> localizationsDbSet = database
+        IQueryable<Article> articlesDbSet = database
             .Set<Article>();
 
         if (loadContributors)
-            localizationsDbSet = localizationsDbSet
+            articlesDbSet = articlesDbSet
                 .Include(l => l.Contributors)
                 .ThenInclude(c => c.User);
 
         if (userId == null)
-            return localizationsDbSet.Select(l => new ArticleModel
+            return articlesDbSet.Select(l => new ArticleModel
             {
                 Id = l.Id,
                 ArticleSetId = l.ArticleSetId,
@@ -48,7 +48,7 @@ public static class ArticlesExtensions
         var votesDbSet = database.Set<ArticleSetVote>();
         var savedDbSet = database.Set<SavedArticle>();
 
-        var result = from l in localizationsDbSet
+        var result = from l in articlesDbSet
                          //Join votes
                      join _v in votesDbSet on
                          new { l.ArticleSetId, UserId = (long)userId }
@@ -58,9 +58,9 @@ public static class ArticlesExtensions
                      from v in votes.DefaultIfEmpty()
                          //Join savings
                      join _s in savedDbSet on
-                         new { LocalizationId = l.Id, UserId = (long)userId }
+                         new { ArticleId = l.Id, UserId = (long)userId }
                          equals
-                         new {LocalizationId = _s.ArticleId, _s.UserId }
+                         new { _s.ArticleId, _s.UserId }
                          into saved
                      from s in saved.DefaultIfEmpty()
                      select new ArticleModel

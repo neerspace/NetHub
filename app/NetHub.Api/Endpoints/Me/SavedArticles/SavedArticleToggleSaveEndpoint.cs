@@ -31,7 +31,7 @@ public sealed class SavedArticleToggleSaveEndpoint : ActionEndpoint<ArticleQuery
 
         if (savedArticleEntity is null)
         {
-            var localization = await Database.Set<Article>()
+            var article = await Database.Set<Article>()
                 .Where(al => al.ArticleSetId == request.Id
                     && al.LanguageCode == request.LanguageCode)
                 .FirstOr404Async(ct);
@@ -39,7 +39,7 @@ public sealed class SavedArticleToggleSaveEndpoint : ActionEndpoint<ArticleQuery
             await Database.Set<SavedArticle>().AddAsync(new SavedArticle
             {
                 UserId = userId,
-                ArticleId = localization.Id,
+                ArticleId = article.Id,
             }, ct);
 
             await Database.SaveChangesAsync(ct);

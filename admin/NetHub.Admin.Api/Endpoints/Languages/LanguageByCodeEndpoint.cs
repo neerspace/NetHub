@@ -9,6 +9,7 @@ using NetHub.Shared.Api.Swagger;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Shared.Api.Constants;
+using NetHub.Shared.Models.Languages;
 
 namespace NetHub.Admin.Api.Endpoints.Languages;
 

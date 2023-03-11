@@ -10,10 +10,10 @@ import { Editor as TinyEditor } from 'tinymce';
 import classes from './ArticleCreating.module.sass';
 import { tinyConfig } from "../../../utils/constants";
 import { Box, FormControl, useColorModeValue } from "@chakra-ui/react";
-import { _articlesApi } from "../../../api";
-import { ArticleCreateRequest } from "../../../api/_api";
+import { _articlesSetsApi } from "../../../api";
+import { ArticleSetCreateRequest } from "../../../api/_api";
 import {
-  IArticleLocalizationCreateExtendedRequest
+  IArticleCreateExtendedRequest
 } from "../../../pages/Articles/Create/ArticleCreatingSpace.Provider";
 
 interface ITinyInputProps {
@@ -25,23 +25,22 @@ interface ITinyInputProps {
 }
 
 interface ITinyInputHandle {
-  saveImages: (article: IArticleLocalizationCreateExtendedRequest, id?: string) => Promise<string>;
+  saveImages: (article: IArticleCreateExtendedRequest, id?: string) => Promise<string>;
 }
 
 const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
   ({data, setData, editorTitle, isInvalid, errorMessage}, ref) => {
     const editorRef = useRef<TinyEditor | null>(null);
 
-    const saveImageCallback = useCallback(async (article: IArticleLocalizationCreateExtendedRequest, id?: string) => {
+    const saveImageCallback = useCallback(async (article: IArticleCreateExtendedRequest, id?: string) => {
 
       if (!id) {
-        const request = new ArticleCreateRequest({
-          name: article.title,
+        const request = new ArticleSetCreateRequest({
           tags: article.tags,
-          originalArticleLink: article.originalLink
+          originalArticleLink: article.originalLink ? article.originalLink : null
         });
 
-        id = (await _articlesApi.create(request)).id.toString();
+        id = (await _articlesSetsApi.create(request)).id.toString();
       }
 
       sessionStorage.setItem('articleId', id!);
@@ -55,7 +54,7 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
     }, []);
 
     useImperativeHandle(ref, () => ({
-      async saveImages(article: IArticleLocalizationCreateExtendedRequest, id?: string) {
+      async saveImages(article: IArticleCreateExtendedRequest, id?: string) {
         return await saveImageCallback(article, id)
       }
     }), [saveImageCallback]);
@@ -64,7 +63,7 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
     const saveImages: (blobInfo: any) => Promise<string> =
       async (blobInfo: any) => {
         const id = sessionStorage.getItem('articleId');
-        const {location} = await _articlesApi.uploadImage(+id!, {
+        const {location} = await _articlesSetsApi.uploadImage(+id!, {
           data: blobInfo.blob(),
           fileName: 'File'
         });

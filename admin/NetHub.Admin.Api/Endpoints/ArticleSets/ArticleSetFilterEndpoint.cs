@@ -6,7 +6,7 @@ using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Api.Swagger;
 using NetHub.Shared.Models;
-using NetHub.Shared.Models.Articles;
+using NetHub.Shared.Models.ArticleSets;
 using NetHub.Shared.Services;
 
 namespace NetHub.Admin.Api.Endpoints.ArticleSets;

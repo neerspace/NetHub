@@ -13,25 +13,25 @@ import ArticleSavingActions from '../../Shared/ArticleSavingActions';
 import ArticlesRateCounter from '../../Shared/ArticlesRateCounter';
 import cl from './ArticleBody.module.sass';
 import { _myArticlesApi } from "../../../../api";
-import { ArticleLocalizationModel, ArticleModelExtended, Vote } from "../../../../api/_api";
 import { QueryClientKeysHelper } from '../../../../utils/QueryClientKeysHelper';
+import { ArticleModel, ArticleSetModelExtended, Vote } from "../../../../api/_api";
 
 const ArticleBody = () => {
-  const { articleAccessor, setArticle, localizationAccessor, setLocalization } =
+  const { articleSetAccessor, setArticleSet, articleAccessor, setArticle } =
     useArticleContext();
-  const localization = localizationAccessor.data!;
+  const articleSet = articleSetAccessor.data!;
   const article = articleAccessor.data!;
   const queryClient = useQueryClient();
 
   async function handleSave() {
     await _myArticlesApi.toggleSave(
-      localizationAccessor.data!.articleId,
-      localizationAccessor.data!.languageCode)
+      articleAccessor.data!.articleSetId,
+      articleAccessor.data!.languageCode)
   }
 
   function handleUpdateCounter(rate: number, vote: Vote | null) {
-    setArticle(new ArticleModelExtended({ ...article, rate }));
-    setLocalization(new ArticleLocalizationModel ({ ...localization, vote, rate }));
+    setArticleSet(new ArticleSetModelExtended({ ...articleSet, rate }));
+    setArticle(new ArticleModel ({ ...article, vote, rate }));
   }
 
   async function afterCounter() {
@@ -40,56 +40,56 @@ const ArticleBody = () => {
   }
 
   const contributors = useQuery(
-    QueryClientKeysHelper.Contributors(localization.articleId, localization.languageCode),
-    () => getArticleContributors(localization.contributors)
+    QueryClientKeysHelper.Contributors(article.articleSetId, article.languageCode),
+    () => getArticleContributors(article.contributors)
   );
 
   const navigate = useNavigate();
 
   const getDate = useCallback(() => {
-    switch (localization.status) {
+    switch (article.status) {
       case ('Draft' || 'Pending'):
-        return `Створено: ${localization.created.toRelativeCalendar()}`;
+        return `Створено: ${article.created.toRelativeCalendar()}`;
       case 'Published':
-        return `Опубліковано: ${localization.published?.toRelativeCalendar()}`;
+        return `Опубліковано: ${article.published?.toRelativeCalendar()}`;
       case 'Banned':
-        return `Забанено: ${localization.banned!.toRelativeCalendar()}`;
+        return `Забанено: ${article.banned!.toRelativeCalendar()}`;
     }
-  }, [localization]);
+  }, [article]);
 
   const getBadge = useCallback(() => {
-    if (localization.status === 'Draft' || localization.status === 'Pending')
+    if (article.status === 'Draft' || article.status === 'Pending')
       return <Badge ml={2} variant='outline' colorScheme='yellow'>
         Preview
       </Badge>;
-    if (localization.status === 'Banned')
+    if (article.status === 'Banned')
       return <Badge ml={2} variant={'outline'} colorScheme={'red'}>
         Banned
       </Badge>
-  }, [localization])
+  }, [article])
 
   return (
     <FilledDiv className={cl.articleWrapper}>
       <Box className={cl.articleTitle} display={'flex'} alignItems={'center'}>
         <Text as={'p'} fontWeight={'bold'} fontSize={18}>
-          {localization.title}
+          {article.title}
         </Text>
         {getBadge()}
       </Box>
 
       <div className={cl.articleDescription}>
-        <Text>{localization.description}</Text>
+        <Text>{article.description}</Text>
       </div>
 
       <hr className={cl.line} />
 
       <div
         className={cl.articleBody}
-        dangerouslySetInnerHTML={{ __html: localization.html }}
+        dangerouslySetInnerHTML={{ __html: article.html }}
       />
 
       <div className={cl.articleTags}>
-        {article.tags.map((tag) => (
+        {articleSet.tags.map((tag) => (
           <Button
             key={tag}
             className={cl.tag}
@@ -105,15 +105,15 @@ const ArticleBody = () => {
       <div className={cl.actions}>
         <div className={cl.actionsLeft}>
           <ArticlesRateCounter
-            articleId={article.id}
-            rate={article.rate}
-            vote={localization.vote}
+            articleSetId={articleSet.id}
+            rate={articleSet.rate}
+            vote={article.vote}
             updateCounter={handleUpdateCounter}
             afterRequest={afterCounter}
           />
           <Actions className={cl.views}>
             <Text as={'b'} color={'black'} className={cl.viewsCount}>
-              {localization.views}
+              {article.views}
             </Text>
             <Text as={'p'} color={'black'}>
               переглядів
@@ -121,7 +121,7 @@ const ArticleBody = () => {
           </Actions>
         </div>
         <ArticleSavingActions
-          isSavedDefault={localization.isSaved}
+          isSavedDefault={article.isSaved}
           onSave={handleSave}
         />
       </div>
@@ -132,19 +132,19 @@ const ArticleBody = () => {
             <Text as={'p'}>Автор:</Text>
             {!contributors.isSuccess ? <Skeleton width={'100px'} height={15}/> :
               <Box
-                onClick={() => navigate('/profile/' + getAuthor(localization.contributors, contributors.data!)?.userName)}
+                onClick={() => navigate('/profile/' + getAuthor(article.contributors, contributors.data!)?.userName)}
                 cursor={'pointer'}
               >
-                {getAuthor(localization.contributors, contributors.data!)?.userName}
+                {getAuthor(article.contributors, contributors.data!)?.userName}
               </Box>
             }
           </Box>
         </div>
         <div className={cl.dates}>
           <div className={cl.created}>{getDate()}</div>
-          {localization.updated ? (
+          {article.updated ? (
             <div className={cl.updated}>
-              Оновлено: {localization.updated.toRelativeCalendar()}
+              Оновлено: {article.updated.toRelativeCalendar()}
             </div>
           ) : null}
         </div>

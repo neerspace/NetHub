@@ -2,8 +2,8 @@
 export class QueryClientKeysHelper {
   public static Keys = {
     articles: 'articles',
+    articleSet: 'articleSet',
     article: 'article',
-    articleLocalization: 'articleLocalization',
     savedArticles: 'savedArticles',
     contributors: 'contributors',
     contributor: 'contributor',
@@ -15,9 +15,9 @@ export class QueryClientKeysHelper {
   public static ArticlesThread = (language: string, isLogin: boolean | null) =>
     [this.Keys.articles, language, isLogin];
 
-  public static Article = (id: number) => [this.Keys.article, id];
+  public static ArticleSet = (id: number) => [this.Keys.articleSet, id];
 
-  public static ArticleLocalization = (id: number, code: string) => [this.Keys.articleLocalization, id, code];
+  public static Article = (id: number, code: string) => [this.Keys.article, id, code];
 
   public static Contributor = (username: string) => [this.Keys.contributor, username];
 

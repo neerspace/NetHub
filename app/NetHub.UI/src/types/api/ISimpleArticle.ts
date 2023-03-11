@@ -1,9 +1,9 @@
-﻿import { ContentStatus, IArticleContributorModel, Vote } from "../../api/_api";
+﻿import { ContentStatus, Vote } from "../../api/_api";
 import { DateTime } from "luxon";
 
-export interface ISimpleLocalization {
-  id: number
-  articleId: number;
+export interface ISimpleArticle {
+  articleSetId: number
+  id: number;
   languageCode: string;
   title: string;
   description: string;

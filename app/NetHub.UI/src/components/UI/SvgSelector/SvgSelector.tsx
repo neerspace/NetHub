@@ -220,7 +220,7 @@ const SvgSelector: FC<ISvgSelectorProps> = (props) => {
         </defs>
       </svg>
 
-    case "ua":
+    case "uk":
       return <svg
         width="20" height="13" viewBox="0 0 20 13" fill="none" xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"

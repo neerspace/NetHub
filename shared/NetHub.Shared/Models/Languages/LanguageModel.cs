@@ -1,6 +1,6 @@
 using NeerCore.Localization;
 
-namespace NetHub.Admin.Models.Languages;
+namespace NetHub.Shared.Models.Languages;
 
 public sealed class LanguageModel
 {

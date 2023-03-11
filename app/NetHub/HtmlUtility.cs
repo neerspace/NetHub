@@ -28,15 +28,15 @@ public static class HtmlUtility
             .Where(ar => ar.ArticleSetId == articleId)
             .ToArrayAsync();
 
-        var localizationsHtml = await database.Set<Article>()
+        var articleHtml = await database.Set<Article>()
             .Where(al => al.ArticleSetId == articleId)
             .Select(al => al.Html)
             .ToArrayAsync();
 
         var htmlLinks = new List<string>();
 
-        foreach (var lHtml in localizationsHtml)
-            htmlLinks.AddRange(FetchLinksFromSource(lHtml));
+        foreach (string aHtml in articleHtml)
+            htmlLinks.AddRange(FetchLinksFromSource(aHtml));
         htmlLinks.AddRange(FetchLinksFromSource(html));
 
         var removeResources = articleResources

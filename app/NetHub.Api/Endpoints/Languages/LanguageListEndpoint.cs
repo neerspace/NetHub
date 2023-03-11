@@ -7,6 +7,7 @@ using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Api.Swagger;
+using NetHub.Shared.Models.Languages;
 
 namespace NetHub.Api.Endpoints.Languages;
 

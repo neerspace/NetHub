@@ -2,16 +2,16 @@ import React, { createContext, FC, PropsWithChildren, useContext, useMemo } from
 import { useQuery, useQueryClient, UseQueryResult } from "react-query";
 import { ApiError } from "../../types/ApiError";
 import { _myArticlesApi } from "../../api";
-import { ISimpleLocalization } from "../../types/api/ISimpleLocalization";
+import { ISimpleArticle } from "../../types/api/ISimpleArticle";
 import { QueryClientKeysHelper } from "../../utils/QueryClientKeysHelper";
 
 type ContextType = {
-  savedArticles: UseQueryResult<ISimpleLocalization[], ApiError>,
-  setSavedArticles: (articles: ISimpleLocalization[]) => void
+  savedArticles: UseQueryResult<ISimpleArticle[], ApiError>,
+  setSavedArticles: (articles: ISimpleArticle[]) => void
 }
 
 const InitialContextValue: ContextType = {
-  savedArticles: {} as UseQueryResult<ISimpleLocalization[], ApiError>,
+  savedArticles: {} as UseQueryResult<ISimpleArticle[], ApiError>,
   setSavedArticles: () => {
   }
 }
@@ -22,10 +22,10 @@ export const useSavedArticlesContext = (): ContextType => useContext<ContextType
 
 const SavedSpaceProvider: FC<PropsWithChildren> = ({children}) => {
   const queryClient = useQueryClient();
-  const savedArticles = useQuery<ISimpleLocalization[], ApiError>(QueryClientKeysHelper.SavedArticles(), () => _myArticlesApi.savedArticles(),
+  const savedArticles = useQuery<ISimpleArticle[], ApiError>(QueryClientKeysHelper.SavedArticles(), () => _myArticlesApi.savedArticles(),
     {refetchIntervalInBackground: true});
 
-  const setSavedArticles = (articles: ISimpleLocalization[]) => queryClient.setQueryData(QueryClientKeysHelper.SavedArticles(), articles);
+  const setSavedArticles = (articles: ISimpleArticle[]) => queryClient.setQueryData(QueryClientKeysHelper.SavedArticles(), articles);
 
   const value: ContextType = useMemo(() => {
     return {

@@ -13,7 +13,7 @@ import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } fr
 
 import { DateTime, Duration } from "luxon";
 
-export class ArticleLocalizationsApi {
+export class ArticleSetsApi {
     private instance: AxiosInstance;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -27,586 +27,10 @@ export class ArticleLocalizationsApi {
     }
 
     /**
-     * @param body (optional)
+     * @param body (optional) 
      * @return Created
      */
-    create(id: string, lang: string, body: ArticleLocalizationCreateRequest | null | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel | null> {
-        let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (lang === undefined || lang === null)
-            throw new Error("The parameter 'lang' must be defined.");
-        url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_: AxiosRequestConfig = {
-            data: content_,
-            method: "POST",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processCreate(_response);
-        });
-    }
-
-    protected processCreate(response: AxiosResponse): Promise<ArticleLocalizationModel | null> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 201) {
-            const _responseText = response.data;
-            let result201: any = null;
-            let resultData201  = _responseText;
-            result201 = resultData201 ? ArticleLocalizationModel.fromJS(resultData201) : <any>null;
-            return Promise.resolve<ArticleLocalizationModel | null>(result201);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
-
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401  = _responseText;
-            result401 = ValidationError.fromJS(resultData401);
-            return throwException("Not Authorized", status, _responseText, _headers, result401);
-
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403  = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException("Permission Denied", status, _responseText, _headers, result403);
-
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException("Not Found", status, _responseText, _headers, result404);
-
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500  = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<ArticleLocalizationModel | null>(null as any);
-    }
-
-    /**
-     * @return No Content
-     */
-    delete(id: number, lang: string | null , cancelToken?: CancelToken | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (lang === undefined || lang === null)
-            throw new Error("The parameter 'lang' must be defined.");
-        url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "DELETE",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processDelete(_response);
-        });
-    }
-
-    protected processDelete(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 204) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
-
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401  = _responseText;
-            result401 = ValidationError.fromJS(resultData401);
-            return throwException("Not Authorized", status, _responseText, _headers, result401);
-
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403  = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException("Permission Denied", status, _responseText, _headers, result403);
-
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException("Not Found", status, _responseText, _headers, result404);
-
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500  = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-
-    /**
-     * @return Success
-     */
-    getByIdAndCode(id: number, lang: string | null , cancelToken?: CancelToken | undefined): Promise<ArticleLocalizationModel | null> {
-        let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (lang === undefined || lang === null)
-            throw new Error("The parameter 'lang' must be defined.");
-        url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processGetByIdAndCode(_response);
-        });
-    }
-
-    protected processGetByIdAndCode(response: AxiosResponse): Promise<ArticleLocalizationModel | null> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = resultData200 ? ArticleLocalizationModel.fromJS(resultData200) : <any>null;
-            return Promise.resolve<ArticleLocalizationModel | null>(result200);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
-
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401  = _responseText;
-            result401 = ValidationError.fromJS(resultData401);
-            return throwException("Not Authorized", status, _responseText, _headers, result401);
-
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403  = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException("Permission Denied", status, _responseText, _headers, result403);
-
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException("Not Found", status, _responseText, _headers, result404);
-
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500  = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<ArticleLocalizationModel | null>(null as any);
-    }
-
-    /**
-     * @param body (optional)
-     * @return No Content
-     */
-    put(id: string, lang: string, body: ArticleLocalizationUpdateRequest | null | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (lang === undefined || lang === null)
-            throw new Error("The parameter 'lang' must be defined.");
-        url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_: AxiosRequestConfig = {
-            data: content_,
-            method: "PUT",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processPut(_response);
-        });
-    }
-
-    protected processPut(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 204) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
-
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401  = _responseText;
-            result401 = ValidationError.fromJS(resultData401);
-            return throwException("Not Authorized", status, _responseText, _headers, result401);
-
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403  = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException("Permission Denied", status, _responseText, _headers, result403);
-
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException("Not Found", status, _responseText, _headers, result404);
-
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500  = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-
-    /**
-     * @param contributorUsername (optional)
-     * @return Success
-     */
-    search(lang: string | null, contributorUsername: string | null | undefined , cancelToken?: CancelToken | undefined): Promise<(ArticleLocalizationModel | null)[]> {
-        let url_ = this.baseUrl + "/v1/articles/{Lang}/search?";
-        if (lang === undefined || lang === null)
-            throw new Error("The parameter 'lang' must be defined.");
-        url_ = url_.replace("{Lang}", encodeURIComponent("" + lang));
-        if (contributorUsername !== undefined && contributorUsername !== null)
-            url_ += "ContributorUsername=" + encodeURIComponent("" + contributorUsername) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processSearch(_response);
-        });
-    }
-
-    protected processSearch(response: AxiosResponse): Promise<(ArticleLocalizationModel | null)[]> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(ArticleLocalizationModel.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<(ArticleLocalizationModel | null)[]>(result200);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
-
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401  = _responseText;
-            result401 = ValidationError.fromJS(resultData401);
-            return throwException("Not Authorized", status, _responseText, _headers, result401);
-
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403  = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException("Permission Denied", status, _responseText, _headers, result403);
-
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException("Not Found", status, _responseText, _headers, result404);
-
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500  = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<(ArticleLocalizationModel | null)[]>(null as any);
-    }
-
-    /**
-     * @param status (optional)
-     * @return No Content
-     */
-    updateStatus(id: number, language: string | null, status: ArticleStatusActions | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/v1/articles/{Id}/{Language}/status?";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
-        if (language === undefined || language === null)
-            throw new Error("The parameter 'language' must be defined.");
-        url_ = url_.replace("{Language}", encodeURIComponent("" + language));
-        if (status === null)
-            throw new Error("The parameter 'status' cannot be null.");
-        else if (status !== undefined)
-            url_ += "Status=" + encodeURIComponent("" + status) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "PATCH",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processUpdateStatus(_response);
-        });
-    }
-
-    protected processUpdateStatus(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 204) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
-
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401  = _responseText;
-            result401 = ValidationError.fromJS(resultData401);
-            return throwException("Not Authorized", status, _responseText, _headers, result401);
-
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403  = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException("Permission Denied", status, _responseText, _headers, result403);
-
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException("Not Found", status, _responseText, _headers, result404);
-
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500  = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-}
-
-export class ArticlesApi {
-    private instance: AxiosInstance;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, instance?: AxiosInstance) {
-
-        this.instance = instance ? instance : axios.create();
-
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
-
-    }
-
-    /**
-     * @param body (optional)
-     * @return Created
-     */
-    create(body: ArticleCreateRequest | null | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtended> {
+    create(body: ArticleSetCreateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleSetModelExtended> {
         let url_ = this.baseUrl + "/v1/articles";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -634,7 +58,7 @@ export class ArticlesApi {
         });
     }
 
-    protected processCreate(response: AxiosResponse): Promise<ArticleModelExtended> {
+    protected processCreate(response: AxiosResponse): Promise<ArticleSetModelExtended> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -648,8 +72,8 @@ export class ArticlesApi {
             const _responseText = response.data;
             let result201: any = null;
             let resultData201  = _responseText;
-            result201 = ArticleModelExtended.fromJS(resultData201);
-            return Promise.resolve<ArticleModelExtended>(result201);
+            result201 = ArticleSetModelExtended.fromJS(resultData201);
+            return Promise.resolve<ArticleSetModelExtended>(result201);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -690,14 +114,14 @@ export class ArticlesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ArticleModelExtended>(null as any);
+        return Promise.resolve<ArticleSetModelExtended>(null as any);
     }
 
     /**
-     * @param body (optional)
+     * @param body (optional) 
      * @return No Content
      */
-    update(body: ArticleUpdateRequest | null | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    update(body: ArticleSetUpdateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/articles";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -868,7 +292,7 @@ export class ArticlesApi {
     /**
      * @return Success
      */
-    getById(id: number , cancelToken?: CancelToken | undefined): Promise<ArticleModelExtended> {
+    getById(id: number , cancelToken?: CancelToken | undefined): Promise<ArticleSetModelExtended> {
         let url_ = this.baseUrl + "/v1/articles/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -895,7 +319,7 @@ export class ArticlesApi {
         });
     }
 
-    protected processGetById(response: AxiosResponse): Promise<ArticleModelExtended> {
+    protected processGetById(response: AxiosResponse): Promise<ArticleSetModelExtended> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -909,15 +333,8 @@ export class ArticlesApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = ArticleModelExtended.fromJS(resultData200);
-            return Promise.resolve<ArticleModelExtended>(result200);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
+            result200 = ArticleSetModelExtended.fromJS(resultData200);
+            return Promise.resolve<ArticleSetModelExtended>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -932,6 +349,13 @@ export class ArticlesApi {
             let resultData403  = _responseText;
             result403 = ErrorDto.fromJS(resultData403);
             return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
 
         } else if (status === 404) {
             const _responseText = response.data;
@@ -951,14 +375,14 @@ export class ArticlesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ArticleModelExtended>(null as any);
+        return Promise.resolve<ArticleSetModelExtended>(null as any);
     }
 
     /**
-     * @param file (optional)
+     * @param file (optional) 
      * @return Created
      */
-    uploadImage(id: number, file: FileParameter | null | undefined , cancelToken?: CancelToken | undefined): Promise<AddArticleImageResult | null> {
+    uploadImage(id: number, file: FileParameter | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleSetUploadImageResult> {
         let url_ = this.baseUrl + "/v1/articles/{id}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -966,7 +390,9 @@ export class ArticlesApi {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = new FormData();
-        if (file !== null && file !== undefined)
+        if (file === null || file === undefined)
+            throw new Error("The parameter 'file' cannot be null.");
+        else
             content_.append("File", file.data, file.fileName ? file.fileName : "File");
 
         let options_: AxiosRequestConfig = {
@@ -990,7 +416,7 @@ export class ArticlesApi {
         });
     }
 
-    protected processUploadImage(response: AxiosResponse): Promise<AddArticleImageResult | null> {
+    protected processUploadImage(response: AxiosResponse): Promise<ArticleSetUploadImageResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1004,8 +430,8 @@ export class ArticlesApi {
             const _responseText = response.data;
             let result201: any = null;
             let resultData201  = _responseText;
-            result201 = resultData201 ? AddArticleImageResult.fromJS(resultData201) : <any>null;
-            return Promise.resolve<AddArticleImageResult | null>(result201);
+            result201 = ArticleSetUploadImageResult.fromJS(resultData201);
+            return Promise.resolve<ArticleSetUploadImageResult>(result201);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -1046,7 +472,585 @@ export class ArticlesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<AddArticleImageResult | null>(null as any);
+        return Promise.resolve<ArticleSetUploadImageResult>(null as any);
+    }
+}
+
+export class ArticlesApi {
+    private instance: AxiosInstance;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, instance?: AxiosInstance) {
+
+        this.instance = instance ? instance : axios.create();
+
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Created
+     */
+    create(id: string, lang: string, body: ArticleCreateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleModel> {
+        let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (lang === undefined || lang === null)
+            throw new Error("The parameter 'lang' must be defined.");
+        url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCreate(_response);
+        });
+    }
+
+    protected processCreate(response: AxiosResponse): Promise<ArticleModel> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 201) {
+            const _responseText = response.data;
+            let result201: any = null;
+            let resultData201  = _responseText;
+            result201 = ArticleModel.fromJS(resultData201);
+            return Promise.resolve<ArticleModel>(result201);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500  = _responseText;
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<ArticleModel>(null as any);
+    }
+
+    /**
+     * @return No Content
+     */
+    delete(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (lang === undefined || lang === null)
+            throw new Error("The parameter 'lang' must be defined.");
+        url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "DELETE",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processDelete(_response);
+        });
+    }
+
+    protected processDelete(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 204) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500  = _responseText;
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getByIdAndCode(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<ArticleModel> {
+        let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (lang === undefined || lang === null)
+            throw new Error("The parameter 'lang' must be defined.");
+        url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetByIdAndCode(_response);
+        });
+    }
+
+    protected processGetByIdAndCode(response: AxiosResponse): Promise<ArticleModel> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = ArticleModel.fromJS(resultData200);
+            return Promise.resolve<ArticleModel>(result200);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500  = _responseText;
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<ArticleModel>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return No Content
+     */
+    put(id: string, lang: string, body: ArticleUpdateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/v1/articles/{id}/{lang}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (lang === undefined || lang === null)
+            throw new Error("The parameter 'lang' must be defined.");
+        url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processPut(_response);
+        });
+    }
+
+    protected processPut(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 204) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500  = _responseText;
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @param contributorUsername (optional) 
+     * @return Success
+     */
+    search(lang: string, contributorUsername: string | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleModel[]> {
+        let url_ = this.baseUrl + "/v1/articles/{lang}/search?";
+        if (lang === undefined || lang === null)
+            throw new Error("The parameter 'lang' must be defined.");
+        url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
+        if (contributorUsername === null)
+            throw new Error("The parameter 'contributorUsername' cannot be null.");
+        else if (contributorUsername !== undefined)
+            url_ += "ContributorUsername=" + encodeURIComponent("" + contributorUsername) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processSearch(_response);
+        });
+    }
+
+    protected processSearch(response: AxiosResponse): Promise<ArticleModel[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ArticleModel.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<ArticleModel[]>(result200);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500  = _responseText;
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<ArticleModel[]>(null as any);
+    }
+
+    /**
+     * @param status (optional) 
+     * @return No Content
+     */
+    updateStatus(status: ArticleStatusActions | undefined, id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/v1/articles/{id}/{lang}/status?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (lang === undefined || lang === null)
+            throw new Error("The parameter 'lang' must be defined.");
+        url_ = url_.replace("{lang}", encodeURIComponent("" + lang));
+        if (status === null)
+            throw new Error("The parameter 'status' cannot be null.");
+        else if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "PATCH",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUpdateStatus(_response);
+        });
+    }
+
+    protected processUpdateStatus(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 204) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500  = _responseText;
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
     }
 }
 
@@ -1066,7 +1070,7 @@ export class CurrencyApi {
     /**
      * @return Success
      */
-    get(  cancelToken?: CancelToken | undefined): Promise<CurrenciesResponse | null> {
+    get(  cancelToken?: CancelToken | undefined): Promise<CurrenciesResponse> {
         let url_ = this.baseUrl + "/v1/currency-rates";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1090,7 +1094,7 @@ export class CurrencyApi {
         });
     }
 
-    protected processGet(response: AxiosResponse): Promise<CurrenciesResponse | null> {
+    protected processGet(response: AxiosResponse): Promise<CurrenciesResponse> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1104,8 +1108,8 @@ export class CurrencyApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = resultData200 ? CurrenciesResponse.fromJS(resultData200) : <any>null;
-            return Promise.resolve<CurrenciesResponse | null>(result200);
+            result200 = CurrenciesResponse.fromJS(resultData200);
+            return Promise.resolve<CurrenciesResponse>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -1146,7 +1150,7 @@ export class CurrencyApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<CurrenciesResponse | null>(null as any);
+        return Promise.resolve<CurrenciesResponse>(null as any);
     }
 }
 
@@ -1166,7 +1170,7 @@ export class CurrentUserApi {
     /**
      * @return Success
      */
-    dashboard(  cancelToken?: CancelToken | undefined): Promise<DashboardResult | null> {
+    dashboard(  cancelToken?: CancelToken | undefined): Promise<DashboardResult> {
         let url_ = this.baseUrl + "/v1/me/dashboard";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1190,7 +1194,7 @@ export class CurrentUserApi {
         });
     }
 
-    protected processDashboard(response: AxiosResponse): Promise<DashboardResult | null> {
+    protected processDashboard(response: AxiosResponse): Promise<DashboardResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1204,8 +1208,8 @@ export class CurrentUserApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = resultData200 ? DashboardResult.fromJS(resultData200) : <any>null;
-            return Promise.resolve<DashboardResult | null>(result200);
+            result200 = DashboardResult.fromJS(resultData200);
+            return Promise.resolve<DashboardResult>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -1246,13 +1250,13 @@ export class CurrentUserApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<DashboardResult | null>(null as any);
+        return Promise.resolve<DashboardResult>(null as any);
     }
 
     /**
      * @return Success
      */
-    me(  cancelToken?: CancelToken | undefined): Promise<UserResult | null> {
+    me(  cancelToken?: CancelToken | undefined): Promise<UserResult> {
         let url_ = this.baseUrl + "/v1/me";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1276,7 +1280,7 @@ export class CurrentUserApi {
         });
     }
 
-    protected processMe(response: AxiosResponse): Promise<UserResult | null> {
+    protected processMe(response: AxiosResponse): Promise<UserResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1290,8 +1294,8 @@ export class CurrentUserApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = resultData200 ? UserResult.fromJS(resultData200) : <any>null;
-            return Promise.resolve<UserResult | null>(result200);
+            result200 = UserResult.fromJS(resultData200);
+            return Promise.resolve<UserResult>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -1332,22 +1336,26 @@ export class CurrentUserApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<UserResult | null>(null as any);
+        return Promise.resolve<UserResult>(null as any);
     }
 
     /**
-     * @param link (optional)
-     * @param file (optional)
+     * @param link (optional) 
+     * @param file (optional) 
      * @return Success
      */
-    updateProfilePhoto(link: string | null | undefined, file: FileParameter | null | undefined , cancelToken?: CancelToken | undefined): Promise<MeProfilePhotoUpdateResult | null> {
+    updateProfilePhoto(link: string | undefined, file: FileParameter | undefined , cancelToken?: CancelToken | undefined): Promise<MeProfilePhotoUpdateResult> {
         let url_ = this.baseUrl + "/v1/me/profile-picture?";
-        if (link !== undefined && link !== null)
+        if (link === null)
+            throw new Error("The parameter 'link' cannot be null.");
+        else if (link !== undefined)
             url_ += "Link=" + encodeURIComponent("" + link) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = new FormData();
-        if (file !== null && file !== undefined)
+        if (file === null || file === undefined)
+            throw new Error("The parameter 'file' cannot be null.");
+        else
             content_.append("File", file.data, file.fileName ? file.fileName : "File");
 
         let options_: AxiosRequestConfig = {
@@ -1371,7 +1379,7 @@ export class CurrentUserApi {
         });
     }
 
-    protected processUpdateProfilePhoto(response: AxiosResponse): Promise<MeProfilePhotoUpdateResult | null> {
+    protected processUpdateProfilePhoto(response: AxiosResponse): Promise<MeProfilePhotoUpdateResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1385,8 +1393,8 @@ export class CurrentUserApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = resultData200 ? MeProfilePhotoUpdateResult.fromJS(resultData200) : <any>null;
-            return Promise.resolve<MeProfilePhotoUpdateResult | null>(result200);
+            result200 = MeProfilePhotoUpdateResult.fromJS(resultData200);
+            return Promise.resolve<MeProfilePhotoUpdateResult>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -1400,20 +1408,21 @@ export class CurrentUserApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<MeProfilePhotoUpdateResult | null>(null as any);
+        return Promise.resolve<MeProfilePhotoUpdateResult>(null as any);
     }
 
     /**
-     * @param body (optional)
+     * @param body (optional) 
      * @return No Content
      */
-    updateProfile(body: MeProfileUpdateRequest | null | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    updateProfile(body: MeProfileUpdateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/me/profile";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
 
         let options_: AxiosRequestConfig = {
-            data: body,
+            data: content_,
             method: "PUT",
             url: url_,
             headers: {
@@ -1490,12 +1499,14 @@ export class CurrentUserApi {
     }
 
     /**
-     * @param username (optional)
+     * @param username (optional) 
      * @return No Content
      */
-    updateProfileUsername(username: string | null | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
+    updateProfileUsername(username: string | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/me/profile-username?";
-        if (username !== undefined && username !== null)
+        if (username === null)
+            throw new Error("The parameter 'username' cannot be null.");
+        else if (username !== undefined)
             url_ += "Username=" + encodeURIComponent("" + username) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1589,10 +1600,10 @@ export class JwtApi {
     }
 
     /**
-     * @param body (optional)
+     * @param body (optional) 
      * @return Created
      */
-    authenticate(body: JwtAuthenticateRequest | null | undefined , cancelToken?: CancelToken | undefined): Promise<JwtResult | null> {
+    authenticate(body: JwtAuthenticateRequest | undefined , cancelToken?: CancelToken | undefined): Promise<JwtResult> {
         let url_ = this.baseUrl + "/v1/jwt/authenticate";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1620,7 +1631,7 @@ export class JwtApi {
         });
     }
 
-    protected processAuthenticate(response: AxiosResponse): Promise<JwtResult | null> {
+    protected processAuthenticate(response: AxiosResponse): Promise<JwtResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1634,8 +1645,8 @@ export class JwtApi {
             const _responseText = response.data;
             let result201: any = null;
             let resultData201  = _responseText;
-            result201 = resultData201 ? JwtResult.fromJS(resultData201) : <any>null;
-            return Promise.resolve<JwtResult | null>(result201);
+            result201 = JwtResult.fromJS(resultData201);
+            return Promise.resolve<JwtResult>(result201);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -1676,13 +1687,13 @@ export class JwtApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<JwtResult | null>(null as any);
+        return Promise.resolve<JwtResult>(null as any);
     }
 
     /**
      * @return Created
      */
-    refresh(  cancelToken?: CancelToken | undefined): Promise<JwtResult | null> {
+    refresh(  cancelToken?: CancelToken | undefined): Promise<JwtResult> {
         let url_ = this.baseUrl + "/v1/jwt/refresh";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1706,7 +1717,7 @@ export class JwtApi {
         });
     }
 
-    protected processRefresh(response: AxiosResponse): Promise<JwtResult | null> {
+    protected processRefresh(response: AxiosResponse): Promise<JwtResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1720,8 +1731,8 @@ export class JwtApi {
             const _responseText = response.data;
             let result201: any = null;
             let resultData201  = _responseText;
-            result201 = resultData201 ? JwtResult.fromJS(resultData201) : <any>null;
-            return Promise.resolve<JwtResult | null>(result201);
+            result201 = JwtResult.fromJS(resultData201);
+            return Promise.resolve<JwtResult>(result201);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -1762,7 +1773,7 @@ export class JwtApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<JwtResult | null>(null as any);
+        return Promise.resolve<JwtResult>(null as any);
     }
 
     /**
@@ -1864,7 +1875,7 @@ export class LanguagesApi {
     /**
      * @return Success
      */
-    getAll(  cancelToken?: CancelToken | undefined): Promise<(LanguageModel | null)[]> {
+    getAll(  cancelToken?: CancelToken | undefined): Promise<LanguageModel[]> {
         let url_ = this.baseUrl + "/v1/languages";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1888,7 +1899,7 @@ export class LanguagesApi {
         });
     }
 
-    protected processGetAll(response: AxiosResponse): Promise<(LanguageModel | null)[]> {
+    protected processGetAll(response: AxiosResponse): Promise<LanguageModel[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1910,7 +1921,7 @@ export class LanguagesApi {
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<(LanguageModel | null)[]>(result200);
+            return Promise.resolve<LanguageModel[]>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -1951,7 +1962,7 @@ export class LanguagesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<(LanguageModel | null)[]>(null as any);
+        return Promise.resolve<LanguageModel[]>(null as any);
     }
 }
 
@@ -1971,7 +1982,7 @@ export class MyArticlesApi {
     /**
      * @return Success
      */
-    isSaved(id: number, lang: string | null , cancelToken?: CancelToken | undefined): Promise<IsSavedLocalizationResult | null> {
+    isSaved(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<IsSavedArticleResult> {
         let url_ = this.baseUrl + "/v1/me/saved-articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2001,7 +2012,7 @@ export class MyArticlesApi {
         });
     }
 
-    protected processIsSaved(response: AxiosResponse): Promise<IsSavedLocalizationResult | null> {
+    protected processIsSaved(response: AxiosResponse): Promise<IsSavedArticleResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2015,8 +2026,8 @@ export class MyArticlesApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = resultData200 ? IsSavedLocalizationResult.fromJS(resultData200) : <any>null;
-            return Promise.resolve<IsSavedLocalizationResult | null>(result200);
+            result200 = IsSavedArticleResult.fromJS(resultData200);
+            return Promise.resolve<IsSavedArticleResult>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -2057,13 +2068,13 @@ export class MyArticlesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<IsSavedLocalizationResult | null>(null as any);
+        return Promise.resolve<IsSavedArticleResult>(null as any);
     }
 
     /**
      * @return No Content
      */
-    toggleSave(id: number, lang: string | null , cancelToken?: CancelToken | undefined): Promise<void> {
+    toggleSave(id: number, lang: string , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/v1/me/saved-articles/{id}/{lang}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2151,7 +2162,7 @@ export class MyArticlesApi {
     /**
      * @return Success
      */
-    savedArticles(  cancelToken?: CancelToken | undefined): Promise<(ArticleLocalizationModel | null)[]> {
+    savedArticles(  cancelToken?: CancelToken | undefined): Promise<ArticleModel[]> {
         let url_ = this.baseUrl + "/v1/me/saved-articles";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2175,7 +2186,7 @@ export class MyArticlesApi {
         });
     }
 
-    protected processSavedArticles(response: AxiosResponse): Promise<(ArticleLocalizationModel | null)[]> {
+    protected processSavedArticles(response: AxiosResponse): Promise<ArticleModel[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2192,12 +2203,12 @@ export class MyArticlesApi {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(ArticleLocalizationModel.fromJS(item));
+                    result200!.push(ArticleModel.fromJS(item));
             }
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<(ArticleLocalizationModel | null)[]>(result200);
+            return Promise.resolve<ArticleModel[]>(result200);
 
         } else if (status === 401) {
             const _responseText = response.data;
@@ -2238,13 +2249,13 @@ export class MyArticlesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<(ArticleLocalizationModel | null)[]>(null as any);
+        return Promise.resolve<ArticleModel[]>(null as any);
     }
 
     /**
      * @return Success
      */
-    getVote(id: number, articleId: string , cancelToken?: CancelToken | undefined): Promise<RatingModel | null> {
+    getVote(id: number, articleId: string , cancelToken?: CancelToken | undefined): Promise<VoteModel> {
         let url_ = this.baseUrl + "/v1/me/articles/{articleId}/vote";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2274,7 +2285,7 @@ export class MyArticlesApi {
         });
     }
 
-    protected processGetVote(response: AxiosResponse): Promise<RatingModel | null> {
+    protected processGetVote(response: AxiosResponse): Promise<VoteModel> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2288,8 +2299,8 @@ export class MyArticlesApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = resultData200 ? RatingModel.fromJS(resultData200) : <any>null;
-            return Promise.resolve<RatingModel | null>(result200);
+            result200 = VoteModel.fromJS(resultData200);
+            return Promise.resolve<VoteModel>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2330,11 +2341,11 @@ export class MyArticlesApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<RatingModel | null>(null as any);
+        return Promise.resolve<VoteModel>(null as any);
     }
 
     /**
-     * @param vote (optional)
+     * @param vote (optional) 
      * @return Created
      */
     updateVote(id: number, vote: Vote | undefined , cancelToken?: CancelToken | undefined): Promise<void> {
@@ -2523,113 +2534,6 @@ export class ResourcesApi {
     }
 }
 
-export class TestApi {
-    private instance: AxiosInstance;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, instance?: AxiosInstance) {
-
-        this.instance = instance ? instance : axios.create();
-
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
-
-    }
-
-    /**
-     * @return Success
-     */
-    get(  cancelToken?: CancelToken | undefined): Promise<(ArticleLocalizationModel | null)[]> {
-        let url_ = this.baseUrl + "/v1/test-extended-articles";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processGet(_response);
-        });
-    }
-
-    protected processGet(response: AxiosResponse): Promise<(ArticleLocalizationModel | null)[]> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(ArticleLocalizationModel.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<(ArticleLocalizationModel | null)[]>(result200);
-
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400  = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException("Validation Failed", status, _responseText, _headers, result400);
-
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401  = _responseText;
-            result401 = ValidationError.fromJS(resultData401);
-            return throwException("Not Authorized", status, _responseText, _headers, result401);
-
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403  = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException("Permission Denied", status, _responseText, _headers, result403);
-
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404  = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException("Not Found", status, _responseText, _headers, result404);
-
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500  = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<(ArticleLocalizationModel | null)[]>(null as any);
-    }
-}
-
 export class UsersApi {
     private instance: AxiosInstance;
     private baseUrl: string;
@@ -2644,13 +2548,15 @@ export class UsersApi {
     }
 
     /**
-     * @param key (optional)
-     * @param provider (optional)
+     * @param key (optional) 
+     * @param provider (optional) 
      * @return Success
      */
-    checkIfExists(key: string | null | undefined, provider: ProviderType | undefined , cancelToken?: CancelToken | undefined): Promise<UserCheckIfExistsResult | null> {
+    checkIfExists(key: string | undefined, provider: ProviderType | undefined , cancelToken?: CancelToken | undefined): Promise<UserCheckIfExistsResult> {
         let url_ = this.baseUrl + "/v1/users/check-if-exists?";
-        if (key !== undefined && key !== null)
+        if (key === null)
+            throw new Error("The parameter 'key' cannot be null.");
+        else if (key !== undefined)
             url_ += "Key=" + encodeURIComponent("" + key) + "&";
         if (provider === null)
             throw new Error("The parameter 'provider' cannot be null.");
@@ -2678,7 +2584,7 @@ export class UsersApi {
         });
     }
 
-    protected processCheckIfExists(response: AxiosResponse): Promise<UserCheckIfExistsResult | null> {
+    protected processCheckIfExists(response: AxiosResponse): Promise<UserCheckIfExistsResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2692,8 +2598,8 @@ export class UsersApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = resultData200 ? UserCheckIfExistsResult.fromJS(resultData200) : <any>null;
-            return Promise.resolve<UserCheckIfExistsResult | null>(result200);
+            result200 = UserCheckIfExistsResult.fromJS(resultData200);
+            return Promise.resolve<UserCheckIfExistsResult>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2734,13 +2640,13 @@ export class UsersApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<UserCheckIfExistsResult | null>(null as any);
+        return Promise.resolve<UserCheckIfExistsResult>(null as any);
     }
 
     /**
      * @return Success
      */
-    checkUsername(username: string | null , cancelToken?: CancelToken | undefined): Promise<CheckUsernameResult | null> {
+    checkUsername(username: string , cancelToken?: CancelToken | undefined): Promise<CheckUsernameResult> {
         let url_ = this.baseUrl + "/v1/users/{username}";
         if (username === undefined || username === null)
             throw new Error("The parameter 'username' must be defined.");
@@ -2767,7 +2673,7 @@ export class UsersApi {
         });
     }
 
-    protected processCheckUsername(response: AxiosResponse): Promise<CheckUsernameResult | null> {
+    protected processCheckUsername(response: AxiosResponse): Promise<CheckUsernameResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2781,8 +2687,8 @@ export class UsersApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = resultData200 ? CheckUsernameResult.fromJS(resultData200) : <any>null;
-            return Promise.resolve<CheckUsernameResult | null>(result200);
+            result200 = CheckUsernameResult.fromJS(resultData200);
+            return Promise.resolve<CheckUsernameResult>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2823,13 +2729,13 @@ export class UsersApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<CheckUsernameResult | null>(null as any);
+        return Promise.resolve<CheckUsernameResult>(null as any);
     }
 
     /**
      * @return Success
      */
-    dashboard(username: string | null , cancelToken?: CancelToken | undefined): Promise<DashboardResult | null> {
+    dashboard(username: string , cancelToken?: CancelToken | undefined): Promise<DashboardResult> {
         let url_ = this.baseUrl + "/v1/users/{username}/dashboard";
         if (username === undefined || username === null)
             throw new Error("The parameter 'username' must be defined.");
@@ -2856,7 +2762,7 @@ export class UsersApi {
         });
     }
 
-    protected processDashboard(response: AxiosResponse): Promise<DashboardResult | null> {
+    protected processDashboard(response: AxiosResponse): Promise<DashboardResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2870,8 +2776,8 @@ export class UsersApi {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = resultData200 ? DashboardResult.fromJS(resultData200) : <any>null;
-            return Promise.resolve<DashboardResult | null>(result200);
+            result200 = DashboardResult.fromJS(resultData200);
+            return Promise.resolve<DashboardResult>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -2912,15 +2818,15 @@ export class UsersApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<DashboardResult | null>(null as any);
+        return Promise.resolve<DashboardResult>(null as any);
     }
 
     /**
-     * @param page (optional)
-     * @param perPage (optional)
+     * @param page (optional) 
+     * @param perPage (optional) 
      * @return Success
      */
-    userArticles(userName: string | null, page: number | undefined, perPage: number | undefined , cancelToken?: CancelToken | undefined): Promise<(ArticleModel | null)[]> {
+    userArticles(userName: string, page: number | undefined, perPage: number | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleSetModel[]> {
         let url_ = this.baseUrl + "/v1/users/{username}/articles?";
         if (userName === undefined || userName === null)
             throw new Error("The parameter 'userName' must be defined.");
@@ -2955,7 +2861,7 @@ export class UsersApi {
         });
     }
 
-    protected processUserArticles(response: AxiosResponse): Promise<(ArticleModel | null)[]> {
+    protected processUserArticles(response: AxiosResponse): Promise<ArticleSetModel[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2972,12 +2878,12 @@ export class UsersApi {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(ArticleModel.fromJS(item));
+                    result200!.push(ArticleSetModel.fromJS(item));
             }
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<(ArticleModel | null)[]>(result200);
+            return Promise.resolve<ArticleSetModel[]>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -3018,14 +2924,14 @@ export class UsersApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<(ArticleModel | null)[]>(null as any);
+        return Promise.resolve<ArticleSetModel[]>(null as any);
     }
 
     /**
-     * @param usernames (optional)
+     * @param usernames (optional) 
      * @return Success
      */
-    usersInfo(usernames: (string | null)[] | undefined , cancelToken?: CancelToken | undefined): Promise<(PrivateUserResult | null)[]> {
+    usersInfo(usernames: string[] | undefined , cancelToken?: CancelToken | undefined): Promise<PrivateUserResult[]> {
         let url_ = this.baseUrl + "/v1/users/search?";
         if (usernames === null)
             throw new Error("The parameter 'usernames' cannot be null.");
@@ -3053,7 +2959,7 @@ export class UsersApi {
         });
     }
 
-    protected processUsersInfo(response: AxiosResponse): Promise<(PrivateUserResult | null)[]> {
+    protected processUsersInfo(response: AxiosResponse): Promise<PrivateUserResult[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3075,7 +2981,7 @@ export class UsersApi {
             else {
                 result200 = <any>null;
             }
-            return Promise.resolve<(PrivateUserResult | null)[]>(result200);
+            return Promise.resolve<PrivateUserResult[]>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -3116,49 +3022,13 @@ export class UsersApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<(PrivateUserResult | null)[]>(null as any);
+        return Promise.resolve<PrivateUserResult[]>(null as any);
     }
-}
-
-export class AddArticleImageResult implements IAddArticleImageResult {
-    location!: string | null;
-
-    constructor(data?: IAddArticleImageResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.location = _data["location"] !== undefined ? _data["location"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): AddArticleImageResult {
-        data = typeof data === 'object' ? data : {};
-        let result = new AddArticleImageResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["location"] = this.location !== undefined ? this.location : <any>null;
-        return data;
-    }
-}
-
-export interface IAddArticleImageResult {
-    location: string | null;
 }
 
 export class ArticleContributorModel implements IArticleContributorModel {
     role!: ArticleContributorRole;
-    userName!: string | null;
+    userName!: string;
     profilePhotoUrl!: string | null;
 
     constructor(data?: IArticleContributorModel) {
@@ -3196,7 +3066,7 @@ export class ArticleContributorModel implements IArticleContributorModel {
 
 export interface IArticleContributorModel {
     role: ArticleContributorRole;
-    userName: string | null;
+    userName: string;
     profilePhotoUrl: string | null;
 }
 
@@ -3209,69 +3079,12 @@ export enum ArticleContributorRole {
 }
 
 export class ArticleCreateRequest implements IArticleCreateRequest {
-    name!: string | null;
-    tags!: (string | null)[] | null;
-    originalArticleLink!: string | null;
+    title!: string;
+    description!: string;
+    html!: string;
+    contributors!: ArticleContributorModel[] | null;
 
     constructor(data?: IArticleCreateRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
-            if (Array.isArray(_data["tags"])) {
-                this.tags = [] as any;
-                for (let item of _data["tags"])
-                    this.tags!.push(item);
-            }
-            else {
-                this.tags = <any>null;
-            }
-            this.originalArticleLink = _data["originalArticleLink"] !== undefined ? _data["originalArticleLink"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): ArticleCreateRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new ArticleCreateRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name !== undefined ? this.name : <any>null;
-        if (Array.isArray(this.tags)) {
-            data["tags"] = [];
-            for (let item of this.tags)
-                data["tags"].push(item);
-        }
-        data["originalArticleLink"] = this.originalArticleLink !== undefined ? this.originalArticleLink : <any>null;
-        return data;
-    }
-}
-
-export interface IArticleCreateRequest {
-    name: string | null;
-    tags: (string | null)[] | null;
-    originalArticleLink: string | null;
-}
-
-export class ArticleLocalizationCreateRequest implements IArticleLocalizationCreateRequest {
-    id!: number;
-    languageCode!: string | null;
-    title!: string | null;
-    description!: string | null;
-    html!: string | null;
-    contributors!: (ArticleContributorModel | null)[] | null;
-
-    constructor(data?: IArticleLocalizationCreateRequest) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -3289,8 +3102,6 @@ export class ArticleLocalizationCreateRequest implements IArticleLocalizationCre
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
             this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
             this.html = _data["html"] !== undefined ? _data["html"] : <any>null;
@@ -3305,17 +3116,15 @@ export class ArticleLocalizationCreateRequest implements IArticleLocalizationCre
         }
     }
 
-    static fromJS(data: any): ArticleLocalizationCreateRequest {
+    static fromJS(data: any): ArticleCreateRequest {
         data = typeof data === 'object' ? data : {};
-        let result = new ArticleLocalizationCreateRequest();
+        let result = new ArticleCreateRequest();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
         data["title"] = this.title !== undefined ? this.title : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
         data["html"] = this.html !== undefined ? this.html : <any>null;
@@ -3328,23 +3137,21 @@ export class ArticleLocalizationCreateRequest implements IArticleLocalizationCre
     }
 }
 
-export interface IArticleLocalizationCreateRequest {
-    id: number;
-    languageCode: string | null;
-    title: string | null;
-    description: string | null;
-    html: string | null;
-    contributors: (IArticleContributorModel | null)[] | null;
+export interface IArticleCreateRequest {
+    title: string;
+    description: string;
+    html: string;
+    contributors: IArticleContributorModel[] | null;
 }
 
-export class ArticleLocalizationModel implements IArticleLocalizationModel {
+export class ArticleModel implements IArticleModel {
     id!: number;
-    articleId!: number;
-    languageCode!: string | null;
-    contributors!: (ArticleContributorModel | null)[];
-    title!: string | null;
-    description!: string | null;
-    html!: string | null;
+    articleSetId!: number;
+    languageCode!: string;
+    contributors!: ArticleContributorModel[];
+    title!: string;
+    description!: string;
+    html!: string;
     status!: ContentStatus;
     views!: number;
     rate!: number;
@@ -3356,7 +3163,7 @@ export class ArticleLocalizationModel implements IArticleLocalizationModel {
     savedDate!: DateTime | null;
     vote!: Vote | null;
 
-    constructor(data?: IArticleLocalizationModel) {
+    constructor(data?: IArticleModel) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -3375,7 +3182,7 @@ export class ArticleLocalizationModel implements IArticleLocalizationModel {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.articleId = _data["articleId"] !== undefined ? _data["articleId"] : <any>null;
+            this.articleSetId = _data["articleSetId"] !== undefined ? _data["articleSetId"] : <any>null;
             this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
             if (Array.isArray(_data["contributors"])) {
                 this.contributors = [] as any;
@@ -3401,9 +3208,9 @@ export class ArticleLocalizationModel implements IArticleLocalizationModel {
         }
     }
 
-    static fromJS(data: any): ArticleLocalizationModel {
+    static fromJS(data: any): ArticleModel {
         data = typeof data === 'object' ? data : {};
-        let result = new ArticleLocalizationModel();
+        let result = new ArticleModel();
         result.init(data);
         return result;
     }
@@ -3411,7 +3218,7 @@ export class ArticleLocalizationModel implements IArticleLocalizationModel {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["articleId"] = this.articleId !== undefined ? this.articleId : <any>null;
+        data["articleSetId"] = this.articleSetId !== undefined ? this.articleSetId : <any>null;
         data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
         if (Array.isArray(this.contributors)) {
             data["contributors"] = [];
@@ -3435,14 +3242,14 @@ export class ArticleLocalizationModel implements IArticleLocalizationModel {
     }
 }
 
-export interface IArticleLocalizationModel {
+export interface IArticleModel {
     id: number;
-    articleId: number;
-    languageCode: string | null;
-    contributors: (IArticleContributorModel | null)[];
-    title: string | null;
-    description: string | null;
-    html: string | null;
+    articleSetId: number;
+    languageCode: string;
+    contributors: IArticleContributorModel[];
+    title: string;
+    description: string;
+    html: string;
     status: ContentStatus;
     views: number;
     rate: number;
@@ -3455,108 +3262,77 @@ export interface IArticleLocalizationModel {
     vote: Vote | null;
 }
 
-export class ArticleLocalizationUpdateRequest implements IArticleLocalizationUpdateRequest {
-    id!: number;
-    languageCode!: string | null;
-    newLanguageCode!: string | null;
-    title!: string | null;
-    description!: string | null;
-    html!: string | null;
-    contributors!: (ArticleContributorModel | null)[] | null;
+export class ArticleSetCreateRequest implements IArticleSetCreateRequest {
+    tags!: string[] | null;
+    originalArticleLink!: string | null;
 
-    constructor(data?: IArticleLocalizationUpdateRequest) {
+    constructor(data?: IArticleSetCreateRequest) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
                     (<any>this)[property] = (<any>data)[property];
-            }
-            if (data.contributors) {
-                this.contributors = [];
-                for (let i = 0; i < data.contributors.length; i++) {
-                    let item = data.contributors[i];
-                    this.contributors[i] = item && !(<any>item).toJSON ? new ArticleContributorModel(item) : <ArticleContributorModel>item;
-                }
             }
         }
     }
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.languageCode = _data["languageCode"] !== undefined ? _data["languageCode"] : <any>null;
-            this.newLanguageCode = _data["newLanguageCode"] !== undefined ? _data["newLanguageCode"] : <any>null;
-            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
-            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
-            this.html = _data["html"] !== undefined ? _data["html"] : <any>null;
-            if (Array.isArray(_data["contributors"])) {
-                this.contributors = [] as any;
-                for (let item of _data["contributors"])
-                    this.contributors!.push(ArticleContributorModel.fromJS(item));
+            if (Array.isArray(_data["tags"])) {
+                this.tags = [] as any;
+                for (let item of _data["tags"])
+                    this.tags!.push(item);
             }
             else {
-                this.contributors = <any>null;
+                this.tags = <any>null;
             }
+            this.originalArticleLink = _data["originalArticleLink"] !== undefined ? _data["originalArticleLink"] : <any>null;
         }
     }
 
-    static fromJS(data: any): ArticleLocalizationUpdateRequest {
+    static fromJS(data: any): ArticleSetCreateRequest {
         data = typeof data === 'object' ? data : {};
-        let result = new ArticleLocalizationUpdateRequest();
+        let result = new ArticleSetCreateRequest();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["languageCode"] = this.languageCode !== undefined ? this.languageCode : <any>null;
-        data["newLanguageCode"] = this.newLanguageCode !== undefined ? this.newLanguageCode : <any>null;
-        data["title"] = this.title !== undefined ? this.title : <any>null;
-        data["description"] = this.description !== undefined ? this.description : <any>null;
-        data["html"] = this.html !== undefined ? this.html : <any>null;
-        if (Array.isArray(this.contributors)) {
-            data["contributors"] = [];
-            for (let item of this.contributors)
-                data["contributors"].push(item.toJSON());
+        if (Array.isArray(this.tags)) {
+            data["tags"] = [];
+            for (let item of this.tags)
+                data["tags"].push(item);
         }
+        data["originalArticleLink"] = this.originalArticleLink !== undefined ? this.originalArticleLink : <any>null;
         return data;
     }
 }
 
-export interface IArticleLocalizationUpdateRequest {
-    id: number;
-    languageCode: string | null;
-    newLanguageCode: string | null;
-    title: string | null;
-    description: string | null;
-    html: string | null;
-    contributors: (IArticleContributorModel | null)[] | null;
+export interface IArticleSetCreateRequest {
+    tags: string[] | null;
+    originalArticleLink: string | null;
 }
 
-export class ArticleModel implements IArticleModel {
+export class ArticleSetModel implements IArticleSetModel {
     id!: number;
-    name!: string | null;
     authorId!: number;
     created!: DateTime;
-    updated!: DateTime | null;
-    published!: DateTime | null;
-    banned!: DateTime | null;
     originalArticleLink!: string | null;
     rate!: number;
-    localizations!: (ArticleLocalizationModel | null)[] | null;
-    tags!: (string | null)[];
+    articles!: ArticleModel[] | null;
+    tags!: string[];
 
-    constructor(data?: IArticleModel) {
+    constructor(data?: IArticleSetModel) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
                     (<any>this)[property] = (<any>data)[property];
             }
-            if (data.localizations) {
-                this.localizations = [];
-                for (let i = 0; i < data.localizations.length; i++) {
-                    let item = data.localizations[i];
-                    this.localizations[i] = item && !(<any>item).toJSON ? new ArticleLocalizationModel(item) : <ArticleLocalizationModel>item;
+            if (data.articles) {
+                this.articles = [];
+                for (let i = 0; i < data.articles.length; i++) {
+                    let item = data.articles[i];
+                    this.articles[i] = item && !(<any>item).toJSON ? new ArticleModel(item) : <ArticleModel>item;
                 }
             }
         }
@@ -3565,21 +3341,17 @@ export class ArticleModel implements IArticleModel {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
             this.authorId = _data["authorId"] !== undefined ? _data["authorId"] : <any>null;
             this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>null;
-            this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>null;
-            this.published = _data["published"] ? DateTime.fromISO(_data["published"].toString()) : <any>null;
-            this.banned = _data["banned"] ? DateTime.fromISO(_data["banned"].toString()) : <any>null;
             this.originalArticleLink = _data["originalArticleLink"] !== undefined ? _data["originalArticleLink"] : <any>null;
             this.rate = _data["rate"] !== undefined ? _data["rate"] : <any>null;
-            if (Array.isArray(_data["localizations"])) {
-                this.localizations = [] as any;
-                for (let item of _data["localizations"])
-                    this.localizations!.push(ArticleLocalizationModel.fromJS(item));
+            if (Array.isArray(_data["articles"])) {
+                this.articles = [] as any;
+                for (let item of _data["articles"])
+                    this.articles!.push(ArticleModel.fromJS(item));
             }
             else {
-                this.localizations = <any>null;
+                this.articles = <any>null;
             }
             if (Array.isArray(_data["tags"])) {
                 this.tags = [] as any;
@@ -3592,9 +3364,9 @@ export class ArticleModel implements IArticleModel {
         }
     }
 
-    static fromJS(data: any): ArticleModel {
+    static fromJS(data: any): ArticleSetModel {
         data = typeof data === 'object' ? data : {};
-        let result = new ArticleModel();
+        let result = new ArticleSetModel();
         result.init(data);
         return result;
     }
@@ -3602,18 +3374,14 @@ export class ArticleModel implements IArticleModel {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["name"] = this.name !== undefined ? this.name : <any>null;
         data["authorId"] = this.authorId !== undefined ? this.authorId : <any>null;
         data["created"] = this.created ? this.created.toString() : <any>null;
-        data["updated"] = this.updated ? this.updated.toString() : <any>null;
-        data["published"] = this.published ? this.published.toString() : <any>null;
-        data["banned"] = this.banned ? this.banned.toString() : <any>null;
         data["originalArticleLink"] = this.originalArticleLink !== undefined ? this.originalArticleLink : <any>null;
         data["rate"] = this.rate !== undefined ? this.rate : <any>null;
-        if (Array.isArray(this.localizations)) {
-            data["localizations"] = [];
-            for (let item of this.localizations)
-                data["localizations"].push(item.toJSON());
+        if (Array.isArray(this.articles)) {
+            data["articles"] = [];
+            for (let item of this.articles)
+                data["articles"].push(item.toJSON());
         }
         if (Array.isArray(this.tags)) {
             data["tags"] = [];
@@ -3624,45 +3392,37 @@ export class ArticleModel implements IArticleModel {
     }
 }
 
-export interface IArticleModel {
+export interface IArticleSetModel {
     id: number;
-    name: string | null;
     authorId: number;
     created: DateTime;
-    updated: DateTime | null;
-    published: DateTime | null;
-    banned: DateTime | null;
     originalArticleLink: string | null;
     rate: number;
-    localizations: (IArticleLocalizationModel | null)[] | null;
-    tags: (string | null)[];
+    articles: IArticleModel[] | null;
+    tags: string[];
 }
 
-export class ArticleModelExtended implements IArticleModelExtended {
+export class ArticleSetModelExtended implements IArticleSetModelExtended {
     id!: number;
-    name!: string | null;
     authorId!: number;
     created!: DateTime;
-    updated!: DateTime | null;
-    published!: DateTime | null;
-    banned!: DateTime | null;
     originalArticleLink!: string | null;
     rate!: number;
-    localizations!: (ArticleLocalizationModel | null)[] | null;
-    tags!: (string | null)[];
-    imagesLinks!: (string | null)[] | null;
+    articles!: ArticleModel[] | null;
+    tags!: string[];
+    imagesLinks!: string[] | null;
 
-    constructor(data?: IArticleModelExtended) {
+    constructor(data?: IArticleSetModelExtended) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
                     (<any>this)[property] = (<any>data)[property];
             }
-            if (data.localizations) {
-                this.localizations = [];
-                for (let i = 0; i < data.localizations.length; i++) {
-                    let item = data.localizations[i];
-                    this.localizations[i] = item && !(<any>item).toJSON ? new ArticleLocalizationModel(item) : <ArticleLocalizationModel>item;
+            if (data.articles) {
+                this.articles = [];
+                for (let i = 0; i < data.articles.length; i++) {
+                    let item = data.articles[i];
+                    this.articles[i] = item && !(<any>item).toJSON ? new ArticleModel(item) : <ArticleModel>item;
                 }
             }
         }
@@ -3671,21 +3431,17 @@ export class ArticleModelExtended implements IArticleModelExtended {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
             this.authorId = _data["authorId"] !== undefined ? _data["authorId"] : <any>null;
             this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>null;
-            this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>null;
-            this.published = _data["published"] ? DateTime.fromISO(_data["published"].toString()) : <any>null;
-            this.banned = _data["banned"] ? DateTime.fromISO(_data["banned"].toString()) : <any>null;
             this.originalArticleLink = _data["originalArticleLink"] !== undefined ? _data["originalArticleLink"] : <any>null;
             this.rate = _data["rate"] !== undefined ? _data["rate"] : <any>null;
-            if (Array.isArray(_data["localizations"])) {
-                this.localizations = [] as any;
-                for (let item of _data["localizations"])
-                    this.localizations!.push(ArticleLocalizationModel.fromJS(item));
+            if (Array.isArray(_data["articles"])) {
+                this.articles = [] as any;
+                for (let item of _data["articles"])
+                    this.articles!.push(ArticleModel.fromJS(item));
             }
             else {
-                this.localizations = <any>null;
+                this.articles = <any>null;
             }
             if (Array.isArray(_data["tags"])) {
                 this.tags = [] as any;
@@ -3706,9 +3462,9 @@ export class ArticleModelExtended implements IArticleModelExtended {
         }
     }
 
-    static fromJS(data: any): ArticleModelExtended {
+    static fromJS(data: any): ArticleSetModelExtended {
         data = typeof data === 'object' ? data : {};
-        let result = new ArticleModelExtended();
+        let result = new ArticleSetModelExtended();
         result.init(data);
         return result;
     }
@@ -3716,18 +3472,14 @@ export class ArticleModelExtended implements IArticleModelExtended {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["name"] = this.name !== undefined ? this.name : <any>null;
         data["authorId"] = this.authorId !== undefined ? this.authorId : <any>null;
         data["created"] = this.created ? this.created.toString() : <any>null;
-        data["updated"] = this.updated ? this.updated.toString() : <any>null;
-        data["published"] = this.published ? this.published.toString() : <any>null;
-        data["banned"] = this.banned ? this.banned.toString() : <any>null;
         data["originalArticleLink"] = this.originalArticleLink !== undefined ? this.originalArticleLink : <any>null;
         data["rate"] = this.rate !== undefined ? this.rate : <any>null;
-        if (Array.isArray(this.localizations)) {
-            data["localizations"] = [];
-            for (let item of this.localizations)
-                data["localizations"].push(item.toJSON());
+        if (Array.isArray(this.articles)) {
+            data["articles"] = [];
+            for (let item of this.articles)
+                data["articles"].push(item.toJSON());
         }
         if (Array.isArray(this.tags)) {
             data["tags"] = [];
@@ -3743,33 +3495,22 @@ export class ArticleModelExtended implements IArticleModelExtended {
     }
 }
 
-export interface IArticleModelExtended {
+export interface IArticleSetModelExtended {
     id: number;
-    name: string | null;
     authorId: number;
     created: DateTime;
-    updated: DateTime | null;
-    published: DateTime | null;
-    banned: DateTime | null;
     originalArticleLink: string | null;
     rate: number;
-    localizations: (IArticleLocalizationModel | null)[] | null;
-    tags: (string | null)[];
-    imagesLinks: (string | null)[] | null;
+    articles: IArticleModel[] | null;
+    tags: string[];
+    imagesLinks: string[] | null;
 }
 
-export enum ArticleStatusActions {
-    Publish = "Publish",
-    UnPublish = "UnPublish",
-}
-
-export class ArticleUpdateRequest implements IArticleUpdateRequest {
-    id!: number;
-    name!: string | null;
+export class ArticleSetUpdateRequest implements IArticleSetUpdateRequest {
     authorId!: number | null;
     originalArticleLink!: string | null;
 
-    constructor(data?: IArticleUpdateRequest) {
+    constructor(data?: IArticleSetUpdateRequest) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -3780,10 +3521,109 @@ export class ArticleUpdateRequest implements IArticleUpdateRequest {
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
             this.authorId = _data["authorId"] !== undefined ? _data["authorId"] : <any>null;
             this.originalArticleLink = _data["originalArticleLink"] !== undefined ? _data["originalArticleLink"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ArticleSetUpdateRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new ArticleSetUpdateRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["authorId"] = this.authorId !== undefined ? this.authorId : <any>null;
+        data["originalArticleLink"] = this.originalArticleLink !== undefined ? this.originalArticleLink : <any>null;
+        return data;
+    }
+}
+
+export interface IArticleSetUpdateRequest {
+    authorId: number | null;
+    originalArticleLink: string | null;
+}
+
+export class ArticleSetUploadImageResult implements IArticleSetUploadImageResult {
+    location!: string;
+
+    constructor(data?: IArticleSetUploadImageResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.location = _data["location"] !== undefined ? _data["location"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ArticleSetUploadImageResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new ArticleSetUploadImageResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["location"] = this.location !== undefined ? this.location : <any>null;
+        return data;
+    }
+}
+
+export interface IArticleSetUploadImageResult {
+    location: string;
+}
+
+export enum ArticleStatusActions {
+    Publish = "Publish",
+    UnPublish = "UnPublish",
+}
+
+export class ArticleUpdateRequest implements IArticleUpdateRequest {
+    newLanguageCode!: string | null;
+    title!: string | null;
+    description!: string | null;
+    html!: string | null;
+    contributors!: ArticleContributorModel[] | null;
+
+    constructor(data?: IArticleUpdateRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.contributors) {
+                this.contributors = [];
+                for (let i = 0; i < data.contributors.length; i++) {
+                    let item = data.contributors[i];
+                    this.contributors[i] = item && !(<any>item).toJSON ? new ArticleContributorModel(item) : <ArticleContributorModel>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.newLanguageCode = _data["newLanguageCode"] !== undefined ? _data["newLanguageCode"] : <any>null;
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.html = _data["html"] !== undefined ? _data["html"] : <any>null;
+            if (Array.isArray(_data["contributors"])) {
+                this.contributors = [] as any;
+                for (let item of _data["contributors"])
+                    this.contributors!.push(ArticleContributorModel.fromJS(item));
+            }
+            else {
+                this.contributors = <any>null;
+            }
         }
     }
 
@@ -3796,19 +3636,25 @@ export class ArticleUpdateRequest implements IArticleUpdateRequest {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["name"] = this.name !== undefined ? this.name : <any>null;
-        data["authorId"] = this.authorId !== undefined ? this.authorId : <any>null;
-        data["originalArticleLink"] = this.originalArticleLink !== undefined ? this.originalArticleLink : <any>null;
+        data["newLanguageCode"] = this.newLanguageCode !== undefined ? this.newLanguageCode : <any>null;
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["html"] = this.html !== undefined ? this.html : <any>null;
+        if (Array.isArray(this.contributors)) {
+            data["contributors"] = [];
+            for (let item of this.contributors)
+                data["contributors"].push(item.toJSON());
+        }
         return data;
     }
 }
 
 export interface IArticleUpdateRequest {
-    id: number;
-    name: string | null;
-    authorId: number | null;
-    originalArticleLink: string | null;
+    newLanguageCode: string | null;
+    title: string | null;
+    description: string | null;
+    html: string | null;
+    contributors: IArticleContributorModel[] | null;
 }
 
 export class CheckUsernameResult implements ICheckUsernameResult {
@@ -3901,8 +3747,8 @@ export interface ICryptoResponseDto {
 }
 
 export class CurrenciesResponse implements ICurrenciesResponse {
-    exchanges!: ExchangeResponseModel | null;
-    crypto!: CryptoResponseDto | null;
+    exchanges!: ExchangeResponseModel;
+    crypto!: CryptoResponseDto;
     updated!: DateTime;
 
     constructor(data?: ICurrenciesResponse) {
@@ -3941,8 +3787,8 @@ export class CurrenciesResponse implements ICurrenciesResponse {
 }
 
 export interface ICurrenciesResponse {
-    exchanges: IExchangeResponseModel | null;
-    crypto: ICryptoResponseDto | null;
+    exchanges: IExchangeResponseModel;
+    crypto: ICryptoResponseDto;
     updated: DateTime;
 }
 
@@ -4095,8 +3941,8 @@ export interface IErrorDetails {
 }
 
 export class ExchangeResponseModel implements IExchangeResponseModel {
-    usd!: OneExchangeModel | null;
-    euro!: OneExchangeModel | null;
+    usd!: OneExchangeModel;
+    euro!: OneExchangeModel;
     error!: string | null;
 
     constructor(data?: IExchangeResponseModel) {
@@ -4135,15 +3981,15 @@ export class ExchangeResponseModel implements IExchangeResponseModel {
 }
 
 export interface IExchangeResponseModel {
-    usd: IOneExchangeModel | null;
-    euro: IOneExchangeModel | null;
+    usd: IOneExchangeModel;
+    euro: IOneExchangeModel;
     error: string | null;
 }
 
-export class IsSavedLocalizationResult implements IIsSavedLocalizationResult {
+export class IsSavedArticleResult implements IIsSavedArticleResult {
     isSaved!: boolean;
 
-    constructor(data?: IIsSavedLocalizationResult) {
+    constructor(data?: IIsSavedArticleResult) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -4158,9 +4004,9 @@ export class IsSavedLocalizationResult implements IIsSavedLocalizationResult {
         }
     }
 
-    static fromJS(data: any): IsSavedLocalizationResult {
+    static fromJS(data: any): IsSavedArticleResult {
         data = typeof data === 'object' ? data : {};
-        let result = new IsSavedLocalizationResult();
+        let result = new IsSavedArticleResult();
         result.init(data);
         return result;
     }
@@ -4172,20 +4018,20 @@ export class IsSavedLocalizationResult implements IIsSavedLocalizationResult {
     }
 }
 
-export interface IIsSavedLocalizationResult {
+export interface IIsSavedArticleResult {
     isSaved: boolean;
 }
 
 export class JwtAuthenticateRequest implements IJwtAuthenticateRequest {
-    username!: string | null;
+    username!: string;
     email!: string | null;
     firstName!: string | null;
     lastName!: string | null;
     middleName!: string | null;
     profilePhotoUrl!: string | null;
-    providerMetadata!: { [key: string]: string; } | null;
+    providerMetadata!: { [key: string]: string; };
     provider!: ProviderType;
-    providerKey!: string | null;
+    providerKey!: string;
     type!: SsoType;
 
     constructor(data?: IJwtAuthenticateRequest) {
@@ -4251,23 +4097,23 @@ export class JwtAuthenticateRequest implements IJwtAuthenticateRequest {
 }
 
 export interface IJwtAuthenticateRequest {
-    username: string | null;
+    username: string;
     email: string | null;
     firstName: string | null;
     lastName: string | null;
     middleName: string | null;
     profilePhotoUrl: string | null;
-    providerMetadata: { [key: string]: string; } | null;
+    providerMetadata: { [key: string]: string; };
     provider: ProviderType;
-    providerKey: string | null;
+    providerKey: string;
     type: SsoType;
 }
 
 export class JwtResult implements IJwtResult {
-    username!: string | null;
-    firstName!: string | null;
+    username!: string;
+    firstName!: string;
     lastName!: string | null;
-    token!: string | null;
+    token!: string;
     tokenExpires!: DateTime;
     refreshTokenExpires!: DateTime;
     profilePhotoUrl!: string | null;
@@ -4314,18 +4160,19 @@ export class JwtResult implements IJwtResult {
 }
 
 export interface IJwtResult {
-    username: string | null;
-    firstName: string | null;
+    username: string;
+    firstName: string;
     lastName: string | null;
-    token: string | null;
+    token: string;
     tokenExpires: DateTime;
     refreshTokenExpires: DateTime;
     profilePhotoUrl: string | null;
 }
 
 export class LanguageModel implements ILanguageModel {
-    code!: string | null;
-    name!: string | null;
+    code!: string;
+    name!: string;
+    flagUrl!: string | null;
 
     constructor(data?: ILanguageModel) {
         if (data) {
@@ -4340,6 +4187,7 @@ export class LanguageModel implements ILanguageModel {
         if (_data) {
             this.code = _data["code"] !== undefined ? _data["code"] : <any>null;
             this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.flagUrl = _data["flagUrl"] !== undefined ? _data["flagUrl"] : <any>null;
         }
     }
 
@@ -4354,17 +4202,19 @@ export class LanguageModel implements ILanguageModel {
         data = typeof data === 'object' ? data : {};
         data["code"] = this.code !== undefined ? this.code : <any>null;
         data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["flagUrl"] = this.flagUrl !== undefined ? this.flagUrl : <any>null;
         return data;
     }
 }
 
 export interface ILanguageModel {
-    code: string | null;
-    name: string | null;
+    code: string;
+    name: string;
+    flagUrl: string | null;
 }
 
 export class MeProfilePhotoUpdateResult implements IMeProfilePhotoUpdateResult {
-    link!: string | null;
+    link!: string;
 
     constructor(data?: IMeProfilePhotoUpdateResult) {
         if (data) {
@@ -4396,7 +4246,7 @@ export class MeProfilePhotoUpdateResult implements IMeProfilePhotoUpdateResult {
 }
 
 export interface IMeProfilePhotoUpdateResult {
-    link: string | null;
+    link: string;
 }
 
 export class MeProfileUpdateRequest implements IMeProfileUpdateRequest {
@@ -4496,8 +4346,8 @@ export interface IOneCryptoDto {
 }
 
 export class OneExchangeModel implements IOneExchangeModel {
-    currencyFrom!: string | null;
-    currencyTo!: string | null;
+    currencyFrom!: string;
+    currencyTo!: string;
     date!: number;
     rateBuy!: number;
     rateSell!: number;
@@ -4540,8 +4390,8 @@ export class OneExchangeModel implements IOneExchangeModel {
 }
 
 export interface IOneExchangeModel {
-    currencyFrom: string | null;
-    currencyTo: string | null;
+    currencyFrom: string;
+    currencyTo: string;
     date: number;
     rateBuy: number;
     rateSell: number;
@@ -4549,7 +4399,7 @@ export interface IOneExchangeModel {
 
 export class PrivateUserResult implements IPrivateUserResult {
     id!: number;
-    userName!: string | null;
+    userName!: string;
     description!: string | null;
     profilePhotoUrl!: string | null;
     registered!: DateTime;
@@ -4593,7 +4443,7 @@ export class PrivateUserResult implements IPrivateUserResult {
 
 export interface IPrivateUserResult {
     id: number;
-    userName: string | null;
+    userName: string;
     description: string | null;
     profilePhotoUrl: string | null;
     registered: DateTime;
@@ -4605,42 +4455,6 @@ export enum ProviderType {
     GitHub = "GitHub",
     LinkedIn = "LinkedIn",
     Facebook = "Facebook",
-}
-
-export class RatingModel implements IRatingModel {
-    vote!: Vote | null;
-
-    constructor(data?: IRatingModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.vote = _data["vote"] !== undefined ? _data["vote"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): RatingModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new RatingModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["vote"] = this.vote !== undefined ? this.vote : <any>null;
-        return data;
-    }
-}
-
-export interface IRatingModel {
-    vote: Vote | null;
 }
 
 export enum SsoType {
@@ -4686,11 +4500,11 @@ export interface IUserCheckIfExistsResult {
 
 export class UserResult implements IUserResult {
     id!: number;
-    userName!: string | null;
-    firstName!: string | null;
-    lastName!: string | null;
-    middleName!: string | null;
-    email!: string | null;
+    userName!: string;
+    firstName!: string;
+    lastName!: string;
+    middleName!: string;
+    email!: string;
     profilePhotoUrl!: string | null;
     emailConfirmed!: boolean;
     description!: string | null;
@@ -4745,11 +4559,11 @@ export class UserResult implements IUserResult {
 
 export interface IUserResult {
     id: number;
-    userName: string | null;
-    firstName: string | null;
-    lastName: string | null;
-    middleName: string | null;
-    email: string | null;
+    userName: string;
+    firstName: string;
+    lastName: string;
+    middleName: string;
+    email: string;
     profilePhotoUrl: string | null;
     emailConfirmed: boolean;
     description: string | null;
@@ -4822,6 +4636,42 @@ export enum Vote {
     Down = "Down",
 }
 
+export class VoteModel implements IVoteModel {
+    vote!: Vote | null;
+
+    constructor(data?: IVoteModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.vote = _data["vote"] !== undefined ? _data["vote"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): VoteModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new VoteModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["vote"] = this.vote !== undefined ? this.vote : <any>null;
+        return data;
+    }
+}
+
+export interface IVoteModel {
+    vote: Vote | null;
+}
+
 export interface FileParameter {
     data: any;
     fileName: string;
@@ -4861,5 +4711,3 @@ function throwException(message: string, status: number, response: string, heade
 function isAxiosError(obj: any | undefined): obj is AxiosError {
     return obj && obj.isAxiosError === true;
 }
-
-// @ts-nocheck

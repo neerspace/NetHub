@@ -11,9 +11,9 @@ import ArticleCreatingSpaceProvider, {
   useArticleCreatingContext
 } from "./ArticleCreatingSpace.Provider";
 import { CreateArticleFormSchema } from "../../../types/schemas/Article/CreateArticleFormSchema";
-import { _localizationsApi } from "../../../api";
-import { ArticleLocalizationCreateRequest } from "../../../api/_api";
+import { _articlesApi } from "../../../api";
 import { UkrainianLanguage } from "../../../utils/constants";
+import { ArticleCreateRequest } from "../../../api/_api";
 
 type CreateArticleFormRef = React.ElementRef<typeof CreateArticleForm>
 
@@ -55,18 +55,19 @@ const ArticleCreatingSpace: Page = () => {
         .current?.getTinyRef()
         .current?.saveImages(article);
 
-      const request = new ArticleLocalizationCreateRequest(article);
-      await _localizationsApi.create(articleId!, UkrainianLanguage, request);
+      const request = new ArticleCreateRequest(article);
+
+      const result = await _articlesApi.create(articleId!, UkrainianLanguage, request);
 
       ArticleStorage.clearArticleData();
       setArticle(defaultArticleState);
+
+      enqueueSuccess('Збережено!')
+      navigate('/article/' + result.articleSetId + '/' + result.languageCode);
     } catch (e: any) {
       enqueueError('Помилка збереження статті');
       return;
     }
-    enqueueSuccess('Збережено!')
-
-    navigate('/article/' + articleId + '/ua');
   };
 
   const titles = {

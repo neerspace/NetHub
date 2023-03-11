@@ -2,7 +2,7 @@ using Mapster;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Models.ArticleSets;
 using NetHub.Models.ArticleSets.Articles;
-using NetHub.Shared.Models.Localizations;
+using NetHub.Shared.Models.Articles;
 
 namespace NetHub.Mappings;
 

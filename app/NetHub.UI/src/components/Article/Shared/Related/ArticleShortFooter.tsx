@@ -5,10 +5,10 @@ import ArticleSavingActions from "../ArticleSavingActions";
 import { Box, Text } from "@chakra-ui/react";
 import Actions from "../../../UI/Action/Actions";
 import { Vote } from "../../../../api/_api";
-import { ISimpleLocalization } from "../../../../types/api/ISimpleLocalization";
+import { ISimpleArticle } from "../../../../types/api/ISimpleArticle";
 
 interface IArticleShortFooterProps {
-  localization: ISimpleLocalization,
+  article: ISimpleArticle,
   save: { actual: boolean, handle: () => Promise<void> },
 
   updateCounter: (rate: number, vote: Vote | null) => void,
@@ -19,9 +19,9 @@ interface IArticleShortFooterProps {
 }
 
 const ArticleShortFooter: FC<IArticleShortFooterProps> =
-  ({localization, save, updateCounter, afterCounterRequest, variant}) => {
+  ({article, save, updateCounter, afterCounterRequest, variant}) => {
 
-    const addLocalizationHandle = (e: React.MouseEvent<HTMLDivElement>) => {
+    const addArticleHandle = (e: React.MouseEvent<HTMLDivElement>) => {
       e.stopPropagation()
       alert('add article localization')
     }
@@ -30,14 +30,14 @@ const ArticleShortFooter: FC<IArticleShortFooterProps> =
       <div className={cl.actions}>
         <Box display={'flex'}>
           <ArticlesRateCounter
-            rate={localization.rate}
-            articleId={localization.articleId}
-            vote={localization.vote}
+            rate={article.rate}
+            articleSetId={article.articleSetId}
+            vote={article.vote}
             updateCounter={updateCounter}
             afterRequest={afterCounterRequest}
           />
           {(variant ?? 'default') === 'created'
-            ? <Actions onClick={addLocalizationHandle}>
+            ? <Actions onClick={addArticleHandle}>
               <Text as={'p'} color={'black'}>Додати переклад +</Text>
             </Actions>
             : null
@@ -46,7 +46,7 @@ const ArticleShortFooter: FC<IArticleShortFooterProps> =
         <ArticleSavingActions
           isSavedDefault={save.actual}
           onSave={save.handle}
-          saveLink={`${window.location.href}article/${localization.articleId}/${localization.languageCode}`}
+          saveLink={`${window.location.href}article/${article.articleSetId}/${article.languageCode}`}
         />
       </div>
     );

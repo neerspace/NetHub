@@ -1,7 +1,7 @@
 using NetHub.Data.SqlServer.Enums;
 using Sieve.Attributes;
 
-namespace NetHub.Shared.Models.Localizations;
+namespace NetHub.Shared.Models.Articles;
 
 public sealed class ArticleModel
 {

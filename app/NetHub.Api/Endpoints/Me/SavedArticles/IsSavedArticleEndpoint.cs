@@ -14,20 +14,20 @@ namespace NetHub.Api.Endpoints.Me.SavedArticles;
 [Authorize]
 [Tags(TagNames.MyArticles)]
 [ApiVersion(Versions.V1)]
-public sealed class IsSavedArticleEndpoint : Endpoint<ArticleQuery, IsSavedLocalizationResult>
+public sealed class IsSavedArticleEndpoint : Endpoint<ArticleQuery, IsSavedArticleResult>
 {
     [HttpGet("me/saved-articles/{id:long}/{lang:alpha}"), ClientSide(ActionName = "isSaved")]
-    public override async Task<IsSavedLocalizationResult> HandleAsync(ArticleQuery request, CancellationToken ct)
+    public override async Task<IsSavedArticleResult> HandleAsync(ArticleQuery request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
 
-        var savedLocalization = await Database.Set<SavedArticle>()
+        var savedArticle = await Database.Set<SavedArticle>()
             .Include(sa => sa.Article)
             .SingleOrDefaultAsync(sa =>
                 sa.UserId == userId
                 && sa.Article!.ArticleSetId == request.Id
                 && sa.Article.LanguageCode == request.LanguageCode, ct);
 
-        return new(savedLocalization is not null);
+        return new(savedArticle is not null);
     }
 }

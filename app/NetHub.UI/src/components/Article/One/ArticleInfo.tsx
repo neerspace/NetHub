@@ -12,14 +12,14 @@ import {useArticleContext} from "../../../pages/Articles/One/ArticleSpace.Provid
 import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
 
 const ArticleInfo = () => {
-  const {articleAccessor, localizationAccessor} = useArticleContext();
+  const {articleSetAccessor, articleAccessor} = useArticleContext();
 
   const navigate = useNavigate();
   const whiteTextColor = useColorModeValue('whiteLight', 'whiteDark');
 
 
-  const contributors = useQuery(QueryClientKeysHelper.Contributors(localizationAccessor.data!.articleId, localizationAccessor.data!.languageCode),
-    () => getArticleContributors(localizationAccessor.data!.contributors));
+  const contributors = useQuery(QueryClientKeysHelper.Contributors(articleAccessor.data!.articleSetId, articleAccessor.data!.languageCode),
+    () => getArticleContributors(articleAccessor.data!.contributors));
 
   const getDomain = (link: string) => {
     const url = new URL(link);
@@ -29,25 +29,27 @@ const ArticleInfo = () => {
 
   const divBg = useColorModeValue('purpleLight', 'purpleDark');
 
+  console.log('articles', articleSetAccessor.data?.articles);
+
   return (
       <div className={cl.articleInfo}>
         {
-          !localizationAccessor.isSuccess || !articleAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
+          !articleAccessor.isSuccess || !articleSetAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
             <FilledDiv className={cl.infoBlock}>
               <p className={cl.infoBlockTitle}>Переклади:</p>
               <div className={cl.translates}>
-                {articleAccessor.data.localizations?.map(localization =>
+                {articleSetAccessor.data.articles?.map(article =>
                   <Button
-                    onClick={() => navigate(`/article/${localization.articleId}/${localization.languageCode}`)}
-                    key={localization.languageCode}
+                    onClick={() => navigate(`/article/${article.articleSetId}/${article.languageCode}`)}
+                    key={article.languageCode}
                     borderRadius={'10px'}
                     padding={'5px 16px'}
                     width={'fit-content'}
                   >
                     <Text as={'p'} mr={2} color={whiteTextColor}>
-                      {localization.languageCode.toUpperCase()}
+                      {article.languageCode.toUpperCase()}
                     </Text>
-                    <SvgSelector id={localization.languageCode}/>
+                    <SvgSelector id={article.languageCode}/>
                   </Button>
                 )}
               </div>
@@ -55,7 +57,7 @@ const ArticleInfo = () => {
         }
 
         {
-          !localizationAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
+          !articleAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
             <FilledDiv className={cl.infoBlock}>
               <Text as={'p'} className={cl.infoBlockTitle}>Автори:</Text>
               <div className={cl.contributors}>
@@ -87,8 +89,8 @@ const ArticleInfo = () => {
         }
 
         {
-          !articleAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
-            articleAccessor.data.originalArticleLink &&
+          !articleSetAccessor.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/> :
+            articleSetAccessor.data.originalArticleLink &&
             <FilledDiv className={cl.infoBlock}>
               <Text as={'p'} className={cl.infoBlockTitle}>Перейти до оригіналу:</Text>
               <Button
@@ -101,10 +103,10 @@ const ArticleInfo = () => {
               >
                 <Link
                   color={whiteTextColor}
-                  href={articleAccessor.data.originalArticleLink}
+                  href={articleSetAccessor.data.originalArticleLink}
                   target={'_blank'}
                 >
-                  {getDomain(articleAccessor.data.originalArticleLink)}
+                  {getDomain(articleSetAccessor.data.originalArticleLink)}
                 </Link>
               </Button>
             </FilledDiv>

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NetHub.Extensions;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
-using NetHub.Shared.Models.Localizations;
+using NetHub.Shared.Models.Articles;
 
 namespace NetHub.Api.Endpoints.Me.SavedArticles;
 

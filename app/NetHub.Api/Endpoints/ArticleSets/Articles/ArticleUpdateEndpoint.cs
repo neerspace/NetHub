@@ -12,7 +12,7 @@ using NetHub.Data.SqlServer.Enums;
 using NetHub.Models.ArticleSets.Articles;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
-using NetHub.Shared.Models.Localizations;
+using NetHub.Shared.Models.Articles;
 
 namespace NetHub.Api.Endpoints.ArticleSets.Articles;
 
@@ -58,7 +58,7 @@ public sealed class ArticleUpdateEndpoint : ActionEndpoint<ArticleUpdateRequest>
         await Database.SaveChangesAsync(ct);
     }
 
-    private async Task SetNewLanguageAsync(ArticleUpdateRequest request, Article localization, CancellationToken ct)
+    private async Task SetNewLanguageAsync(ArticleUpdateRequest request, Article article, CancellationToken ct)
     {
         if (await Database.Set<Article>().CountAsync(l =>
                 l.ArticleSetId == request.Id
@@ -67,21 +67,21 @@ public sealed class ArticleUpdateEndpoint : ActionEndpoint<ArticleUpdateRequest>
             throw new ValidationFailedException("NewLanguageCode",
                 "Article with such language already exists");
 
-        if (request.LanguageCode == ProjectConstants.UA)
+        if (request.LanguageCode == ProjectConstants.UK)
             throw new ValidationFailedException("NewLanguageCode", "There is must be one article in ukrainian");
 
         if (await Database.Set<Language>().FirstOrDefaultAsync(l => l.Code == request.NewLanguageCode, ct) is null)
             throw new ValidationFailedException("LanguageCode", "No such language registered");
 
-        localization.LanguageCode = request.NewLanguageCode!;
+        article.LanguageCode = request.NewLanguageCode!;
     }
 
-    private async Task SetContributors(Article localization, IReadOnlyCollection<ArticleContributorModel> requestContributors, CancellationToken ct)
+    private async Task SetContributors(Article article, IReadOnlyCollection<ArticleContributorModel> requestContributors, CancellationToken ct)
     {
         if (requestContributors.FirstOrDefault(a => a.Role == ArticleContributorRole.Author) is not null)
             throw new ApiException("You can not set authors");
 
-        var newContributors = localization.Contributors
+        var newContributors = article.Contributors
             .Where(c => c.Role == ArticleContributorRole.Author).ToList();
 
         foreach (var contributor in requestContributors)
@@ -98,7 +98,7 @@ public sealed class ArticleUpdateEndpoint : ActionEndpoint<ArticleUpdateRequest>
             newContributors.Add(contributor.Adapt<ArticleContributor>());
         }
 
-        localization.Contributors = newContributors;
+        article.Contributors = newContributors;
         await Database.SaveChangesAsync(ct);
     }
 

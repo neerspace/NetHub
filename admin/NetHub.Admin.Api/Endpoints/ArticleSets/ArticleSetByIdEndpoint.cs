@@ -8,7 +8,7 @@ using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Api.Swagger;
-using NetHub.Shared.Models.Articles;
+using NetHub.Shared.Models.ArticleSets;
 
 namespace NetHub.Admin.Api.Endpoints.ArticleSets;
 

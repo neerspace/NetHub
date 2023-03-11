@@ -13,11 +13,11 @@ interface IArticleRateCounterProps {
   rate: number;
   updateCounter: (rate: number, vote: Vote | null) => void;
   afterRequest: () => Promise<void>;
-  articleId: number;
+  articleSetId: number;
 }
 
 const ArticlesRateCounter: FC<IArticleRateCounterProps> = (
-  {vote, rate, updateCounter, afterRequest, articleId}) => {
+  {vote, rate, updateCounter, afterRequest, articleSetId}) => {
   const {enqueueError} = useCustomSnackbar();
 
   function isAuthorized() {
@@ -60,7 +60,7 @@ const ArticlesRateCounter: FC<IArticleRateCounterProps> = (
     updateCounter(newState.rate, newState.vote);
 
     await afterRequest();
-    await _myArticlesApi.updateVote(articleId, Vote.Up);
+    await _myArticlesApi.updateVote(articleSetId, Vote.Up);
   }
 
   async function handleDownVote(e: React.MouseEvent) {
@@ -91,7 +91,7 @@ const ArticlesRateCounter: FC<IArticleRateCounterProps> = (
     updateCounter(newState.rate, newState.vote);
 
     await afterRequest();
-    await _myArticlesApi.updateVote(articleId, Vote.Down);
+    await _myArticlesApi.updateVote(articleSetId, Vote.Down);
   }
 
   return (

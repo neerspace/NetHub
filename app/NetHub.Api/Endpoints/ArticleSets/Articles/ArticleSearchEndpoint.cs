@@ -5,7 +5,7 @@ using NetHub.Extensions;
 using NetHub.Models.ArticleSets.Articles;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
-using NetHub.Shared.Models.Localizations;
+using NetHub.Shared.Models.Articles;
 
 namespace NetHub.Api.Endpoints.ArticleSets.Articles;
 

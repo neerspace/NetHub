@@ -45,7 +45,7 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle}) => {
         <TitleInput
           isInvalid={!!errors.originalLink}
           errorMessage={errors.originalLink?._errors.join(', ')}
-          value={article.originalLink}
+          value={article.originalLink ?? undefined}
           onChange={handleSetLink}
           title={"Посилання на оригінал "}
           placeholder={"Посилання на статтю"}

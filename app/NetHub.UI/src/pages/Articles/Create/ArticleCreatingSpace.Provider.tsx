@@ -4,24 +4,24 @@ import { useQuery, UseQueryResult } from "react-query";
 import { ApiError } from "../../../types/ApiError";
 import { useParams } from "react-router-dom";
 import { z as u } from "zod";
-import { IArticleLocalizationCreateRequest } from "../../../api/_api";
+import { IArticleCreateRequest } from '../../../api/_api';
 
-export interface IArticleLocalizationCreateExtendedRequest extends IArticleLocalizationCreateRequest{
+export interface IArticleCreateExtendedRequest extends IArticleCreateRequest{
   tags: string[],
   originalLink: string | null
 }
 
 interface ContextType {
-  article: IArticleLocalizationCreateExtendedRequest,
-  defaultArticleState: IArticleLocalizationCreateExtendedRequest,
-  setArticle: React.Dispatch<React.SetStateAction<IArticleLocalizationCreateExtendedRequest>>,
+  article: IArticleCreateExtendedRequest,
+  defaultArticleState: IArticleCreateExtendedRequest,
+  setArticle: React.Dispatch<React.SetStateAction<IArticleCreateExtendedRequest>>,
   setArticleValue: (key: string) => (value: any) => void
   images?: UseQueryResult<string[], ApiError>,
   errors: CreateArticleFormError,
   setErrors: (errors: CreateArticleFormError) => void
 }
 
-const defaultState: () => IArticleLocalizationCreateExtendedRequest = () => {
+const defaultState: () => IArticleCreateExtendedRequest = () => {
   return {
     title: ArticleStorage.getTitle() ?? '',
     description: ArticleStorage.getDescription() ?? '',
@@ -29,7 +29,7 @@ const defaultState: () => IArticleLocalizationCreateExtendedRequest = () => {
     // tags: ArticleStorage.getTags() ? JSON.parse(ArticleStorage.getTags()!) : [] as string[],
     tags: ArticleStorage.getTags() ? JSON.parse(ArticleStorage.getTags()!) : ['test1', 'test2', 'test3'],
     originalLink: ''
-  } as unknown as IArticleLocalizationCreateExtendedRequest
+  } as unknown as IArticleCreateExtendedRequest
 };
 
 const InitialContextValue: ContextType = {
@@ -59,7 +59,7 @@ export type CreateArticleFormError = u.ZodFormattedError<{
 const ArticleCreatingProvider: FC<PropsWithChildren> = ({children}) => {
   const {id} = useParams();
 
-  const [article, setArticle] = useState<IArticleLocalizationCreateExtendedRequest>(defaultState);
+  const [article, setArticle] = useState<IArticleCreateExtendedRequest>(defaultState);
   const images = useQuery<string[], ApiError>('articleImages',
     // () => _articlesApi.getArticleImages(id),
     () => [
