@@ -27,12 +27,12 @@ public class UserDashboardEndpoint : Endpoint<string, DashboardResult>
 
         int articlesCount = await _database.Set<ArticleContributor>()
             .Include(ac => ac.User)
-            .Include(ac => ac.Localization)
+            .Include(ac => ac.Article)
             .Where(ac => ac.User!.NormalizedUserName == username.ToUpper())
-            .Where(ac => ac.Localization!.Status == ContentStatus.Published)
+            .Where(ac => ac.Article!.Status == ContentStatus.Published)
             .CountAsync(ct);
 
-        int articlesViews = await _database.Set<ArticleLocalization>()
+        int articlesViews = await _database.Set<Article>()
             .Include(ar => ar.Contributors).ThenInclude(ac => ac.User)
             .Where(ar => ar.Contributors.Any(c => c.User!.NormalizedUserName == username.ToUpper()))
             .Where(ar => ar.Status == ContentStatus.Published)

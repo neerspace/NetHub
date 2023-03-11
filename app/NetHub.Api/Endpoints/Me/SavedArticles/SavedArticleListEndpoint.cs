@@ -11,10 +11,10 @@ namespace NetHub.Api.Endpoints.Me.SavedArticles;
 [Authorize]
 [Tags(TagNames.MyArticles)]
 [ApiVersion(Versions.V1)]
-public sealed class SavedArticleListEndpoint : ResultEndpoint<ArticleLocalizationModel[]>
+public sealed class SavedArticleListEndpoint : ResultEndpoint<ArticleModel[]>
 {
     [HttpGet("me/saved-articles")]
-    public override async Task<ArticleLocalizationModel[]> HandleAsync(CancellationToken ct)
+    public override async Task<ArticleModel[]> HandleAsync(CancellationToken ct)
     {
         long userId = UserProvider.UserId;
 

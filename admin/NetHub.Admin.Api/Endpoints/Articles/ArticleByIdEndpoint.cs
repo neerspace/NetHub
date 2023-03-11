@@ -1,4 +1,4 @@
-using Mapster;
+﻿using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,26 +8,26 @@ using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Api.Swagger;
-using NetHub.Shared.Models.Articles;
+using NetHub.Shared.Models.Localizations;
 
 namespace NetHub.Admin.Api.Endpoints.Articles;
 
 [ApiVersion(Versions.V1)]
-[Tags(TagNames.Articles)]
+[Tags(TagNames.Localizations)]
 [Authorize(Policy = Policies.HasReadArticlesPermission)]
 public class ArticleByIdEndpoint : Endpoint<long, ArticleModel>
 {
     private readonly ISqlServerDatabase _database;
     public ArticleByIdEndpoint(ISqlServerDatabase database) => _database = database;
 
-
-    [HttpGet("articles/{id:long}"), ClientSide(ActionName = "getById")]
+    [HttpGet("localizations/{id:long}"), ClientSide(ActionName = "getById")]
     public override async Task<ArticleModel> HandleAsync([FromRoute] long id, CancellationToken ct)
     {
         var article = await _database.Set<Article>()
-            .Include(a => a.Tags)!.ThenInclude(t => t.Tag)
+            .Include(l => l.Contributors).ThenInclude(c => c.User)
             .AsNoTracking()
-            .Where(u => u.Id == id).FirstOr404Async(ct);
+            .Where(u => u.Id == id)
+            .FirstOr404Async(ct);
 
         return article.Adapt<ArticleModel>();
     }

@@ -22,11 +22,11 @@ public record ArticleContributor
 
     #endregion
 
-    #region Localization
+    #region Article
 
-    // LocalizationId => new {l.ArticleId, l.LanguageCode}
-    public long LocalizationId { get; set; }
-    public virtual ArticleLocalization? Localization { get; set; }
+    // ArticleId => new {l.ArticleId, l.LanguageCode}
+    public long ArticleId { get; set; }
+    public virtual Article? Article { get; set; }
 
     #endregion
 }

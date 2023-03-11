@@ -8,11 +8,11 @@ namespace NetHub.Extensions;
 
 public static class ArticlesExtensions
 {
-    public static IQueryable<ArticleLocalizationModel> GetExtendedArticles(
-        this ISqlServerDatabase database, long? userId = null, bool loadBody = false, bool loadContributors = false)
+    public static IQueryable<ArticleModel> GetExtendedArticles(
+        this ISqlServerDatabase database, long? userId = null, bool loadBody = false, bool loadContributors = false, bool loadLocalizations = false)
     {
-        IQueryable<ArticleLocalization> localizationsDbSet = database
-            .Set<ArticleLocalization>();
+        IQueryable<Article> localizationsDbSet = database
+            .Set<Article>();
 
         if (loadContributors)
             localizationsDbSet = localizationsDbSet
@@ -20,10 +20,10 @@ public static class ArticlesExtensions
                 .ThenInclude(c => c.User);
 
         if (userId == null)
-            return localizationsDbSet.Select(l => new ArticleLocalizationModel
+            return localizationsDbSet.Select(l => new ArticleModel
             {
                 Id = l.Id,
-                ArticleId = l.ArticleId,
+                ArticleSetId = l.ArticleSetId,
                 LanguageCode = l.LanguageCode,
                 Title = l.Title,
                 Contributors = loadContributors
@@ -42,31 +42,31 @@ public static class ArticlesExtensions
                 Updated = l.Updated,
                 Published = l.Published,
                 Banned = l.Banned,
-                Rate = l.Article!.Rate,
+                Rate = l.ArticleSet!.Rate,
             });
 
-        var votesDbSet = database.Set<ArticleVote>();
+        var votesDbSet = database.Set<ArticleSetVote>();
         var savedDbSet = database.Set<SavedArticle>();
 
         var result = from l in localizationsDbSet
                          //Join votes
                      join _v in votesDbSet on
-                         new { l.ArticleId, UserId = (long)userId }
+                         new { l.ArticleSetId, UserId = (long)userId }
                          equals
-                         new { _v.ArticleId, _v.UserId }
+                         new {_v.ArticleSetId, _v.UserId }
                          into votes
                      from v in votes.DefaultIfEmpty()
                          //Join savings
                      join _s in savedDbSet on
                          new { LocalizationId = l.Id, UserId = (long)userId }
                          equals
-                         new { _s.LocalizationId, _s.UserId }
+                         new {LocalizationId = _s.ArticleId, _s.UserId }
                          into saved
                      from s in saved.DefaultIfEmpty()
-                     select new ArticleLocalizationModel
+                     select new ArticleModel
                      {
                          Id = l.Id,
-                         ArticleId = l.ArticleId,
+                         ArticleSetId = l.ArticleSetId,
                          LanguageCode = l.LanguageCode,
                          Title = l.Title,
                          Contributors = loadContributors
@@ -86,7 +86,7 @@ public static class ArticlesExtensions
                          Published = l.Published,
                          Banned = l.Banned,
                          Vote = v.Vote,
-                         Rate = l.Article!.Rate,
+                         Rate = l.ArticleSet!.Rate,
                          IsSaved = s != null,
                          SavedDate = s != null ? s.SavedDate : null
                      };

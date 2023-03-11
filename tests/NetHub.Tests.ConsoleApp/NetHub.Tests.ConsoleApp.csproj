@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NeerCore.DependencyInjection" Version="2.0.0-alpha7" />
+    <PackageReference Include="NeerCore.DependencyInjection" Version="2.0.0-alpha9" />
     <PackageReference Include="Ng.UserAgentService" Version="1.1.2" />
   </ItemGroup>
 

@@ -1,6 +1,8 @@
 using Mapster;
+using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Models.Users;
+using NetHub.Shared.Models.Localizations;
 
 namespace NetHub.Mappings;
 

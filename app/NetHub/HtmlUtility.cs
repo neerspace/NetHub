@@ -24,12 +24,12 @@ public static class HtmlUtility
 
     public static async Task CheckLinks(ISqlServerDatabase database, long articleId, string html)
     {
-        var articleResources = await database.Set<ArticleResource>()
-            .Where(ar => ar.ArticleId == articleId)
+        var articleResources = await database.Set<ArticleSetResource>()
+            .Where(ar => ar.ArticleSetId == articleId)
             .ToArrayAsync();
 
-        var localizationsHtml = await database.Set<ArticleLocalization>()
-            .Where(al => al.ArticleId == articleId)
+        var localizationsHtml = await database.Set<Article>()
+            .Where(al => al.ArticleSetId == articleId)
             .Select(al => al.Html)
             .ToArrayAsync();
 
