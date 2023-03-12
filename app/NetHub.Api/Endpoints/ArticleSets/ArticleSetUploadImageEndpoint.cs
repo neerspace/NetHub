@@ -4,6 +4,7 @@ using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Core.Exceptions;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Models.ArticleSets;
+using NetHub.Models.Resources;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Api.Swagger;
@@ -15,7 +16,7 @@ namespace NetHub.Api.Endpoints.ArticleSets;
 [Authorize]
 [Tags(TagNames.ArticleSets)]
 [ApiVersion(Versions.V1)]
-public class ArticleSetUploadImageEndpoint : Endpoint<ArticleSetUploadImageRequest, ArticleSetUploadImageResult>
+public class ArticleSetUploadImageEndpoint : Endpoint<ArticleSetUploadImageRequest, ResourceModel>
 {
     private readonly IResourceService _resourceService;
     public ArticleSetUploadImageEndpoint(IResourceService resourceService) => _resourceService = resourceService;
@@ -23,7 +24,7 @@ public class ArticleSetUploadImageEndpoint : Endpoint<ArticleSetUploadImageReque
 
     [HttpPost("articles/{id:long}/images"), ClientSide(ActionName = "uploadImage")]
     [Consumes("multipart/form-data")]
-    public override async Task<ArticleSetUploadImageResult> HandleAsync(ArticleSetUploadImageRequest request, CancellationToken ct)
+    public override async Task<ResourceModel> HandleAsync(ArticleSetUploadImageRequest request, CancellationToken ct)
     {
         var userId = UserProvider.UserId;
 
@@ -42,6 +43,9 @@ public class ArticleSetUploadImageEndpoint : Endpoint<ArticleSetUploadImageReque
 
         await Database.SaveChangesAsync(ct);
 
-        return new(Request.GetResourceUrl(resourceId));
+        return new()
+        {
+            Location = Request.GetResourceUrl(resourceId)
+        };
     }
 }

@@ -481,6 +481,19 @@ const SvgSelector: FC<ISvgSelectorProps> = (props) => {
         />
       </svg>
 
+    case "ByYouTitle":
+      return <svg className={className ? className : ''} width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clipPath="url(#clip0_1177_4748)">
+          <path d="M23.0125 7.2501L21.5 5.7376C20.525 4.7626 18.9375 4.7626 17.9625 5.7376L14.6125 9.0876L3.75 19.9501V25.0001H8.8L19.725 14.0751L23.0125 10.7876C24 9.8126 24 8.2251 23.0125 7.2501ZM7.7625 22.5001H6.25V20.9876L17.075 10.1626L18.5875 11.6751L7.7625 22.5001ZM13.75 25.0001L18.75 20.0001H26.25V25.0001H13.75Z" fill="#323232"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_1177_4748">
+            <rect width="30" height="30" fill="red"/>
+          </clipPath>
+        </defs>
+      </svg>
+
+
 
     default:
       return <svg></svg>

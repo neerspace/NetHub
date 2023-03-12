@@ -26,7 +26,7 @@ const SavedArticles = () => {
   async function removeFromSavedHandle(id: number, code: string) {
     await _myArticlesApi.toggleSave(id, code);
     const savedArticleIndex = savedArticles.data!.findIndex(
-      (a) => a.id === id && a.languageCode === code
+      (a) => a.articleSetId === id && a.languageCode === code
     );
     setSavedArticles(
       savedArticles.data!.filter((a, index) => index !== savedArticleIndex)
@@ -60,7 +60,7 @@ const SavedArticles = () => {
               actual: true,
               handle: async () =>
                 await removeFromSavedHandle(
-                  article.id,
+                  article.articleSetId,
                   article.languageCode
                 ),
             }}

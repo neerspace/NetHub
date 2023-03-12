@@ -3,4 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace NetHub.Models.ArticleSets;
 
-public sealed record ArticleSetUploadImageRequest([FromForm] IFormFile File, [FromRoute] long Id);
+public sealed class ArticleSetUploadImageRequest
+{
+    [FromForm] public IFormFile File { get; init; }
+    [FromRoute(Name = "id")] public long Id { get; init; }
+}

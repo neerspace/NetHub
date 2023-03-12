@@ -25,44 +25,51 @@ interface ITinyInputProps {
 }
 
 interface ITinyInputHandle {
-  saveImages: (article: IArticleCreateExtendedRequest, id?: string) => Promise<string>;
+
+  createArticleSet: (request: IArticleCreateExtendedRequest) => Promise<number>;
+  uploadImages: (id: number) => Promise<void>;
+  getHtmlBody: () => string;
 }
 
 const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
   ({data, setData, editorTitle, isInvalid, errorMessage}, ref) => {
     const editorRef = useRef<TinyEditor | null>(null);
 
-    const saveImageCallback = useCallback(async (article: IArticleCreateExtendedRequest, id?: string) => {
+    const createArticleSet = async (article: IArticleCreateExtendedRequest) => {
+      const request = new ArticleSetCreateRequest({
+        tags: article.tags,
+        originalArticleLink: article.originalLink ? article.originalLink : null
+      });
 
-      if (!id) {
-        const request = new ArticleSetCreateRequest({
-          tags: article.tags,
-          originalArticleLink: article.originalLink ? article.originalLink : null
-        });
-
-        id = (await _articlesSetsApi.create(request)).id.toString();
-      }
-
-      sessionStorage.setItem('articleId', id!);
-      await editorRef.current!.uploadImages();
-      sessionStorage.removeItem('articleId');
-
-      const newData = editorRef.current!.getContent();
-      setData(newData);
+      const id = (await _articlesSetsApi.create(request)).id;
 
       return id;
+    }
+
+    const saveImageCallback = useCallback(async (id: number) => {
+      sessionStorage.setItem('articleSetId', id.toString());
+      await editorRef.current!.uploadImages();
+      sessionStorage.removeItem('articleSetId');
     }, []);
 
+    const getHtmlBody = () => editorRef.current?.getContent();
+
     useImperativeHandle(ref, () => ({
-      async saveImages(article: IArticleCreateExtendedRequest, id?: string) {
-        return await saveImageCallback(article, id)
+      async createArticleSet(article: IArticleCreateExtendedRequest) {
+        return await createArticleSet(article);
+      },
+      async uploadImages(id: number) {
+        await saveImageCallback(id);
+      },
+      getHtmlBody() {
+        return getHtmlBody();
       }
-    }), [saveImageCallback]);
+    }), [saveImageCallback])
 
 
     const saveImages: (blobInfo: any) => Promise<string> =
       async (blobInfo: any) => {
-        const id = sessionStorage.getItem('articleId');
+        const id = sessionStorage.getItem('articleSetId');
         const {location} = await _articlesSetsApi.uploadImage(+id!, {
           data: blobInfo.blob(),
           fileName: 'File'

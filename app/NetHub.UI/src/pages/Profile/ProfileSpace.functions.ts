@@ -22,6 +22,9 @@ export async function getUserInfo(setRequest: (value: ExtendedRequest) => void, 
     return (await _usersApi.usersInfo([username]))[0];
 
   const me = await _currentUserApi.me();
+
+  console.log('me', me)
+
   setRequest({
     username: me.userName,
     email: me.email,
@@ -51,7 +54,14 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
   } = useProfileContext();
   const queryClient = useQueryClient();
   const {updateProfile: updateProfileAction, user: reduxUser} = useAppStore();
-  const oldUserInfo = userAccessor.data! as UserResult;
+
+  const user = userAccessor.data! as UserResult;
+
+  const oldUserInfo = {
+    ...user,
+    middleName: user.middleName ? user.middleName : '',
+    description: user.description ? user.description : ''
+  };
 
   const handleUpdateUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newUsername = event.target.value.toLowerCase();
@@ -164,7 +174,7 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
 
     await queryClient.invalidateQueries(QueryClientKeysHelper.Profile(oldUserInfo.userName));
     setChanges([]);
-    handleSettingsButton();
+    // handleSettingsButton();
     enqueueSuccess('Зміни застосовані');
   }
 

@@ -23,9 +23,6 @@ const _apiInstance = axios.create(
       if (headers && typeof data == 'string')
         headers['Content-Type'] = 'application/json';
 
-      console.log('Payload', data);
-      console.log('Payload type', typeof data);
-
       return data;
     }
   }

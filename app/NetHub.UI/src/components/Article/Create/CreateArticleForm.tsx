@@ -11,7 +11,7 @@ import {useArticleCreatingContext} from "../../../pages/Articles/Create/ArticleC
 interface IMainArticleProps {
 }
 
-interface IMainArticleHandle {
+export interface IMainArticleHandle {
   getTinyRef: () => React.RefObject<TinyRef>
 }
 
@@ -33,8 +33,9 @@ const CreateArticleForm: ForwardRefRenderFunction<IMainArticleHandle, IMainArtic
       setArticleValue('description')(event.target.value);
       ArticleStorage.setDescription(event.target.value)
     }
+
     const handleUpdateHtml = (value: string) => {
-      setArticleValue('html')(value);
+      setArticle({...article, html: value})
       ArticleStorage.setHtml(value)
     }
 

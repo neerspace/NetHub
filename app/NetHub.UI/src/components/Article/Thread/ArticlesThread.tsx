@@ -18,7 +18,7 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles, byUser
   const queryClient = useQueryClient();
 
   const handleSaving = (article: ISimpleArticle) => async () => {
-    await _myArticlesApi.toggleSave(article.id, article.languageCode);
+    await _myArticlesApi.toggleSave(article.articleSetId, article.languageCode);
     setArticles(articles.map((a) => a.articleSetId === article.articleSetId
       ? {...a, isSaved: !a.isSaved} : a));
     await queryClient.invalidateQueries(QueryClientKeysHelper.SavedArticles());

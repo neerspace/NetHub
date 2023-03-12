@@ -379,25 +379,17 @@ export class ArticleSetsApi {
     }
 
     /**
-     * @param file (optional) 
-     * @return Created
+     * @return Success
      */
-    uploadImage(id: number, file: FileParameter | undefined , cancelToken?: CancelToken | undefined): Promise<ArticleSetUploadImageResult> {
+    getImages(id: number , cancelToken?: CancelToken | undefined): Promise<string[]> {
         let url_ = this.baseUrl + "/v1/articles/{id}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = new FormData();
-        if (file === null || file === undefined)
-            throw new Error("The parameter 'file' cannot be null.");
-        else
-            content_.append("File", file.data, file.fileName ? file.fileName : "File");
-
         let options_: AxiosRequestConfig = {
-            data: content_,
-            method: "POST",
+            method: "GET",
             url: url_,
             headers: {
                 "Accept": "application/json"
@@ -412,11 +404,11 @@ export class ArticleSetsApi {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processUploadImage(_response);
+            return this.processGetImages(_response);
         });
     }
 
-    protected processUploadImage(response: AxiosResponse): Promise<ArticleSetUploadImageResult> {
+    protected processGetImages(response: AxiosResponse): Promise<string[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -426,12 +418,19 @@ export class ArticleSetsApi {
                 }
             }
         }
-        if (status === 201) {
+        if (status === 200) {
             const _responseText = response.data;
-            let result201: any = null;
-            let resultData201  = _responseText;
-            result201 = ArticleSetUploadImageResult.fromJS(resultData201);
-            return Promise.resolve<ArticleSetUploadImageResult>(result201);
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<string[]>(result200);
 
         } else if (status === 400) {
             const _responseText = response.data;
@@ -472,7 +471,104 @@ export class ArticleSetsApi {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ArticleSetUploadImageResult>(null as any);
+        return Promise.resolve<string[]>(null as any);
+    }
+
+    /**
+     * @param file (optional) 
+     * @return Created
+     */
+    uploadImage(id: number, file: FileParameter | undefined , cancelToken?: CancelToken | undefined): Promise<ResourceModel> {
+        let url_ = this.baseUrl + "/v1/articles/{id}/images";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file === null || file === undefined)
+            throw new Error("The parameter 'file' cannot be null.");
+        else
+            content_.append("File", file.data, file.fileName ? file.fileName : "File");
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUploadImage(_response);
+        });
+    }
+
+    protected processUploadImage(response: AxiosResponse): Promise<ResourceModel> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 201) {
+            const _responseText = response.data;
+            let result201: any = null;
+            let resultData201  = _responseText;
+            result201 = ResourceModel.fromJS(resultData201);
+            return Promise.resolve<ResourceModel>(result201);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500  = _responseText;
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<ResourceModel>(null as any);
     }
 }
 
@@ -3546,42 +3642,6 @@ export interface IArticleSetUpdateRequest {
     originalArticleLink: string | null;
 }
 
-export class ArticleSetUploadImageResult implements IArticleSetUploadImageResult {
-    location!: string;
-
-    constructor(data?: IArticleSetUploadImageResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.location = _data["location"] !== undefined ? _data["location"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): ArticleSetUploadImageResult {
-        data = typeof data === 'object' ? data : {};
-        let result = new ArticleSetUploadImageResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["location"] = this.location !== undefined ? this.location : <any>null;
-        return data;
-    }
-}
-
-export interface IArticleSetUploadImageResult {
-    location: string;
-}
-
 export enum ArticleStatusActions {
     Publish = "Publish",
     UnPublish = "UnPublish",
@@ -4455,6 +4515,42 @@ export enum ProviderType {
     GitHub = "GitHub",
     LinkedIn = "LinkedIn",
     Facebook = "Facebook",
+}
+
+export class ResourceModel implements IResourceModel {
+    location!: string;
+
+    constructor(data?: IResourceModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.location = _data["location"] !== undefined ? _data["location"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ResourceModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new ResourceModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["location"] = this.location !== undefined ? this.location : <any>null;
+        return data;
+    }
+}
+
+export interface IResourceModel {
+    location: string;
 }
 
 export enum SsoType {
