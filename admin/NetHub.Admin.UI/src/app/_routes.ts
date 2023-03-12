@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 import { AuthorizedGuard } from './api/guards/authorized.guard';
 import { EnsurePermissionsGuard } from './api/guards/ensure-permissions.guard';
-import { AdminLayoutComponent } from '@neerspace/ngx-admin/src/layout/admin-layout/admin-layout.component';
+import { AdminLayoutComponent } from '@neerspace/ngx-admin/layout/admin-layout/admin-layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ErrorComponent } from './pages/public/error/error.component';
 import { LoginComponent } from './pages/public/login/login.component';
-import { buildTitle } from './shared/utilities';
+import { buildTitle } from '@neerspace/ngx-admin/shared/utilities';
 
 const adminRouters: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },

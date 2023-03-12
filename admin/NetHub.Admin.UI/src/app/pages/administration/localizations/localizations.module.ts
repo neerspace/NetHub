@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CoreComponentsModule } from 'app/components/core/core-components.module';
-import { FormComponentsModule } from 'app/components/form/form-components.module';
-import { LayoutComponentsModule } from 'app/components/layout/layout-components.module';
+import { CoreComponentsModule, FormComponentsModule, LayoutComponentsModule } from 'neercms';
 import { LocalizationFormComponent } from './localization-form/localization-form.component';
 import { LocalizationTableComponent } from './localization-table/localization-table.component';
 
@@ -11,10 +9,11 @@ import { LocalizationTableComponent } from './localization-table/localization-ta
   declarations: [LocalizationFormComponent, LocalizationTableComponent],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
+
     LayoutComponentsModule,
     CoreComponentsModule,
     FormComponentsModule,
-    ReactiveFormsModule,
   ],
   exports: [LocalizationFormComponent],
 })

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
 import { LanguageModel } from 'app/api';
-import { ColumnInfo, IFiltered, IFilterInfo } from 'app/components/table/types';
 import { languageColumns } from 'app/pages/administration/languages/language-columns';
 import { LanguageService } from 'app/pages/administration/languages/language.service';
+import { ColumnInfo, IFiltered, IFilterInfo } from 'neercms/table/types';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-langs-table',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Theme } from '../../theme/types';
-import { StorageBase } from './storage-base';
+import { Theme } from 'app/theme/types';
+import { StorageBase } from 'neercms/services/storage';
 import { SettingsKey, StorageKey } from './types';
 
 @Injectable({ providedIn: 'root' })
@@ -32,15 +32,6 @@ export class StorageService extends StorageBase {
 
   set language(value: string | null) {
     this.setItem(StorageKey.Language, value);
-  }
-
-  get sidebarCollapsed(): boolean {
-    const value = this.getItem(StorageKey.SidebarCollapsed);
-    return value === 'hide';
-  }
-
-  set sidebarCollapsed(value: boolean) {
-    this.setItem(StorageKey.SidebarCollapsed, value ? 'hide' : 'show');
   }
 
   get theme(): Theme | null {

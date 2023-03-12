@@ -1,9 +1,9 @@
 import { Injectable, Injector } from '@angular/core';
+import { ErrorDto, LanguageModel, LanguagesApi } from 'app/api';
+import { FormServiceBase } from 'neercms/form';
+import { FormId } from 'neercms/form/types';
+import { IFiltered, IFilterInfo } from 'neercms/table/types';
 import { Observable } from 'rxjs';
-import { ErrorDto, LanguageModel, LanguagesApi } from '../../../api';
-import { FormId } from '../../../components/form/types';
-import { IFiltered, IFilterInfo } from '../../../components/table/types';
-import { FormServiceBase } from '../../../services/abstractions';
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService extends FormServiceBase {

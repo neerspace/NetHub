@@ -1,7 +1,7 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { StorageService } from '../services/storage';
+import { StorageService } from 'app/services/storage';
 import { themes } from './themes';
 import { IThemeInfo, Theme } from './types';
 

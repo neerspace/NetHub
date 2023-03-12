@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DateTime } from 'luxon';
-import { StorageBase } from './storage-base';
+import { StorageBase } from 'neercms/services/storage';
 import { IJwtData, StorageKey } from './types';
 
 @Injectable({ providedIn: 'root' })

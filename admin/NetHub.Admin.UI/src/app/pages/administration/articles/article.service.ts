@@ -7,8 +7,8 @@ import {
   ErrorDto,
   LanguagesApi,
 } from 'app/api';
-import { FormReady } from 'app/components/form/types';
-import { FormServiceBase } from 'app/services/abstractions';
+import { FormReady } from 'neercms/form/types';
+import { FormServiceBase } from 'neercms/services/abstractions';
 
 @Injectable()
 export class ArticleService extends FormServiceBase {

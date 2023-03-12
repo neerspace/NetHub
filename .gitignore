@@ -18,7 +18,8 @@ _TeamCity*
 .vscode/
 
 # Log files
-logs/
+admin/NetHub.Admin.Api/logs/
+app/NetHub.Api/logs/
 *.log
 
 # .NET Build results

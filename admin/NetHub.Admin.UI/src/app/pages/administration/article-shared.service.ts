@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { ArticleModel, ArticlesApi, LanguagesApi } from 'app/api';
-import { FormId } from 'app/components/form/types';
-import { IFiltered, IFilterInfo } from 'app/components/table/types';
-import { IDictionary } from 'app/shared/types';
+import { FormId } from 'neercms/form/types';
+import { IDictionary } from 'neercms/shared/types';
+import { IFiltered, IFilterInfo } from 'neercms/table/types';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ArticleSharedService {

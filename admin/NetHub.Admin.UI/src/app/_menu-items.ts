@@ -1,4 +1,4 @@
-import { MenuItems } from './components/layout/types';
+import { MenuItems } from 'neercms/layout/types';
 
 export const items: MenuItems = [
   {

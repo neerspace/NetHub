@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
-import { EnumMetadataModel, MetadataApi } from '../api';
+import { EnumMetadataModel, MetadataApi } from 'app/api';
 
 @Injectable({ providedIn: 'root' })
 export class MetadataService {

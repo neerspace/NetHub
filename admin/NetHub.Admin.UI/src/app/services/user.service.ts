@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { JWTApi, JwtResult, UserModel, UsersApi } from 'app/api';
+import { logger } from 'app/environments/environment';
+import { IJwtPayload } from 'app/types';
 import jwtDecode from 'jwt-decode';
 import { DateTime } from 'luxon';
+import { UnauthorizedError } from 'neercms/shared/errors';
 import { map, Observable, of, Subscription } from 'rxjs';
-import { logger } from 'app/environments/environment';
-import { JWTApi, JwtResult, UserModel, UsersApi } from '../api';
-import { UnauthorizedError } from '../shared/errors';
-import { IJwtPayload } from '../shared/types';
 import { SecuredStorage } from './storage';
 
 @Injectable({ providedIn: 'root' })

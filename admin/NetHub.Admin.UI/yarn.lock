@@ -1493,12 +1493,6 @@
   "resolved" "https://registry.npmjs.org/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz"
   "version" "2.0.4"
 
-"@neerspace/ngx-admin@file:../../../neerspace-angular/projects/neercore-admin":
-  "resolved" "file:../../../neerspace-angular/projects/neercore-admin"
-  "version" "0.0.1"
-  dependencies:
-    "tslib" "^2.3.0"
-
 "@ngtools/webpack@14.2.10":
   "integrity" "sha512-sLHapZLVub6mEz5b19tf1VfIV1w3tYfg7FNPLeni79aldxu1FbP1v2WmiFAnMzrswqyK0bhTtxrl+Z/CLKqyoQ=="
   "resolved" "https://registry.npmjs.org/@ngtools/webpack/-/webpack-14.2.10.tgz"
@@ -4899,6 +4893,17 @@
     "iconv-lite" "^0.6.3"
     "sax" "^1.2.4"
 
+"neercms@file:../../../neerspace-angular/dist/neercms":
+  "resolved" "file:../../../neerspace-angular/dist/neercms"
+  "version" "0.0.1"
+  dependencies:
+    "angular-split" "^14.1.0"
+    "flatpickr" "^4.6.13"
+    "ng2-flatpickr" "^9.0.0"
+    "ngx-mask" "^14.2.4"
+    "tslib" "^2.5.0"
+    "vanillajs-datepicker" "^1.2.0"
+
 "negotiator@^0.6.3", "negotiator@0.6.3":
   "integrity" "sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg=="
   "resolved" "https://registry.npmjs.org/negotiator/-/negotiator-0.6.3.tgz"
@@ -6692,7 +6697,7 @@
   "resolved" "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   "version" "1.14.1"
 
-"tslib@^2.0.0", "tslib@^2.1.0", "tslib@^2.3.0", "tslib@^2.4.1":
+"tslib@^2.0.0", "tslib@^2.1.0", "tslib@^2.3.0", "tslib@^2.5.0":
   "integrity" "sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg=="
   "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.5.0.tgz"
   "version" "2.5.0"

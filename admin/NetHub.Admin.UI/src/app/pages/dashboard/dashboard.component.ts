@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SecuredStorage } from '../../services/storage';
+import { SecuredStorage } from 'app/services/storage';
 
 @Component({
   selector: 'app-dashboard',

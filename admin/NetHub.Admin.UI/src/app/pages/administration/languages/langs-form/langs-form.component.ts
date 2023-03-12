@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { capitalizeFirstLetter } from 'app/shared/utilities';
 import { LanguageService } from 'app/pages/administration/languages/language.service';
+import { capitalizeFirstLetter } from 'neercms/shared/utilities';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 // TODO: Add validation if language is already exists
 

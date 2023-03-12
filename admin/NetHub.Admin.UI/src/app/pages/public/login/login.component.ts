@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthRequest, JWTApi } from 'app/api';
 import { UserService } from 'app/services/user.service';
-import { ToasterService } from 'app/services/viewport';
+import { ToasterService } from 'neercms/services/viewport';
 
 @Component({
   selector: 'app-login',

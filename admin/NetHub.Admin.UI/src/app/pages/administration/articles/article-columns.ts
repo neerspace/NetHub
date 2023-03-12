@@ -1,10 +1,5 @@
-﻿import {
-  formatAsDate,
-  formatAsText,
-  formatCounter,
-  formatLink,
-} from 'app/components/table/formatters';
-import { ColumnInfo, ColumnStyle, FilterType } from 'app/components/table/types';
+﻿import { formatAsDate, formatAsText, formatCounter, formatLink } from 'neercms/table/formatters';
+import { ColumnInfo, ColumnStyle, FilterType } from 'neercms/table/types';
 import { ArticleTableComponent } from './article-table/article-table.component';
 
 export function articleColumns(context: ArticleTableComponent): ColumnInfo[] {

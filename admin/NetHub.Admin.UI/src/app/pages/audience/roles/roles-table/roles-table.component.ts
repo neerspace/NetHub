@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
 import { RoleModel } from 'app/api';
-import { FormReady } from 'app/components/form/types';
-import { ColumnInfo, IFiltered, IFilterInfo } from 'app/components/table/types';
 import { roleColumns } from 'app/pages/audience/roles/role-columns';
 import { RoleService } from 'app/pages/audience/roles/role.service';
+import { FormReady } from 'neercms/form/types';
+import { ColumnInfo, IFiltered, IFilterInfo } from 'neercms/table/types';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-roles-table',

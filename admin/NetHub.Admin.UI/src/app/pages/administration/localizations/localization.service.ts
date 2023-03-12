@@ -1,8 +1,8 @@
 ﻿import { Injectable, Injector } from '@angular/core';
 import { ArticleLocalizationModel, ErrorDto, LocalizationsApi } from 'app/api';
-import { ISelectOption } from 'app/components/form/types';
 import { MetadataService } from 'app/services';
-import { FormServiceBase } from 'app/services/abstractions';
+import { FormServiceBase } from 'neercms/form';
+import { ISelectOption } from 'neercms/form/types';
 
 @Injectable()
 export class LocalizationService extends FormServiceBase {

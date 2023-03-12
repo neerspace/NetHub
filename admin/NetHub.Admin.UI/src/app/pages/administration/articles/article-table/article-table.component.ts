@@ -1,12 +1,12 @@
 import { Component, Injector, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { finalize, Observable } from 'rxjs';
 import { ArticleLocalizationModel, ArticleModel } from 'app/api';
-import { TabsComponent } from 'app/components/core/tabs/tabs.component';
-import { SplitBaseComponent } from 'app/components/split/split-base.component';
-import { ColumnInfo, IFiltered, IFilterInfo } from 'app/components/table/types';
-import { DataTableComponent } from 'app/components/table/data-table/data-table.component';
 import { ArticleSharedService } from 'app/pages/administration/article-shared.service';
 import { articleColumns } from 'app/pages/administration/articles/article-columns';
+import { TabsComponent } from 'neercms/core';
+import { SplitBaseComponent } from 'neercms/split';
+import { DataTableComponent } from 'neercms/table';
+import { ColumnInfo, IFiltered, IFilterInfo } from 'neercms/table/types';
+import { finalize, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-articles-table',

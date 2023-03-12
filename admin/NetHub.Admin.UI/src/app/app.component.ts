@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ViewportService } from 'neercms/services/viewport';
 import { Subscription } from 'rxjs';
 import { ThemeService } from './theme/theme.service';
-import { ViewportService } from './theme/viewport.service';
 
 @Component({
   selector: 'body',

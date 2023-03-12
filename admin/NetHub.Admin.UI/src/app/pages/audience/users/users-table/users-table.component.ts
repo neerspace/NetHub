@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
 import { UserModel } from 'app/api';
-import { FormReady } from 'app/components/form/types';
-import { ColumnInfo, IFiltered, IFilterInfo } from 'app/components/table/types';
-import { DownloadService } from 'app/services/download.service';
 import { userColumns } from 'app/pages/audience/users/user-columns';
 import { UserService } from 'app/pages/audience/users/user.service';
+import { FormReady } from 'neercms/form/types';
+import { ColumnInfo, IFiltered, IFilterInfo } from 'neercms/table/types';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-users-table',

@@ -2,14 +2,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { CoreComponentsModule, LayoutComponentsModule } from 'neercms';
 import { routes } from './_routes';
 import { ApiModule } from './api/api.module';
 import { AuthorizedGuard } from './api/guards/authorized.guard';
 import { EnsurePermissionsGuard } from './api/guards/ensure-permissions.guard';
 
 import { AppComponent } from './app.component';
-import { CoreComponentsModule } from './components/core/core-components.module';
-import { LayoutComponentsModule } from './components/layout/layout-components.module';
+import { ApplicationCoreModule } from './core/application-core.module';
 import { PagesModule } from './pages/pages.module';
 
 @NgModule({
@@ -27,6 +27,7 @@ import { PagesModule } from './pages/pages.module';
 
     // App
     ApiModule,
+    ApplicationCoreModule,
     CoreComponentsModule,
     PagesModule,
     LayoutComponentsModule,

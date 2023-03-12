@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { getRandomInt } from 'app/shared/utilities';
 import { UserService } from 'app/pages/audience/users/user.service';
+import { getRandomInt } from 'neercms/shared/utilities';
 
 @Component({
   selector: 'app-user-form',

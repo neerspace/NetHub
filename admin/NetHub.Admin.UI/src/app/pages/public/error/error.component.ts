@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { randomSadEmoji } from '../../../shared/utilities';
+import { randomSadEmoji } from 'neercms/shared/utilities';
 
 @Component({
   selector: 'app-error',
