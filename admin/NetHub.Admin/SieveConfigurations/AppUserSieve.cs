@@ -1,5 +1,5 @@
-using NetHub.Admin.Extensions;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Data.SqlServer.Extensions;
 using Sieve.Services;
 
 namespace NetHub.Admin.SieveConfigurations;
