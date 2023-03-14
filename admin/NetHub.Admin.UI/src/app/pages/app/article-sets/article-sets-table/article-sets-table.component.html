@@ -1,0 +1,68 @@
+<nc-main-header pageTitle="Articles">
+  <button nc-icon-button
+          icon="la-sync"
+          variant="primary"
+          [disabled]="table.loading"
+          (click)="table.loadData()">
+    Refresh
+  </button>
+  <!--<button nc-icon-button-->
+  <!--        icon="la-download"-->
+  <!--        variant="primary"-->
+  <!--        [disabled]="table.loading"-->
+  <!--        (click)="downloadJson()">-->
+  <!--  JSON-->
+  <!--</button>-->
+</nc-main-header>
+
+<nc-main-content>
+
+  <as-split class="split-view"
+            unit="percent"
+            direction="vertical"
+            [gutterSize]="4"
+            (dragEnd)="resize($event.sizes)">
+
+    <as-split-area [size]="splitSizes[0]">
+      <div class="split-area-content">
+        <nc-data-table #table
+                        defaultSorting="-created"
+                        [columns]="columns"
+                        [columnChooser]="true"
+                        columnChooserSequence="articles"
+                        [onFilter]="fetchFilter.bind(this)">
+
+          <ng-container *appCustomColumn="'localizationButtons'; value as val; object as obj">
+            <button class="btn btn-secondary neutral general-button"
+                    (click)="onDetailsClick(obj)">
+              <span class="text">Edit</span>
+            </button>
+            <button class="btn neutral flag-button"
+                    *ngFor="let localization of val"
+                    (click)="onLocalizationClick(localization)">
+              <!--<span class="text">{{localization.languageCode.toUpperCase()}}</span>-->
+              <span style="background-image: url({{articleSharedService.flags[localization.languageCode]}})"
+                    class="flag-img"></span>
+            </button>
+          </ng-container>
+
+        </nc-data-table>
+      </div>
+    </as-split-area>
+
+    <as-split-area [size]="splitSizes[1]">
+      <div class="split-area-content">
+        <nc-tabs></nc-tabs>
+        <ng-template let-data="data"
+                     #articleForm>
+          <app-article-set-form [article]="data"></app-article-set-form>
+        </ng-template>
+        <ng-template let-data="data"
+                     #localizationForm>
+          <app-article-form [model]="data"></app-article-form>
+        </ng-template>
+      </div>
+    </as-split-area>
+
+  </as-split>
+</nc-main-content>

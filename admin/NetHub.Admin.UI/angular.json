@@ -35,7 +35,8 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/neercms/styles/styles.scss",
+              "node_modules/neercms/styles/lib/line-awesome.min.css",
+              // "node_modules/neercms/styles/styles.scss",
               "src/sass/styles.scss"
             ],
             "scripts": [

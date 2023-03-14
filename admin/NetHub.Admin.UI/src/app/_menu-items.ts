@@ -7,19 +7,19 @@ export const items: MenuItems = [
     routerLink: '/dashboard',
   },
   {
-    text: 'Audience',
+    text: 'Application',
     icon: 'la-user-shield',
     children: [
       { routerLink: '/users', text: 'Users', icon: 'la-user-friends' },
-      { routerLink: '/roles', text: 'Roles', icon: 'la-key' },
+      { routerLink: '/article-sets', text: 'Article Sets', icon: 'la-book' },
+      { routerLink: '/articles', text: 'Articles', icon: 'la-book' },
     ],
   },
   {
-    text: 'Administration',
+    text: 'System',
     icon: 'la-tools',
     children: [
-      //
-      { routerLink: '/articles', text: 'Articles', icon: 'la-book' },
+      { routerLink: '/roles', text: 'Roles', icon: 'la-key' },
       { routerLink: '/languages', text: 'Languages', icon: 'la-globe-africa' },
     ],
   },
@@ -27,7 +27,7 @@ export const items: MenuItems = [
 
 export const footerItems: MenuItems = [
   {
-    text: 'My Profile',
+    text: 'Account',
     icon: 'la-user',
     routerLink: '/profile/edit',
   },

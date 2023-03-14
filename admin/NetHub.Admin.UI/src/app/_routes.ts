@@ -12,24 +12,29 @@ const adminRouters: Routes = [
   { path: 'dashboard', component: DashboardComponent, title: buildTitle('Dashboard') },
   {
     path: 'users',
-    loadChildren: () => import('./pages/audience/users/users.module').then(m => m.UsersModule),
+    loadChildren: () => import('./pages/app/users/users.module').then(m => m.UsersModule),
     title: buildTitle('Users'),
   },
   {
     path: 'roles',
-    loadChildren: () => import('./pages/audience/roles/roles.module').then(m => m.RolesModule),
+    loadChildren: () => import('./pages/system/roles/roles.module').then(m => m.RolesModule),
     title: buildTitle('Roles'),
   },
   {
     path: 'languages',
     loadChildren: () =>
-      import('./pages/administration/languages/languages.module').then(m => m.LanguagesModule),
+      import('./pages/system/languages/languages.module').then(m => m.LanguagesModule),
     title: buildTitle('Languages'),
   },
   {
-    path: 'articles',
+    path: 'article-sets',
     loadChildren: () =>
-      import('./pages/administration/articles/articles.module').then(m => m.ArticlesModule),
+      import('./pages/app/article-sets/article-sets.module').then(m => m.ArticleSetsModule),
+    title: buildTitle('Articles'),
+  },
+  {
+    path: 'articles',
+    loadChildren: () => import('./pages/app/articles/articles.module').then(m => m.ArticlesModule),
     title: buildTitle('Articles'),
   },
   {

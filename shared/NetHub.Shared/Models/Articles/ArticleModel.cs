@@ -10,8 +10,6 @@ public class ArticleModel
 
     public DateTimeOffset Created { get; set; }
     public DateTimeOffset? Updated { get; set; }
-    public DateTimeOffset? Published { get; set; }
-    public DateTimeOffset? Banned { get; set; }
 
     public string? OriginalArticleLink { get; set; }
     public int Rate { get; set; }
