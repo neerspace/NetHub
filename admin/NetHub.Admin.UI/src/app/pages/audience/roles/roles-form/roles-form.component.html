@@ -1,12 +1,12 @@
-<app-main-header short="true"
+<nc-main-header short="true"
                  [pageTitle]="isCreating ? 'Create Role' : 'Edit Role'">
-  <button app-icon-button
+  <button nc-icon-button
           icon="la-undo"
           variant="secondary"
           (onclick)="backToTable()">
     Back
   </button>
-  <button app-icon-button
+  <button nc-icon-button
           *ngIf="!isCreating"
           icon="la-ban"
           variant="danger"
@@ -14,42 +14,42 @@
           (onclick)="roleService.delete(id)">
     Delete
   </button>
-  <button app-icon-button
+  <button nc-icon-button
           icon="la-save"
           variant="success"
           [disabled]="!roleService.ready"
           (onclick)="submit()">
     {{isCreating ? 'Create' : 'Save'}}
   </button>
-</app-main-header>
+</nc-main-header>
 
-<app-main-content>
-  <form app-form-layout
+<nc-main-content>
+  <form nc-form-layout
         [formGroup]="roleService.form"
         [ready]="roleService.ready">
-    <app-fieldset size="small">
-      <app-number-field *ngIf="!isCreating"
+    <nc-fieldset size="small">
+      <nc-number-field *ngIf="!isCreating"
                         label="ID"
                         controlName="id"
                         disabled="true"
-                        [allowCopy]="true"></app-number-field>
+                        [allowCopy]="true"></nc-number-field>
 
-      <app-text-field label="Role Name"
+      <nc-text-field label="Role Name"
                       controlName="name"
                       [maxLength]="50"
-                      [required]="true"></app-text-field>
+                      [required]="true"></nc-text-field>
 
       <ul>
         <ng-container *ngFor="let pem of roleService.permissions"
                       [ngTemplateOutlet]="permissionItem"
                       [ngTemplateOutletContext]="{ permission: pem }"></ng-container>
       </ul>
-    </app-fieldset>
+    </nc-fieldset>
   </form>
 
   <!--<pre>{{roleService.form.value | json}}</pre>-->
 
-</app-main-content>
+</nc-main-content>
 
 <ng-template #permissionItem
              let-permission="permission">

@@ -1,5 +1,4 @@
 ﻿import { Injectable, Injector } from '@angular/core';
-import { Observable } from 'rxjs';
 import {
   ArticleLocalizationModel,
   ArticleModel,
@@ -7,8 +6,9 @@ import {
   ErrorDto,
   LanguagesApi,
 } from 'app/api';
+import { FormServiceBase } from 'neercms/form';
 import { FormReady } from 'neercms/form/types';
-import { FormServiceBase } from 'neercms/services/abstractions';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class ArticleService extends FormServiceBase {

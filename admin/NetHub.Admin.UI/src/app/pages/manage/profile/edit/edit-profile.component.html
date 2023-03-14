@@ -1,57 +1,57 @@
-<app-main-header pageTitle="Profile">
-  <button app-icon-button icon="la-save" variant="success" (click)="submit()">
+<nc-main-header pageTitle="Profile">
+  <button nc-icon-button icon="la-save" variant="success" (click)="submit()">
     Save
   </button>
-</app-main-header>
+</nc-main-header>
 
-<app-main-content>
+<nc-main-content>
   <!--<img src="https://github.com/jurilents.png" alt="Photo"/>-->
-  <div app-form-layout [formGroup]="form">
+  <div nc-form-layout [formGroup]="form">
 
-    <app-text-field
+    <nc-text-field
       label="User Name"
       controlName="userName"
       [maxLength]="50"
       [required]="true">
-    </app-text-field>
+    </nc-text-field>
 
-    <app-text-field
+    <nc-text-field
       label="Email"
       controlName="email"
       type="email"
       [maxLength]="200"
       [required]="true">
-    </app-text-field>
+    </nc-text-field>
 
-    <app-text-field
+    <nc-text-field
       label="Password"
       controlName="password"
       type="password"
       [required]="true">
-    </app-text-field>
+    </nc-text-field>
 
-<!--    <app-number-field-->
+<!--    <nc-number-field-->
 <!--      label="Person Age"-->
 <!--      controlName="age"-->
 <!--      format="float(2)"-->
 <!--      [minValue]="0"-->
 <!--      [maxValue]="120"-->
 <!--      [required]="true">-->
-<!--    </app-number-field>-->
+<!--    </nc-number-field>-->
 
-<!--    <app-date-field-->
+<!--    <nc-date-field-->
 <!--      type="date-time"-->
 <!--      label="Date of a Birth"-->
 <!--      controlName="dateOfBirth"-->
 <!--      controlEndName="dateOfEndBirth">-->
-<!--    </app-date-field>-->
+<!--    </nc-date-field>-->
 
-<!--    <app-text-area-field-->
+<!--    <nc-text-area-field-->
 <!--      label="Description"-->
 <!--      controlName="description"-->
 <!--      size="small"-->
 <!--      [maxLength]="300">-->
-<!--    </app-text-area-field>-->
+<!--    </nc-text-area-field>-->
 
     <pre>{{form.value | json}}</pre>
 
@@ -134,7 +134,7 @@
       </div>
     </div>
 
-    <!--    <app-password-input key="password" label="Email"></app-password-input>-->
+    <!--    <nc-password-input key="password" label="Email"></nc-password-input>-->
 
     <!--    <div class="row mb-3">-->
     <!--      <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>-->
@@ -182,4 +182,4 @@
     <!--      </div>-->
     <!--    </div>-->
   </div>
-</app-main-content>
+</nc-main-content>

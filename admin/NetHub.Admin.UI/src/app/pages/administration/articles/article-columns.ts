@@ -1,4 +1,4 @@
-﻿import { formatAsDate, formatAsText, formatCounter, formatLink } from 'neercms/table/formatters';
+﻿import { formatAsDate, formatAsText, formatCounter, formatLink } from 'neercms/table/utilities';
 import { ColumnInfo, ColumnStyle, FilterType } from 'neercms/table/types';
 import { ArticleTableComponent } from './article-table/article-table.component';
 

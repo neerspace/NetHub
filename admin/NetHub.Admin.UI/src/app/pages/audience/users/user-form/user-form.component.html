@@ -1,12 +1,12 @@
-<app-main-header short="true"
+<nc-main-header short="true"
                  [pageTitle]="isCreating ? 'Create User' : 'Edit User'">
-  <button app-icon-button
+  <button nc-icon-button
           icon="la-undo"
           variant="secondary"
           (onclick)="backToTable()">
     Back
   </button>
-  <button app-icon-button
+  <button nc-icon-button
           *ngIf="!isCreating"
           icon="la-ban"
           variant="danger"
@@ -14,69 +14,69 @@
           (onclick)="userService.delete(id)">
     Delete
   </button>
-  <button app-icon-button
+  <button nc-icon-button
           icon="la-save"
           variant="success"
           [disabled]="!userService.ready"
           (onclick)="submit()">
     {{isCreating ? 'Create' : 'Save'}}
   </button>
-</app-main-header>
+</nc-main-header>
 
-<app-main-content>
-  <form app-form-layout
+<nc-main-content>
+  <form nc-form-layout
         [formGroup]="userService.form"
         [ready]="userService.ready"
         [disableBrowserSecurity]="true">
-    <app-fieldset size="small">
-      <app-number-field *ngIf="!isCreating"
+    <nc-fieldset size="small">
+      <nc-number-field *ngIf="!isCreating"
                         label="ID"
                         controlName="id"
                         [disabled]="true"
-                        [allowCopy]="true"></app-number-field>
-      <app-text-field label="User Name"
+                        [allowCopy]="true"></nc-number-field>
+      <nc-text-field label="User Name"
                       controlName="userName"
                       [maxLength]="50"
                       [required]="true"
-                      [allowCopy]="!isCreating"></app-text-field>
-      <app-text-field label="First Name"
+                      [allowCopy]="!isCreating"></nc-text-field>
+      <nc-text-field label="First Name"
                       controlName="firstName"
                       [maxLength]="50"
-                      [required]="true"></app-text-field>
-      <app-text-field label="Middle Name"
+                      [required]="true"></nc-text-field>
+      <nc-text-field label="Middle Name"
                       controlName="middleName"
-                      [maxLength]="50"></app-text-field>
-      <app-text-field label="Last Name"
+                      [maxLength]="50"></nc-text-field>
+      <nc-text-field label="Last Name"
                       controlName="lastName"
                       [maxLength]="50"
-                      [required]="true"></app-text-field>
+                      [required]="true"></nc-text-field>
 
       <hr />
-      <app-password-field label="Password"
+      <nc-password-field label="Password"
                           controlName="password"
-                          [required]="false"></app-password-field>
-      <app-main-header>
-        <button app-icon-button
+                          [required]="false"></nc-password-field>
+      <nc-main-header>
+        <button nc-icon-button
                 variant="secondary"
                 (click)="setRandomPassword()">
           Seed Random Password
         </button>
-      </app-main-header>
+      </nc-main-header>
       <hr />
 
-      <app-text-field label="Email"
+      <nc-text-field label="Email"
                       controlName="email"
                       type="email"
                       [maxLength]="200"
-                      [required]="true"></app-text-field>
+                      [required]="true"></nc-text-field>
 
       <!-- TODO: Add checkbox: Email is confirmed -->
 
       <hr />
 
-      <app-text-area-field label="Description"
+      <nc-text-area-field label="Description"
                            controlName="description"
-                           size="medium"></app-text-area-field>
-    </app-fieldset>
+                           size="medium"></nc-text-area-field>
+    </nc-fieldset>
   </form>
-</app-main-content>
+</nc-main-content>

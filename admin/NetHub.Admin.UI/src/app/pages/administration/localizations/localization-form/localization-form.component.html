@@ -1,114 +1,114 @@
-<app-main-header pageTitle="Article Localization: {{model.status}}">
-  <button app-icon-button
+<nc-main-header pageTitle="Article Localization: {{model.status}}">
+  <button nc-icon-button
           [icon]="locked ? 'la-lock' : 'la-unlock'"
           variant="secondary"
           (onclick)="locked = !locked">
     {{locked ? 'Locked' : 'Unlocked'}}
   </button>
-  <button app-icon-button
+  <button nc-icon-button
           icon="la-ban"
           variant="danger"
           [disabled]="locked"
           (onclick)="localizationsService.delete(model.id)">
     Delete
   </button>
-  <button app-icon-button
+  <button nc-icon-button
           icon="la-save"
           variant="success"
           [disabled]="locked"
           (onclick)="submit()">
     Save
   </button>
-</app-main-header>
-<app-main-header>
-  <button app-icon-button
+</nc-main-header>
+<nc-main-header>
+  <button nc-icon-button
           *ngIf="model.status !== Status.Banned"
           variant="danger"
           (click)="onHotButton(Status.Banned)">
     BAN
   </button>
-  <button app-icon-button
+  <button nc-icon-button
           *ngIf="model.status === Status.Banned"
           variant="warning"
           (click)="onHotButton(Status.Draft)">
     Lift the BAN
   </button>
-  <button app-icon-button
+  <button nc-icon-button
           *ngIf="model.status !== Status.Published && model.status !== Status.Banned"
           variant="success"
           (click)="onHotButton(Status.Published)">
     Publish
   </button>
-</app-main-header>
+</nc-main-header>
 
-<app-main-content>
-  <form app-form-layout
+<nc-main-content>
+  <form nc-form-layout
         [formGroup]="localizationsService.form"
         [ready]="localizationsService.ready">
 
-    <app-fieldset size="small">
-      <app-number-field label="ID"
+    <nc-fieldset size="small">
+      <nc-number-field label="ID"
                         controlName="id"
                         [disabled]="true"
-                        [allowCopy]="true"></app-number-field>
-      <app-number-field label="Linked Article ID"
+                        [allowCopy]="true"></nc-number-field>
+      <nc-number-field label="Linked Article ID"
                         controlName="articleId"
                         [disabled]="true"
-                        [allowCopy]="true"></app-number-field>
-      <app-text-field label="Language Code"
+                        [allowCopy]="true"></nc-number-field>
+      <nc-text-field label="Language Code"
                       controlName="languageCode"
                       [disabled]="true"
-                      [allowCopy]="true"></app-text-field>
-      <app-date-field label="Created At"
+                      [allowCopy]="true"></nc-text-field>
+      <nc-date-field label="Created At"
                       controlName="created"
                       type="date-time"
-                      [disabled]="true"></app-date-field>
-      <app-date-field *ngIf="model.updated"
+                      [disabled]="true"></nc-date-field>
+      <nc-date-field *ngIf="model.updated"
                       label="Updated At"
                       controlName="updated"
                       type="date-time"
-                      [disabled]="true"></app-date-field>
-      <app-date-field *ngIf="model.banned"
+                      [disabled]="true"></nc-date-field>
+      <nc-date-field *ngIf="model.banned"
                       label="Banned At"
                       controlName="banned"
                       type="date-time"
-                      [disabled]="true"></app-date-field>
-      <app-text-area-field *ngIf="model.status === Status.Banned"
+                      [disabled]="true"></nc-date-field>
+      <nc-text-area-field *ngIf="model.status === Status.Banned"
                            label="Ban Readon"
                            controlName="banReason"
                            size="medium"
-                           [disabled]="locked"></app-text-area-field>
+                           [disabled]="locked"></nc-text-area-field>
 
-    </app-fieldset>
+    </nc-fieldset>
     <hr />
-    <app-fieldset size="small">
+    <nc-fieldset size="small">
 
-      <app-select-field label="Content Status"
+      <nc-select-field label="Content Status"
                         controlName="status"
                         [options]="localizationsService.contentStatuses"
-                        [disabled]="locked"></app-select-field>
-      <app-text-field label="Views"
+                        [disabled]="locked"></nc-select-field>
+      <nc-text-field label="Views"
                       controlName="views"
-                      [disabled]="true"></app-text-field>
-      <app-text-field label="Rating"
+                      [disabled]="true"></nc-text-field>
+      <nc-text-field label="Rating"
                       controlName="rate"
-                      [disabled]="true"></app-text-field>
-    </app-fieldset>
+                      [disabled]="true"></nc-text-field>
+    </nc-fieldset>
     <hr />
-    <app-fieldset size="large">
-      <app-text-area-field label="Title"
+    <nc-fieldset size="large">
+      <nc-text-area-field label="Title"
                            controlName="title"
                            size="small"
-                           [disabled]="locked"></app-text-area-field>
-      <app-text-area-field label="Description"
+                           [disabled]="locked"></nc-text-area-field>
+      <nc-text-area-field label="Description"
                            controlName="description"
                            size="medium"
-                           [disabled]="locked"></app-text-area-field>
-      <app-text-area-field label="Content (HTML)"
+                           [disabled]="locked"></nc-text-area-field>
+      <nc-text-area-field label="Content (HTML)"
                            controlName="html"
                            size="large"
-                           [disabled]="locked"></app-text-area-field>
-    </app-fieldset>
+                           [disabled]="locked"></nc-text-area-field>
+    </nc-fieldset>
 
   </form>
-</app-main-content>
+</nc-main-content>

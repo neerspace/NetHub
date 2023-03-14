@@ -1,12 +1,12 @@
-<app-main-header short="true"
+<nc-main-header short="true"
                  [pageTitle]="isCreating ? 'Create Language' : 'Edit Language'">
-  <button app-icon-button
+  <button nc-icon-button
           icon="la-undo"
           variant="secondary"
           (onclick)="backToTable()">
     Back
   </button>
-  <button app-icon-button
+  <button nc-icon-button
           *ngIf="!isCreating"
           icon="la-ban"
           variant="danger"
@@ -14,46 +14,46 @@
           (onclick)="languageService.delete(code)">
     Delete
   </button>
-  <button app-icon-button
+  <button nc-icon-button
           icon="la-save"
           variant="success"
           [disabled]="!languageService.isReady"
           (onclick)="submit()">
     {{isCreating ? 'Create' : 'Save'}}
   </button>
-</app-main-header>
+</nc-main-header>
 
-<app-main-content>
-  <form app-form-layout
+<nc-main-content>
+  <form nc-form-layout
         enctype="multipart/form-data"
         [formGroup]="languageService.form"
         [ready]="languageService.ready">
-    <app-fieldset size="small">
-      <app-text-field label="Two-letter ISO Code"
+    <nc-fieldset size="small">
+      <nc-text-field label="Two-letter ISO Code"
                       controlName="code"
                       [maxLength]="2"
                       [disabled]="!isCreating"
-                      [allowCopy]="!isCreating"></app-text-field>
-      <app-form-content *ngIf="isCreating">
+                      [allowCopy]="!isCreating"></nc-text-field>
+      <nc-form-content *ngIf="isCreating">
         <div>
           {{suggestedLanguageName ? 'Suggested language: ' + suggestedLanguageName : 'Language code is invalid'}}
         </div>
-        <button app-icon-button
+        <button nc-icon-button
                 variant="secondary"
                 [disabled]="!suggestedLanguageName"
                 (onclick)="applySuggestedLanguage()">
           Apply Suggestion
         </button>
-      </app-form-content>
+      </nc-form-content>
       <hr />
 
-      <app-text-field label="International Name"
+      <nc-text-field label="International Name"
                       controlName="name"
                       [maxLength]="50"
-                      [required]="true"></app-text-field>
-      <app-text-field label="Local Name"
+                      [required]="true"></nc-text-field>
+      <nc-text-field label="Local Name"
                       controlName="nameLocal"
-                      [maxLength]="50"></app-text-field>
+                      [maxLength]="50"></nc-text-field>
 
       <div class="form-group flag-wrapper">
         <label class="input-group-btn">
@@ -75,7 +75,7 @@
              [src]="languageService.form.get('flagUrl')!.value"
              alt="" />
       </div>
-    </app-fieldset>
+    </nc-fieldset>
   </form>
 
-</app-main-content>
+</nc-main-content>

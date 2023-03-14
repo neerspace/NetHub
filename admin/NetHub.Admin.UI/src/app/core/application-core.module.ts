@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LayoutComponentsModule } from 'neercms';
+import { LayoutComponentsModule } from 'neercms/layout';
 import { AdminLayoutComponent } from './layout/admin-layout.component';
 
 @NgModule({
@@ -10,7 +10,6 @@ import { AdminLayoutComponent } from './layout/admin-layout.component';
     // Angular Core
     CommonModule,
     RouterModule,
-
     // NeerCMS
     LayoutComponentsModule,
   ],

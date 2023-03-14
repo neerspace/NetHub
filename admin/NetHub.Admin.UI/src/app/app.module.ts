@@ -2,7 +2,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { CoreComponentsModule, LayoutComponentsModule } from 'neercms';
+import { CoreComponentsModule } from 'neercms/core';
+import { LayoutComponentsModule } from 'neercms/layout';
 import { routes } from './_routes';
 import { ApiModule } from './api/api.module';
 import { AuthorizedGuard } from './api/guards/authorized.guard';
@@ -25,12 +26,14 @@ import { PagesModule } from './pages/pages.module';
       // anchorScrolling: 'enabled',
     }),
 
+    // NeerCMS
+    CoreComponentsModule,
+    LayoutComponentsModule,
+
     // App
     ApiModule,
     ApplicationCoreModule,
-    CoreComponentsModule,
     PagesModule,
-    LayoutComponentsModule,
   ],
   providers: [AuthorizedGuard, EnsurePermissionsGuard],
   bootstrap: [AppComponent],

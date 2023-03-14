@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ArticleLocalizationModel, ContentStatus } from 'app/api';
 import { LocalizationService } from 'app/pages/administration/localizations/localization.service';
-import { IModalHandlers } from 'neercms/core/types';
-import { ModalsService } from 'neercms/services/viewport';
+import { IModalHandlers, ModalsService } from 'neercms/services/viewport';
 
 @Component({
   selector: 'app-localization-form',

@@ -1,33 +1,33 @@
-<app-main-header pageTitle="Users">
-  <button app-icon-button
+<nc-main-header pageTitle="Users">
+  <button nc-icon-button
           icon="la-sync"
           variant="primary"
           [disabled]="table.loading"
           (click)="table.loadData()">
     Refresh
   </button>
-  <!--<button app-icon-button icon="la-download" variant="primary"-->
+  <!--<button nc-icon-button icon="la-download" variant="primary"-->
   <!--        [disabled]="table.loading" (click)="downloadJson()">-->
   <!--  JSON-->
   <!--</button>-->
-  <button app-icon-button
+  <button nc-icon-button
           *ngIf="userService.lastFormId"
           icon="la-undo"
           variant="secondary"
           (click)="userService.showForm()">
     Back to Editor
   </button>
-  <button app-icon-button
+  <button nc-icon-button
           icon="la-plus"
           variant="success"
           (click)="showForm('create')">
     Create
   </button>
-</app-main-header>
+</nc-main-header>
 
-<app-main-content>
-  <app-data-table #table
+<nc-main-content>
+  <nc-data-table #table
                   defaultSorting="-registered"
                   [columns]="columns"
-                  [onFilter]="fetchFilter.bind(this)"></app-data-table>
-</app-main-content>
+                  [onFilter]="fetchFilter.bind(this)"></nc-data-table>
+</nc-main-content>

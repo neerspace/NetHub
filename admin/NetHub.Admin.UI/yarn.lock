@@ -4623,7 +4623,7 @@
   "resolved" "https://registry.npmjs.org/lru-cache/-/lru-cache-7.18.3.tgz"
   "version" "7.18.3"
 
-"luxon@^3.2.1":
+"luxon@^3.3.0":
   "integrity" "sha512-An0UCfG/rSiqtAIiBPO0Y9/zAnHUZxAMiCpTd5h2smgsj7GGmcenvrvww2cqNA8/4A5ZrD1gJpHN2mIHZQF+Mg=="
   "resolved" "https://registry.npmjs.org/luxon/-/luxon-3.3.0.tgz"
   "version" "3.3.0"
@@ -4893,16 +4893,17 @@
     "iconv-lite" "^0.6.3"
     "sax" "^1.2.4"
 
-"neercms@file:../../../neerspace-angular/dist/neercms":
-  "resolved" "file:../../../neerspace-angular/dist/neercms"
-  "version" "0.0.1"
+"neercms@^0.1.3":
+  "integrity" "sha512-0ifD4QEEXZWbD+j4swuSXfIVwCyvCtpZaAC8DJ4s3xi9l4oFcpGXPzEK8pJkqzESIFzjNfOn+6pl5YW42qPzqA=="
+  "resolved" "https://registry.npmjs.org/neercms/-/neercms-0.1.3.tgz"
+  "version" "0.1.3"
   dependencies:
     "angular-split" "^14.1.0"
     "flatpickr" "^4.6.13"
     "ng2-flatpickr" "^9.0.0"
     "ngx-mask" "^14.2.4"
     "tslib" "^2.5.0"
-    "vanillajs-datepicker" "^1.2.0"
+    "vanillajs-datepicker" "^1.3.1"
 
 "negotiator@^0.6.3", "negotiator@0.6.3":
   "integrity" "sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg=="
@@ -6836,7 +6837,7 @@
   dependencies:
     "builtins" "^5.0.0"
 
-"vanillajs-datepicker@^1.2.0":
+"vanillajs-datepicker@^1.3.1":
   "integrity" "sha512-LYYnXXYDw7oqnNbJleLIRXFUjrG2WYOQtU1A2u3FmW3rgzp7lNJ7DGF35CJ3/Dg1OHUh10D9XnJBfSfIKTyeng=="
   "resolved" "https://registry.npmjs.org/vanillajs-datepicker/-/vanillajs-datepicker-1.3.1.tgz"
   "version" "1.3.1"

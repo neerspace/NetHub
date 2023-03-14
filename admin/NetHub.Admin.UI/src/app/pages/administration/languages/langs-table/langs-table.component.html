@@ -1,44 +1,44 @@
-<app-main-header pageTitle="Languages">
-  <button app-icon-button
+<nc-main-header pageTitle="Languages">
+  <button nc-icon-button
           icon="la-sync"
           variant="primary"
           [disabled]="table.loading"
           (click)="table.loadData()">
     Refresh
   </button>
-  <!--<button app-icon-button-->
+  <!--<button nc-icon-button-->
   <!--        icon="la-download"-->
   <!--        variant="primary"-->
   <!--        [disabled]="table.loading"-->
   <!--        (click)="downloadJson()">-->
   <!--  JSON-->
   <!--</button>-->
-  <button app-icon-button
+  <button nc-icon-button
           *ngIf="languageService.lastFormId"
           icon="la-undo"
           variant="secondary"
           (click)="showForm()">
     Back to Editor
   </button>
-  <button app-icon-button
+  <button nc-icon-button
           icon="la-plus"
           variant="success"
           (click)="showForm('create')">
     Create
   </button>
-</app-main-header>
+</nc-main-header>
 
-<app-main-content>
-  <app-data-table #table
+<nc-main-content>
+  <nc-data-table #table
                   defaultSorting="code"
                   [columns]="columns"
                   [onFilter]="fetchFilter.bind(this)">
-    <app-main-header>
+    <nc-main-header>
       <a class="wiki-link"
          href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes"
          target="_blank">
         List of ISO 639-1 language codes
       </a>
-    </app-main-header>
-  </app-data-table>
-</app-main-content>
+    </nc-main-header>
+  </nc-data-table>
+</nc-main-content>

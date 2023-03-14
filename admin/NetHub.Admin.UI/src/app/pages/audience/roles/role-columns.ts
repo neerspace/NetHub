@@ -1,7 +1,6 @@
 import { RoleModel } from 'app/api';
-import { deleteButton, editButton } from 'neercms/table/buttons';
-import { formatAsText } from 'neercms/table/formatters';
 import { ColumnInfo, FilterType } from 'neercms/table/types';
+import { deleteButton, editButton, formatAsText } from 'neercms/table/utilities';
 import { RolesTableComponent } from './roles-table/roles-table.component';
 
 export function roleColumns(context: RolesTableComponent): ColumnInfo[] {

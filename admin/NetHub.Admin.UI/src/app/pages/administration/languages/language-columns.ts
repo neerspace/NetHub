@@ -1,7 +1,6 @@
 import { LanguageModel } from 'app/api';
-import { deleteButton, editButton } from 'neercms/table';
-import { formatAsText } from 'neercms/table/formatters';
 import { ColumnInfo, FilterType } from 'neercms/table/types';
+import { deleteButton, editButton, formatAsText } from 'neercms/table/utilities';
 import { LangsTableComponent } from './langs-table/langs-table.component';
 
 export function languageColumns(context: LangsTableComponent): ColumnInfo[] {

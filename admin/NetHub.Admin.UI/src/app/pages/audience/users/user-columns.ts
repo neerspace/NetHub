@@ -1,7 +1,12 @@
 import { UserModel } from 'app/api';
-import { deleteButton, editButton } from 'neercms/table/buttons';
-import { formatAsDate, formatAsText, formatCheckmark } from 'neercms/table/formatters';
 import { ColumnInfo, FilterType } from 'neercms/table/types';
+import {
+  deleteButton,
+  editButton,
+  formatAsDate,
+  formatAsText,
+  formatCheckmark,
+} from 'neercms/table/utilities';
 import { UsersTableComponent } from './users-table/users-table.component';
 
 export function userColumns(context: UsersTableComponent): ColumnInfo[] {
