@@ -16,5 +16,6 @@ public class ArticleConfiguration : IEntityTypeConfiguration<Article>
                 value => Enum.Parse<ContentStatus>(value));
         builder.Property(al => al.Title).HasMaxLength(130);
         builder.Property(al => al.Description).HasMaxLength(500);
+        builder.Property(al => al.BanReason).HasMaxLength(500);
     }
 }

@@ -34,8 +34,8 @@ namespace NetHub.Data.SqlServer.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("BanReason")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("Banned")
                         .HasColumnType("datetime2");

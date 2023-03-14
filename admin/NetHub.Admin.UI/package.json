@@ -27,7 +27,7 @@
     "angular-split": "^14.1.0",
     "bootstrap": "^5.2.3",
     "jwt-decode": "^3.1.2",
-    "neercms": "^0.1.4",
+    "neercms": "^0.1.5",
     "oidc-client": "^1.11.5",
     "run-script-os": "^1.1.6",
     "rxjs": "~7.5.7",

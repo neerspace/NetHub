@@ -8,9 +8,11 @@ public class SqlServerDbContextFactory : DbContextFactoryBase<SqlServerDbContext
     public override TextWriter? LogWriter => null;
     public override string SelectedConnectionName => "Default";
 
-    public override string SettingsPath => "../../app/NetHub.Api/appsettings.Development.json";
-    // public override string SettingsPath => "./appsettings.Development.json";
-
+    public override string[] SettingsPaths => new[]
+    {
+        "appsettings.Secrets.json", // for project
+        "../../app/NetHub.Api/appsettings.Development.json" // for migrations
+    };
 
     public override SqlServerDbContext CreateDbContext(string[] args) => new(CreateContextOptions());
 

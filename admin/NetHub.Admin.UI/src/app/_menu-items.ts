@@ -8,10 +8,11 @@ export const items: MenuItems = [
   },
   {
     text: 'Application',
-    icon: 'la-user-shield',
+    iconKind: 'lar',
+    icon: 'la-star',
     children: [
       { routerLink: '/users', text: 'Users', icon: 'la-user-friends' },
-      { routerLink: '/article-sets', text: 'Article Sets', icon: 'la-book' },
+      { routerLink: '/article-sets', text: 'Article Sets', icon: 'la-th-list' },
       { routerLink: '/articles', text: 'Articles', icon: 'la-book' },
     ],
   },
@@ -26,20 +27,7 @@ export const items: MenuItems = [
 ];
 
 export const footerItems: MenuItems = [
-  {
-    text: 'Account',
-    icon: 'la-user',
-    routerLink: '/profile/edit',
-  },
-  {
-    text: 'Settings',
-    icon: 'la-cog',
-    routerLink: '/profile/settings',
-  },
-  {
-    text: 'Log Out',
-    icon: 'la-sign-out-alt',
-    routerLink: '/login',
-    stateData: { logout: true },
-  },
+  { text: 'Account', icon: 'la-user', routerLink: '/profile/edit' },
+  { text: 'Settings', icon: 'la-cog', routerLink: '/profile/settings' },
+  { text: 'Log Out', icon: 'la-sign-out-alt', routerLink: '/login', stateData: { logout: true } },
 ];

@@ -5,16 +5,16 @@
 namespace NetHub.Data.SqlServer.Migrations
 {
     /// <inheritdoc />
-    public partial class LocalizationBanReasonField : Migration
+    public partial class AddArticleBanReason : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
                 name: "BanReason",
-                table: "ArticleLocalizations",
-                type: "nvarchar(256)",
-                maxLength: 256,
+                table: "Articles",
+                type: "nvarchar(500)",
+                maxLength: 500,
                 nullable: true);
         }
 
@@ -23,7 +23,7 @@ namespace NetHub.Data.SqlServer.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "BanReason",
-                table: "ArticleLocalizations");
+                table: "Articles");
         }
     }
 }
