@@ -9,7 +9,7 @@ public class ArticleSetVoteConfiguration : IEntityTypeConfiguration<ArticleSetVo
 {
     public void Configure(EntityTypeBuilder<ArticleSetVote> builder)
     {
-        builder.HasKey(ar => new { ar.ArticleSetId, ar.UserId });
+        builder.ToTable($"{nameof(ArticleSetVote)}s").HasKey(ar => new { ar.ArticleSetId, ar.UserId });
 
         builder.HasOne(ar => ar.User)
             .WithMany()

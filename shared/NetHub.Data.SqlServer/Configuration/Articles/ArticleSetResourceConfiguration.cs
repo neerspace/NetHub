@@ -8,7 +8,7 @@ public class ArticleSetResourceConfiguration : IEntityTypeConfiguration<ArticleS
 {
     public void Configure(EntityTypeBuilder<ArticleSetResource> builder)
     {
-        builder.HasKey(ar => ar.ResourceId);
+        builder.ToTable($"{nameof(ArticleSetResource)}s").HasKey(ar => ar.ResourceId);
 
         builder.HasOne(ar => ar.ArticleSet)
             .WithMany(a => a.Images);

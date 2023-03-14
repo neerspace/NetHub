@@ -56,10 +56,11 @@ export class TokenInterceptor implements HttpInterceptor {
       .pipe(tap(_ => this.loader.hide()))
       .pipe(
         catchError(error => {
+          // console.log('error!', error);
           if (error instanceof HttpErrorResponse) {
             if (request.url.endsWith('/jwt/refresh')) {
               this.securedStorage.jwtPayload = null;
-              // this.router.navigateByUrl('/login', { state: { redirect: this.route.url } });
+              this.router.navigateByUrl('/login', { state: { redirect: this.route.url } });
             } else if (error.status === 403) {
               this.router.navigateByUrl('/error/403', { skipLocationChange: true });
             } else if (error.status === 401) {

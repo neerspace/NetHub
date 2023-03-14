@@ -8,7 +8,7 @@ public class SavedArticleConfiguration : IEntityTypeConfiguration<SavedArticle>
 {
     public void Configure(EntityTypeBuilder<SavedArticle> builder)
     {
-        builder.HasKey(sa => new { sa.UserId, sa.ArticleId });
+        builder.ToTable($"{nameof(SavedArticle)}s").HasKey(sa => new { sa.UserId, sa.ArticleId });
 
         builder.HasOne(sa => sa.User)
             .WithMany(u => u.SavedArticles)

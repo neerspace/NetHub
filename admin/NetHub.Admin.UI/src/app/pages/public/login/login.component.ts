@@ -23,8 +23,8 @@ export class LoginComponent implements OnInit {
   ) {
     this.logout = this.router.getCurrentNavigation()?.extras.state?.['logout'] === true;
     this.form = fb.group({
-      login: new FormControl('jurilents'),
-      password: new FormControl('Test1234'),
+      login: new FormControl('admin'),
+      password: new FormControl('Admin1234'),
     });
   }
 

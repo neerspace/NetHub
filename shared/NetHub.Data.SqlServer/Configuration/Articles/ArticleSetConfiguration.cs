@@ -8,7 +8,7 @@ public class ArticleSetConfiguration : IEntityTypeConfiguration<ArticleSet>
 {
     public void Configure(EntityTypeBuilder<ArticleSet> builder)
     {
-        builder.HasKey(a => a.Id);
+        builder.ToTable($"{nameof(ArticleSet)}s").HasKey(a => a.Id);
 
         builder.HasOne(a => a.Author)
             .WithMany(au => au.ArticleSets)

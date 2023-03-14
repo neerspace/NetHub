@@ -8,6 +8,6 @@ public class ArticleSetTagConfiguration : IEntityTypeConfiguration<ArticleSetTag
 {
     public void Configure(EntityTypeBuilder<ArticleSetTag> builder)
     {
-        builder.HasKey(at => new { at.TagId, at.ArticleSetId });
+        builder.ToTable($"{nameof(ArticleSetTag)}s").HasKey(at => new { at.TagId, at.ArticleSetId });
     }
 }

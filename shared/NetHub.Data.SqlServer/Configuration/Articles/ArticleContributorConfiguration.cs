@@ -9,7 +9,7 @@ public class ArticleContributorConfiguration : IEntityTypeConfiguration<ArticleC
 {
     public void Configure(EntityTypeBuilder<ArticleContributor> builder)
     {
-        builder.HasKey(aa => aa.Id);
+        builder.ToTable($"{nameof(ArticleContributor)}s").HasKey(aa => aa.Id);
 
         builder.HasOne(aa => aa.Article)
             .WithMany(al => al.Contributors)

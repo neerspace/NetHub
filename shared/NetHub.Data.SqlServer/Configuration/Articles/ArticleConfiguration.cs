@@ -9,7 +9,7 @@ public class ArticleConfiguration : IEntityTypeConfiguration<Article>
 {
     public void Configure(EntityTypeBuilder<Article> builder)
     {
-        builder.HasKey(al => al.Id);
+        builder.ToTable($"{nameof(Article)}s").HasKey(al => al.Id);
 
         builder.Property(al => al.Status)
             .HasConversion(s => s.ToString(),
