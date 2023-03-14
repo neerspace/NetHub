@@ -1,4 +1,7 @@
+using System.Text.Json.Serialization;
+using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Enums;
+using NetHub.Shared.Models.ArticleSets;
 using Sieve.Attributes;
 
 namespace NetHub.Shared.Models.Articles;
@@ -36,4 +39,7 @@ public sealed class ArticleModel
     public bool IsSaved { get; set; }
     public DateTimeOffset? SavedDate { get; set; }
     public Vote? Vote { get; set; }
+
+    [JsonIgnore]
+    public ArticleSetModel ArticleSet { get; set; }
 }

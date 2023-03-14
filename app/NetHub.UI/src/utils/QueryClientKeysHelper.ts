@@ -5,6 +5,7 @@ export class QueryClientKeysHelper {
     articleSets: 'articleSets',
     article: 'article',
     savedArticles: 'savedArticles',
+    articlesByYou: 'articlesByYou',
     contributors: 'contributors',
     contributor: 'contributor',
     authorization: 'authorization',
@@ -39,4 +40,5 @@ export class QueryClientKeysHelper {
   public static Languages = () => [this.Keys.languages];
 
   public static SavedArticles = () => [this.Keys.savedArticles];
+  public static ArticlesByYou = () => [this.Keys.articlesByYou];
 }

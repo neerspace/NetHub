@@ -37,6 +37,7 @@ const ArticleBody = () => {
   async function afterCounter() {
     await queryClient.invalidateQueries(QueryClientKeysHelper.Keys.savedArticles);
     await queryClient.invalidateQueries(QueryClientKeysHelper.Keys.articles);
+    await queryClient.invalidateQueries(QueryClientKeysHelper.ArticlesByYou());
   }
 
   const contributors = useQuery(

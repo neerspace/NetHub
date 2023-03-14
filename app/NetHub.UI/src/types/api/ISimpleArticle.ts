@@ -2,8 +2,8 @@
 import { DateTime } from "luxon";
 
 export interface ISimpleArticle {
-  articleSetId: number
   id: number;
+  articleSetId: number
   languageCode: string;
   title: string;
   description: string;

@@ -49,47 +49,47 @@ public static class ArticlesExtensions
         var savedDbSet = database.Set<SavedArticle>();
 
         var result = from l in articlesDbSet
-                         //Join votes
-                     join _v in votesDbSet on
-                         new { l.ArticleSetId, UserId = (long)userId }
-                         equals
-                         new {_v.ArticleSetId, _v.UserId }
-                         into votes
-                     from v in votes.DefaultIfEmpty()
-                         //Join savings
-                     join _s in savedDbSet on
-                         new { ArticleId = l.Id, UserId = (long)userId }
-                         equals
-                         new { _s.ArticleId, _s.UserId }
-                         into saved
-                     from s in saved.DefaultIfEmpty()
-                     select new ArticleModel
-                     {
-                         Id = l.Id,
-                         ArticleSetId = l.ArticleSetId,
-                         LanguageCode = l.LanguageCode,
-                         Title = l.Title,
-                         Contributors = loadContributors
-                             ? l.Contributors.Select(c => new ArticleContributorModel
-                             {
-                                 Role = c.Role,
-                                 UserName = c.User!.UserName,
-                                 ProfilePhotoUrl = c.User!.ProfilePhotoUrl
-                             }).ToArray()
-                             : new ArticleContributorModel[] { },
-                         Description = l.Description,
-                         Html = loadBody ? l.Html : string.Empty,
-                         Views = l.Views,
-                         Status = l.Status,
-                         Created = l.Created,
-                         Updated = l.Updated,
-                         Published = l.Published,
-                         Banned = l.Banned,
-                         Vote = v.Vote,
-                         Rate = l.ArticleSet!.Rate,
-                         IsSaved = s != null,
-                         SavedDate = s != null ? s.SavedDate : null
-                     };
+            //Join votes
+            join _v in votesDbSet on
+                new {l.ArticleSetId, UserId = (long)userId}
+                equals
+                new {_v.ArticleSetId, _v.UserId}
+                into votes
+            from v in votes.DefaultIfEmpty()
+            //Join savings
+            join _s in savedDbSet on
+                new {ArticleId = l.Id, UserId = (long)userId}
+                equals
+                new {_s.ArticleId, _s.UserId}
+                into saved
+            from s in saved.DefaultIfEmpty()
+            select new ArticleModel
+            {
+                Id = l.Id,
+                ArticleSetId = l.ArticleSetId,
+                LanguageCode = l.LanguageCode,
+                Title = l.Title,
+                Contributors = loadContributors
+                    ? l.Contributors.Select(c => new ArticleContributorModel
+                    {
+                        Role = c.Role,
+                        UserName = c.User!.UserName,
+                        ProfilePhotoUrl = c.User!.ProfilePhotoUrl
+                    }).ToArray()
+                    : new ArticleContributorModel[] { },
+                Description = l.Description,
+                Html = loadBody ? l.Html : string.Empty,
+                Views = l.Views,
+                Status = l.Status,
+                Created = l.Created,
+                Updated = l.Updated,
+                Published = l.Published,
+                Banned = l.Banned,
+                Vote = v.Vote,
+                Rate = l.ArticleSet!.Rate,
+                IsSaved = s != null,
+                SavedDate = s != null ? s.SavedDate : null
+            };
 
         return result;
     }

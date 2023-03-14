@@ -10,6 +10,8 @@ import './transitions.css';
 import { _myArticlesApi } from "../../../api";
 import { ISimpleArticle } from "../../../types/api/ISimpleArticle";
 import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
+import firebase from "firebase/compat";
+import Query = firebase.firestore.Query;
 
 const SavedArticles = () => {
   const { savedArticles, setSavedArticles } = useSavedArticlesContext();
@@ -38,6 +40,7 @@ const SavedArticles = () => {
       await queryClient.invalidateQueries(QueryClientKeysHelper.Keys.articles);
       await queryClient.invalidateQueries(QueryClientKeysHelper.ArticleSet(article.id));
       await queryClient.invalidateQueries(QueryClientKeysHelper.Article(article.id, article.languageCode));
+      await queryClient.invalidateQueries(QueryClientKeysHelper.ArticlesByYou());
     };
 
   return !savedArticles.isSuccess ? (

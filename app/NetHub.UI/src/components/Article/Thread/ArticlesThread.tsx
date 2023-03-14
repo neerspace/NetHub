@@ -33,6 +33,7 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles, byUser
     await queryClient.invalidateQueries(QueryClientKeysHelper.ArticleSet(item.id));
     await queryClient.invalidateQueries(QueryClientKeysHelper.Article(item.id, item.languageCode));
     await queryClient.invalidateQueries(QueryClientKeysHelper.SavedArticles());
+    await queryClient.invalidateQueries(QueryClientKeysHelper.ArticlesByYou());
   }
 
   return (
