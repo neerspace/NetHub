@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using NeerCore.Data.Abstractions;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Enums;
@@ -6,7 +5,6 @@ using Sieve.Attributes;
 
 namespace NetHub.Data.SqlServer.Entities.Articles;
 
-[Table($"{nameof(Article)}s")]
 public record Article : IEntity
 {
     [Sieve(CanFilter = true, CanSort = true)]

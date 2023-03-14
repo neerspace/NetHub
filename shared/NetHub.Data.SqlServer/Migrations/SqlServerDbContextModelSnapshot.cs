@@ -85,7 +85,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("LastContributorId");
 
-                    b.ToTable("Articles");
+                    b.ToTable("Articles", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Articles.ArticleContributor", b =>
@@ -112,7 +112,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ArticleContributors");
+                    b.ToTable("ArticleContributors", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Articles.ArticleSet", b =>
@@ -139,7 +139,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("ArticleSets");
+                    b.ToTable("ArticleSets", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Articles.ArticleSetResource", b =>
@@ -154,7 +154,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("ArticleSetId");
 
-                    b.ToTable("ArticleSetResources");
+                    b.ToTable("ArticleSetResources", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Articles.ArticleSetTag", b =>
@@ -169,7 +169,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("ArticleSetId");
 
-                    b.ToTable("ArticleSetTags");
+                    b.ToTable("ArticleSetTags", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Articles.ArticleSetVote", b =>
@@ -188,7 +188,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ArticleSetVotes");
+                    b.ToTable("ArticleSetVotes", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Identity.AppDevice", b =>
@@ -576,7 +576,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Resource");
+                    b.ToTable("Resource", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.SavedArticle", b =>
@@ -594,7 +594,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.ToTable("SavedArticles");
+                    b.ToTable("SavedArticles", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Tag", b =>
@@ -613,7 +613,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Articles.Article", b =>
@@ -762,7 +762,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .WithMany()
                         .HasForeignKey("PhotoId");
 
-                    b.OwnsOne("NetHub.Data.SqlServer.Entities.UsernameChange", "UsernameChanges", b1 =>
+                    b.OwnsOne("NetHub.Data.SqlServer.Entities.Identity.AppUser.UsernameChanges#NetHub.Data.SqlServer.Entities.UsernameChange", "UsernameChanges", b1 =>
                         {
                             b1.Property<long>("AppUserId")
                                 .HasColumnType("bigint");
@@ -775,7 +775,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                             b1.HasKey("AppUserId");
 
-                            b1.ToTable("AppUsers");
+                            b1.ToTable("AppUsers", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("AppUserId");

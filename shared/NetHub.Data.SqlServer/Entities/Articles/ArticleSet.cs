@@ -1,10 +1,8 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using NeerCore.Data.Abstractions;
 using NetHub.Data.SqlServer.Entities.Identity;
 
 namespace NetHub.Data.SqlServer.Entities.Articles;
 
-[Table($"{nameof(ArticleSet)}s")]
 public class ArticleSet : IEntity
 {
     public long Id { get; set; }

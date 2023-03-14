@@ -1,9 +1,7 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using NeerCore.Data.Abstractions;
 
 namespace NetHub.Data.SqlServer.Entities.Articles;
 
-[Table($"{nameof(ArticleSetTag)}s")]
 public class ArticleSetTag : IEntity
 {
     #region Tag

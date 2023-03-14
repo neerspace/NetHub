@@ -1,10 +1,8 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Data.SqlServer.Enums;
 
 namespace NetHub.Data.SqlServer.Entities.Articles;
 
-[Table($"{nameof(ArticleSetVote)}s")]
 public record ArticleSetVote
 {
     #region ArticleSet

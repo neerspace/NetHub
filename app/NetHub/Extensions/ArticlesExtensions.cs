@@ -12,7 +12,8 @@ public static class ArticlesExtensions
         this ISqlServerDatabase database, long? userId = null, bool loadBody = false, bool loadContributors = false)
     {
         IQueryable<Article> articlesDbSet = database
-            .Set<Article>();
+            .Set<Article>()
+            .Include(a => a.ArticleSet);
 
         if (loadContributors)
             articlesDbSet = articlesDbSet
