@@ -1,33 +1,60 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using NeerCore.Data.Abstractions;
 using NetHub.Data.SqlServer.Entities.Identity;
+using NetHub.Data.SqlServer.Enums;
+using Sieve.Attributes;
 
 namespace NetHub.Data.SqlServer.Entities.Articles;
 
 [Table($"{nameof(Article)}s")]
-public class Article : IEntity
+public record Article : IEntity
 {
+    [Sieve(CanFilter = true, CanSort = true)]
     public long Id { get; set; }
 
-    public string Name { get; set; } = default!;
+    #region ArticleSet
 
-    public string? OriginalArticleLink { get; set; }
-    public int Rate { get; set; } = 0;
+    [Sieve(CanFilter = true, CanSort = true)]
+    public long ArticleSetId { get; set; }
 
-    public DateTimeOffset Created { get; set; } = DateTimeOffset.UtcNow;
-    public DateTimeOffset? Updated { get; set; }
-    public DateTimeOffset? Published { get; set; }
-
-    public DateTimeOffset? Banned { get; set; }
-
-    #region Author
-
-    public long AuthorId { get; set; }
-    public virtual AppUser? Author { get; set; }
+    public virtual ArticleSet? ArticleSet { get; set; }
 
     #endregion
 
-    public virtual ICollection<ArticleLocalization>? Localizations { get; set; }
-    public virtual ICollection<ArticleResource>? Images { get; set; }
-    public virtual ICollection<ArticleTag>? Tags { get; set; }
+    #region Language
+
+    [Sieve(CanFilter = true, CanSort = true)]
+    public string LanguageCode { get; set; } = default!;
+
+    public virtual Language? Language { get; set; } = default!;
+
+    #endregion
+
+    public string Title { get; set; } = default!;
+    public string Description { get; set; } = default!;
+    public string Html { get; set; } = default!;
+
+    [Sieve(CanSort = true)]
+    public int Views { get; set; } = 0;
+
+    [Sieve(CanFilter = true)]
+    public ContentStatus Status { get; set; }
+
+    [Sieve(CanSort = true)]
+    public DateTimeOffset Created { get; set; } = DateTimeOffset.UtcNow;
+
+    [Sieve(CanSort = true)]
+    public DateTimeOffset? Updated { get; set; }
+
+    [Sieve(CanSort = true)]
+    public DateTimeOffset? Published { get; set; }
+
+    [Sieve(CanSort = true)]
+    public DateTimeOffset? Banned { get; set; }
+
+    public long? LastContributorId { get; set; }
+    public AppUser? LastContributor { get; set; }
+
+    [Sieve(CanFilter = true)]
+    public virtual ICollection<ArticleContributor> Contributors { get; set; } = default!;
 }

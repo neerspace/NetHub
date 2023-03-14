@@ -19,6 +19,8 @@ public static class ServiceCollectionExtensions
             options.DocumentFilter<ResponsesFilter>();
             // Operation Filters
             options.OperationFilter<FormContentTypeSchemaOperationFilter>();
+            // Schema Filters
+            // options.SchemaFilter<MultiSourceFilter>();
             options.EnableAnnotations();
             options.SupportNonNullableReferenceTypes();
         });

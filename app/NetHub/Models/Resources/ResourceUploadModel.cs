@@ -10,7 +10,7 @@ public sealed class ResourceUploadModel
 public sealed class ResourceUploadItemModel
 {
     public required IFormFile File { get; set; }
-public required string Link { get; set; }
+    public required string Link { get; set; }
 }
 
 public enum ResourceUploadTarget

@@ -11,7 +11,7 @@ import ErrorBlock from "../../../components/Layout/ErrorBlock";
 import {ErrorsHandler} from "../../../utils/ErrorsHandler";
 
 const ArticleSpace: Page = () => {
-  const {articleAccessor, localizationAccessor} = useArticleContext();
+  const {articleSetAccessor, articleAccessor} = useArticleContext();
   const {id, code} = useParams();
 
   const config = {
@@ -23,15 +23,15 @@ const ArticleSpace: Page = () => {
     }
   }
 
-  const isSuccess = articleAccessor.isSuccess && localizationAccessor.isSuccess;
-  const isLocalizationError = localizationAccessor.isError;
+  const isSuccess = articleSetAccessor.isSuccess && articleAccessor.isSuccess;
+  const isArticleError = articleAccessor.isError;
 
   return <Layout Config={config}>
     <Box width={'100%'} display={'flex'} flexDirection={'column'}>
       {
-        isLocalizationError ?
+        isArticleError ?
           <ErrorBlock>
-            {ErrorsHandler.localization(localizationAccessor.error.statusCode)}
+            {ErrorsHandler.article(articleAccessor.error.statusCode)}
           </ErrorBlock> :
           !isSuccess
             ? <ArticleBodySkeleton/>
@@ -39,7 +39,7 @@ const ArticleSpace: Page = () => {
       }
       {<CommentsWidget display={isSuccess} deps={[id, code]}/>}
     </Box>
-    {isLocalizationError ? <></> :
+    {isArticleError ? <></> :
       !isSuccess
         ? <Skeleton height={200}/>
         : <ArticleInfo/>}

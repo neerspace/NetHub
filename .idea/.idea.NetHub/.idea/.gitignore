@@ -11,6 +11,7 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+/dataSources.xml
 
 csv-plugin.xml
 csv-editor.xml

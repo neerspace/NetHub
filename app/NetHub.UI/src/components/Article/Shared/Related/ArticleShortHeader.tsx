@@ -1,30 +1,30 @@
 import React, { FC, useCallback } from 'react';
 import cl from "../ArticleShort.module.sass";
 import { Text, useColorModeValue } from "@chakra-ui/react";
-import { ISimpleLocalization } from "../../../../types/api/ISimpleLocalization";
+import { ISimpleArticle } from "../../../../types/api/ISimpleArticle";
 
 interface IArticleShortHeaderProps {
-  localization: ISimpleLocalization,
+  article: ISimpleArticle,
   time?: { before?: string, show?: 'default' | 'saved' }
 }
 
 
-const ArticleShortHeader: FC<IArticleShortHeaderProps> = ({localization, time}) => {
+const ArticleShortHeader: FC<IArticleShortHeaderProps> = ({article, time}) => {
 
   const getTimeAgo = useCallback(() => {
 
     if ((time?.show ?? 'default') === 'saved')
-      return localization.savedDate!.toRelativeCalendar();
+      return article.savedDate!.toRelativeCalendar();
 
-    switch (localization.status) {
+    switch (article.status) {
       case 'Published':
-        return localization.published?.toRelativeCalendar();
+        return article.published?.toRelativeCalendar();
       case 'Banned':
-        return localization.banned!.toRelativeCalendar();
+        return article.banned!.toRelativeCalendar();
       case 'Draft' || 'Pending':
-        return localization.created.toRelativeCalendar();
+        return article.created.toRelativeCalendar();
     }
-  }, [localization, time])
+  }, [article, time])
 
   return (
     <div className={cl.titleTime}>
@@ -33,7 +33,7 @@ const ArticleShortHeader: FC<IArticleShortHeaderProps> = ({localization, time}) 
         className={cl.publicTitle}
         color={useColorModeValue('#242D35', '#EFEFEF')}
       >
-        {localization.title}
+        {article.title}
       </Text>
       <Text
         as={'p'}

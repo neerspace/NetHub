@@ -18,7 +18,9 @@ const Currency = () => {
   const blockColor = useColorModeValue('whiteLight', '#333439')
   const {colorMode} = useColorMode();
   const [date, setDate] = useState<DateTime>(DateTime.now());
+
   const updatedColor = useColorModeValue('#D4D4D8', 'whiteDark');
+  const updatedDateFormatted = `${date.hour > 9 ? date.hour: '0'+date.hour.toString()}:${date.minute > 9 ? date.minute : '0'+date.minute.toString()}`;
 
   if (currencies.isLoading) return <Skeleton height='270px'/>;
 
@@ -31,11 +33,11 @@ const Currency = () => {
         <hr className={cl.line}/>
         <CryptoRate rate={currencies.data!.crypto!}/>
         <Box display={'flex'}>
-          <Text as={'p'} fontSize={14} color={updatedColor}>оновлено: </Text>
+          <Text as={'p'} fontSize={14} color={updatedColor}>оновлено: </Text>
           <Text
             fontSize={14} color={updatedColor}
             as={'p'} fontWeight={'bold'}
-          >{date.hour > 9 ? date.hour : `0${date.hour}`}:{date.minute > 9 ? date.minute : `0${date.minute}`}</Text>
+          >{updatedDateFormatted}</Text>
         </Box>
       </FilledDiv>
   );

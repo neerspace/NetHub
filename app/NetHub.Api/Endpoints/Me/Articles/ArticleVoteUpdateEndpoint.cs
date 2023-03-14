@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Enums;
-using NetHub.Models.Articles.Rating;
+using NetHub.Models.ArticleSets.Rating;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Api.Swagger;
@@ -21,25 +21,25 @@ public sealed class ArticleVoteUpdateEndpoint : ActionEndpoint<ArticleVoteUpdate
     {
         var userId = UserProvider.UserId;
 
-        var actualVote = await Database.Set<ArticleVote>()
-            .Include(av => av.Article)
-            .Where(av => av.ArticleId == voteUpdateRequest.Id && av.UserId == userId)
+        var actualVote = await Database.Set<ArticleSetVote>()
+            .Include(av => av.ArticleSet)
+            .Where(av => av.ArticleSetId == voteUpdateRequest.Id && av.UserId == userId)
             .FirstOrDefaultAsync(ct);
 
-        var article = await Database.Set<Article>().FirstOr404Async(a => a.Id == voteUpdateRequest.Id, ct);
+        var article = await Database.Set<ArticleSet>().FirstOr404Async(a => a.Id == voteUpdateRequest.Id, ct);
 
         if (actualVote is null)
         {
-            var voteEntity = new ArticleVote
+            var voteEntity = new ArticleSetVote
             {
-                ArticleId = article.Id,
+                ArticleSetId = article.Id,
                 UserId = userId,
                 Vote = voteUpdateRequest.Vote
             };
 
             article.Rate += voteUpdateRequest.Vote == Vote.Up ? 1 : -1;
 
-            Database.Set<ArticleVote>().Add(voteEntity);
+            Database.Set<ArticleSetVote>().Add(voteEntity);
             await Database.SaveChangesAsync(ct);
             return;
         }
@@ -51,7 +51,7 @@ public sealed class ArticleVoteUpdateEndpoint : ActionEndpoint<ArticleVoteUpdate
                 if (actualVote.Vote == Vote.Up)
                 {
                     article.Rate -= 1;
-                    Database.Set<ArticleVote>().Remove(actualVote);
+                    Database.Set<ArticleSetVote>().Remove(actualVote);
                     break;
                 }
 
@@ -65,7 +65,7 @@ public sealed class ArticleVoteUpdateEndpoint : ActionEndpoint<ArticleVoteUpdate
                 if (actualVote.Vote == Vote.Down)
                 {
                     article.Rate += 1;
-                    Database.Set<ArticleVote>().Remove(actualVote);
+                    Database.Set<ArticleSetVote>().Remove(actualVote);
                     break;
                 }
 

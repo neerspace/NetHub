@@ -28,7 +28,7 @@ public class MeDashboardEndpoint : ResultEndpoint<DashboardResult>
         var articlesCount = await _database.Set<ArticleContributor>()
             .Where(ac => ac.UserId == userId)
             .CountAsync(ct);
-        var articlesViews = await _database.Set<ArticleLocalization>()
+        var articlesViews = await _database.Set<Article>()
             .Include(ar => ar.Contributors)
             .Where(ar => ar.Contributors.FirstOrDefault(c => c.UserId == userId) != null
                 && ar.Status == ContentStatus.Published)

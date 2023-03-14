@@ -220,7 +220,7 @@ const SvgSelector: FC<ISvgSelectorProps> = (props) => {
         </defs>
       </svg>
 
-    case "ua":
+    case "uk":
       return <svg
         width="20" height="13" viewBox="0 0 20 13" fill="none" xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -480,6 +480,19 @@ const SvgSelector: FC<ISvgSelectorProps> = (props) => {
           d="M13 21H9V9H13V11C13.8526 9.91525 15.1456 9.26857 16.525 9.237C19.0056 9.25077 21.0072 11.2694 21 13.75V21H17V14.25C16.84 13.1326 15.8818 12.3036 14.753 12.306C14.2593 12.3216 13.7932 12.5378 13.4624 12.9046C13.1316 13.2715 12.9646 13.7573 13 14.25V21ZM7 21H3V9H7V21ZM5 7C3.89543 7 3 6.10457 3 5C3 3.89543 3.89543 3 5 3C6.10457 3 7 3.89543 7 5C7 5.53043 6.78929 6.03914 6.41421 6.41421C6.03914 6.78929 5.53043 7 5 7Z"
         />
       </svg>
+
+    case "ByYouTitle":
+      return <svg className={className ? className : ''} width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clipPath="url(#clip0_1177_4748)">
+          <path d="M23.0125 7.2501L21.5 5.7376C20.525 4.7626 18.9375 4.7626 17.9625 5.7376L14.6125 9.0876L3.75 19.9501V25.0001H8.8L19.725 14.0751L23.0125 10.7876C24 9.8126 24 8.2251 23.0125 7.2501ZM7.7625 22.5001H6.25V20.9876L17.075 10.1626L18.5875 11.6751L7.7625 22.5001ZM13.75 25.0001L18.75 20.0001H26.25V25.0001H13.75Z" fill="#323232"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_1177_4748">
+            <rect width="30" height="30" fill="red"/>
+          </clipPath>
+        </defs>
+      </svg>
+
 
 
     default:

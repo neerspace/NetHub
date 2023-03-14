@@ -10,10 +10,10 @@ import { Editor as TinyEditor } from 'tinymce';
 import classes from './ArticleCreating.module.sass';
 import { tinyConfig } from "../../../utils/constants";
 import { Box, FormControl, useColorModeValue } from "@chakra-ui/react";
-import { _articlesApi } from "../../../api";
-import { ArticleCreateRequest } from "../../../api/_api";
+import { _articlesSetsApi } from "../../../api";
+import { ArticleSetCreateRequest } from "../../../api/_api";
 import {
-  IArticleLocalizationCreateExtendedRequest
+  IArticleCreateExtendedRequest
 } from "../../../pages/Articles/Create/ArticleCreatingSpace.Provider";
 
 interface ITinyInputProps {
@@ -25,46 +25,52 @@ interface ITinyInputProps {
 }
 
 interface ITinyInputHandle {
-  saveImages: (article: IArticleLocalizationCreateExtendedRequest, id?: string) => Promise<string>;
+
+  createArticleSet: (request: IArticleCreateExtendedRequest) => Promise<number>;
+  uploadImages: (id: number) => Promise<void>;
+  getHtmlBody: () => string;
 }
 
 const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
   ({data, setData, editorTitle, isInvalid, errorMessage}, ref) => {
     const editorRef = useRef<TinyEditor | null>(null);
 
-    const saveImageCallback = useCallback(async (article: IArticleLocalizationCreateExtendedRequest, id?: string) => {
+    const createArticleSet = async (article: IArticleCreateExtendedRequest) => {
+      const request = new ArticleSetCreateRequest({
+        tags: article.tags,
+        originalArticleLink: article.originalLink ? article.originalLink : null
+      });
 
-      if (!id) {
-        const request = new ArticleCreateRequest({
-          name: article.title,
-          tags: article.tags,
-          originalArticleLink: article.originalLink
-        });
-
-        id = (await _articlesApi.create(request)).id.toString();
-      }
-
-      sessionStorage.setItem('articleId', id!);
-      await editorRef.current!.uploadImages();
-      sessionStorage.removeItem('articleId');
-
-      const newData = editorRef.current!.getContent();
-      setData(newData);
+      const id = (await _articlesSetsApi.create(request)).id;
 
       return id;
+    }
+
+    const saveImageCallback = useCallback(async (id: number) => {
+      sessionStorage.setItem('articleSetId', id.toString());
+      await editorRef.current!.uploadImages();
+      sessionStorage.removeItem('articleSetId');
     }, []);
 
+    const getHtmlBody = () => editorRef.current?.getContent();
+
     useImperativeHandle(ref, () => ({
-      async saveImages(article: IArticleLocalizationCreateExtendedRequest, id?: string) {
-        return await saveImageCallback(article, id)
+      async createArticleSet(article: IArticleCreateExtendedRequest) {
+        return await createArticleSet(article);
+      },
+      async uploadImages(id: number) {
+        await saveImageCallback(id);
+      },
+      getHtmlBody() {
+        return getHtmlBody();
       }
-    }), [saveImageCallback]);
+    }), [saveImageCallback])
 
 
     const saveImages: (blobInfo: any) => Promise<string> =
       async (blobInfo: any) => {
-        const id = sessionStorage.getItem('articleId');
-        const {location} = await _articlesApi.uploadImage(+id!, {
+        const id = sessionStorage.getItem('articleSetId');
+        const {location} = await _articlesSetsApi.uploadImage(+id!, {
           data: blobInfo.blob(),
           fileName: 'File'
         });

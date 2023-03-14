@@ -15,9 +15,9 @@ namespace NetHub.Api.Endpoints.Users;
 public sealed class UserSearchEndpoint : Endpoint<UserSearchRequest, PrivateUserResult[]>
 {
     [HttpGet("users/search"), ClientSide(ActionName = "usersInfo")]
-    public override Task<PrivateUserResult[]> HandleAsync(UserSearchRequest request, CancellationToken ct)
+    public override async Task<PrivateUserResult[]> HandleAsync(UserSearchRequest request, CancellationToken ct)
     {
-        var result = Database.Set<AppUser>()
+        var result = await Database.Set<AppUser>()
             .Where(u => request.Usernames.Select(u => u.ToUpper()).Contains(u.NormalizedUserName))
             .ProjectToType<PrivateUserResult>()
             .ToArrayAsync(ct);

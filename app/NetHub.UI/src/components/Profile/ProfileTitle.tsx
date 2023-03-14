@@ -1,8 +1,8 @@
 import React from 'react';
 import {Skeleton, Text} from "@chakra-ui/react";
-import {useAppStore} from "../../store/config";
 import {useProfileContext} from "../../pages/Profile/ProfileSpace.Provider";
 import {useParams} from "react-router-dom";
+import { useAppStore } from "../../store/store";
 
 const ProfileTitle = () => {
   const {username} = useParams();

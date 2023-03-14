@@ -24,19 +24,19 @@ public static class HtmlUtility
 
     public static async Task CheckLinks(ISqlServerDatabase database, long articleId, string html)
     {
-        var articleResources = await database.Set<ArticleResource>()
-            .Where(ar => ar.ArticleId == articleId)
+        var articleResources = await database.Set<ArticleSetResource>()
+            .Where(ar => ar.ArticleSetId == articleId)
             .ToArrayAsync();
 
-        var localizationsHtml = await database.Set<ArticleLocalization>()
-            .Where(al => al.ArticleId == articleId)
+        var articleHtml = await database.Set<Article>()
+            .Where(al => al.ArticleSetId == articleId)
             .Select(al => al.Html)
             .ToArrayAsync();
 
         var htmlLinks = new List<string>();
 
-        foreach (var lHtml in localizationsHtml)
-            htmlLinks.AddRange(FetchLinksFromSource(lHtml));
+        foreach (string aHtml in articleHtml)
+            htmlLinks.AddRange(FetchLinksFromSource(aHtml));
         htmlLinks.AddRange(FetchLinksFromSource(html));
 
         var removeResources = articleResources

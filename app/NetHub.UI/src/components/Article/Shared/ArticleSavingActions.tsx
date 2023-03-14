@@ -1,10 +1,10 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import cl from "./ArticleSavingActions.module.sass";
 import IconButton from "../../UI/IconButton/IconButton";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
-import {useQueryClient} from "react-query";
+import { useQueryClient } from "react-query";
 import Actions from "../../UI/Action/Actions";
-import {QueryClientConstants} from "../../../constants/queryClientConstants";
+import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
 
 interface ISavingActionsProps {
   isSavedDefault: boolean,
@@ -20,7 +20,7 @@ const ArticleSavingActions: FC<ISavingActionsProps> = ({isSavedDefault, onSave, 
   async function handleOnSave(e: React.MouseEvent) {
     e.stopPropagation()
     await onSave();
-    await queryClient.invalidateQueries(QueryClientConstants.articles);
+    await queryClient.invalidateQueries(QueryClientKeysHelper.Keys.articles);
   }
 
   function copyToClipboard(e: React.MouseEvent) {

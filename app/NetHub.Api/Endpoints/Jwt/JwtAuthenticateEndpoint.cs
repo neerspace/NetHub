@@ -58,7 +58,7 @@ public class JwtAuthenticateEndpoint : Endpoint<JwtAuthenticateRequest, JwtResul
 
         var user = new AppUser
         {
-            UserName = request.Username,
+            UserName = Truncate(request.Username.ToLower()),
             FirstName = request.FirstName!,
             LastName = request.LastName,
             MiddleName = request.MiddleName,
@@ -98,4 +98,6 @@ public class JwtAuthenticateEndpoint : Endpoint<JwtAuthenticateRequest, JwtResul
             .SingleOrDefaultAsync(info =>
                 info.ProviderKey == key && info.LoginProvider == requestLoginProvider, ct);
     }
+
+    private string Truncate(string username) => username.Length > 12 ? username[..12] : username;
 }

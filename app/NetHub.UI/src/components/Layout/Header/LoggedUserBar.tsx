@@ -3,8 +3,8 @@ import { Avatar, Text, useColorModeValue } from '@chakra-ui/react';
 import classes from './Header.module.sass';
 import { createImageFromInitials } from '../../../utils/logoGenerator';
 import { useNavigate } from 'react-router-dom';
-import { useAppStore } from '../../../store/config';
 import { _jwtApi } from "../../../api";
+import { useAppStore } from '../../../store/store';
 
 const LoggedUserBar: FC = () => {
     const {user, logout} = useAppStore();

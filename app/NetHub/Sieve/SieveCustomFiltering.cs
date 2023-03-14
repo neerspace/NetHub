@@ -1,14 +1,13 @@
 using NeerCore.DependencyInjection;
 using NetHub.Data.SqlServer.Entities.Articles;
-using NetHub.Shared.Models.Localizations;
 using Sieve.Services;
 
-namespace NetHub.Data.SqlServer.Sieve;
+namespace NetHub.Sieve;
 
 [Service(Lifetime = Lifetime.Scoped)]
 internal sealed class SieveCustomFiltering : ISieveCustomFilterMethods
 {
-    public IQueryable<ArticleLocalization> InContributors(IQueryable<ArticleLocalization> source, string op, string[] values)
+    public IQueryable<Article> InContributors(IQueryable<Article> source, string op, string[] values)
     {
         var username = values[0];
 

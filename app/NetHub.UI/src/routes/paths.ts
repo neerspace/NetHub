@@ -1,5 +1,5 @@
 import ArticlesThreadSpace from '../pages/Articles/Thread/ArticlesThreadSpace';
-import {Page} from "../components/Layout/Layout";
+import { Page } from "../components/Layout/Layout";
 import ArticleSpace from "../pages/Articles/One/ArticleSpace";
 import ArticleCreatingSpace from '../pages/Articles/Create/ArticleCreatingSpace';
 import SavedSpace from "../pages/Saved/SavedSpace";
@@ -8,6 +8,7 @@ import ContributorArticlesSpace from "../pages/Articles/Contributor/ContributorA
 import TestSpace from "../pages/TestSpace";
 import AuthSpace from "../pages/Auth/AuthSpace";
 import TeamSpace from "../pages/Team/TeamSpace";
+import ByYouSpace from "../pages/ByYou/ByYouSpace";
 
 interface IPath {
   path: string,
@@ -44,6 +45,11 @@ export const paths: IPath[] = [
   {
     path: '/saved',
     Component: SavedSpace,
+    requireAuthorization: true
+  },
+  {
+    path: '/by-you',
+    Component: ByYouSpace,
     requireAuthorization: true
   },
   {
