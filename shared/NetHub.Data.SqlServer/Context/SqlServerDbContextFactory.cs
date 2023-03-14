@@ -11,7 +11,7 @@ public class SqlServerDbContextFactory : DbContextFactoryBase<SqlServerDbContext
     public override string[] SettingsPaths => new[]
     {
         "appsettings.Secrets.json", // for project
-        "../../app/NetHub.Api/appsettings.Development.json" // for migrations
+        "../../app/NetHub.Api/appsettings.Secrets.json" // relative path for migrations
     };
 
     public override SqlServerDbContext CreateDbContext(string[] args) => new(CreateContextOptions());
