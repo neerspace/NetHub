@@ -52,6 +52,8 @@ public record Article : IEntity
     [Sieve(CanSort = true)]
     public DateTimeOffset? Banned { get; set; }
 
+    public string? BanReason { get; set; }
+
     public long? LastContributorId { get; set; }
     public AppUser? LastContributor { get; set; }
 

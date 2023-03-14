@@ -1,4 +1,3 @@
-using HybridModelBinding;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -24,10 +23,6 @@ public static class DependencyInjection
             .AddMvcOptions(options =>
             {
                 options.Filters.Add<SuccessStatusCodesFilter>();
-            })
-            .AddHybridModelBinder(options =>
-            {
-                options.FallbackBindingOrder = new[] {Source.Route, Source.Body, Source.QueryString};
             });
 
         services.Configure<ApiBehaviorOptions>(options =>
