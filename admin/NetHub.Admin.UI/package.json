@@ -27,17 +27,12 @@
     "@angular/router": "^14.2.12",
     "angular-split": "^14.1.0",
     "bootstrap": "^5.2.3",
-    "flatpickr": "^4.6.13",
     "jwt-decode": "^3.1.2",
-    "luxon": "^3.2.1",
     "neercms": "file:../../../neerspace-angular/dist/neercms",
-    "ng2-flatpickr": "^9.0.0",
-    "ngx-mask": "^14.2.4",
     "oidc-client": "^1.11.5",
     "run-script-os": "^1.1.6",
     "rxjs": "~7.5.7",
     "tslib": "^2.5.0",
-    "vanillajs-datepicker": "^1.2.0",
     "zone.js": "~0.11.8"
   },
   "devDependencies": {

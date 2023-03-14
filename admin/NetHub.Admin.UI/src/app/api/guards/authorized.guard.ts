@@ -1,12 +1,7 @@
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanActivateChild,
-  RouterStateSnapshot,
-} from '@angular/router';
 import { Injectable } from '@angular/core';
-import { UserService } from '../../services/user.service';
+import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { logger } from 'app/environments/environment';
+import { UserService } from 'app/services';
 import { Observable } from 'rxjs';
 
 @Injectable()

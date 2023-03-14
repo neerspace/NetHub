@@ -11,7 +11,7 @@ import { JWTApi } from 'app/api';
 import { RequestTokenService } from 'app/api/request-token.service';
 import { environment } from 'app/environments/environment';
 import { SecuredStorage } from 'app/services/storage';
-import { LoaderService } from 'app/services/viewport';
+import { LoaderService } from 'neercms/services/viewport';
 
 import { Observable, tap, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';

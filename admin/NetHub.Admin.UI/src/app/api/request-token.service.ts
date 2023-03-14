@@ -1,9 +1,9 @@
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { SecuredStorage } from 'app/services/storage';
+import { IJwtData } from 'app/services/storage/types';
 import { DateTime } from 'luxon';
 import { BehaviorSubject, filter, first, Observable, switchMap, tap } from 'rxjs';
-import { SecuredStorage } from '../services/storage';
-import { IJwtData } from '../services/storage/types';
 import { JWTApi } from './index';
 
 @Injectable({ providedIn: 'root' })

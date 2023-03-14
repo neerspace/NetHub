@@ -1,8 +1,8 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { LoaderService } from 'neercms/services/viewport';
 
 import { finalize, Observable } from 'rxjs';
-import { LoaderService } from 'app/services/viewport';
 
 @Injectable()
 export class LoaderInterceptor implements HttpInterceptor {
