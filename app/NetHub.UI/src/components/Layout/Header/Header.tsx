@@ -4,7 +4,7 @@ import cl from './Header.module.sass'
 import layoutClasses from '../Layout.module.sass'
 import LoggedUserBar from './LoggedUserBar';
 import UnloggedUserBar from './UnloggedUserBar';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -15,9 +15,9 @@ import {
   useColorMode,
   useColorModeValue
 } from "@chakra-ui/react";
-import {SearchIcon} from "@chakra-ui/icons";
-import {useAppStore} from "../../../store/config";
+import { SearchIcon } from "@chakra-ui/icons";
 import ThemeSwitcher from "../../UI/Theme/ThemeSwitcher";
+import { useAppStore } from "../../../store/store";
 
 const Header: React.FC = () => {
 

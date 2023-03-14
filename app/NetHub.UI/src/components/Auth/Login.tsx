@@ -13,7 +13,6 @@ import { useNavigate } from 'react-router-dom';
 import { z as u } from 'zod';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useDebounce } from '../../hooks/useDebounce';
-import { useAppStore } from '../../store/config';
 import { SsoRequest, SsoRequestSchema } from '../../types/schemas/Sso/SsoSchema';
 import { usernameDebounce } from '../../utils/debounceHelper';
 import LoginService from '../../utils/LoginService';
@@ -24,6 +23,7 @@ import TelegramAuthButton from './Buttons/TelegramAuthButton';
 import { _jwtApi, _usersApi } from "../../api";
 import { JwtAuthenticateRequest, ProviderType, SsoType } from '../../api/_api';
 import { JWTStorage } from "../../utils/localStorageProvider";
+import { useAppStore } from "../../store/store";
 
 interface ISecondStep {
   isExpanded: boolean,

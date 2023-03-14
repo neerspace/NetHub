@@ -23,6 +23,9 @@ internal class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
             .HasForeignKey(e => e.UserId).IsRequired().OnDelete(DeleteBehavior.Cascade);
         builder.HasMany(e => e.UserClaims).WithOne(e => e.User)
             .HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
+
+        // builder.HasOne(e => e.Photo).WithOne().OnDelete(DeleteBehavior.SetNull);
+
         // builder.HasMany(e => e.Logins).WithOne(e => e.User)
         //     .HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
         // builder.HasMany(e => e.RefreshTokens).WithOne(e => e.User)

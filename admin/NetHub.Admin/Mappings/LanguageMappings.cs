@@ -1,8 +1,8 @@
 using Mapster;
 using Microsoft.AspNetCore.Http;
-using NetHub.Admin.Models.Languages;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Shared.Extensions;
+using NetHub.Shared.Models.Languages;
 
 namespace NetHub.Admin.Mappings;
 

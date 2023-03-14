@@ -34,4 +34,4 @@ export const tinyConfig: TinyConfig = {
     'removeformat | help',
 };
 
-export const UkrainianLanguage = 'ua';
+export const UkrainianLanguage = 'uk';

@@ -2,28 +2,28 @@ import React, { FC, PropsWithChildren } from 'react';
 import { useQuery, useQueryClient, UseQueryResult } from "react-query";
 import { useParams } from "react-router-dom";
 import { ApiError } from "../../../types/ApiError";
-import { QueryClientConstants } from "../../../constants/queryClientConstants";
-import { _articlesApi, _localizationsApi } from "../../../api";
+import { _articlesApi, _articlesSetsApi } from "../../../api";
+import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
 import {
-  ArticleLocalizationModel,
-  ArticleModelExtended,
-  IArticleLocalizationModel,
-  IArticleModelExtended
+  ArticleModel,
+  ArticleSetModelExtended,
+  IArticleModel,
+  IArticleSetModelExtended
 } from "../../../api/_api";
 
 type ContextType = {
-  articleAccessor: UseQueryResult<IArticleModelExtended, ApiError>,
-  setArticle: (article: IArticleModelExtended) => void,
-  localizationAccessor: UseQueryResult<IArticleLocalizationModel, ApiError>,
-  setLocalization: (localization: IArticleLocalizationModel) => void
+  articleSetAccessor: UseQueryResult<IArticleSetModelExtended, ApiError>,
+  setArticleSet: (article: IArticleSetModelExtended) => void,
+  articleAccessor: UseQueryResult<IArticleModel, ApiError>,
+  setArticle: (article: IArticleModel) => void
 }
 
 const InitialContextValue: ContextType = {
-  articleAccessor: {} as UseQueryResult<IArticleModelExtended, ApiError>,
-  setArticle: () => {
+  articleSetAccessor: {} as UseQueryResult<IArticleSetModelExtended, ApiError>,
+  setArticleSet: () => {
   },
-  localizationAccessor: {} as UseQueryResult<IArticleLocalizationModel, ApiError>,
-  setLocalization: () => {
+  articleAccessor: {} as UseQueryResult<IArticleModel, ApiError>,
+  setArticle: () => {
   }
 };
 
@@ -36,22 +36,27 @@ const ArticleSpaceProvider: FC<PropsWithChildren> = ({children}) => {
 
   const {id, code} = useParams();
 
-  const articleAccessor = useQuery<ArticleModelExtended, ApiError>([QueryClientConstants.article, +id!], () => _articlesApi.getById(+id!));
-  const localizationAccessor = useQuery<ArticleLocalizationModel, ApiError>([QueryClientConstants.articleLocalization, +id!, code],
-    () => _localizationsApi.getByIdAndCode(+id!, code!));
+  const articleSetAccessor = useQuery<ArticleSetModelExtended, ApiError>(QueryClientKeysHelper.ArticleSet(+id!),
+    () => _articlesSetsApi.getById(+id!),
+    {refetchIntervalInBackground: true});
+  const articleAccessor = useQuery<ArticleModel, ApiError>(QueryClientKeysHelper.Article(+id!, code!),
+    () => _articlesApi.getByIdAndCode(+id!, code!),
+    {refetchIntervalInBackground: true});
 
 
-  const setArticle = (article: IArticleModelExtended) => queryClient.setQueryData([QueryClientConstants.article, +id!], article);
-  const setLocalization = (localization: IArticleLocalizationModel) => queryClient.setQueryData([QueryClientConstants.articleLocalization, +id!, code], localization);
+  const setArticleSet = (articleSet: IArticleSetModelExtended) =>
+    queryClient.setQueryData(QueryClientKeysHelper.ArticleSet(+id!), articleSet);
+  const setArticle = (article: IArticleModel) =>
+    queryClient.setQueryData(QueryClientKeysHelper.Article(+id!, code!), article);
 
   const value: ContextType = React.useMemo(
     () => ({
+      articleSetAccessor,
+      setArticleSet,
       articleAccessor,
-      setArticle,
-      localizationAccessor,
-      setLocalization
+      setArticle
     }),
-    [articleAccessor, setArticle, localizationAccessor, setLocalization]
+    [articleSetAccessor, setArticleSet, articleAccessor, setArticle]
   );
 
   return (

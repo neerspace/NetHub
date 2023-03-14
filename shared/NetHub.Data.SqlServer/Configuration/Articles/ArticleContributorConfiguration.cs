@@ -11,7 +11,7 @@ public class ArticleContributorConfiguration : IEntityTypeConfiguration<ArticleC
     {
         builder.HasKey(aa => aa.Id);
 
-        builder.HasOne(aa => aa.Localization)
+        builder.HasOne(aa => aa.Article)
             .WithMany(al => al.Contributors)
             .OnDelete(DeleteBehavior.Cascade);
 

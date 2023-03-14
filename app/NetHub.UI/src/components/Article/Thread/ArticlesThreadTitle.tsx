@@ -19,7 +19,8 @@ const ArticlesThreadTitle: FC<IArticleThreadTitleProps> =
         <Select
           border={'1px solid'}
           borderColor={'gray.200'}
-          width={'fit-content'} defaultValue={articlesLanguage}
+          width={'fit-content'}
+          defaultValue={articlesLanguage}
           onChange={(e) => {
             setArticlesLanguage(e.target.value)
           }}

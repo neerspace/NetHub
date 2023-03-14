@@ -1,16 +1,15 @@
 import React, { useCallback } from 'react';
 import { useQueryClient } from 'react-query';
-import { QueryClientConstants } from '../../constants/queryClientConstants';
 import useCustomSnackbar from '../../hooks/useCustomSnackbar';
 import { useDebounce } from '../../hooks/useDebounce';
-import { useAppStore } from '../../store/config';
 import { ProfileSchema } from '../../types/schemas/Profile/ProfileSchema';
 import { usernameDebounce } from '../../utils/debounceHelper';
 import { JWTStorage } from '../../utils/localStorageProvider';
 import { ExtendedRequest, useProfileContext } from './ProfileSpace.Provider';
 import { _currentUserApi, _jwtApi, _usersApi } from "../../api";
 import { FileParameter, MeProfileUpdateRequest, UserResult } from "../../api/_api";
-import { FilterInfo } from "../../types/api/IFilterInfo";
+import { QueryClientKeysHelper } from "../../utils/QueryClientKeysHelper";
+import { useAppStore } from "../../store/store";
 
 export async function getUserDashboard(username?: string) {
   return username ?
@@ -23,13 +22,16 @@ export async function getUserInfo(setRequest: (value: ExtendedRequest) => void, 
     return (await _usersApi.usersInfo([username]))[0];
 
   const me = await _currentUserApi.me();
+
+  console.log('me', me)
+
   setRequest({
     username: me.userName,
     email: me.email,
     image: '',
     firstName: me.firstName,
     lastName: me.lastName,
-    middleName: me.middleName,
+    middleName: me.middleName ?? '',
     description: me.description ?? ''
   })
 
@@ -52,7 +54,14 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
   } = useProfileContext();
   const queryClient = useQueryClient();
   const {updateProfile: updateProfileAction, user: reduxUser} = useAppStore();
-  const oldUserInfo = userAccessor.data! as UserResult;
+
+  const user = userAccessor.data! as UserResult;
+
+  const oldUserInfo = {
+    ...user,
+    middleName: user.middleName ? user.middleName : '',
+    description: user.description ? user.description : ''
+  };
 
   const handleUpdateUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newUsername = event.target.value.toLowerCase();
@@ -104,77 +113,70 @@ export const useProfileUpdateFunctions = (errors: any, setErrors: any, handleSet
   };
 
   const updateProfile = async () => {
-      if (changes.length === 0) return;
+    if (changes.length === 0) return;
 
-      enqueueSnackBar('Завантаження...');
-      const isProfileValid = await handleValidateUpdate();
+    enqueueSnackBar('Завантаження...');
+    const isProfileValid = await handleValidateUpdate();
 
-      if (!isProfileValid) {
-        enqueueError('Перевірте дані та спробуйте ще раз');
-        return;
-      }
-
-      let newProfileImage = '';
-      try {
-        for (const change of changes) {
-          switch (change) {
-            case 'profile':
-              await _currentUserApi.updateProfile(new MeProfileUpdateRequest(
-                {
-                  username: null,
-                  firstName: changeRequest.firstName,
-                  lastName: changeRequest.lastName,
-                  middleName: changeRequest.middleName ?? null,
-                  description: changeRequest.description ?? null
-                })
-              );
-              break;
-            case 'photo':
-              if (typeof (changeRequest.image) === 'string') {
-                newProfileImage = (await _currentUserApi.updateProfilePhoto(changeRequest.image, undefined)).link;
-              } else {
-                const request: FileParameter = {
-                  data: changeRequest.image,
-                  fileName: `${oldUserInfo.userName}-ProfilePhoto`
-                }
-
-                newProfileImage = (await _currentUserApi.updateProfilePhoto(undefined, request)).link;
-              }
-              break;
-            case 'username':
-              await _currentUserApi.updateProfile(new MeProfileUpdateRequest(
-                {
-                  username: changeRequest.username,
-                  firstName: null,
-                  lastName: null,
-                  middleName: null,
-                  description: null
-                }
-              ));
-              break;
-          }
-        }
-        updateProfileAction({
-          ...reduxUser,
-          firstName: changes.includes('profile') ? changeRequest.firstName : reduxUser.firstName,
-          username: changes.includes('username') ? changeRequest.username : reduxUser.username,
-          profilePhotoUrl: newProfileImage === '' ? reduxUser.profilePhotoUrl : newProfileImage
-        });
-
-        const jwt = await _jwtApi.refresh();
-        JWTStorage.setTokensData(jwt);
-      } catch
-        (e) {
-        enqueueError('Помилка оновлення');
-        return;
-      }
-
-      await queryClient.invalidateQueries([QueryClientConstants.user, oldUserInfo.userName]);
-      setChanges([]);
-      handleSettingsButton();
-      enqueueSuccess('Зміни застосовані');
+    if (!isProfileValid) {
+      enqueueError('Перевірте дані та спробуйте ще раз');
+      return;
     }
-  ;
+
+    let newProfileImage = '';
+    try {
+      for (const change of changes) {
+        switch (change) {
+          case 'profile':
+            await _currentUserApi.updateProfile(new MeProfileUpdateRequest(
+              {
+                firstName: changeRequest.firstName,
+                lastName: changeRequest.lastName,
+                middleName: changeRequest.middleName ? changeRequest.middleName : null,
+                description: changeRequest.description ? changeRequest.description : null
+              })
+            );
+            break;
+          case 'photo':
+            if (typeof (changeRequest.image) === 'string') {
+              newProfileImage = (await _currentUserApi.updateProfilePhoto(changeRequest.image, undefined)).link;
+            } else {
+              const request: FileParameter = {
+                data: changeRequest.image,
+                fileName: `${oldUserInfo.userName}-ProfilePhoto`
+              }
+
+              newProfileImage = (await _currentUserApi.updateProfilePhoto(undefined, request)).link;
+            }
+            break;
+          case 'username':
+            await _currentUserApi.updateProfileUsername(changeRequest.username);
+            break;
+        }
+      }
+
+      const newReduxUser = {
+        ...reduxUser,
+        firstName: changes.includes('profile') ? changeRequest.firstName : reduxUser.firstName,
+        username: changes.includes('username') ? changeRequest.username : reduxUser.username,
+        profilePhotoUrl: newProfileImage === '' ? reduxUser.profilePhotoUrl : newProfileImage
+      }
+
+      updateProfileAction(newReduxUser);
+
+      const jwt = await _jwtApi.refresh();
+      JWTStorage.setTokensData(jwt);
+    } catch
+      (e) {
+      enqueueError('Помилка оновлення');
+      return;
+    }
+
+    await queryClient.invalidateQueries(QueryClientKeysHelper.Profile(oldUserInfo.userName));
+    setChanges([]);
+    // handleSettingsButton();
+    enqueueSuccess('Зміни застосовані');
+  }
 
   return {
     handleUpdateUsername,

@@ -1,3 +1,4 @@
+using HybridModelBinding;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +21,14 @@ public static class DependencyInjection
 
         services.AddNeerApiServices();
         services.AddNeerControllers()
-            .AddMvcOptions(options => options.Filters.Add<SuccessStatusCodesFilter>());
+            .AddMvcOptions(options =>
+            {
+                options.Filters.Add<SuccessStatusCodesFilter>();
+            })
+            .AddHybridModelBinder(options =>
+            {
+                options.FallbackBindingOrder = new[] {Source.Route, Source.Body, Source.QueryString};
+            });
 
         services.Configure<ApiBehaviorOptions>(options =>
         {

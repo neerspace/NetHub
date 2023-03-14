@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NeerCore.Data.EntityFramework.Extensions;
 using NetHub.Data.SqlServer.Context;
@@ -9,7 +9,7 @@ using NetHub.Shared.Api.Constants;
 namespace NetHub.Admin.Api.Endpoints.Articles;
 
 [ApiVersion(Versions.V1)]
-[Tags(TagNames.Articles)]
+[Tags(TagNames.Localizations)]
 [Authorize(Policy = Policies.HasManageArticlesPermission)]
 public class ArticleDeleteEndpoint : ActionEndpoint<long>
 {
@@ -17,7 +17,7 @@ public class ArticleDeleteEndpoint : ActionEndpoint<long>
     public ArticleDeleteEndpoint(ISqlServerDatabase database) => _database = database;
 
 
-    [HttpDelete("articles/{id:long}")]
+    [HttpDelete("localizations/{id:long}")]
     public override async Task HandleAsync([FromRoute] long id, CancellationToken ct)
     {
         var article = await _database.Set<Article>().FirstOr404Async(l => l.Id == id, ct);

@@ -2,8 +2,8 @@ namespace NetHub.Api;
 
 public static class TagNames
 {
-    public const string ArticleLocalizations = "Article Localizations";
     public const string Articles = nameof(Articles);
+    public const string ArticleSets = "Article Sets";
     public const string Currency = nameof(Currency);
     public const string Jwt = nameof(Jwt);
     public const string Users = nameof(Users);

@@ -1,4 +1,5 @@
 using Mapster;
+using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Data.SqlServer.Entities.Identity;
 using NetHub.Models.Users;
 

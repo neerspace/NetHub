@@ -1,12 +1,11 @@
-using Google.Cloud.Translation.V2;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NetHub.Admin.Models.Languages;
-using NetHub.Shared.Api;
+using NetHub.Data.SqlServer.Entities;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Api.Swagger;
+using NetHub.Shared.Models.Languages;
 
 namespace NetHub.Api.Endpoints.Languages;
 

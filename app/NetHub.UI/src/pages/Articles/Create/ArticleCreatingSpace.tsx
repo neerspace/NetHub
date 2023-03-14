@@ -3,71 +3,16 @@ import ArticleSettings from '../../../components/Article/Create/ArticleSettings'
 import Layout, { Page } from "../../../components/Layout/Layout";
 import CreateArticleForm from "../../../components/Article/Create/CreateArticleForm";
 import { useTranslation } from "react-i18next";
-import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
-import { ArticleStorage } from "../../../utils/localStorageProvider";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from 'react-query';
-import ArticleCreatingSpaceProvider, {
-  useArticleCreatingContext
-} from "./ArticleCreatingSpace.Provider";
-import { CreateArticleFormSchema } from "../../../types/schemas/Article/CreateArticleFormSchema";
-import { _localizationsApi } from "../../../api";
-import { ArticleLocalizationCreateRequest } from "../../../api/_api";
-import { UkrainianLanguage } from "../../../utils/constants";
+import ArticleCreatingSpaceProvider from "./ArticleCreatingSpace.Provider";
+import { useArticleCreatingSpace } from "./ArticleCreatingSpace.functions";
 
 type CreateArticleFormRef = React.ElementRef<typeof CreateArticleForm>
 
 const ArticleCreatingSpace: Page = () => {
   const {t} = useTranslation();
 
-  const {article, setArticle, defaultArticleState, setErrors} = useArticleCreatingContext();
-
-  const createMutation = useMutation('createArticle', () => createArticle());
-  const navigate = useNavigate();
-
-  const {enqueueSuccess, enqueueError, enqueueSnackBar} = useCustomSnackbar('info');
   const articleCreationRef = useRef<CreateArticleFormRef>(null);
-
-  async function validateArticleForm() {
-    const validationResult = CreateArticleFormSchema.safeParse(article);
-
-    if (!validationResult.success) {
-      const errors = validationResult.error.format()
-      setErrors(errors);
-      return;
-    }
-
-    setErrors({_errors: []});
-
-    return validationResult.success;
-  }
-
-  const createArticle = async () => {
-
-    if (!await validateArticleForm()) return;
-
-    enqueueSnackBar('Стаття зберігається')
-
-    let articleId;
-
-    try {
-      articleId = await articleCreationRef
-        .current?.getTinyRef()
-        .current?.saveImages(article);
-
-      const request = new ArticleLocalizationCreateRequest(article);
-      await _localizationsApi.create(articleId!, UkrainianLanguage, request);
-
-      ArticleStorage.clearArticleData();
-      setArticle(defaultArticleState);
-    } catch (e: any) {
-      enqueueError('Помилка збереження статті');
-      return;
-    }
-    enqueueSuccess('Збережено!')
-
-    navigate('/article/' + articleId + '/ua');
-  };
+  const {createArticle} = useArticleCreatingSpace(articleCreationRef);
 
   const titles = {
     // Center: <h2>{t('article.create.mainSettings')}</h2>,
@@ -78,7 +23,7 @@ const ArticleCreatingSpace: Page = () => {
   return (
     <Layout Titles={titles}>
       <CreateArticleForm ref={articleCreationRef}/>
-      <ArticleSettings createArticle={createMutation.mutateAsync}/>
+      <ArticleSettings createArticle={createArticle.mutateAsync}/>
     </Layout>
   );
 }

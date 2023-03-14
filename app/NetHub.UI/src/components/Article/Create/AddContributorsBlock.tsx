@@ -6,15 +6,15 @@ import Tag from "../One/Body/Tag";
 import SearchContributor from "./SearchContributor";
 import { createImageFromInitials } from "../../../utils/logoGenerator";
 import {
-  IArticleLocalizationCreateExtendedRequest
+  IArticleCreateExtendedRequest
 } from "../../../pages/Articles/Create/ArticleCreatingSpace.Provider";
 import { ArticleContributorRole, PrivateUserResult } from "../../../api/_api";
 
 export type Contributor = { user: PrivateUserResult, role: ArticleContributorRole };
 
 interface IAddContributorsBlockProps {
-  article: IArticleLocalizationCreateExtendedRequest,
-  setArticle: (article: IArticleLocalizationCreateExtendedRequest) => void
+  article: IArticleCreateExtendedRequest,
+  setArticle: (article: IArticleCreateExtendedRequest) => void
 }
 
 const AddContributorsBlock: FC<IAddContributorsBlockProps> = ({article, setArticle}) => {

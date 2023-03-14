@@ -7,11 +7,11 @@ import cl from './ArticleShort.module.sass';
 import ArticleShortFooter from './Related/ArticleShortFooter';
 import ArticleShortHeader from './Related/ArticleShortHeader';
 import { Vote } from "../../../api/_api";
-import { ISimpleLocalization } from "../../../types/api/ISimpleLocalization";
+import { ISimpleArticle } from "../../../types/api/ISimpleArticle";
 
 interface IArticleItemProps {
-  localization: ISimpleLocalization;
-  setLocalization: (localization: ISimpleLocalization) => void;
+  article: ISimpleArticle;
+  setArticle: (article: ISimpleArticle) => void;
   save: { actual: boolean; handle: () => Promise<void> };
   time?: { before?: string; show?: 'default' | 'saved' };
   afterCounterRequest: () => Promise<void>;
@@ -19,20 +19,20 @@ interface IArticleItemProps {
 }
 
 const ArticleShort: FC<IArticleItemProps> = ({
-  localization,
-  setLocalization,
+  article,
+  setArticle,
   save,
   time,
   afterCounterRequest,
   footerVariant,
 }) => {
-  const { articleAccessor, setArticle } = useArticleContext();
+  const { articleSetAccessor, setArticleSet } = useArticleContext();
   const navigate = useNavigate();
-  const article = articleAccessor.data!;
+  const articleSet = articleSetAccessor.data!;
 
   function updateCounter(rate: number, vote: Vote | null) {
-    setArticle({ ...article, rate });
-    setLocalization({ ...localization, rate, vote });
+    setArticleSet({ ...articleSet, rate });
+    setArticle({ ...article, rate, vote });
   }
 
   return (
@@ -40,21 +40,21 @@ const ArticleShort: FC<IArticleItemProps> = ({
       className={cl.articleItem}
       onClick={() =>
         navigate(
-          `/article/${localization.articleId}/${localization.languageCode}`
+          `/article/${article.articleSetId}/${article.languageCode}`
         )
       }
       cursor={'pointer'}
     >
-      <ArticleShortHeader localization={localization} time={time} />
+      <ArticleShortHeader article={article} time={time} />
       <Text
         as={'p'}
         className={cl.description}
         color={useColorModeValue('#4F5B67', '#EFEFEF')}
       >
-        {localization.description}
+        {article.description}
       </Text>
       <ArticleShortFooter
-        localization={localization}
+        article={article}
         save={save}
         variant={footerVariant}
         updateCounter={updateCounter}

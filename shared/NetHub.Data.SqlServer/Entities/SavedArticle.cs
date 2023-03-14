@@ -8,10 +8,10 @@ namespace NetHub.Data.SqlServer.Entities;
 [Table($"{nameof(SavedArticle)}s")]
 public class SavedArticle : IEntity
 {
-    #region ArticleLocalization
+    #region Article
 
-    public long LocalizationId { get; set; }
-    public virtual ArticleLocalization? Localization { get; set; }
+    public long ArticleId { get; set; }
+    public virtual Article? Article { get; set; }
 
     #endregion
 
