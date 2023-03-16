@@ -22,7 +22,7 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles, byUser
     setArticles(articles.map((a) => a.articleSetId === article.articleSetId
       ? {...a, isSaved: !a.isSaved} : a));
     await queryClient.invalidateQueries(QueryClientKeysHelper.SavedArticles());
-    await queryClient.invalidateQueries(QueryClientKeysHelper.Article(article.id, article.languageCode));
+    await queryClient.invalidateQueries(QueryClientKeysHelper.Article(article.articleSetId, article.languageCode));
   }
 
   const handleSetArticle = (article: ISimpleArticle) => {
@@ -30,8 +30,8 @@ const ArticlesThread: FC<IArticlesThreadProps> = ({articles, setArticles, byUser
   }
 
   const afterRequest = (item: ISimpleArticle) => async function () {
-    await queryClient.invalidateQueries(QueryClientKeysHelper.ArticleSet(item.id));
-    await queryClient.invalidateQueries(QueryClientKeysHelper.Article(item.id, item.languageCode));
+    await queryClient.invalidateQueries(QueryClientKeysHelper.ArticleSet(item.articleSetId));
+    await queryClient.invalidateQueries(QueryClientKeysHelper.Article(item.articleSetId, item.languageCode));
     await queryClient.invalidateQueries(QueryClientKeysHelper.SavedArticles());
     await queryClient.invalidateQueries(QueryClientKeysHelper.ArticlesByYou());
   }

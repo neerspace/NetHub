@@ -15,7 +15,7 @@ interface IArticleItemProps {
   save: { actual: boolean; handle: () => Promise<void> };
   time?: { before?: string; show?: 'default' | 'saved' };
   afterCounterRequest: () => Promise<void>;
-  footerVariant?: 'default' | 'created';
+  variant?: 'public' | 'private';
 }
 
 const ArticleShort: FC<IArticleItemProps> = ({
@@ -24,7 +24,7 @@ const ArticleShort: FC<IArticleItemProps> = ({
   save,
   time,
   afterCounterRequest,
-  footerVariant,
+  variant,
 }) => {
   const { articleSetAccessor, setArticleSet } = useArticleContext();
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const ArticleShort: FC<IArticleItemProps> = ({
       }
       cursor={'pointer'}
     >
-      <ArticleShortHeader article={article} time={time} />
+      <ArticleShortHeader article={article} time={time} variant={variant}/>
       <Text
         as={'p'}
         className={cl.description}
@@ -56,7 +56,7 @@ const ArticleShort: FC<IArticleItemProps> = ({
       <ArticleShortFooter
         article={article}
         save={save}
-        variant={footerVariant}
+        variant={variant}
         updateCounter={updateCounter}
         afterCounterRequest={afterCounterRequest}
       />

@@ -40,6 +40,9 @@ const components = {
         _invalid: {
           border: '2px solid',
           borderColor: mode('error', 'errorDark')(props),
+        },
+        _disabled: {
+          opacity: 0.6
         }
       }
     }),
@@ -67,18 +70,25 @@ const components = {
       borderRadius: '12px',
       textAlign: 'center',
       _hover: {
-        background: '#BBAFEA'
+        background: '#BBAFEA',
+      },
+      _disabled: {
+        opacity: 1,
+        background: mode('#1F2023', '#1F2023')(props),
+        _hover: {
+          background: `${mode('#1F2023', '#1F2023')(props)} !important`,
+        }
       }
     }),
     variants: (props: StyleFunctionProps) => ({
-      solid: {
-        background: mode('#896DC8', '#835ADF')(props),
-        color: mode('#FFFFFF', '#EFEFEF')(props),
-        py: '5px',
-        px: '15px',
-        borderRadius: '12px',
-        textAlign: 'center',
-      }
+      // solid: {
+      //   background: mode('#896DC8', '#835ADF')(props),
+      //   color: mode('#FFFFFF', '#EFEFEF')(props),
+      //   py: '5px',
+      //   px: '15px',
+      //   borderRadius: '12px',
+      //   textAlign: 'center',
+      // }
     }),
   },
   Text: {

@@ -1,7 +1,7 @@
 import {Skeleton} from '@chakra-ui/react';
 import React from 'react';
 
-const SavedArticlesSkeleton = () => {
+const ArticlesShortSkeleton = () => {
   return (
     <>
       <Skeleton height={150}/>
@@ -12,4 +12,4 @@ const SavedArticlesSkeleton = () => {
   );
 };
 
-export default SavedArticlesSkeleton;
+export default ArticlesShortSkeleton;

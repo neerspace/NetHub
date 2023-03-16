@@ -5,16 +5,16 @@ import { useSavedArticlesContext } from '../../../pages/Saved/SavedSpace.Provide
 import ErrorBlock from '../../Layout/ErrorBlock';
 import ArticleShort from '../Shared/ArticleShort';
 import cl from './SavedArticles.module.sass';
-import SavedArticlesSkeleton from './SavedArticlesSkeleton';
 import './transitions.css';
 import { _myArticlesApi } from "../../../api";
 import { ISimpleArticle } from "../../../types/api/ISimpleArticle";
 import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
 import firebase from "firebase/compat";
 import Query = firebase.firestore.Query;
+import ArticlesShortSkeleton from '../Shared/ArticlesShortSkeleton';
 
 const SavedArticles = () => {
-  const { savedArticles, setSavedArticles } = useSavedArticlesContext();
+  const {savedArticles, setSavedArticles} = useSavedArticlesContext();
   const queryClient = useQueryClient();
 
   async function handleSetArticle(article: ISimpleArticle) {
@@ -38,20 +38,20 @@ const SavedArticles = () => {
   const afterCounterRequest = (article: ISimpleArticle) =>
     async function () {
       await queryClient.invalidateQueries(QueryClientKeysHelper.Keys.articles);
-      await queryClient.invalidateQueries(QueryClientKeysHelper.ArticleSet(article.id));
-      await queryClient.invalidateQueries(QueryClientKeysHelper.Article(article.id, article.languageCode));
+      await queryClient.invalidateQueries(QueryClientKeysHelper.ArticleSet(article.articleSetId));
+      await queryClient.invalidateQueries(QueryClientKeysHelper.Article(article.articleSetId, article.languageCode));
       await queryClient.invalidateQueries(QueryClientKeysHelper.ArticlesByYou());
     };
 
   return !savedArticles.isSuccess ? (
-    <SavedArticlesSkeleton />
+    <ArticlesShortSkeleton/>
   ) : savedArticles.data.length === 0 ? (
     <ErrorBlock>Упс, Ви ще не зберегли статтей</ErrorBlock>
   ) : (
     <TransitionGroup className={cl.savedWrapper}>
       {savedArticles.data!.map((article) => (
         <CSSTransition
-          key={article.articleSetId}
+          key={article.articleSetId + article.languageCode}
           timeout={500}
           classNames='item'
         >
@@ -67,7 +67,7 @@ const SavedArticles = () => {
                   article.languageCode
                 ),
             }}
-            time={{ before: 'збережено', show: 'saved' }}
+            time={{before: 'збережено', show: 'saved'}}
           />
         </CSSTransition>
       ))}

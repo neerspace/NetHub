@@ -1,13 +1,16 @@
 ﻿import React from 'react';
 import { useByYouContext } from "../../../pages/ByYou/ByYouSpace.Provider";
 import ArticleShort from "../Shared/ArticleShort";
-import SavedArticlesSkeleton from "../Saved/SavedArticlesSkeleton";
 import ErrorBlock from "../../Layout/ErrorBlock";
 import { ISimpleArticle } from "../../../types/api/ISimpleArticle";
 import { _myArticlesApi } from "../../../api";
+import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
+import { useQueryClient } from "react-query";
+import ArticlesShortSkeleton from '../Shared/ArticlesShortSkeleton';
 
 const ByYouArticles = () => {
   const {articlesAccessor, setArticles} = useByYouContext();
+  const queryClient = useQueryClient();
 
   async function handleSetArticle(article: ISimpleArticle) {
     setArticles(
@@ -22,11 +25,15 @@ const ByYouArticles = () => {
   }
 
   const afterCounterRequest = (article: ISimpleArticle) => async function () {
+    await queryClient.invalidateQueries(QueryClientKeysHelper.Keys.articles);
+    await queryClient.invalidateQueries(QueryClientKeysHelper.ArticleSet(article.articleSetId));
+    await queryClient.invalidateQueries(QueryClientKeysHelper.Article(article.articleSetId, article.languageCode));
+    await queryClient.invalidateQueries(QueryClientKeysHelper.SavedArticles());
   }
 
 
   return !articlesAccessor.isSuccess
-    ? <SavedArticlesSkeleton/>
+    ? <ArticlesShortSkeleton/>
     : articlesAccessor.data.length === 0
       ? <ErrorBlock>Упс, Ви ще не написали жодної статі</ErrorBlock>
       : articlesAccessor.data!.map((article) => (
@@ -36,7 +43,7 @@ const ByYouArticles = () => {
             setArticle={handleSetArticle}
             afterCounterRequest={afterCounterRequest(article)}
             save={{
-              actual: true,
+              actual: article.isSaved,
               handle: async () =>
                 await saveHandle(
                   article.articleSetId,
@@ -44,7 +51,7 @@ const ByYouArticles = () => {
                 ),
             }}
             time={{before: 'створено'}}
-            footerVariant={"created"}
+            variant={'private'}
           />
         )
       )

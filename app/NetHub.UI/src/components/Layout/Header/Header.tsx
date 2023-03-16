@@ -50,7 +50,7 @@ const Header: React.FC = () => {
             />
           </InputGroup>
 
-          <Button p={'11px 34px'} onClick={() => navigate('/articles/add')}>
+          <Button p={'11px 34px'} onClick={() => navigate('/article/add')}>
             Створити
             <SvgSelector id={'DriveFileRenameOutlineIcon'}/>
           </Button>

@@ -1,5 +1,5 @@
 import React, {FC, PropsWithChildren, ReactNode} from 'react';
-import cl from "../ArticleInfo.module.sass"
+import cl from "../Article.module.sass"
 import {Text, useColorModeValue} from "@chakra-ui/react";
 
 interface IThemeTagProps extends PropsWithChildren {

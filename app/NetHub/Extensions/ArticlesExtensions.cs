@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using NetHub.Data.SqlServer.Context;
 using NetHub.Data.SqlServer.Entities;
@@ -9,11 +10,14 @@ namespace NetHub.Extensions;
 public static class ArticlesExtensions
 {
     public static IQueryable<ArticleModel> GetExtendedArticles(
-        this ISqlServerDatabase database, long? userId = null, bool loadBody = false, bool loadContributors = false)
+        this ISqlServerDatabase database, long? userId = null, bool loadBody = false, bool loadContributors = false, Expression<Func<Article, bool>>? whereExpression = null)
     {
         IQueryable<Article> articlesDbSet = database
             .Set<Article>()
             .Include(a => a.ArticleSet);
+
+        if (whereExpression is not null)
+            articlesDbSet = articlesDbSet.Where(whereExpression);
 
         if (loadContributors)
             articlesDbSet = articlesDbSet

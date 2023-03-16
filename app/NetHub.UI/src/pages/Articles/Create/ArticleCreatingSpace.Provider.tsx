@@ -1,12 +1,28 @@
-import React, { createContext, FC, PropsWithChildren, useContext, useMemo, useState } from 'react';
+import React, {
+  createContext,
+  FC,
+  PropsWithChildren,
+  useCallback,
+  useContext, useEffect,
+  useMemo,
+  useState
+} from 'react';
 import { ArticleStorage } from "../../../utils/localStorageProvider";
 import { useQuery, UseQueryResult } from "react-query";
 import { ApiError } from "../../../types/ApiError";
 import { useParams } from "react-router-dom";
 import { z as u } from "zod";
-import { IArticleCreateRequest, IArticleSetModelExtended, LanguageModel } from '../../../api/_api';
+import {
+  ArticleSetModel,
+  IArticleCreateRequest,
+  IArticleSetModelExtended,
+  LanguageModel
+} from '../../../api/_api';
 import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
 import { _articlesSetsApi, _languagesApi } from "../../../api";
+import firebase from "firebase/compat";
+import Query = firebase.firestore.Query;
+import { Article } from "@mui/icons-material";
 
 export interface IArticleCreateExtendedRequest extends IArticleCreateRequest {
   tags: string[],
@@ -16,14 +32,14 @@ export interface IArticleCreateExtendedRequest extends IArticleCreateRequest {
 
 interface ContextType {
   article: IArticleCreateExtendedRequest,
-  defaultArticleState: IArticleCreateExtendedRequest,
+  defaultArticleState: (isFirst: boolean) => IArticleCreateExtendedRequest,
   setArticle: React.Dispatch<React.SetStateAction<IArticleCreateExtendedRequest>>,
   setArticleValue: (key: keyof IArticleCreateExtendedRequest) => (value: any) => void,
   languagesAccessor: UseQueryResult<LanguageModel[], ApiError>,
-  images?: UseQueryResult<string[], ApiError>,
+  articleSet?: UseQueryResult<ArticleSetModel, ApiError>,
   errors: CreateArticleFormError,
   setErrors: (errors: CreateArticleFormError) => void,
-  withoutSet: boolean
+  isFirst: boolean
 }
 
 const defaultState: () => IArticleCreateExtendedRequest = () => {
@@ -38,8 +54,8 @@ const defaultState: () => IArticleCreateExtendedRequest = () => {
 };
 
 const InitialContextValue: ContextType = {
-  article: defaultState(),
-  defaultArticleState: defaultState(),
+  article: {} as IArticleCreateExtendedRequest,
+  defaultArticleState: () => {},
   setArticle: () => {
   },
   setArticleValue: () => () => {
@@ -48,7 +64,7 @@ const InitialContextValue: ContextType = {
   errors: {_errors: []},
   setErrors: () => {
   },
-  withoutSet: true
+  isFirst: true
 }
 
 const ArticleCreatingContext = createContext<ContextType>(InitialContextValue);
@@ -65,14 +81,30 @@ export type CreateArticleFormError = u.ZodFormattedError<{
 
 const ArticleCreatingProvider: FC<PropsWithChildren> = ({children}) => {
   const {id} = useParams();
+  const isFirst = !id;
 
-  const withoutSet = !id;
+  const articleSet = useQuery<ArticleSetModel, ApiError>(QueryClientKeysHelper.ArticleSet(+id!), () => _articlesSetsApi.getById(+id!),
+    {enabled: !isFirst})
 
-  const [article, setArticle] = useState<IArticleCreateExtendedRequest>(defaultState);
+  const getDefaultState = useCallback((isFirst: boolean): IArticleCreateExtendedRequest => {
+    return {
+      title: isFirst ? ArticleStorage.getTitle() ?? '' : '',
+      description: isFirst ? ArticleStorage.getDescription() ?? '' : '',
+      html: isFirst ? ArticleStorage.getHtml() ?? '' : '',
+      tags: isFirst ? JSON.parse(ArticleStorage.getTags()) ?? [] as string[] : articleSet?.data?.tags ?? [] as string[],
+      originalLink: isFirst ? ArticleStorage.getLink() ?? '' : articleSet?.data?.originalArticleLink ?? ''
+    } as IArticleCreateExtendedRequest
+  },[id, articleSet.data, isFirst]);
+
+  useEffect(() =>{
+    setArticle(getDefaultState(isFirst))
+  }, [id, articleSet.data, isFirst])
+
+  const [article, setArticle] = useState<IArticleCreateExtendedRequest>(getDefaultState(isFirst));
   const languagesAccessor = useQuery<LanguageModel[], ApiError>(QueryClientKeysHelper.Languages(), () => _languagesApi.getAll())
-  const images = useQuery<string[], ApiError>(QueryClientKeysHelper.ArticleSetImages(+id!),
-    () => _articlesSetsApi.getImages(+id!),
-    {enabled: !!id});
+
+
+
   const [errors, setErrors] = useState<CreateArticleFormError>({_errors: []});
 
   const setArticleValue = (key: string) => (value: any) => {
@@ -87,13 +119,13 @@ const ArticleCreatingProvider: FC<PropsWithChildren> = ({children}) => {
       setArticle,
       setArticleValue,
       languagesAccessor,
-      images,
-      defaultArticleState: defaultState(),
+      articleSet,
+      defaultArticleState: (isFirst: boolean) => getDefaultState(isFirst),
       errors,
       setErrors,
-      withoutSet
+      isFirst
     }
-  }, [article, setArticle, setArticleValue, languagesAccessor, images, errors, setErrors])
+  }, [article, setArticle, setArticleValue, languagesAccessor, articleSet, errors, setErrors])
 
   return (
     <ArticleCreatingContext.Provider value={value}>

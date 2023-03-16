@@ -4,26 +4,25 @@ import ArticlesRateCounter from "../ArticlesRateCounter";
 import ArticleSavingActions from "../ArticleSavingActions";
 import { Box, Text } from "@chakra-ui/react";
 import Actions from "../../../UI/Action/Actions";
-import { Vote } from "../../../../api/_api";
+import { ContentStatus, Vote } from "../../../../api/_api";
 import { ISimpleArticle } from "../../../../types/api/ISimpleArticle";
+import { useNavigate } from "react-router-dom";
 
 interface IArticleShortFooterProps {
   article: ISimpleArticle,
   save: { actual: boolean, handle: () => Promise<void> },
-
   updateCounter: (rate: number, vote: Vote | null) => void,
-
   afterCounterRequest: () => Promise<void>,
-
-  variant?: 'default' | 'created'
+  variant?: 'public' | 'private'
 }
 
 const ArticleShortFooter: FC<IArticleShortFooterProps> =
   ({article, save, updateCounter, afterCounterRequest, variant}) => {
+    const navigate = useNavigate();
 
     const addArticleHandle = (e: React.MouseEvent<HTMLDivElement>) => {
       e.stopPropagation()
-      alert('add article localization')
+      navigate( `/article/${article.articleSetId}/translate`);
     }
 
     return (
@@ -36,18 +35,22 @@ const ArticleShortFooter: FC<IArticleShortFooterProps> =
             updateCounter={updateCounter}
             afterRequest={afterCounterRequest}
           />
-          {(variant ?? 'default') === 'created'
+          {(variant ?? 'public') === 'private'
             ? <Actions onClick={addArticleHandle}>
               <Text as={'p'} color={'black'}>Додати переклад +</Text>
             </Actions>
             : null
           }
         </Box>
-        <ArticleSavingActions
-          isSavedDefault={save.actual}
-          onSave={save.handle}
-          saveLink={`${window.location.href}article/${article.articleSetId}/${article.languageCode}`}
-        />
+        {
+          article.status === ContentStatus.Published
+            ? <ArticleSavingActions
+              isSavedDefault={save.actual}
+              onSave={save.handle}
+              saveLink={`${window.location.href}article/${article.articleSetId}/${article.languageCode}`}
+            />
+            : null
+        }
       </div>
     );
   };

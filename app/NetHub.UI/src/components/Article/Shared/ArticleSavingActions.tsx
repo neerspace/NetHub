@@ -9,7 +9,8 @@ import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
 interface ISavingActionsProps {
   isSavedDefault: boolean,
   onSave: () => Promise<void>,
-  saveLink?: string
+  saveLink?: string,
+  disabled?: boolean
 }
 
 const ArticleSavingActions: FC<ISavingActionsProps> = ({isSavedDefault, onSave, saveLink}) => {
@@ -32,7 +33,10 @@ const ArticleSavingActions: FC<ISavingActionsProps> = ({isSavedDefault, onSave, 
 
   return (
     <Actions className={cl.actionsRight}>
-      <IconButton iconId={'ExternalLink'} checkAuth={false} onClick={copyToClipboard}/>
+      <IconButton
+        iconId={'ExternalLink'}
+        checkAuth={false}
+        onClick={copyToClipboard}/>
       <IconButton
         iconId={'SavedOutlined'}
         filledIconId={'SavedOutlinedFilled'}

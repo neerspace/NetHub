@@ -12,7 +12,7 @@ import { IMainArticleHandle } from "../../../components/Article/Create/CreateArt
 export const useArticleCreatingSpace = (articleCreationRef: React.RefObject<IMainArticleHandle>) => {
   const {enqueueSuccess, enqueueError, enqueueSnackBar} = useCustomSnackbar('info');
   const navigate = useNavigate();
-  const {article, setArticle, defaultArticleState, setErrors, withoutSet} = useArticleCreatingContext();
+  const {article, setArticle, defaultArticleState, setErrors, isFirst} = useArticleCreatingContext();
   const createMutation = useMutation('createArticle', () => createArticle());
   const {id} = useParams();
 
@@ -24,7 +24,7 @@ export const useArticleCreatingSpace = (articleCreationRef: React.RefObject<IMai
       const tinyRef = articleCreationRef.current?.getTinyRef()?.current!;
       let articleSetId = id;
 
-      if (withoutSet){
+      if (isFirst){
         article.language = UkrainianLanguage;
         articleSetId = (await tinyRef.createArticleSet(article))!.toString();
       }
@@ -38,7 +38,7 @@ export const useArticleCreatingSpace = (articleCreationRef: React.RefObject<IMai
       const result = await _articlesApi.create(articleSetId!, article.language!, request);
 
       ArticleStorage.clearArticleData();
-      setArticle(defaultArticleState);
+      setArticle(defaultArticleState(isFirst));
 
       enqueueSuccess('Збережено!')
       navigate('/article/' + result.articleSetId + '/' + result.languageCode);

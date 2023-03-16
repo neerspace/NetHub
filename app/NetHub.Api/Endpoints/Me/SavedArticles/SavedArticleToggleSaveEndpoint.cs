@@ -2,10 +2,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NeerCore.Data.EntityFramework.Extensions;
+using NeerCore.Exceptions;
 using NetHub.Data.SqlServer.Entities;
 using NetHub.Data.SqlServer.Entities.Articles;
+using NetHub.Data.SqlServer.Enums;
 using NetHub.Models.ArticleSets.Articles;
-using NetHub.Shared.Api;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
 using NetHub.Shared.Api.Swagger;
@@ -22,6 +23,14 @@ public sealed class SavedArticleToggleSaveEndpoint : ActionEndpoint<ArticleQuery
     {
         var userId = UserProvider.UserId;
 
+        var article = await Database.Set<Article>()
+            .Where(al => al.ArticleSetId == request.Id
+                         && al.LanguageCode == request.LanguageCode)
+            .FirstOr404Async(ct);
+
+        if (article.Status != ContentStatus.Published)
+            throw new NotFoundException<Article>();
+
         var savedArticleEntity = await Database.Set<SavedArticle>()
             .Include(sa => sa.Article)
             .Where(sa => sa.Article != null
@@ -31,11 +40,6 @@ public sealed class SavedArticleToggleSaveEndpoint : ActionEndpoint<ArticleQuery
 
         if (savedArticleEntity is null)
         {
-            var article = await Database.Set<Article>()
-                .Where(al => al.ArticleSetId == request.Id
-                    && al.LanguageCode == request.LanguageCode)
-                .FirstOr404Async(ct);
-
             await Database.Set<SavedArticle>().AddAsync(new SavedArticle
             {
                 UserId = userId,

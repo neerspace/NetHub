@@ -13,4 +13,5 @@ public class ArticleSetModel
     public int Rate { get; set; }
     public ArticleModel[]? Articles { get; set; }
     public string[] Tags { get; set; } = default!;
+    public string[] ImagesLinks { get; set; } = default!;
 }

@@ -13,10 +13,6 @@ import ByYouArticles from "../../components/Article/ByYou/ByYouArticles";
 const ByYouSpace: Page = () => {
   const {articlesAccessor} = useByYouContext();
 
-  console.log('success', articlesAccessor.isSuccess)
-  console.log(articlesAccessor.data)
-
-
   const className = useColorModeValue(cl.black, cl.white);
 
   const items: ILibraryItem[] = [
@@ -25,7 +21,6 @@ const ByYouSpace: Page = () => {
       component: articlesAccessor.isError
           ? <ErrorBlock>{ErrorsHandler.default(articlesAccessor.error.statusCode)}</ErrorBlock>
           : <ByYouArticles/>
-          // : <p>hello</p>
     },
     {
       name: 'Курс',

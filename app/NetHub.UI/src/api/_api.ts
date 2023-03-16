@@ -3348,6 +3348,7 @@ export class ArticleModel implements IArticleModel {
     updated!: DateTime | null;
     published!: DateTime | null;
     banned!: DateTime | null;
+    banReason!: string | null;
     isSaved!: boolean;
     savedDate!: DateTime | null;
     vote!: Vote | null;
@@ -3391,6 +3392,7 @@ export class ArticleModel implements IArticleModel {
             this.updated = _data["updated"] ? DateTime.fromISO(_data["updated"].toString()) : <any>null;
             this.published = _data["published"] ? DateTime.fromISO(_data["published"].toString()) : <any>null;
             this.banned = _data["banned"] ? DateTime.fromISO(_data["banned"].toString()) : <any>null;
+            this.banReason = _data["banReason"] !== undefined ? _data["banReason"] : <any>null;
             this.isSaved = _data["isSaved"] !== undefined ? _data["isSaved"] : <any>null;
             this.savedDate = _data["savedDate"] ? DateTime.fromISO(_data["savedDate"].toString()) : <any>null;
             this.vote = _data["vote"] !== undefined ? _data["vote"] : <any>null;
@@ -3424,6 +3426,7 @@ export class ArticleModel implements IArticleModel {
         data["updated"] = this.updated ? this.updated.toString() : <any>null;
         data["published"] = this.published ? this.published.toString() : <any>null;
         data["banned"] = this.banned ? this.banned.toString() : <any>null;
+        data["banReason"] = this.banReason !== undefined ? this.banReason : <any>null;
         data["isSaved"] = this.isSaved !== undefined ? this.isSaved : <any>null;
         data["savedDate"] = this.savedDate ? this.savedDate.toString() : <any>null;
         data["vote"] = this.vote !== undefined ? this.vote : <any>null;
@@ -3446,6 +3449,7 @@ export interface IArticleModel {
     updated: DateTime | null;
     published: DateTime | null;
     banned: DateTime | null;
+    banReason: string | null;
     isSaved: boolean;
     savedDate: DateTime | null;
     vote: Vote | null;
@@ -3510,6 +3514,7 @@ export class ArticleSetModel implements IArticleSetModel {
     rate!: number;
     articles!: ArticleModel[] | null;
     tags!: string[];
+    imagesLinks!: string[];
 
     constructor(data?: IArticleSetModel) {
         if (data) {
@@ -3550,6 +3555,14 @@ export class ArticleSetModel implements IArticleSetModel {
             else {
                 this.tags = <any>null;
             }
+            if (Array.isArray(_data["imagesLinks"])) {
+                this.imagesLinks = [] as any;
+                for (let item of _data["imagesLinks"])
+                    this.imagesLinks!.push(item);
+            }
+            else {
+                this.imagesLinks = <any>null;
+            }
         }
     }
 
@@ -3577,6 +3590,11 @@ export class ArticleSetModel implements IArticleSetModel {
             for (let item of this.tags)
                 data["tags"].push(item);
         }
+        if (Array.isArray(this.imagesLinks)) {
+            data["imagesLinks"] = [];
+            for (let item of this.imagesLinks)
+                data["imagesLinks"].push(item);
+        }
         return data;
     }
 }
@@ -3589,6 +3607,7 @@ export interface IArticleSetModel {
     rate: number;
     articles: IArticleModel[] | null;
     tags: string[];
+    imagesLinks: string[];
 }
 
 export class ArticleSetModelExtended implements IArticleSetModelExtended {

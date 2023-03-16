@@ -37,8 +37,9 @@ public sealed class ArticleSetGetByIdEndpoint : Endpoint<long, ArticleSetModelEx
         var model = articleSet.Adapt<ArticleSetModelExtended>();
         var imageIds = articleSet.Images?.Select(i => i.ResourceId).ToArray();
 
-        if (imageIds != null && imageIds.Any())
-            model.ImagesLinks = imageIds.Select(guid => Request.GetResourceUrl(guid)).ToArray();
+        model.ImagesLinks = imageIds is {Length: > 0}
+            ? imageIds.Select(guid => Request.GetResourceUrl(guid)).ToArray()
+            : Array.Empty<string>();
 
         return model;
     }

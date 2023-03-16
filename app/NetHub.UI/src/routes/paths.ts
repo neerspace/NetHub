@@ -28,12 +28,12 @@ export const paths: IPath[] = [
     requireAuthorization: false
   },
   {
-    path: '/articles/add',
+    path: '/article/add',
     Component: ArticleCreatingSpace,
     requireAuthorization: true,
   },
   {
-    path: '/articles/:id/add-localization',
+    path: '/article/:id/translate',
     Component: ArticleCreatingSpace,
     requireAuthorization: true
   },
@@ -63,7 +63,7 @@ export const paths: IPath[] = [
     requireAuthorization: false
   },
   {
-    path: '/articles/by/:contributorUsername',
+    path: '/article/creator/:contributorUsername',
     Component: ContributorArticlesSpace,
     requireAuthorization: false
   },

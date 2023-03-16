@@ -7,7 +7,7 @@ import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
 
 const ArticleImagesSettings: FC = () => {
 
-  const {images} = useArticleCreatingContext();
+  const {articleSet} = useArticleCreatingContext();
   const {enqueueSuccess, enqueueError} = useCustomSnackbar();
 
   const onClickHandle = (link: string) => {
@@ -18,7 +18,7 @@ const ArticleImagesSettings: FC = () => {
 
   return (
     <div className={classes.images}>
-      {images!.data!.map(src =>
+      {articleSet!.data!.imagesLinks!.map(src =>
         <img key={src}
              onClick={() => onClickHandle(src)}
              src={src} alt={'damaged'}

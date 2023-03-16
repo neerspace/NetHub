@@ -56,7 +56,7 @@ const TestSpace: Page = () => {
           return {...prev, email: e.target.value}
         })}
       />
-      <Button onClick={handleValidate}>Validate</Button>
+      <Button onClick={handleValidate} isDisabled={true}>Validate</Button>
       {
         JSON.stringify(state)
       }

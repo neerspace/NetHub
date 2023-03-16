@@ -10,15 +10,19 @@ import {useArticleCreatingContext} from "../../../pages/Articles/Create/ArticleC
 interface IArticleTagsSettingsProps {
   addToAllTags: (tag: string) => void,
   deleteTag: (tag: string) => void,
+  isDisabled?: boolean
 }
 
-const ArticleTagsSettings: FC<IArticleTagsSettingsProps> = ({addToAllTags, deleteTag}) => {
+const ArticleTagsSettings: FC<IArticleTagsSettingsProps> = ({addToAllTags, deleteTag, isDisabled}) => {
 
-  const {article, errors, setErrors} = useArticleCreatingContext();
+  const {article, articleSet, errors, setErrors, isFirst} = useArticleCreatingContext();
 
   const [middleTag, setMiddleTag] = useState<string>('');
 
   const addTag = async () => {
+    if (isDisabled)
+      return;
+
     if (article.tags.includes(middleTag) || middleTag === '') return;
     setErrors({...errors, tags: undefined});
     const isSuccess = regexTest(tagRegex)(middleTag);
@@ -46,8 +50,9 @@ const ArticleTagsSettings: FC<IArticleTagsSettingsProps> = ({addToAllTags, delet
               value={middleTag}
               onChange={(e) => setMiddleTag(e.target.value)}
               width={'75%'}
+              isDisabled={isDisabled}
             />
-            <Button onClick={addTag}>
+            <Button onClick={addTag} isDisabled={isDisabled}>
               <SvgSelector id={"AddIcon"}/>
             </Button>
           </Box>
@@ -59,11 +64,11 @@ const ArticleTagsSettings: FC<IArticleTagsSettingsProps> = ({addToAllTags, delet
       </div>
       <div className={classes.addedTags}>
         {
-          article.tags.length > 0 &&
           article.tags.map(tag =>
             <Tag key={tag} value={tag} onClick={deleteTag}>
               #{tag}
-            </Tag>)
+            </Tag>
+          )
         }
       </div>
     </>

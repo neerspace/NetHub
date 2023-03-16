@@ -1,6 +1,5 @@
 import React from 'react';
-import SvgSelector from "../../UI/SvgSelector/SvgSelector";
-import cl from './ArticleInfo.module.sass'
+import cl from './Article.module.sass'
 import { createImageFromInitials } from "../../../utils/logoGenerator";
 import { getArticleContributors } from "../../../pages/Articles/One/ArticleSpace.functions";
 import { useNavigate } from "react-router-dom";

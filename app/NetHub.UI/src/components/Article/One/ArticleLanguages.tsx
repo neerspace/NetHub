@@ -1,6 +1,6 @@
 ﻿import React, { FC, useState } from 'react';
 import FilledDiv from "../../UI/FilledDiv";
-import cl from "./ArticleInfo.module.sass";
+import cl from "./Article.module.sass";
 import { Button, Text, useColorModeValue } from "@chakra-ui/react";
 import SvgSelector from "../../UI/SvgSelector/SvgSelector";
 import { useParams } from "react-router-dom";
@@ -21,7 +21,6 @@ const ArticleLanguages: FC<IArticleLocalizationsProps> =
     const whiteTextColor = useColorModeValue('whiteLight', 'whiteDark');
     const buttonBg = useColorModeValue('#896DC8', '#835ADF');
     const selectedButtonBg = useColorModeValue('red', 'green');
-    const disabledButtonBg = useColorModeValue('#1F2023', '#1F2023');
 
 
     const onClickHandle = (language: Language) => {
@@ -31,17 +30,9 @@ const ArticleLanguages: FC<IArticleLocalizationsProps> =
     }
 
     const buttonColorCondition = (code: string) => {
-      if (disabled) return disabledButtonBg;
-
       return code === selectedLanguage
         ? selectedButtonBg
         : buttonBg
-    }
-
-    const buttonHoverColorCondition = () => {
-      if (disabled) return disabledButtonBg;
-
-      return '#BBAFEA';
     }
 
     return (
@@ -50,17 +41,13 @@ const ArticleLanguages: FC<IArticleLocalizationsProps> =
         <div className={cl.translates}>
           {languages.map(language =>
             <Button
+              isDisabled={disabled}
               onClick={() => onClickHandle(language)}
               key={language.code}
               borderRadius={'10px'}
               padding={'5px 16px'}
               width={'fit-content'}
               backgroundColor={buttonColorCondition(language.code)}
-              _hover={
-                {
-                  bg: buttonHoverColorCondition()
-                }
-              }
             >
               <Text as={'p'} mr={2} color={whiteTextColor}>
                 {language.code.toUpperCase()}

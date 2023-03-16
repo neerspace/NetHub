@@ -1,6 +1,5 @@
 import React from 'react';
 import ArticlesThread from "../../../components/Article/Thread/ArticlesThread";
-import ArticlesThreadSpaceSkeleton from "../Thread/ArticlesThreadSpaceSkeleton";
 import Currency from "../../../components/Currency/Currency";
 import { Skeleton, Text } from "@chakra-ui/react";
 import ArticlesThreadTitle from "../../../components/Article/Thread/ArticlesThreadTitle";
@@ -10,6 +9,7 @@ import ContributorArticlesSpaceProvider, {
 import Layout, { Page } from "../../../components/Layout/Layout";
 import ErrorBlock from "../../../components/Layout/ErrorBlock";
 import { ErrorsHandler } from "../../../utils/ErrorsHandler";
+import ArticlesShortSkeleton from "../../../components/Article/Shared/ArticlesShortSkeleton";
 
 const ContributorArticlesSpace: Page = () => {
   const {
@@ -42,7 +42,7 @@ const ContributorArticlesSpace: Page = () => {
         ?
         <ErrorBlock>{ErrorsHandler.default(contributorArticlesAccessor.error.statusCode)}</ErrorBlock>
         : !contributorArticlesAccessor.isSuccess
-          ? <ArticlesThreadSpaceSkeleton/>
+          ? <ArticlesShortSkeleton/>
           : <ArticlesThread
             articles={contributorArticlesAccessor.data!}
             setArticles={setContributorArticles}

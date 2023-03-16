@@ -10,7 +10,7 @@ import {
   useArticleCreatingContext
 } from "../../../pages/Articles/Create/ArticleCreatingSpace.Provider";
 import ArticleLanguages from "../One/ArticleLanguages";
-import cl from "../One/ArticleInfo.module.sass";
+import cl from "../One/Article.module.sass";
 
 interface IArticleSettingsProps {
   createArticle: () => Promise<void>,
@@ -22,9 +22,9 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle}) => {
     article,
     setArticle,
     languagesAccessor,
-    images,
+    articleSet,
     errors,
-    withoutSet
+    isFirst
   } = useArticleCreatingContext();
 
   const handleSetLink = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +52,7 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle}) => {
         !languagesAccessor.isSuccess || !languagesAccessor.isSuccess
           ? <Skeleton height={100} className={cl.infoBlock}/>
           : <ArticleLanguages
-            disabled={withoutSet}
+            disabled={isFirst}
             languages={
               languagesAccessor.data.map(l => {
                 return {
@@ -62,20 +62,22 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle}) => {
               })
             }/>
       }
-      <FilledDiv>
+      <FilledDiv className={cl.infoBlock}>
         <Text as={'p'} className={classes.title}>Теги по темам</Text>
         <ArticleTagsSettings
+          isDisabled={!isFirst}
           addToAllTags={handleSetTags}
           deleteTag={handleDeleteTag}
         />
         <Text as={'p'} className={classes.specification}>*натисність на тег, для його
           видалення</Text>
       </FilledDiv>
-      <FilledDiv className={classes.settingsItem}>
+      <FilledDiv className={cl.infoBlock}>
         <TitleInput
+          isDisabled={!isFirst}
           isInvalid={!!errors.originalLink}
           errorMessage={errors.originalLink?._errors.join(', ')}
-          value={article.originalLink ?? undefined}
+          value={article.originalArticleLink ?? undefined}
           onChange={handleSetLink}
           title={"Посилання на оригінал "}
           placeholder={"Посилання на статтю"}
@@ -86,8 +88,8 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle}) => {
           посилання на
           оригінал</Text>
       </FilledDiv>
-      {images?.data !== undefined && images.data.length > 0 &&
-        <FilledDiv className={classes.settingsItem}>
+      {articleSet?.data !== undefined && articleSet?.data?.imagesLinks.length > 0 &&
+        <FilledDiv className={cl.infoBlock}>
           <Text as={'p'} className={classes.title}>Пропоновані зображення</Text>
           <ArticleImagesSettings/>
           <Text as={'p'} className={classes.specification}>*натисність, щоб скопіювати посилання на
@@ -96,7 +98,7 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle}) => {
       }
       <Button onClick={createArticle}>Зберегти статтю</Button>
       {/*{<pre>{JSON.stringify(errors, null, 2)}</pre>}*/}
-      {/*{<pre>{JSON.stringify(article, null, 2)}</pre>}*/}
+      {<pre>{JSON.stringify(article, null, 2)}</pre>}
     </div>
   );
 };

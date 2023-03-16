@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NetHub.Data.SqlServer.Entities.Articles;
 using NetHub.Extensions;
 using NetHub.Shared.Api.Abstractions;
 using NetHub.Shared.Api.Constants;
@@ -20,8 +21,7 @@ public class MeArticleGetEndpoint: ResultEndpoint<ArticleModel[]>
         long userId = UserProvider.UserId;
 
         var articles = await Database
-            .GetExtendedArticles(userId)
-            // .Where(a => a.ArticleSet.AuthorId == userId)
+            .GetExtendedArticles(userId, whereExpression: a => a.ArticleSet!.AuthorId == userId)
             .ProjectToType<ArticleModel>()
             .ToArrayAsync(ct);
 

@@ -34,7 +34,8 @@ const PublicProfile = () => {
             </div>
             <Button
               fontSize={'14px'}
-              onClick={async () => navigate('/articles/by/' + user.userName)}
+              onClick={async () => navigate('/article/creator' +
+                '/' + user.userName)}
               minW={'120px'}
             >
               Показати

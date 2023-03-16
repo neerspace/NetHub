@@ -3,7 +3,6 @@ import {BoxProps, useColorModeValue} from "@chakra-ui/react";
 import FilledDiv from "../FilledDiv";
 
 interface IActionProps extends BoxProps {
-
 }
 
 const Actions: FC<IActionProps> = (props) => {
