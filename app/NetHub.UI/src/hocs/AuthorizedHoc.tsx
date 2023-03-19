@@ -22,25 +22,20 @@ const AuthorizedHoc = ({children: Children, requireAuthorization}: IAuthorizedPr
     isUserSignedIn().then(setAuthResult);
   }, [window.location.pathname]);
 
-  //TODO: refactor this
   async function isUserSignedIn(): Promise<boolean> {
     const accessToken = await getOrRefreshAccessToken();
-    if (accessToken) {
-      const jwt = jwtDecode<IJwtPayload>(JWTStorage.getAccessToken()!);
-
-      if (!isLogin) {
-        console.log('hoc')
-        login({
-          username: jwt.username,
-          profilePhotoUrl: jwt.image,
-          firstName: jwt.firstname,
-          lastName: null
-        });
-      }
-      return true;
+    //if user authorized and data doesn't set in store
+    if (accessToken && !isLogin) {
+      const jwt = jwtDecode<IJwtPayload>(accessToken);
+      login({
+        username: jwt.username,
+        profilePhotoUrl: jwt.image,
+        firstName: jwt.firstname,
+        lastName: null
+      });
     }
 
-    return false;
+    return !!accessToken;
   }
 
   return <Children.Provider>
