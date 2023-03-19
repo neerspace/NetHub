@@ -1,7 +1,7 @@
 ﻿import React, { FC, useState } from 'react';
 import FilledDiv from "../../UI/FilledDiv";
 import cl from "./Article.module.sass";
-import { Button, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Button, Text, useColorModeValue } from "@chakra-ui/react";
 import SvgSelector from "../../UI/SvgSelector/SvgSelector";
 import { useParams } from "react-router-dom";
 
@@ -9,11 +9,12 @@ type Language = { code: string, action: () => void }
 
 interface IArticleLocalizationsProps {
   languages: Language[],
-  disabled?: boolean
+  disabled?: boolean,
+  errorMessage?: string
 }
 
 const ArticleLanguages: FC<IArticleLocalizationsProps> =
-  ({languages, disabled}) => {
+  ({languages, disabled, errorMessage}) => {
     const {code} = useParams();
 
     const [selectedLanguage, setSelectedLanguage] = useState<string | null>(code ?? null);
@@ -21,7 +22,7 @@ const ArticleLanguages: FC<IArticleLocalizationsProps> =
     const whiteTextColor = useColorModeValue('whiteLight', 'whiteDark');
     const buttonBg = useColorModeValue('#896DC8', '#835ADF');
     const selectedButtonBg = useColorModeValue('red', 'green');
-
+    const errorColor = useColorModeValue('error', 'errorDark');
 
     const onClickHandle = (language: Language) => {
       if (disabled) return;
@@ -56,6 +57,11 @@ const ArticleLanguages: FC<IArticleLocalizationsProps> =
             </Button>
           )}
         </div>
+        {
+          errorMessage
+            ? <Box mt={'0.5rem'} color={errorColor} fontSize={'0.875rem'}>{errorMessage}</Box>
+            : null
+        }
       </FilledDiv>
     );
   };

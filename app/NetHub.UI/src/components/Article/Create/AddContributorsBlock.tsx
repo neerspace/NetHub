@@ -24,7 +24,7 @@ const AddContributorsBlock: FC<IAddContributorsBlockProps> = ({article, setArtic
     setContributors(contributors);
     setArticle({
       ...article, contributors: contributors.map(c => {
-        return {userId: c.user.id, role: c.role, userName: c.user.userName}
+        return {userId: c.user.id, role: c.role, userName: c.user.userName, profilePhotoUrl: c.user.profilePhotoUrl}
       })
     })
   }

@@ -1,14 +1,14 @@
 import React, { useRef } from 'react';
 import ArticleSettings from '../../../components/Article/Create/ArticleSettings';
-import Layout, { Page } from "../../../components/Layout/Layout";
 import CreateArticleForm from "../../../components/Article/Create/CreateArticleForm";
 import { useTranslation } from "react-i18next";
 import ArticleCreatingSpaceProvider from "./ArticleCreatingSpace.Provider";
 import { useArticleCreatingSpace } from "./ArticleCreatingSpace.functions";
+import Dynamic, { IPage } from "../../../components/Layout/Dynamic";
 
 type CreateArticleFormRef = React.ElementRef<typeof CreateArticleForm>
 
-const ArticleCreatingSpace: Page = () => {
+const ArticleCreatingSpace: IPage = () => {
   const {t} = useTranslation();
 
   const articleCreationRef = useRef<CreateArticleFormRef>(null);
@@ -21,10 +21,10 @@ const ArticleCreatingSpace: Page = () => {
   };
 
   return (
-    <Layout Titles={titles}>
+    <Dynamic Titles={titles}>
       <CreateArticleForm ref={articleCreationRef}/>
       <ArticleSettings createArticle={createArticle.mutateAsync}/>
-    </Layout>
+    </Dynamic>
   );
 }
 

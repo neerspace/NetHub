@@ -2,7 +2,10 @@ using FluentValidation;
 
 namespace NetHub.Models.Users;
 
-public sealed record UserSearchRequest(string[] Usernames);
+public sealed class UserSearchRequest
+{
+    public string[] Usernames { get; init; }
+}
 
 internal sealed class SearchUserValidator : AbstractValidator<UserSearchRequest>
 {

@@ -38,7 +38,7 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
     const createArticleSet = async (article: IArticleCreateExtendedRequest) => {
       const request = new ArticleSetCreateRequest({
         tags: article.tags,
-        originalArticleLink: article.originalLink ? article.originalLink : null
+        originalArticleLink: article.originalArticleLink ? article.originalArticleLink : null
       });
 
       const id = (await _articlesSetsApi.create(request)).id;
@@ -62,7 +62,7 @@ const TinyInput: ForwardRefRenderFunction<ITinyInputHandle, ITinyInputProps> =
         await saveImageCallback(id);
       },
       getHtmlBody() {
-        return getHtmlBody();
+        return getHtmlBody() ?? '';
       }
     }), [saveImageCallback])
 

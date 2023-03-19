@@ -1,11 +1,20 @@
 import SvgSelector from "../../UI/SvgSelector/SvgSelector";
 import classes from "./ArticleCreating.module.sass"
-import React, {FC, useState} from "react";
+import React, { FC, useState } from "react";
 import Tag from "../One/Body/Tag";
-import {regexTest} from "../../../utils/validators";
-import {tagRegex} from "../../../utils/regex";
-import {Box, Button, FormControl, FormErrorMessage, Input} from "@chakra-ui/react";
-import {useArticleCreatingContext} from "../../../pages/Articles/Create/ArticleCreatingSpace.Provider";
+import { regexTest } from "../../../utils/validators";
+import { tagRegex } from "../../../utils/regex";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormErrorMessage,
+  Input,
+  useColorModeValue
+} from "@chakra-ui/react";
+import {
+  useArticleCreatingContext
+} from "../../../pages/Articles/Create/ArticleCreatingSpace.Provider";
 
 interface IArticleTagsSettingsProps {
   addToAllTags: (tag: string) => void,
@@ -13,7 +22,11 @@ interface IArticleTagsSettingsProps {
   isDisabled?: boolean
 }
 
-const ArticleTagsSettings: FC<IArticleTagsSettingsProps> = ({addToAllTags, deleteTag, isDisabled}) => {
+const ArticleTagsSettings: FC<IArticleTagsSettingsProps> = ({
+                                                              addToAllTags,
+                                                              deleteTag,
+                                                              isDisabled
+                                                            }) => {
 
   const {article, articleSet, errors, setErrors, isFirst} = useArticleCreatingContext();
 
@@ -36,7 +49,7 @@ const ArticleTagsSettings: FC<IArticleTagsSettingsProps> = ({addToAllTags, delet
       });
       return;
     }
-    addToAllTags(middleTag)
+    addToAllTags(middleTag.toLowerCase())
     setMiddleTag('');
   }
 
@@ -64,11 +77,16 @@ const ArticleTagsSettings: FC<IArticleTagsSettingsProps> = ({addToAllTags, delet
       </div>
       <div className={classes.addedTags}>
         {
-          article.tags.map(tag =>
-            <Tag key={tag} value={tag} onClick={deleteTag}>
-              #{tag}
-            </Tag>
-          )
+          isFirst
+            ? article.tags.map(tag =>
+              <Tag key={tag} value={tag} onClick={deleteTag} isDisabled={isDisabled}>
+                #{tag}
+              </Tag>)
+            : articleSet?.data?.tags.map(tag =>
+              <Tag key={tag} value={tag} onClick={deleteTag} isDisabled={isDisabled}>
+                #{tag}
+              </Tag>
+            )
         }
       </div>
     </>

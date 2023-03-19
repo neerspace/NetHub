@@ -15,8 +15,8 @@ export const CreateArticleFormSchema = u.object({
     .array()
     .min(3, 'Можлива кількість тегів - від 3 до 20')
     .max(20, 'Можлива кількість тегів - від 3 до 20'),
-  originalLink: u.string()
+  originalArticleLink: u.string()
     .regex(urlRegex, 'Не вірне посилання')
     .or(u.literal('')),
-  language: u.string().min(2).max(2)
+  language: u.string().min(2, 'Мова статті обов\'язкова').max(2)
 })

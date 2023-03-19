@@ -4,5 +4,5 @@ namespace NetHub.Models.ArticleSets;
 
 public sealed class ArticleSetModelExtended : ArticleSetModel
 {
-    public string[]? ImagesLinks { get; set; }
+    public string[] ImagesLinks { get; set; }
 }

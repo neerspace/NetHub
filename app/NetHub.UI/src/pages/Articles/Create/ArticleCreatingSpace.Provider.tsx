@@ -13,7 +13,7 @@ import { ApiError } from "../../../types/ApiError";
 import { useParams } from "react-router-dom";
 import { z as u } from "zod";
 import {
-  ArticleSetModel,
+  ArticleSetModel, ArticleSetModelExtended,
   IArticleCreateRequest,
   IArticleSetModelExtended,
   LanguageModel
@@ -26,36 +26,23 @@ import { Article } from "@mui/icons-material";
 
 export interface IArticleCreateExtendedRequest extends IArticleCreateRequest {
   tags: string[],
-  originalLink: string | null,
-  language: string | null
+  originalArticleLink: string | null,
+  language: string
 }
 
 interface ContextType {
   article: IArticleCreateExtendedRequest,
-  defaultArticleState: (isFirst: boolean) => IArticleCreateExtendedRequest,
   setArticle: React.Dispatch<React.SetStateAction<IArticleCreateExtendedRequest>>,
   setArticleValue: (key: keyof IArticleCreateExtendedRequest) => (value: any) => void,
   languagesAccessor: UseQueryResult<LanguageModel[], ApiError>,
-  articleSet?: UseQueryResult<ArticleSetModel, ApiError>,
+  articleSet?: UseQueryResult<ArticleSetModelExtended, ApiError>,
   errors: CreateArticleFormError,
   setErrors: (errors: CreateArticleFormError) => void,
   isFirst: boolean
 }
 
-const defaultState: () => IArticleCreateExtendedRequest = () => {
-  return {
-    title: ArticleStorage.getTitle() ?? '',
-    description: ArticleStorage.getDescription() ?? '',
-    html: ArticleStorage.getHtml() ?? '',
-    // tags: ArticleStorage.getTags() ? JSON.parse(ArticleStorage.getTags()!) : [] as string[],
-    tags: ArticleStorage.getTags() ? JSON.parse(ArticleStorage.getTags()!) : ['test1', 'test2', 'test3'],
-    originalLink: ''
-  } as unknown as IArticleCreateExtendedRequest
-};
-
 const InitialContextValue: ContextType = {
   article: {} as IArticleCreateExtendedRequest,
-  defaultArticleState: () => {},
   setArticle: () => {
   },
   setArticleValue: () => () => {
@@ -76,7 +63,8 @@ export type CreateArticleFormError = u.ZodFormattedError<{
   title: string,
   description: string,
   tags: string[],
-  originalLink: string | null
+  originalLink: string | null,
+  language: string
 }>;
 
 const ArticleCreatingProvider: FC<PropsWithChildren> = ({children}) => {
@@ -84,28 +72,43 @@ const ArticleCreatingProvider: FC<PropsWithChildren> = ({children}) => {
   const isFirst = !id;
 
   const articleSet = useQuery<ArticleSetModel, ApiError>(QueryClientKeysHelper.ArticleSet(+id!), () => _articlesSetsApi.getById(+id!),
-    {enabled: !isFirst})
+    {
+      enabled: !isFirst, onSuccess: (result) => {
+        setArticle(prev => ({
+            ...prev,
+            tags: result.tags,
+            originalArticleLink: result.originalArticleLink
+          })
+        )
+      },
+    });
 
-  const getDefaultState = useCallback((isFirst: boolean): IArticleCreateExtendedRequest => {
-    return {
+
+  const [article, setArticle] = useState<IArticleCreateExtendedRequest>(
+    {
       title: isFirst ? ArticleStorage.getTitle() ?? '' : '',
       description: isFirst ? ArticleStorage.getDescription() ?? '' : '',
       html: isFirst ? ArticleStorage.getHtml() ?? '' : '',
-      tags: isFirst ? JSON.parse(ArticleStorage.getTags()) ?? [] as string[] : articleSet?.data?.tags ?? [] as string[],
-      originalLink: isFirst ? ArticleStorage.getLink() ?? '' : articleSet?.data?.originalArticleLink ?? ''
+      tags: JSON.parse(ArticleStorage.getTags() ?? '[]'),
+      originalArticleLink: ArticleStorage.getLink() ?? ''
     } as IArticleCreateExtendedRequest
-  },[id, articleSet.data, isFirst]);
-
-  useEffect(() =>{
-    setArticle(getDefaultState(isFirst))
-  }, [id, articleSet.data, isFirst])
-
-  const [article, setArticle] = useState<IArticleCreateExtendedRequest>(getDefaultState(isFirst));
+  );
   const languagesAccessor = useQuery<LanguageModel[], ApiError>(QueryClientKeysHelper.Languages(), () => _languagesApi.getAll())
 
-
-
   const [errors, setErrors] = useState<CreateArticleFormError>({_errors: []});
+  useEffect(() => {
+    setErrors({_errors: []})
+
+    //refetch every time articleSet id changes
+    if (isFirst)
+      setArticle({
+        ...article,
+        tags: JSON.parse(ArticleStorage.getTags() ?? '[]'),
+        originalArticleLink: ArticleStorage.getLink() ?? ''
+      })
+    else
+      articleSet.refetch()
+  }, [id])
 
   const setArticleValue = (key: string) => (value: any) => {
     setArticle((prev) => {
@@ -120,7 +123,6 @@ const ArticleCreatingProvider: FC<PropsWithChildren> = ({children}) => {
       setArticleValue,
       languagesAccessor,
       articleSet,
-      defaultArticleState: (isFirst: boolean) => getDefaultState(isFirst),
       errors,
       setErrors,
       isFirst

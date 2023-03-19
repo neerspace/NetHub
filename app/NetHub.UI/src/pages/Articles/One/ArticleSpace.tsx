@@ -6,11 +6,11 @@ import {useParams} from "react-router-dom";
 import ArticleBodySkeleton from "../../../components/Article/One/Body/ArticleBodySkeleton";
 import {Box, Skeleton} from "@chakra-ui/react";
 import ArticleSpaceProvider, {useArticleContext} from "./ArticleSpace.Provider";
-import Layout, {Page} from "../../../components/Layout/Layout";
 import ErrorBlock from "../../../components/Layout/ErrorBlock";
 import {ErrorsHandler} from "../../../utils/ErrorsHandler";
+import Dynamic, { IPage } from "../../../components/Layout/Dynamic";
 
-const ArticleSpace: Page = () => {
+const ArticleSpace: IPage = () => {
   const {articleSetAccessor, articleAccessor} = useArticleContext();
   const {id, code} = useParams();
 
@@ -26,7 +26,7 @@ const ArticleSpace: Page = () => {
   const isSuccess = articleSetAccessor.isSuccess && articleAccessor.isSuccess;
   const isArticleError = articleAccessor.isError;
 
-  return <Layout Config={config}>
+  return <Dynamic Config={config}>
     <Box width={'100%'} display={'flex'} flexDirection={'column'}>
       {
         isArticleError ?
@@ -43,7 +43,7 @@ const ArticleSpace: Page = () => {
       !isSuccess
         ? <Skeleton height={200}/>
         : <ArticleInfo/>}
-  </Layout>
+  </Dynamic>
 };
 
 ArticleSpace.Provider = ArticleSpaceProvider;

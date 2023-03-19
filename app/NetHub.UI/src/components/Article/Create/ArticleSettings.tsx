@@ -28,7 +28,7 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle}) => {
   } = useArticleCreatingContext();
 
   const handleSetLink = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setArticle({...article, originalLink: event.target.value});
+    setArticle({...article, originalArticleLink: event.target.value});
     ArticleStorage.setLink(event.target.value);
   }
   const handleSetTags = (tag: string) => {
@@ -37,6 +37,10 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle}) => {
     ArticleStorage.setTags(JSON.stringify(allTags));
   }
   const handleDeleteTag = (tag: string) => {
+    //User cannot change tags if articleSet previously created
+    if (!isFirst)
+      return;
+
     const filteredTags = article.tags.filter(t => t !== tag);
     setArticle({...article, tags: filteredTags});
     ArticleStorage.setTags(JSON.stringify(filteredTags));
@@ -60,24 +64,38 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle}) => {
                   action: () => handleSetLanguage(l.code)
                 }
               })
-            }/>
+            }
+            errorMessage={errors.language?._errors.join(', ')}/>
       }
-      <FilledDiv className={cl.infoBlock}>
-        <Text as={'p'} className={classes.title}>Теги по темам</Text>
-        <ArticleTagsSettings
-          isDisabled={!isFirst}
-          addToAllTags={handleSetTags}
-          deleteTag={handleDeleteTag}
-        />
-        <Text as={'p'} className={classes.specification}>*натисність на тег, для його
-          видалення</Text>
-      </FilledDiv>
+
+      {isFirst
+        ? <FilledDiv className={cl.infoBlock}>
+          <Text as={'p'} className={classes.title}>Теги по темам</Text>
+          <ArticleTagsSettings
+            isDisabled={!isFirst}
+            addToAllTags={handleSetTags}
+            deleteTag={handleDeleteTag}/>
+          <Text as={'p'} className={classes.specification}>*натисність на тег, для його
+            видалення</Text>
+        </FilledDiv>
+        : !articleSet?.isSuccess ? <Skeleton height={100} className={cl.infoBlock}/>
+          : <FilledDiv className={cl.infoBlock}>
+            <Text as={'p'} className={classes.title}>Теги по темам</Text>
+            <ArticleTagsSettings
+              isDisabled={!isFirst}
+              addToAllTags={handleSetTags}
+              deleteTag={handleDeleteTag}
+            />
+            <Text as={'p'} className={classes.specification}>*натисність на тег, для його
+              видалення</Text>
+          </FilledDiv>
+      }
       <FilledDiv className={cl.infoBlock}>
         <TitleInput
           isDisabled={!isFirst}
           isInvalid={!!errors.originalLink}
           errorMessage={errors.originalLink?._errors.join(', ')}
-          value={article.originalArticleLink ?? undefined}
+          value={isFirst ? article.originalArticleLink ?? undefined : articleSet?.data?.originalArticleLink ?? undefined}
           onChange={handleSetLink}
           title={"Посилання на оригінал "}
           placeholder={"Посилання на статтю"}
@@ -88,7 +106,7 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle}) => {
           посилання на
           оригінал</Text>
       </FilledDiv>
-      {articleSet?.data !== undefined && articleSet?.data?.imagesLinks.length > 0 &&
+      {articleSet?.data !== undefined && articleSet.data.imagesLinks.length > 0 &&
         <FilledDiv className={cl.infoBlock}>
           <Text as={'p'} className={classes.title}>Пропоновані зображення</Text>
           <ArticleImagesSettings/>
@@ -99,6 +117,7 @@ const ArticleSettings: FC<IArticleSettingsProps> = ({createArticle}) => {
       <Button onClick={createArticle}>Зберегти статтю</Button>
       {/*{<pre>{JSON.stringify(errors, null, 2)}</pre>}*/}
       {<pre>{JSON.stringify(article, null, 2)}</pre>}
+      {<pre>{JSON.stringify(articleSet?.data?.tags, null, 2)}</pre>}
     </div>
   );
 };

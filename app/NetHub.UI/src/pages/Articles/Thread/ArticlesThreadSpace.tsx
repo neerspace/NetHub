@@ -7,12 +7,12 @@ import ArticlesThreadSpaceProvider, {
   useArticlesThreadContext
 } from "./ArticlesThreadSpace.Provider";
 import ArticlesThread from "../../../components/Article/Thread/ArticlesThread";
-import Layout, { Page } from "../../../components/Layout/Layout";
 import ErrorBlock from '../../../components/Layout/ErrorBlock';
 import { ErrorsHandler } from "../../../utils/ErrorsHandler";
 import ArticlesShortSkeleton from "../../../components/Article/Shared/ArticlesShortSkeleton";
+import Dynamic, { IPage } from "../../../components/Layout/Dynamic";
 
-const ArticlesThreadSpace: Page = () => {
+const ArticlesThreadSpace: IPage = () => {
   const {t} = useTranslation();
 
 
@@ -35,7 +35,7 @@ const ArticlesThreadSpace: Page = () => {
   }
 
 
-  return <Layout Titles={titles}>
+  return <Dynamic Titles={titles}>
     {
       articlesAccessor.isError
         ? <ErrorBlock>{ErrorsHandler.default(articlesAccessor.error.statusCode)}</ErrorBlock>
@@ -47,7 +47,7 @@ const ArticlesThreadSpace: Page = () => {
           />
     }
     <Currency/>
-  </Layout>;
+  </Dynamic>;
 }
 
 ArticlesThreadSpace.Provider = ArticlesThreadSpaceProvider;

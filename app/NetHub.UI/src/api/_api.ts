@@ -3011,6 +3011,104 @@ export class UsersApi {
     }
 
     /**
+     * @param key (optional) 
+     * @return Success
+     */
+    usersFind(key: string | undefined , cancelToken?: CancelToken | undefined): Promise<PrivateUserResult[]> {
+        let url_ = this.baseUrl + "/v1/users/find?";
+        if (key === null)
+            throw new Error("The parameter 'key' cannot be null.");
+        else if (key !== undefined)
+            url_ += "key=" + encodeURIComponent("" + key) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUsersFind(_response);
+        });
+    }
+
+    protected processUsersFind(response: AxiosResponse): Promise<PrivateUserResult[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(PrivateUserResult.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<PrivateUserResult[]>(result200);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Validation Failed", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ValidationError.fromJS(resultData401);
+            return throwException("Not Authorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ErrorDto.fromJS(resultData403);
+            return throwException("Permission Denied", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500  = _responseText;
+            result500 = ErrorDto.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<PrivateUserResult[]>(null as any);
+    }
+
+    /**
      * @param page (optional) 
      * @param perPage (optional) 
      * @return Success
@@ -3618,7 +3716,7 @@ export class ArticleSetModelExtended implements IArticleSetModelExtended {
     rate!: number;
     articles!: ArticleModel[] | null;
     tags!: string[];
-    imagesLinks!: string[] | null;
+    imagesLinks!: string[];
 
     constructor(data?: IArticleSetModelExtended) {
         if (data) {
@@ -3711,7 +3809,7 @@ export interface IArticleSetModelExtended {
     rate: number;
     articles: IArticleModel[] | null;
     tags: string[];
-    imagesLinks: string[] | null;
+    imagesLinks: string[];
 }
 
 export class ArticleSetUpdateRequest implements IArticleSetUpdateRequest {
