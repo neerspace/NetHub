@@ -11,7 +11,7 @@ import {
   UsersApi
 } from "./_api";
 
-export const baseApiUrl = 'https://api.nethub.local:9010';
+export const baseApiUrl = '/api';
 
 const _apiInstance = axios.create(
   {
@@ -47,7 +47,9 @@ _apiInstance.interceptors.response.use(async (config) => {
     return config;
   },
   (error: AxiosError) => {
-    throw new ApiError(error.message, error.response?.status);
+    const data = error.response?.data as any;
+
+    throw new ApiError(data.message ?? '404 Bad Request', error.response?.status);
   })
 ;
 

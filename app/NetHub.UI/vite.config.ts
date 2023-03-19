@@ -7,6 +7,14 @@ export default defineConfig({
   plugins: [react(), ssl()],
   server: {
     host: true,
-    https: true
+    https: true,
+    proxy: {
+      '/api': {
+        target: 'https://api.nethub.local:9010',
+        secure: false,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    }
   }
 })
