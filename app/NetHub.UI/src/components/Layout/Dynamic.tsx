@@ -25,7 +25,7 @@ export interface ILayoutProps extends PropsWithChildren {
   Titles?: { Left?: ReactElement, Center?: ReactElement, Right?: ReactElement }
 }
 
-const Layout: FC<ILayoutProps> =
+const Dynamic: FC<ILayoutProps> =
   ({children, Config, Titles}) => {
     let left;
     let center;
@@ -39,11 +39,9 @@ const Layout: FC<ILayoutProps> =
       center = children;
     }
 
-
     return (
       <Box className={cl.mainBody} minH={'100%'}>
-        <Flag/>
-        {(Config?.Main?.header?.show ?? true) ? <Header/> : null}
+        {/*{(Config?.Main?.header?.show ?? true) ? <Header/> : null}*/}
         <Body
           Left={left}
           Center={center}
@@ -52,11 +50,11 @@ const Layout: FC<ILayoutProps> =
           Config={Config}
         />
 
-        {(Config?.Main?.footer?.show ?? true) ? <Footer/> : null}
+        {/*{(Config?.Main?.footer?.show ?? true) ? <Footer/> : null}*/}
       </Box>
     );
   };
 
-export type Page = FC & { Provider: FC<PropsWithChildren> }
+export type IPage = FC & { Provider: FC<PropsWithChildren> }
 
-export default Layout;
+export default Dynamic;

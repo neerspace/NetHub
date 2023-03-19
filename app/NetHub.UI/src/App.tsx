@@ -14,8 +14,6 @@ import { switchLocal } from './utils/localization';
 
 function App() {
   const language = useAppStore(state => state.language);
-  const login = useAppStore(state => state.login);
-
 
   useEffect(() => {
     switchLocal(language);

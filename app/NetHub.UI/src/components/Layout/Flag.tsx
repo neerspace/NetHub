@@ -1,11 +1,11 @@
 import React from 'react';
-import classes from "./Layout.module.sass";
+import cl from "./Layout.module.sass";
 
 const Flag = () => {
   return (
-    <div className={classes.flag}>
-      <div className={classes.flagBlue}></div>
-      <div className={classes.flagYellow}></div>
+    <div className={cl.flag}>
+      <div className={cl.flagBlue}></div>
+      <div className={cl.flagYellow}></div>
     </div>
   );
 };
