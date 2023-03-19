@@ -77,7 +77,7 @@ const ArticleCreatingProvider: FC<PropsWithChildren> = ({children}) => {
         setArticle(prev => ({
             ...prev,
             tags: result.tags,
-            originalArticleLink: result.originalArticleLink
+            originalArticleLink: result.originalArticleLink ?? ''
           })
         )
       },

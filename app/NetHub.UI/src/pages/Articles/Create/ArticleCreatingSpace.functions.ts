@@ -9,11 +9,13 @@ import {
   IArticleCreateExtendedRequest,
   useArticleCreatingContext
 } from "./ArticleCreatingSpace.Provider";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { IMainArticleHandle } from "../../../components/Article/Create/CreateArticleForm";
 import { ApiError } from "../../../types/ApiError";
+import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
 
 export const useArticleCreatingSpace = (articleCreationRef: React.RefObject<IMainArticleHandle>) => {
+  const queryClient = useQueryClient();
   const {enqueueSuccess, enqueueError, enqueueSnackBar} = useCustomSnackbar('info');
   const navigate = useNavigate();
   const {
@@ -51,6 +53,9 @@ export const useArticleCreatingSpace = (articleCreationRef: React.RefObject<IMai
       setArticle({} as IArticleCreateExtendedRequest);
 
       enqueueSuccess('Збережено!')
+
+      await updateArticleStates(result.articleSetId);
+
       navigate('/article/' + result.articleSetId + '/' + result.languageCode);
     } catch (e: any) {
       if (e.message.includes('exists')) {
@@ -61,6 +66,13 @@ export const useArticleCreatingSpace = (articleCreationRef: React.RefObject<IMai
       return;
     }
   };
+
+  async function updateArticleStates(articleSetId: number){
+    if (!isFirst)
+      await queryClient.invalidateQueries(QueryClientKeysHelper.ArticleSet(articleSetId));
+
+    await queryClient.invalidateQueries(QueryClientKeysHelper.ArticlesByYou());
+  }
 
   async function validateArticleForm() {
     const validationResult = CreateArticleFormSchema.safeParse(article);

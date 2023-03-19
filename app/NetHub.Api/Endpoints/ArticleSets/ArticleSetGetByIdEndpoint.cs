@@ -25,8 +25,7 @@ public sealed class ArticleSetGetByIdEndpoint : Endpoint<long, ArticleSetModelEx
         var username = UserProvider.UserName;
 
         var articleSet = await Database.Set<ArticleSet>()
-            .Include(a => a.Articles!
-                .Where(l => l.Status == ContentStatus.Published))
+            .Include(a => a.Articles!)
             .ThenInclude(l => l.Contributors).ThenInclude(c => c.User)
             .Include(a => a.Tags)!.ThenInclude(at => at.Tag)
             .Include(a => a.Images)
@@ -46,17 +45,26 @@ public sealed class ArticleSetGetByIdEndpoint : Endpoint<long, ArticleSetModelEx
 
     private static void GuardPermissions(ArticleSet articleSet, string? userName)
     {
+        bool isContributor = articleSet.Articles!
+            .Any(l => l.Contributors
+                .Select(c => c.User!.NormalizedUserName)
+                .Contains(userName, StringComparer.OrdinalIgnoreCase));
+
         if (articleSet.Articles!.Any(l => l.Status == ContentStatus.Published))
+        {
+            if (!isContributor)
+                articleSet.Articles = articleSet.Articles!
+                    .Where(as_ => as_.Status == ContentStatus.Published)
+                    .ToArray();
+
             return;
+        }
 
         if (!articleSet.Articles!.Any())
             return;
 
         if (userName is null ||
-            !articleSet.Articles!
-                .Any(l => l.Contributors
-                    .Select(c => c.User!.NormalizedUserName)
-                    .Contains(userName, StringComparer.OrdinalIgnoreCase)))
+            !isContributor)
             throw new PermissionsException();
     }
 }
