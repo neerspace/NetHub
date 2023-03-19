@@ -22,7 +22,7 @@ const ArticleShortFooter: FC<IArticleShortFooterProps> =
 
     const addArticleHandle = (e: React.MouseEvent<HTMLDivElement>) => {
       e.stopPropagation()
-      navigate( `/article/${article.articleSetId}/translate`);
+      navigate(`/article/${article.articleSetId}/translate`);
     }
 
     return (
@@ -45,6 +45,8 @@ const ArticleShortFooter: FC<IArticleShortFooterProps> =
         {
           article.status === ContentStatus.Published
             ? <ArticleSavingActions
+              articleSetId={article.articleSetId}
+              articleLanguage={article.languageCode}
               isSavedDefault={save.actual}
               onSave={save.handle}
               saveLink={`${window.location.href}article/${article.articleSetId}/${article.languageCode}`}

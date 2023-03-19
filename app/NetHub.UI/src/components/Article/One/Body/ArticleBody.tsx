@@ -122,6 +122,8 @@ const ArticleBody = () => {
           </Actions>
         </div>
         <ArticleSavingActions
+          articleSetId={article.articleSetId}
+          articleLanguage={article.languageCode}
           isSavedDefault={article.isSaved}
           onSave={handleSave}
         />

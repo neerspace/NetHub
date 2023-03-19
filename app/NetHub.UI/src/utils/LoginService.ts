@@ -25,7 +25,6 @@ export default class LoginService {
     const credential = await signInWithPopup(auth, googleProvider);
     //@ts-ignore
     const tokenResponse: IProviderTokenResponse = credential._tokenResponse;
-    console.log('token', tokenResponse.photoUrl);
 
     return {
       username: tokenResponse.email.replace(/@.*$/, ''),

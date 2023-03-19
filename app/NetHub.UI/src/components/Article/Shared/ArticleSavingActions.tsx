@@ -7,13 +7,15 @@ import Actions from "../../UI/Action/Actions";
 import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
 
 interface ISavingActionsProps {
+  articleSetId: number,
+  articleLanguage: string,
   isSavedDefault: boolean,
   onSave: () => Promise<void>,
   saveLink?: string,
   disabled?: boolean
 }
 
-const ArticleSavingActions: FC<ISavingActionsProps> = ({isSavedDefault, onSave, saveLink}) => {
+const ArticleSavingActions: FC<ISavingActionsProps> = ({articleSetId, articleLanguage, isSavedDefault, onSave, saveLink}) => {
 
   const {enqueueSnackBar: enqueueSuccess, enqueueError} = useCustomSnackbar('success');
   const queryClient = useQueryClient();
@@ -22,6 +24,9 @@ const ArticleSavingActions: FC<ISavingActionsProps> = ({isSavedDefault, onSave, 
     e.stopPropagation()
     await onSave();
     await queryClient.invalidateQueries(QueryClientKeysHelper.Keys.articles);
+    await queryClient.invalidateQueries(QueryClientKeysHelper.ArticlesByYou());
+    await queryClient.invalidateQueries(QueryClientKeysHelper.SavedArticles());
+    await queryClient.invalidateQueries(QueryClientKeysHelper.Article(articleSetId, articleLanguage))
   }
 
   function copyToClipboard(e: React.MouseEvent) {
