@@ -1,13 +1,13 @@
 import React, {FC, ReactElement, useLayoutEffect, useRef, useState} from 'react';
 import Menu from "./Menu/Menu";
 import BarWrapper from "./BarWrapper";
-import cl from './Layout.module.sass'
+import cl from './Dynamic.module.sass'
 import {Box} from "@chakra-ui/react";
 import AnimateHeight from 'react-animate-height';
 import ErrorBoundary from "./ErrorBoundary";
-import {ISectionConfig, ISideBarConfig} from "./Layout";
 import TitleEmpty from "./TitleEmpty";
 import MediaQuery from "react-responsive";
+import { ISectionConfig, ISideBarConfig } from "./Dynamic";
 
 
 export interface IBodyProps {

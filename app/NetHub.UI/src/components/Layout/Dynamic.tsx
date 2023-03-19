@@ -1,10 +1,7 @@
-import React, {FC, PropsWithChildren, ReactElement} from 'react';
-import Header from './Header/Header';
+import React, { FC, PropsWithChildren, ReactElement } from 'react';
 import Body from "./Body";
-import Flag from "./Flag";
-import {Box} from "@chakra-ui/react";
-import Footer from "./Footer/Footer";
-import cl from './Layout.module.sass';
+import { Box } from "@chakra-ui/react";
+import cl from './Dynamic.module.sass';
 
 export interface ISectionConfig {
   showError?: boolean

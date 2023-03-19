@@ -1,5 +1,4 @@
 import ArticlesThreadSpace from '../pages/Articles/Thread/ArticlesThreadSpace';
-import { Page } from "../components/Layout/Layout";
 import ArticleSpace from "../pages/Articles/One/ArticleSpace";
 import ArticleCreatingSpace from '../pages/Articles/Create/ArticleCreatingSpace';
 import SavedSpace from "../pages/Saved/SavedSpace";
@@ -9,10 +8,11 @@ import TestSpace from "../pages/TestSpace";
 import AuthSpace from "../pages/Auth/AuthSpace";
 import TeamSpace from "../pages/Team/TeamSpace";
 import ByYouSpace from "../pages/ByYou/ByYouSpace";
+import { IPage } from "../components/Layout/Dynamic";
 
 interface IPath {
   path: string,
-  Component: Page,
+  Component: IPage,
   requireAuthorization: boolean,
 }
 

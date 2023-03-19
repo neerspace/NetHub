@@ -1,5 +1,5 @@
 import React from 'react';
-import cl from "./Layout.module.sass";
+import cl from "./Dynamic.module.sass";
 
 const Flag = () => {
   return (

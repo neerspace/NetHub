@@ -5,11 +5,11 @@ import {useParams} from "react-router-dom";
 import PublicProfile from "../../components/Profile/Public/PublicProfile";
 import ProfileSpaceProvider, {useProfileContext} from "./ProfileSpace.Provider";
 import ProfileTitle from "../../components/Profile/ProfileTitle";
-import Layout, {Page} from "../../components/Layout/Layout";
 import ErrorBlock from "../../components/Layout/ErrorBlock";
 import {ErrorsHandler} from "../../utils/ErrorsHandler";
+import Dynamic, { IPage } from "../../components/Layout/Dynamic";
 
-const ProfileSpace: Page = () => {
+const ProfileSpace: IPage = () => {
   const {username} = useParams();
   const {userAccessor, dashboardAccessor} = useProfileContext();
 
@@ -21,7 +21,7 @@ const ProfileSpace: Page = () => {
     Center: <ProfileTitle/>
   }
 
-  return <Layout Titles={titles}>
+  return <Dynamic Titles={titles}>
     {
       isError
         ? <ErrorBlock>{ErrorsHandler.default(errorStatusCode!)}</ErrorBlock>
@@ -31,7 +31,7 @@ const ProfileSpace: Page = () => {
             ? <PublicProfile/>
             : <PrivateProfile/>
     }
-  </Layout>
+  </Dynamic>
 };
 
 ProfileSpace.Provider = ProfileSpaceProvider;

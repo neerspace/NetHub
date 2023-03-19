@@ -1,5 +1,4 @@
 import React from 'react';
-import Layout, { Page } from "../../components/Layout/Layout";
 import UserLibrary, { ILibraryItem } from "../../components/Library/UserLibrary";
 import { Text, useColorModeValue } from "@chakra-ui/react";
 import SvgSelector from "../../components/UI/SvgSelector/SvgSelector";
@@ -9,8 +8,9 @@ import ErrorBlock from "../../components/Layout/ErrorBlock";
 import { ErrorsHandler } from "../../utils/ErrorsHandler";
 import Currency from "../../components/Currency/Currency";
 import ByYouArticles from "../../components/Article/ByYou/ByYouArticles";
+import Dynamic, { IPage } from "../../components/Layout/Dynamic";
 
-const ByYouSpace: Page = () => {
+const ByYouSpace: IPage = () => {
   const {articlesAccessor} = useByYouContext();
 
   const className = useColorModeValue(cl.black, cl.white);
@@ -41,14 +41,14 @@ const ByYouSpace: Page = () => {
   }
 
   return (
-    <Layout Titles={titles}>
+    <Dynamic Titles={titles}>
       <UserLibrary
         items={items}
         radioGroupConfig={{
           name: 'byYou',
           defaultValue: 'Статті',
         }}/>
-    </Layout>
+    </Dynamic>
   );
 };
 

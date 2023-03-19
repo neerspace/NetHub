@@ -1,5 +1,5 @@
 import React from 'react';
-import layoutClasses from "../Layout.module.sass";
+import layoutClasses from "../Dynamic.module.sass";
 import {Box, Link, Text, useColorMode, useColorModeValue} from "@chakra-ui/react";
 import SvgSelector from "../../UI/SvgSelector/SvgSelector";
 import cl from "./Footer.module.sass";

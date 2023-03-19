@@ -6,12 +6,12 @@ import ArticlesThreadTitle from "../../../components/Article/Thread/ArticlesThre
 import ContributorArticlesSpaceProvider, {
   useContributorArticlesContext
 } from "./ContributorArticlesSpace.Provider";
-import Layout, { Page } from "../../../components/Layout/Layout";
 import ErrorBlock from "../../../components/Layout/ErrorBlock";
 import { ErrorsHandler } from "../../../utils/ErrorsHandler";
 import ArticlesShortSkeleton from "../../../components/Article/Shared/ArticlesShortSkeleton";
+import Dynamic, { IPage } from "../../../components/Layout/Dynamic";
 
-const ContributorArticlesSpace: Page = () => {
+const ContributorArticlesSpace: IPage = () => {
   const {
     languages,
     articlesLanguage,
@@ -36,7 +36,7 @@ const ContributorArticlesSpace: Page = () => {
     Right: <Text as={'h2'}>Курс</Text>
   }
 
-  return <Layout Titles={titles}>
+  return <Dynamic Titles={titles}>
     {
       contributorArticlesAccessor.isError
         ?
@@ -50,7 +50,7 @@ const ContributorArticlesSpace: Page = () => {
           />
     }
     <Currency/>
-  </Layout>
+  </Dynamic>
 }
 
 ContributorArticlesSpace.Provider = ContributorArticlesSpaceProvider;

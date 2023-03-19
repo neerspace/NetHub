@@ -5,12 +5,12 @@ import SavedArticles from "../../components/Article/Saved/SavedArticles";
 import cl from './SavedSpace.module.sass';
 import {Text, useColorModeValue} from "@chakra-ui/react";
 import SavedSpaceProvider, {useSavedArticlesContext} from "./SavedSpace.Provider";
-import Layout, {Page} from "../../components/Layout/Layout";
 import ErrorBlock from "../../components/Layout/ErrorBlock";
 import {ErrorsHandler} from "../../utils/ErrorsHandler";
 import Currency from "../../components/Currency/Currency";
+import Dynamic, { IPage } from "../../components/Layout/Dynamic";
 
-const SavedSpace: Page = () => {
+const SavedSpace: IPage = () => {
 
   const {savedArticles} = useSavedArticlesContext();
   const className = useColorModeValue(cl.black, cl.white);
@@ -42,7 +42,7 @@ const SavedSpace: Page = () => {
     </Text>
   }
 
-  return <Layout Titles={titles}>
+  return <Dynamic Titles={titles}>
     <UserLibrary
       items={items}
       radioGroupConfig={{
@@ -50,7 +50,7 @@ const SavedSpace: Page = () => {
         defaultValue: 'Статті',
       }}
     />
-  </Layout>
+  </Dynamic>
 };
 
 SavedSpace.Provider = SavedSpaceProvider;

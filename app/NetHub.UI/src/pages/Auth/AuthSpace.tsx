@@ -1,10 +1,10 @@
 import React from 'react';
 import Login from "../../components/Auth/Login";
-import {Box, Text} from "@chakra-ui/react";
-import Layout, {Page} from "../../components/Layout/Layout";
+import { Text } from "@chakra-ui/react";
+import Dynamic, { IPage } from "../../components/Layout/Dynamic";
 
 
-const AuthSpace: Page = () => {
+const AuthSpace: IPage = () => {
   const config = {Left: {showSidebar: false}}
 
   const titles = {
@@ -17,9 +17,9 @@ const AuthSpace: Page = () => {
     </Text>
   }
 
-  return <Layout Config={config} Titles={titles}>
+  return <Dynamic Config={config} Titles={titles}>
     <Login/>
-  </Layout>
+  </Dynamic>
 };
 
 AuthSpace.Provider = React.Fragment;

@@ -1,7 +1,7 @@
 import React from 'react';
 import SvgSelector from '../../UI/SvgSelector/SvgSelector';
 import cl from './Header.module.sass'
-import layoutClasses from '../Layout.module.sass'
+import layoutClasses from '../Dynamic.module.sass'
 import LoggedUserBar from './LoggedUserBar';
 import UnloggedUserBar from './UnloggedUserBar';
 import { useNavigate } from "react-router-dom";

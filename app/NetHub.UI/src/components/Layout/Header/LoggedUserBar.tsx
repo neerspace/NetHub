@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Avatar, Text, useColorModeValue } from '@chakra-ui/react';
 import classes from './Header.module.sass';
 import { createImageFromInitials } from '../../../utils/logoGenerator';
