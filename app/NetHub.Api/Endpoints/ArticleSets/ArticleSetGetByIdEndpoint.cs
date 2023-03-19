@@ -25,6 +25,8 @@ public sealed class ArticleSetGetByIdEndpoint : Endpoint<long, ArticleSetModelEx
         var username = UserProvider.UserName;
 
         var articleSet = await Database.Set<ArticleSet>()
+            .Include(a => a.Articles!.OrderBy(a => a.Language!.Order))
+            .ThenInclude(a => a.Language)
             .Include(a => a.Articles!)
             .ThenInclude(l => l.Contributors).ThenInclude(c => c.User)
             .Include(a => a.Tags)!.ThenInclude(at => at.Tag)

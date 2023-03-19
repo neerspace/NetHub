@@ -18,7 +18,7 @@ type ContextType = {
 }
 
 const InitialContextValue: ContextType = {
-  languages: [{title: 'UA', value: 'ua'}, {title: 'EN', value: 'en'}],
+  languages: [{title: 'UK', value: 'uk'}, {title: 'EN', value: 'en'}],
   articlesLanguage: localStorage.getItem('contributorArticlesLanguage') ?? UkrainianLanguage,
   setArticlesLanguage: () => {
   },
@@ -35,7 +35,7 @@ const ContributorArticlesSpaceProvider: FC<PropsWithChildren> = ({children}) => 
   const queryClient = useQueryClient();
   const {contributorUsername} = useParams();
 
-  const languages = [{title: 'UA', value: 'ua'}, {title: 'EN', value: 'en'}]
+  const languages = [{title: 'UK', value: 'uk'}, {title: 'EN', value: 'en'}]
   const [articlesLanguage, setArticlesLanguage] = useState<string>(localStorage.getItem('contributorArticlesLanguage') ?? UkrainianLanguage);
 
   const contributorAccessor = useQuery<PrivateUserResult, ApiError>(QueryClientKeysHelper.Contributor(contributorUsername!),

@@ -17,6 +17,7 @@ public sealed class LanguageListEndpoint : ResultEndpoint<LanguageModel[]>
     public override async Task<LanguageModel[]> HandleAsync(CancellationToken ct)
     {
         var languages = await Database.Set<Language>()
+            .OrderBy(l => l.Order)
             .ProjectToType<LanguageModel>()
             .ToArrayAsync(ct);
 
