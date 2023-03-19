@@ -10,15 +10,9 @@ export interface ISectionConfig {
 export interface ISideBarConfig extends ISectionConfig {
   showSidebar?: boolean
 }
-
-export interface IMainConfig {
-  header?: { show?: boolean, custom?: ReactElement }
-  footer?: { show?: boolean, custom?: ReactElement }
-}
-
 export interface ILayoutProps extends PropsWithChildren {
   children: [ReactElement, ReactElement, ReactElement] | [ReactElement, ReactElement] | ReactElement,
-  Config?: { Left?: ISideBarConfig, Center?: ISectionConfig, Right?: ISectionConfig, Main?: IMainConfig }
+  Config?: { Left?: ISideBarConfig, Center?: ISectionConfig, Right?: ISectionConfig}
   Titles?: { Left?: ReactElement, Center?: ReactElement, Right?: ReactElement }
 }
 
@@ -37,8 +31,7 @@ const Dynamic: FC<ILayoutProps> =
     }
 
     return (
-      <Box className={cl.mainBody} minH={'100%'}>
-        {/*{(Config?.Main?.header?.show ?? true) ? <Header/> : null}*/}
+      <main className={cl.mainBody}>
         <Body
           Left={left}
           Center={center}
@@ -46,9 +39,7 @@ const Dynamic: FC<ILayoutProps> =
           Titles={Titles}
           Config={Config}
         />
-
-        {/*{(Config?.Main?.footer?.show ?? true) ? <Footer/> : null}*/}
-      </Box>
+      </main>
     );
   };
 

@@ -41,7 +41,7 @@ const Body: FC<IBodyProps> =
     }, [Titles?.Center])
 
 
-    return <Box flex={'1 1 auto'}>
+    return <Box>
       {/*titles*/}
       <AnimateHeight
         duration={700}

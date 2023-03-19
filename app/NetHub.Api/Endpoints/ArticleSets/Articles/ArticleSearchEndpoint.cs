@@ -22,7 +22,7 @@ public sealed class ArticleSearchEndpoint : Endpoint<ArticleFilter, ArticleModel
             .GetExtendedArticles(userId, loadContributors: request.ContributorUsername is not null)
             .Where(a => a.Status == ContentStatus.Published)
             .Where(a => a.LanguageCode == request.Lang)
-            .OrderBy(a => a.Published);
+            .OrderByDescending(a => a.Published);
 
         if (request.ContributorUsername is not null)
             queryable = queryable
