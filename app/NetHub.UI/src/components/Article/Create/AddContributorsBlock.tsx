@@ -30,12 +30,19 @@ const AddContributorsBlock: FC<IAddContributorsBlockProps> = ({article, setArtic
   }
 
   const onTagClickHandle = (contributor: Contributor) => {
-    setContributors(contributors.filter(({user, role}) => {
+    const newContributors = contributors.filter(({user, role}) => {
       if (user.userName === contributor.user.userName)
         if (role === contributor.role)
           return false;
       return true;
-    }))
+    })
+
+    setContributors(newContributors);
+    setArticle({
+      ...article, contributors: newContributors.map(c => {
+        return {userId: c.user.id, role: c.role, userName: c.user.userName, profilePhotoUrl: c.user.profilePhotoUrl}
+      })
+    })
   }
 
   return (

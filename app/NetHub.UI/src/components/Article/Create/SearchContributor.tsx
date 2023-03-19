@@ -23,7 +23,7 @@ interface ISearchContributorProps {
 
 const SearchContributor: FC<ISearchContributorProps> = ({contributors, setContributors}) => {
   const debounceLogic = async (searchValue: string) => {
-    const results = await _usersApi.usersFind([searchValue]);
+    const results = await _usersApi.usersFind(searchValue);
     setResults(results);
   };
   const debounce = useDebounce(debounceLogic, 1000);
