@@ -18,8 +18,9 @@ const LoggedUserBar: FC = () => {
     }, [user.profilePhotoUrl]);
 
     async function handleLogout() {
+      navigate('/')
+      logout()
       await _jwtApi.revoke();
-      logout();
     }
 
     return (
