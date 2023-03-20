@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import cl from "../ArticleShort.module.sass";
+import cl from "../ArticleShared.module.sass";
 import ArticlesRateCounter from "../ArticlesRateCounter";
-import ArticleSavingActions from "../ArticleSavingActions";
+import ArticleSaveAction from "../ArticleSaveAction";
 import { Box, Text } from "@chakra-ui/react";
 import Actions from "../../../UI/Action/Actions";
 import { ContentStatus, Vote } from "../../../../api/_api";
@@ -44,7 +44,7 @@ const ArticleShortFooter: FC<IArticleShortFooterProps> =
         </Box>
         {
           article.status === ContentStatus.Published
-            ? <ArticleSavingActions
+            ? <ArticleSaveAction
               articleSetId={article.articleSetId}
               articleLanguage={article.languageCode}
               isSavedDefault={save.actual}

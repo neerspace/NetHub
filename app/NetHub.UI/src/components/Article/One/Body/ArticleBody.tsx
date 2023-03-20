@@ -9,7 +9,7 @@ import {
 import { useArticleContext } from '../../../../pages/Articles/One/ArticleSpace.Provider';
 import Actions from '../../../UI/Action/Actions';
 import FilledDiv from '../../../UI/FilledDiv';
-import ArticleSavingActions from '../../Shared/ArticleSavingActions';
+import ArticleSaveAction from '../../Shared/ArticleSaveAction';
 import ArticlesRateCounter from '../../Shared/ArticlesRateCounter';
 import cl from './ArticleBody.module.sass';
 import { _myArticlesApi } from "../../../../api";
@@ -121,7 +121,7 @@ const ArticleBody = () => {
             </Text>
           </Actions>
         </div>
-        <ArticleSavingActions
+        <ArticleSaveAction
           articleSetId={article.articleSetId}
           articleLanguage={article.languageCode}
           isSavedDefault={article.isSaved}

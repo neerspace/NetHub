@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import cl from "../ArticleShort.module.sass";
+import cl from "../ArticleShared.module.sass";
 import { Box, Text, useColorModeValue } from "@chakra-ui/react";
 import { ISimpleArticle } from "../../../../types/api/ISimpleArticle";
 import ArticleShortBadge from "./ArticleShortBadge";

@@ -6,9 +6,9 @@ import {useParams} from "react-router-dom";
 import ArticleBodySkeleton from "../../../components/Article/One/Body/ArticleBodySkeleton";
 import {Box, Skeleton} from "@chakra-ui/react";
 import ArticleSpaceProvider, {useArticleContext} from "./ArticleSpace.Provider";
-import ErrorBlock from "../../../components/Layout/ErrorBlock";
+import ErrorBlock from "../../../components/UI/Error/ErrorBlock";
 import {ErrorsHandler} from "../../../utils/ErrorsHandler";
-import Dynamic, { IPage } from "../../../components/Layout/Dynamic";
+import Dynamic, { IPage } from "../../../components/Dynamic/Dynamic";
 
 const ArticleSpace: IPage = () => {
   const {articleSetAccessor, articleAccessor} = useArticleContext();

@@ -4,7 +4,7 @@ namespace NetHub.Data.SqlServer.Entities.Articles;
 
 public class ArticleSetTag : IEntity
 {
-    #region Tag
+    #region Selection
 
     public long TagId { get; set; }
     public virtual Tag? Tag { get; set; }

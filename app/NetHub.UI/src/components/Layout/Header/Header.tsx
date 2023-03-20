@@ -1,9 +1,9 @@
 import React from 'react';
 import SvgSelector from '../../UI/SvgSelector/SvgSelector';
 import cl from './Header.module.sass'
-import layoutClasses from '../Dynamic.module.sass'
-import LoggedUserBar from './LoggedUserBar';
-import UnloggedUserBar from './UnloggedUserBar';
+import layoutClasses from '../../Dynamic/Dynamic.module.sass'
+import LoggedUserBar from './UserBar/LoggedUserBar';
+import UnloggedUserBar from './UserBar/UnloggedUserBar';
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -16,7 +16,7 @@ import {
   useColorModeValue
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
-import ThemeSwitcher from "../../UI/Theme/ThemeSwitcher";
+import ThemeSwitcher from "../Theme/ThemeSwitcher";
 import { useAppStore } from "../../../store/store";
 
 const Header: React.FC = () => {

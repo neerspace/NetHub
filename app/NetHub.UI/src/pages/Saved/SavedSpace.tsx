@@ -1,14 +1,14 @@
 import React from 'react';
-import UserLibrary, {ILibraryItem} from "../../components/Library/UserLibrary";
+import UserLibrary, {ILibraryItem} from "../../components/UserLibrary/UserLibrary";
 import SvgSelector from "../../components/UI/SvgSelector/SvgSelector";
 import SavedArticles from "../../components/Article/Saved/SavedArticles";
 import cl from './SavedSpace.module.sass';
 import {Text, useColorModeValue} from "@chakra-ui/react";
 import SavedSpaceProvider, {useSavedArticlesContext} from "./SavedSpace.Provider";
-import ErrorBlock from "../../components/Layout/ErrorBlock";
+import ErrorBlock from "../../components/UI/Error/ErrorBlock";
 import {ErrorsHandler} from "../../utils/ErrorsHandler";
 import Currency from "../../components/Currency/Currency";
-import Dynamic, { IPage } from "../../components/Layout/Dynamic";
+import Dynamic, { IPage } from "../../components/Dynamic/Dynamic";
 
 const SavedSpace: IPage = () => {
 

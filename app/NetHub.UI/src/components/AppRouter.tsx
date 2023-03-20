@@ -1,13 +1,12 @@
-import React, { FC } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { paths } from "../routes/paths";
+import React, {FC} from 'react';
+import {Route, Routes} from 'react-router-dom';
+import {paths} from "../routes/paths";
 import NotFoundSpace from "../pages/NotFoundSpace";
-import ErrorBoundary from "./Layout/ErrorBoundary";
+import ErrorBoundary from "./Dynamic/ErrorBoundary";
 import AuthorizedHoc from "../hocs/AuthorizedHoc";
 import Header from './Layout/Header/Header';
 import Footer from "./Layout/Footer/Footer";
 import Flag from "./Layout/Flag";
-import { Box } from "@chakra-ui/react";
 
 const AppRouter: FC = () => {
   return (

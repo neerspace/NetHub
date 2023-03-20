@@ -5,9 +5,9 @@ import {useParams} from "react-router-dom";
 import PublicProfile from "../../components/Profile/Public/PublicProfile";
 import ProfileSpaceProvider, {useProfileContext} from "./ProfileSpace.Provider";
 import ProfileTitle from "../../components/Profile/ProfileTitle";
-import ErrorBlock from "../../components/Layout/ErrorBlock";
+import ErrorBlock from "../../components/UI/Error/ErrorBlock";
 import {ErrorsHandler} from "../../utils/ErrorsHandler";
-import Dynamic, { IPage } from "../../components/Layout/Dynamic";
+import Dynamic, { IPage } from "../../components/Dynamic/Dynamic";
 
 const ProfileSpace: IPage = () => {
   const {username} = useParams();

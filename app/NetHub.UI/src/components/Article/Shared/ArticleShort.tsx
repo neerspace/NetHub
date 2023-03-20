@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useArticleContext } from '../../../pages/Articles/One/ArticleSpace.Provider';
 import FilledDiv from '../../UI/FilledDiv';
-import cl from './ArticleShort.module.sass';
+import cl from './ArticleShared.module.sass';
 import ArticleShortFooter from './Related/ArticleShortFooter';
 import ArticleShortHeader from './Related/ArticleShortHeader';
 import { Vote } from "../../../api/_api";

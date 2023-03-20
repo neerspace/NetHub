@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import { useByYouContext } from "../../../pages/ByYou/ByYouSpace.Provider";
 import ArticleShort from "../Shared/ArticleShort";
-import ErrorBlock from "../../Layout/ErrorBlock";
+import ErrorBlock from "../../UI/Error/ErrorBlock";
 import { ISimpleArticle } from "../../../types/api/ISimpleArticle";
 import { _myArticlesApi } from "../../../api";
 import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";

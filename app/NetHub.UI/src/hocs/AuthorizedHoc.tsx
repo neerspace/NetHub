@@ -5,7 +5,7 @@ import IJwtPayload from '../types/IJwtPayload';
 import { getOrRefreshAccessToken } from '../utils/JwtService';
 import { JWTStorage } from '../utils/localStorageProvider';
 import { useAppStore } from "../store/store";
-import Dynamic, { IPage } from "../components/Layout/Dynamic";
+import Dynamic, { IPage } from "../components/Dynamic/Dynamic";
 
 interface IAuthorizedProps {
   children: IPage,

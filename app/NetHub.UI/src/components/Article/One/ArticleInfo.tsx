@@ -4,12 +4,12 @@ import { createImageFromInitials } from "../../../utils/logoGenerator";
 import { getArticleContributors } from "../../../pages/Articles/One/ArticleSpace.functions";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import ContributorsSkeleton from "./ContributorsSkeleton";
+import ArticleContributorsSkeleton from "./ArticleContributorsSkeleton";
 import FilledDiv from '../../UI/FilledDiv';
 import { Button, Link, Skeleton, Text, useColorModeValue } from "@chakra-ui/react";
 import { useArticleContext } from "../../../pages/Articles/One/ArticleSpace.Provider";
 import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
-import ArticleLanguages from "./ArticleLanguages";
+import ArticleLanguages from "../Shared/ArticleLanguages";
 
 const ArticleInfo = () => {
   const {articleSetAccessor, articleAccessor} = useArticleContext();
@@ -28,9 +28,6 @@ const ArticleInfo = () => {
   }
 
   const divBg = useColorModeValue('purpleLight', 'purpleDark');
-
-  // console.log('articles', articleSetAccessor.data?.articles);
-
 
   return (
     <div className={cl.articleInfo}>
@@ -52,7 +49,7 @@ const ArticleInfo = () => {
             <Text as={'p'} className={cl.infoBlockTitle}>Автори:</Text>
             <div className={cl.contributors}>
               {contributors.isLoading ?
-                <ContributorsSkeleton/> : contributors.data!.map(contributor =>
+                <ArticleContributorsSkeleton/> : contributors.data!.map(contributor =>
                   <Button
                     key={contributor.id + contributor.role}
                     className={cl.contributor}

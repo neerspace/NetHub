@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import SvgSelector from '../../UI/SvgSelector/SvgSelector';
-import classes from './Menu.module.sass';
+import cl from './Menu.module.sass';
 import {IMenuItem} from "./MenuData";
 import {useNavigate} from "react-router-dom";
 import {ListItem, Text, UnorderedList, useColorModeValue} from "@chakra-ui/react";
@@ -20,7 +20,7 @@ const MenuGroup: FC<IMenuGroupProps> = ({groupName, menuItems}) => {
   const getItemHoveredBg = (menuItem: IMenuItem) => menuItem.isActive ? itemHoveredBg : '';
 
   return (
-    <UnorderedList className={classes.menuPointContainer} marginInlineStart={0}>
+    <UnorderedList className={cl.menuPointContainer} marginInlineStart={0}>
       {groupName && <Text as={'p'}>{groupName}</Text>}
       {menuItems.map(menuItem =>
         <ListItem
@@ -34,9 +34,9 @@ const MenuGroup: FC<IMenuGroupProps> = ({groupName, menuItems}) => {
           }
           key={menuItem.itemName}
           className={`
-            ${classes.menuPoint} 
-            ${window.location.pathname === menuItem.link ? classes.menuPointActive : ''} 
-            ${menuItem.isActive ? '' : classes.disabled}
+            ${cl.menuPoint}
+            ${window.location.pathname === menuItem.link ? cl.menuPointActive : ''}
+            ${menuItem.isActive ? '' : cl.disabled}
           `}
           onClick={() => menuItem.isActive && navigate(menuItem.link)}
         >

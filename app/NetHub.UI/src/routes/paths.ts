@@ -1,14 +1,14 @@
-import ArticlesThreadSpace from '../pages/Articles/Thread/ArticlesThreadSpace';
+import ArticlesListSpace from '../pages/Articles/Thread/ArticlesListSpace';
 import ArticleSpace from "../pages/Articles/One/ArticleSpace";
-import ArticleCreatingSpace from '../pages/Articles/Create/ArticleCreatingSpace';
+import ArticleCreateSpace from '../pages/Articles/Create/ArticleCreateSpace';
 import SavedSpace from "../pages/Saved/SavedSpace";
 import ProfileSpace from "../pages/Profile/ProfileSpace";
-import ContributorArticlesSpace from "../pages/Articles/Contributor/ContributorArticlesSpace";
+import CreatorArticlesSpace from "../pages/Articles/Creator/CreatorArticlesSpace";
 import TestSpace from "../pages/TestSpace";
-import AuthSpace from "../pages/Auth/AuthSpace";
+import LoginSpace from "../pages/Login/LoginSpace";
 import TeamSpace from "../pages/Team/TeamSpace";
 import ByYouSpace from "../pages/ByYou/ByYouSpace";
-import { IPage } from "../components/Layout/Dynamic";
+import { IPage } from "../components/Dynamic/Dynamic";
 
 interface IPath {
   path: string,
@@ -19,22 +19,22 @@ interface IPath {
 export const paths: IPath[] = [
   {
     path: '/',
-    Component: ArticlesThreadSpace,
+    Component: ArticlesListSpace,
     requireAuthorization: false,
   },
   {
     path: '/login',
-    Component: AuthSpace,
+    Component: LoginSpace,
     requireAuthorization: false
   },
   {
     path: '/article/add',
-    Component: ArticleCreatingSpace,
+    Component: ArticleCreateSpace,
     requireAuthorization: true,
   },
   {
     path: '/article/:id/translate',
-    Component: ArticleCreatingSpace,
+    Component: ArticleCreateSpace,
     requireAuthorization: true
   },
   {
@@ -64,7 +64,7 @@ export const paths: IPath[] = [
   },
   {
     path: '/article/creator/:contributorUsername',
-    Component: ContributorArticlesSpace,
+    Component: CreatorArticlesSpace,
     requireAuthorization: false
   },
   {

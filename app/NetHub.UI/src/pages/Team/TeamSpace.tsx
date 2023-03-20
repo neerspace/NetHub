@@ -2,7 +2,7 @@ import React from 'react';
 import {Box, Text} from "@chakra-ui/react";
 import TeamMemberCard from "../../components/Team/TeamMemberCard";
 import {teamMembers} from "../../constants/team";
-import Dynamic, { IPage } from "../../components/Layout/Dynamic";
+import Dynamic, { IPage } from "../../components/Dynamic/Dynamic";
 
 export type TeamMember = {
   imageSrc: string,

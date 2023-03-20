@@ -4,7 +4,7 @@ import Currency from "../components/Currency/Currency";
 import {z as u} from "zod";
 import useCustomSnackbar from "../hooks/useCustomSnackbar";
 import {formatZodErrors} from "../utils/zodHelper";
-import Dynamic, { IPage } from "../components/Layout/Dynamic";
+import Dynamic, { IPage } from "../components/Dynamic/Dynamic";
 
 const formSchema = u.object({
   username: u.string().min(5, 'Username Min - 5'),

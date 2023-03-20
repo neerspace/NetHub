@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import cl from './TitleInput.module.sass';
+import cl from '../UiComps.module.sass';
 import {FormControl, FormErrorMessage, Input, InputProps, Text} from '@chakra-ui/react';
 
 interface ITitleInputProps extends InputProps {

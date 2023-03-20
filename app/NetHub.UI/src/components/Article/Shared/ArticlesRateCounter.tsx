@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import useCustomSnackbar from '../../../hooks/useCustomSnackbar';
 import Actions from '../../UI/Action/Actions';
 import SvgSelector from '../../UI/SvgSelector/SvgSelector';
-import cl from './ArticleRateCounter.module.sass';
+import cl from './ArticleShared.module.sass';
 import { _myArticlesApi } from "../../../api";
 import { Vote } from "../../../api/_api";
 import { JwtHelper } from "../../../utils/JwtHelper";
@@ -95,16 +95,16 @@ const ArticlesRateCounter: FC<IArticleRateCounterProps> = (
   }
 
   return (
-    <Actions className={cl.rating}>
+    <Actions className={cl.rateCounter}>
       <div onClick={handleDownVote}>
         <SvgSelector
           id={'ArrowDown'}
-          className={vote === 'Down' ? cl.ratingDown : ''}
+          className={vote === 'Down' ? cl.rateDown : ''}
         />
       </div>
       <Text
         as={'p'}
-        className={cl.ratingCount}
+        className={cl.rateCount}
         style={{color: ratingCountColor()}}
       >
         {rate}
@@ -112,7 +112,7 @@ const ArticlesRateCounter: FC<IArticleRateCounterProps> = (
       <div onClick={handleUpVote}>
         <SvgSelector
           id={'ArrowUp'}
-          className={vote === 'Up' ? cl.ratingUp : ''}
+          className={vote === 'Up' ? cl.rateUp : ''}
         />
       </div>
     </Actions>

@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import cl from '../Profile.module.sass'
 import SvgSelector from "../../UI/SvgSelector/SvgSelector";
 import millify from "millify";
-import SetImageModal from "../SetImageModal";
+import ProfileImageSetModal from "../ProfileImageSetModal";
 import {allowedImagesTypes} from "../../../constants/dnd";
 import useCustomSnackbar from "../../../hooks/useCustomSnackbar";
-import DashboardImage from "../DashboardImage";
+import ProfileDashboardImage from "../ProfileDashboardImage";
 import {getTimeFrom} from "../../../utils/timeHelper";
 import FilledDiv from "../../UI/FilledDiv";
 import {Button, Text} from '@chakra-ui/react';
@@ -49,8 +49,8 @@ const PrivateDashboard = () => {
       className={cl.dashboardWrapper}
       sx={{justifyContent: dashboard!.articlesCount === 0 ? '' : 'space-between'}}
     >
-      <DashboardImage openModal={handleOpenModal} handleDrop={handleDrop}/>
-      <SetImageModal
+      <ProfileDashboardImage openModal={handleOpenModal} handleDrop={handleDrop}/>
+      <ProfileImageSetModal
         isModalOpened={isModalOpened} closeModal={handleCloseModal} imageLink={imageLink}
         setImageLink={handleSetImageLink} onClick={handleModalButton} handleDrop={handleDrop}
       />

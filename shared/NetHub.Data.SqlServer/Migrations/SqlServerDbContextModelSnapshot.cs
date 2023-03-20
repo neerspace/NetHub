@@ -600,7 +600,7 @@ namespace NetHub.Data.SqlServer.Migrations
                     b.ToTable("SavedArticles", (string)null);
                 });
 
-            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Tag", b =>
+            modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Selection", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -701,7 +701,7 @@ namespace NetHub.Data.SqlServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NetHub.Data.SqlServer.Entities.Tag", "Tag")
+                    b.HasOne("NetHub.Data.SqlServer.Entities.Selection", "Selection")
                         .WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -709,7 +709,7 @@ namespace NetHub.Data.SqlServer.Migrations
 
                     b.Navigation("ArticleSet");
 
-                    b.Navigation("Tag");
+                    b.Navigation("Selection");
                 });
 
             modelBuilder.Entity("NetHub.Data.SqlServer.Entities.Articles.ArticleSetVote", b =>

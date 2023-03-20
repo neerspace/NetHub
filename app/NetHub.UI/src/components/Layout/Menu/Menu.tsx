@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
 import MenuGroup from './MenuGroup';
-import classes from './Menu.module.sass';
+import cl from './Menu.module.sass';
 import {firstGroup, secondGroup, thirdGroup} from "./MenuData";
 
 const Menu: FC = () => {
   return (
-    <div className={classes.menuItems}>
+    <div className={cl.menuItems}>
       <MenuGroup
         menuItems={firstGroup}
       />

@@ -2,8 +2,8 @@ import React from 'react';
 import {Box, Button, Text, useColorModeValue} from "@chakra-ui/react";
 import cl from './NotFoundSpace.module.sass';
 import SvgSelector from "../components/UI/SvgSelector/SvgSelector";
-import ErrorBlock from "../components/Layout/ErrorBlock";
-import Dynamic, { IPage } from "../components/Layout/Dynamic";
+import ErrorBlock from "../components/UI/Error/ErrorBlock";
+import Dynamic, { IPage } from "../components/Dynamic/Dynamic";
 
 const NotFoundSpace: IPage = () => {
   const textColor = useColorModeValue('whiteLight', 'whiteDark');

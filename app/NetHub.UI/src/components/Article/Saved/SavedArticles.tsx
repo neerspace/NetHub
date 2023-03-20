@@ -1,16 +1,14 @@
 import React from 'react';
-import { useQueryClient } from 'react-query';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { useSavedArticlesContext } from '../../../pages/Saved/SavedSpace.Provider';
-import ErrorBlock from '../../Layout/ErrorBlock';
+import {useQueryClient} from 'react-query';
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
+import {useSavedArticlesContext} from '../../../pages/Saved/SavedSpace.Provider';
+import ErrorBlock from '../../UI/Error/ErrorBlock';
 import ArticleShort from '../Shared/ArticleShort';
 import cl from './SavedArticles.module.sass';
 import './transitions.css';
-import { _myArticlesApi } from "../../../api";
-import { ISimpleArticle } from "../../../types/api/ISimpleArticle";
-import { QueryClientKeysHelper } from "../../../utils/QueryClientKeysHelper";
-import firebase from "firebase/compat";
-import Query = firebase.firestore.Query;
+import {_myArticlesApi} from "../../../api";
+import {ISimpleArticle} from "../../../types/api/ISimpleArticle";
+import {QueryClientKeysHelper} from "../../../utils/QueryClientKeysHelper";
 import ArticlesShortSkeleton from '../Shared/ArticlesShortSkeleton';
 
 const SavedArticles = () => {

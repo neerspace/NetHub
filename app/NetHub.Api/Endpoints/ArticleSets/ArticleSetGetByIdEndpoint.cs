@@ -25,12 +25,11 @@ public sealed class ArticleSetGetByIdEndpoint : Endpoint<long, ArticleSetModelEx
         var username = UserProvider.UserName;
 
         var articleSet = await Database.Set<ArticleSet>()
-            .Include(a => a.Articles!.OrderBy(a => a.Language!.Order))
-            .ThenInclude(a => a.Language)
-            .Include(a => a.Articles!)
-            .ThenInclude(l => l.Contributors).ThenInclude(c => c.User)
+            .Include(a => a.Articles!.OrderBy(a => a.Language!.Order)).ThenInclude(a => a.Language)
+            .Include(a => a.Articles!).ThenInclude(l => l.Contributors).ThenInclude(c => c.User)
             .Include(a => a.Tags)!.ThenInclude(at => at.Tag)
             .Include(a => a.Images)
+            .AsSplitQuery()
             .FirstOr404Async(a => a.Id == id, ct);
 
         GuardPermissions(articleSet, username);
@@ -65,8 +64,7 @@ public sealed class ArticleSetGetByIdEndpoint : Endpoint<long, ArticleSetModelEx
         if (!articleSet.Articles!.Any())
             return;
 
-        if (userName is null ||
-            !isContributor)
+        if (userName is null || !isContributor)
             throw new PermissionsException();
     }
 }

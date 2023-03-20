@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useQuery } from "react-query";
 import FilledDiv from "../UI/FilledDiv";
-import ExchangeRate from "./ExchangeRate";
+import ExchangeRate from "./Exchange/ExchangeRate";
 import cl from './Currency.module.sass';
-import CryptoRate from "./CryptoRate";
+import CryptoRate from "./Crypto/CryptoRate";
 import { Box, Skeleton, Text, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { DateTime } from "luxon";
 import { ApiError } from "../../types/ApiError";
