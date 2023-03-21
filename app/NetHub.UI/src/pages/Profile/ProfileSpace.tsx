@@ -8,6 +8,7 @@ import ProfileTitle from "../../components/Profile/ProfileTitle";
 import ErrorBlock from "../../components/UI/Error/ErrorBlock";
 import {ErrorsHandler} from "../../utils/ErrorsHandler";
 import Dynamic, { IPage } from "../../components/Dynamic/Dynamic";
+import Feedback from "../../components/Feedback/Feedback";
 
 const ProfileSpace: IPage = () => {
   const {username} = useParams();
@@ -31,6 +32,7 @@ const ProfileSpace: IPage = () => {
             ? <PublicProfile/>
             : <PrivateProfile/>
     }
+    <Feedback/>
   </Dynamic>
 };
 

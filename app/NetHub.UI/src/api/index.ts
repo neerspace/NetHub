@@ -5,7 +5,7 @@ import {
   ArticlesApi,
   ArticleSetsApi,
   CurrencyApi,
-  CurrentUserApi,
+  CurrentUserApi, FeedbacksApi,
   JwtApi, LanguagesApi,
   MyArticlesApi, ResourcesApi,
   UsersApi
@@ -62,3 +62,4 @@ export const _currenciesApi = new CurrencyApi(baseApiUrl, _apiInstance);
 export const _currentUserApi = new CurrentUserApi(baseApiUrl, _apiInstance);
 export const _languagesApi = new LanguagesApi(baseApiUrl, _apiInstance);
 export const _resourcesApi = new ResourcesApi(baseApiUrl, _apiInstance);
+export const _feedbacksApi = new FeedbacksApi(baseApiUrl, _apiInstance);

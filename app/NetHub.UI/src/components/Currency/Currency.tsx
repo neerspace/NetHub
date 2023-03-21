@@ -22,12 +22,12 @@ const Currency = () => {
   const updatedColor = useColorModeValue('#D4D4D8', 'whiteDark');
   const updatedDateFormatted = `${date.hour > 9 ? date.hour: '0'+date.hour.toString()}:${date.minute > 9 ? date.minute : '0'+date.minute.toString()}`;
 
-  if (currencies.isLoading) return <Skeleton height='270px'/>;
+  if (currencies.isLoading) return <Skeleton height='270px' mb={'15px'}/>;
 
   return (
       <FilledDiv
         bg={blockColor} border={colorMode === 'light' ? '1px solid #EFEFEF' : ''}
-        height={'fit-content'}
+        height={'fit-content'} mb={'15px'}
       >
         <ExchangeRate rate={currencies.data!.exchanges!}/>
         <hr className={cl.line}/>

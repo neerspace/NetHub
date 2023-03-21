@@ -80,7 +80,6 @@ export const useArticleCreatingSpace = (articleCreationRef: React.RefObject<IMai
       const errors = validationResult.error.format()
       setErrors(errors);
       errors._errors.forEach(e => enqueueError(e))
-      console.log('errors', errors)
       return;
     }
 

@@ -1,6 +1,7 @@
 import { extendTheme, StyleFunctionProps } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
 import { FilledDivConfig } from '../components/UI/FilledDiv';
+import { textareaTheme } from "./components";
 
 const styles = {
   global: (props: StyleFunctionProps) => ({
@@ -54,6 +55,7 @@ const components = {
       },
     })
   },
+  Textarea: textareaTheme,
   FormError: {
     baseStyle: {
       text: {

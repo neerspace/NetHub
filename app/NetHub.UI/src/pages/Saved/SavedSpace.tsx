@@ -9,6 +9,7 @@ import ErrorBlock from "../../components/UI/Error/ErrorBlock";
 import {ErrorsHandler} from "../../utils/ErrorsHandler";
 import Currency from "../../components/Currency/Currency";
 import Dynamic, { IPage } from "../../components/Dynamic/Dynamic";
+import Feedback from "../../components/Feedback/Feedback";
 
 const SavedSpace: IPage = () => {
 
@@ -50,6 +51,7 @@ const SavedSpace: IPage = () => {
         defaultValue: 'Статті',
       }}
     />
+    <Feedback/>
   </Dynamic>
 };
 

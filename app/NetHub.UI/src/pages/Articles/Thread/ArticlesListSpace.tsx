@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from "react-i18next";
 import ArticlesListTitle from "../../../components/Article/Thread/ArticlesListTitle";
 import Currency from "../../../components/Currency/Currency";
-import { Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import ArticlesListSpaceProvider, {
   useArticlesThreadContext
 } from "./ArticlesListSpace.Provider";
@@ -11,6 +11,7 @@ import ErrorBlock from '../../../components/UI/Error/ErrorBlock';
 import { ErrorsHandler } from "../../../utils/ErrorsHandler";
 import ArticlesShortSkeleton from "../../../components/Article/Shared/ArticlesShortSkeleton";
 import Dynamic, { IPage } from "../../../components/Dynamic/Dynamic";
+import Feedback from "../../../components/Feedback/Feedback";
 
 const ArticlesListSpace: IPage = () => {
   const {t} = useTranslation();
@@ -46,7 +47,10 @@ const ArticlesListSpace: IPage = () => {
             setArticles={setArticles}
           />
     }
-    <Currency/>
+    <Box display={'flex'} flexDirection={'column'}>
+      <Currency/>
+      <Feedback/>
+    </Box>
   </Dynamic>;
 }
 

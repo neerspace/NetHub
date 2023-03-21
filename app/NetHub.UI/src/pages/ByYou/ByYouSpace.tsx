@@ -9,6 +9,7 @@ import { ErrorsHandler } from "../../utils/ErrorsHandler";
 import Currency from "../../components/Currency/Currency";
 import ByYouArticles from "../../components/Article/ByYou/ByYouArticles";
 import Dynamic, { IPage } from "../../components/Dynamic/Dynamic";
+import Feedback from "../../components/Feedback/Feedback";
 
 const ByYouSpace: IPage = () => {
   const {articlesAccessor} = useByYouContext();
@@ -48,6 +49,7 @@ const ByYouSpace: IPage = () => {
           name: 'byYou',
           defaultValue: 'Статті',
         }}/>
+      <Feedback/>
     </Dynamic>
   );
 };

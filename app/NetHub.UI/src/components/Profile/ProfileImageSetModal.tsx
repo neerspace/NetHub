@@ -1,8 +1,8 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import cl from './Profile.module.sass'
 import useValidator from "../../hooks/useValidator";
-import {isNotNullOrWhiteSpace, regexTest} from "../../utils/validators";
-import {imageLinkRegex} from "../../utils/regex";
+import { isNotNullOrWhiteSpace, regexTest } from "../../utils/validators";
+import { imageLinkRegex } from "../../utils/regex";
 import useCustomSnackbar from "../../hooks/useCustomSnackbar";
 import ProfileImageDrop from "./ProfileImageDrop";
 import {
@@ -27,14 +27,11 @@ interface ISetImageModalProps {
   handleDrop: (e: React.DragEvent<HTMLSpanElement>) => Promise<void>
 }
 
-const ProfileImageSetModal: FC<ISetImageModalProps> = ({
-                                                  isModalOpened,
-                                                  closeModal,
-                                                  imageLink,
-                                                  setImageLink,
-                                                  onClick,
-                                                  handleDrop
-                                                }) => {
+const ProfileImageSetModal: FC<ISetImageModalProps> = (
+  {
+    isModalOpened, closeModal, imageLink,
+    setImageLink, onClick, handleDrop
+  }) => {
 
   const {subscribeValidator, validateAll, errors} = useValidator<{ link: boolean }>();
   const {enqueueError} = useCustomSnackbar();
@@ -64,7 +61,8 @@ const ProfileImageSetModal: FC<ISetImageModalProps> = ({
       onClose={closeModal}
     >
       <ModalOverlay/>
-      <ModalContent bg={useColorModeValue('violetLight', '#1F2023')} minW={'45%'} paddingBottom={3} top={150}>
+      <ModalContent bg={useColorModeValue('violetLight', '#1F2023')} minW={'45%'} paddingBottom={3}
+                    top={150}>
         <ModalHeader><Text as={'h6'}>Редагування фотографії профілю</Text></ModalHeader>
         <ModalBody className={cl.setImageModalBody}>
           <Box className={cl.leftModalBlock}>
